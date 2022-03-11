@@ -1,4 +1,10 @@
 {
   "version": 2,
-  "projects": {}
+  "projects": {
+    "api": "packages/api",
+    "fibonacci": "packages/fibonacci",
+    "js-env-provider": "packages/js-env-provider",
+    "js-split-adaptor": "packages/js-split-adaptor",
+    "openfeature-js": "packages/openfeature-js"
+  }
 }

@@ -1,0 +1,71 @@
+{
+  "root": "packages/api",
+  "sourceRoot": "packages/api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/api",
+        "main": "packages/api/src/main.ts",
+        "tsConfig": "packages/api/tsconfig.app.json"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "packages/api/src/environments/environment.ts",
+              "with": "packages/api/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "api:build",
+        "runtimeArgs": ["-r", "./scripts/tracing.js"]
+      }
+    },
+    "env-var-demo": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "waitUntilTargets": ["js-env-provider:build", "openfeature-js:build"],
+        "buildTarget": "api:build",
+        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/env-var-demo.js"],
+        "inspect": true
+      }
+    },
+
+    "split-demo": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "waitUntilTargets": ["js-split-adaptor:build", "openfeature-js:build"],
+        "buildTarget": "api:build",
+        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/split-demo.js"],
+        "inspect": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/api"],
+      "options": {
+        "jestConfig": "packages/api/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

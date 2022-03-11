@@ -2,16 +2,44 @@
   "name": "openfeature",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "no-op-demo": "nx serve api",
+    "env-var-demo": "nx run api:env-var-demo",
+    "split-demo": "nx run api:split-demo"
+  },
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "@opentelemetry/api": "^1.0.4",
+    "@opentelemetry/auto-instrumentations-node": "^0.27.4",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.27.0",
+    "@opentelemetry/exporter-zipkin": "^1.0.1",
+    "@opentelemetry/node": "^0.24.0",
+    "@opentelemetry/sdk-node": "^0.27.0",
+    "express": "4.17.2",
+    "express-validator": "^6.14.0",
+    "tslib": "^2.0.0"
+  },
   "devDependencies": {
     "@nrwl/cli": "13.8.5",
+    "@nrwl/eslint-plugin-nx": "13.8.5",
+    "@nrwl/express": "^13.8.5",
+    "@nrwl/jest": "13.8.5",
     "@nrwl/js": "13.8.5",
+    "@nrwl/linter": "13.8.5",
+    "@nrwl/node": "13.8.5",
     "@nrwl/tao": "13.8.5",
     "@nrwl/workspace": "13.8.5",
-    "@types/node": "16.11.7",
+    "@splitsoftware/splitio": "^10.17.3",
+    "@types/express": "4.17.13",
+    "@types/jest": "27.0.2",
+    "@types/node": "^16.11.7",
+    "@typescript-eslint/eslint-plugin": "~5.10.0",
+    "@typescript-eslint/parser": "~5.10.0",
+    "eslint": "~8.7.0",
+    "eslint-config-prettier": "8.1.0",
+    "jest": "27.2.3",
     "prettier": "^2.5.1",
+    "ts-jest": "27.0.5",
     "typescript": "~4.5.2"
   }
 }

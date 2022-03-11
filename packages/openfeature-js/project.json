@@ -1,0 +1,32 @@
+{
+  "root": "packages/openfeature-js",
+  "sourceRoot": "packages/openfeature-js/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/openfeature-js",
+        "main": "packages/openfeature-js/src/index.ts",
+        "tsConfig": "packages/openfeature-js/tsconfig.lib.json",
+        "assets": ["packages/openfeature-js/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/openfeature-js/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/openfeature-js"],
+      "options": {
+        "jestConfig": "packages/openfeature-js/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

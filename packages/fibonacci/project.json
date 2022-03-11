@@ -1,0 +1,32 @@
+{
+  "root": "packages/fibonacci",
+  "sourceRoot": "packages/fibonacci/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/fibonacci",
+        "main": "packages/fibonacci/src/index.ts",
+        "tsConfig": "packages/fibonacci/tsconfig.lib.json",
+        "assets": ["packages/fibonacci/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/fibonacci/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/fibonacci"],
+      "options": {
+        "jestConfig": "packages/fibonacci/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

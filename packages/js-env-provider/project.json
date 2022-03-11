@@ -1,0 +1,32 @@
+{
+  "root": "packages/js-env-provider",
+  "sourceRoot": "packages/js-env-provider/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/js-env-provider",
+        "main": "packages/js-env-provider/src/index.ts",
+        "tsConfig": "packages/js-env-provider/tsconfig.lib.json",
+        "assets": ["packages/js-env-provider/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/js-env-provider/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/js-env-provider"],
+      "options": {
+        "jestConfig": "packages/js-env-provider/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
