@@ -23,8 +23,8 @@ export type FlagEvaluationResponse = {
 
 export type FlagEvaluationVariationResponse = FlagEvaluationResponse & {
   stringValue?: string;
-  boolValue?: string;
-  numberValue?: string;
+  boolValue?: boolean;
+  numberValue?: number;
 };
 
 export interface FeatureProvider {
