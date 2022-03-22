@@ -1,0 +1,32 @@
+{
+  "root": "packages/js-cloudbees-provider",
+  "sourceRoot": "packages/js-cloudbees-provider/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/js-cloudbees-provider",
+        "main": "packages/js-cloudbees-provider/src/index.ts",
+        "tsConfig": "packages/js-cloudbees-provider/tsconfig.lib.json",
+        "assets": ["packages/js-cloudbees-provider/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/js-cloudbees-provider/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/js-cloudbees-provider"],
+      "options": {
+        "jestConfig": "packages/js-cloudbees-provider/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

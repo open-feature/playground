@@ -17,6 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "@openfeature/fibonacci": ["packages/fibonacci/src/index.ts"],
+      "@openfeature/js-cloudbees-provider": ["packages/js-cloudbees-provider/src/index.ts"],
       "@openfeature/js-env-provider": ["packages/js-env-provider/src/index.ts"],
       "@openfeature/js-split-adaptor": [
         "packages/js-split-adaptor/src/index.ts"
