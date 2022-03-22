@@ -42,6 +42,15 @@
       }
     },
 
+    "cloudbees-demo": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "waitUntilTargets": ["js-cloudbees-provider:build", "openfeature-js:build"],
+        "buildTarget": "api:build",
+        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/cloudbees-demo.js"],
+        "inspect": true
+      }
+    },
     "split-demo": {
       "executor": "@nrwl/node:node",
       "options": {

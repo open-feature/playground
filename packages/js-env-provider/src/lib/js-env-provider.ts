@@ -1,7 +1,7 @@
 import {
   FeatureProvider,
   FlagEvaluationRequest,
-  FlagEvaluationResponse,
+  FlagEvaluationVariationResponse,
 } from '@openfeature/openfeature-js';
 
 export class OpenFeatureEnvProvider implements FeatureProvider {
@@ -9,13 +9,14 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
 
   async evaluateFlag(
     request: FlagEvaluationRequest
-  ): Promise<FlagEvaluationResponse> {
+  ): Promise<FlagEvaluationVariationResponse> {
     console.log(`${this.name}: evaluation flag`);
     const flagValue = process.env[request.flagId];
 
     console.log(`Flag '${request.flagId}' has a value of '${flagValue}'`);
     return {
-      enabled:
+      enabled: !!flagValue,
+      boolValue:
         typeof flagValue === 'string' && flagValue.toLowerCase() === 'true',
     };
   }
