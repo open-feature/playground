@@ -8,4 +8,4 @@ const { CloudbeesProvider } = require("../dist/packages/js-cloudbees-provider/sr
  * OpenFeature object.
  */
 console.log('Registering the OpenFeature environment provider');
-openfeature.registerProvider(new CloudbeesProvider('618538bd7ebdeef023b5ff0d'));
+openfeature.registerProvider(new CloudbeesProvider(process.env.CLOUDBEES_APP_KEY));
