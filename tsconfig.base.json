@@ -22,6 +22,7 @@
       "@openfeature/js-split-adaptor": [
         "packages/js-split-adaptor/src/index.ts"
       ],
+      "@openfeature/js-launchdarkly-provider": ["packages/js-launchdarkly-provider/src/index.ts"],
       "@openfeature/openfeature-js": ["packages/openfeature-js/src/index.ts"]
     }
   },
