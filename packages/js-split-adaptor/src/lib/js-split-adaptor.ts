@@ -27,7 +27,8 @@ export class OpenFeatureSplitAdaptor implements FeatureProvider {
      * something went wrong.
      */
     return {
-      enabled:
+      enabled: !!flagValue,
+      boolValue:
         typeof flagValue === 'string' &&
         !['off', 'control'].includes(flagValue.toLowerCase()),
       stringValue: flagValue,
