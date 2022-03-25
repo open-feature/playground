@@ -41,7 +41,6 @@
         "inspect": true
       }
     },
-
     "cloudbees-demo": {
       "executor": "@nrwl/node:node",
       "options": {
@@ -57,6 +56,15 @@
         "waitUntilTargets": ["js-split-adaptor:build", "openfeature-js:build"],
         "buildTarget": "api:build",
         "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/split-demo.js"],
+        "inspect": true
+      }
+    },
+    "launchdarkly-demo": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "waitUntilTargets": ["js-launchdarkly-provider:build", "openfeature-js:build"],
+        "buildTarget": "api:build",
+        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/launchdarkly-demo.js"],
         "inspect": true
       }
     },

@@ -1,0 +1,32 @@
+{
+  "root": "packages/js-launchdarkly-provider",
+  "sourceRoot": "packages/js-launchdarkly-provider/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/js-launchdarkly-provider",
+        "main": "packages/js-launchdarkly-provider/src/index.ts",
+        "tsConfig": "packages/js-launchdarkly-provider/tsconfig.lib.json",
+        "assets": ["packages/js-launchdarkly-provider/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/js-launchdarkly-provider/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/js-launchdarkly-provider"],
+      "options": {
+        "jestConfig": "packages/js-launchdarkly-provider/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

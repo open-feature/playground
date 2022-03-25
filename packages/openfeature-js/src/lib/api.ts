@@ -5,8 +5,6 @@ import { Feature, FeatureProvider } from './types';
 export class OpenFeatureAPI {
   private provider?: FeatureProvider;
 
-  private constructor() {}
-
   public static getInstance(): OpenFeatureAPI {
     const globalApi = getGlobal();
     if (globalApi) {
