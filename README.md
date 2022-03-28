@@ -27,7 +27,7 @@ Available demos:
 
 - [No-op](#no-op-demo)
 - [Environment Variable Provider](#environment-variable-provider-demo)
-- [Split Adaptor](#split-adaptor-demo)
+- [Split Provider](#split-provider-demo)
 - [OpenTelemetry and Zipkin](#opentelemetry-demo)
 
 ## Simple API
@@ -73,8 +73,7 @@ and commercial feature flag offerings. It should be possible to register a
 feature flag provider that's responsible for handling the flag evaluation. Only
 a single provider can be registered at a time and not providing one will cause
 flag evaluations to return the default value. This can be tested by running the
-application without registering a provider. In order to support existing SDKs,
-an adaptor can be created that conforms to the provider's interface.
+application without registering a provider.
 
 > NOTE: You may notice that the demos below don't register providers
 > directly in the [app](./packages/api/src/main.ts). This is done before the
@@ -96,12 +95,11 @@ You should see **Welcome to the api!** just as before. Now, change the value of
 `new-welcome-message` to true and restart the app. It should show **Welcome
 to the next gen api!** in your browser. Now we're getting somewhere, but
 it's still a bit too basic to be useful. The next demo will show how we could
-register a commercial feature flag tool using an existing SDK and an
-OpenFeature Adaptor.
+register a commercial feature flag tool using an existing SDK.
 
-### Split Adaptor Demo
+### Split Provider Demo
 
-The Split adaptor shows how an existing SDK, in this case Split's NodeJS SDK, can
+The Split provider shows how an existing SDK, in this case Split's NodeJS SDK, can
 be used in OpenFeature. This is a simple example that doesn't cover every use
 case that Split offers, but the goal would be to support as many features as
 possible.

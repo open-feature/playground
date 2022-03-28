@@ -5,7 +5,7 @@ import {
 } from '@openfeature/openfeature-js';
 import type { IClient } from '@splitsoftware/splitio/types/splitio';
 
-export class OpenFeatureSplitAdaptor implements FeatureProvider {
+export class OpenFeatureSplitProvider implements FeatureProvider {
   name = 'split';
 
   constructor(private readonly client: IClient) {}

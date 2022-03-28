@@ -1,5 +1,5 @@
 {
-  "name": "@openfeature/js-split-adaptor",
+  "name": "@openfeature/js-split-provider",
   "version": "0.0.1",
   "type": "commonjs"
 }

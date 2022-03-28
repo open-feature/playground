@@ -1,0 +1,32 @@
+{
+  "root": "packages/js-split-provider",
+  "sourceRoot": "packages/js-split-provider/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/js-split-provider",
+        "main": "packages/js-split-provider/src/index.ts",
+        "tsConfig": "packages/js-split-provider/tsconfig.lib.json",
+        "assets": ["packages/js-split-provider/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/js-split-provider/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/js-split-provider"],
+      "options": {
+        "jestConfig": "packages/js-split-provider/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
