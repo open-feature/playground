@@ -34,38 +34,54 @@
     },
     "env-var-demo": {
       "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
       "options": {
-        "waitUntilTargets": ["js-env-provider:build", "openfeature-js:build"],
         "buildTarget": "api:build",
-        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/env-var-demo.js"],
-        "inspect": true
+        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/env-var-demo.js"]
       }
     },
     "cloudbees-demo": {
       "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
       "options": {
-        "waitUntilTargets": ["js-cloudbees-provider:build", "openfeature-js:build"],
         "buildTarget": "api:build",
-        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/cloudbees-demo.js"],
-        "inspect": true
+        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/cloudbees-demo.js"]
       }
     },
     "split-demo": {
       "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
       "options": {
-        "waitUntilTargets": ["js-split-provider:build", "openfeature-js:build"],
         "buildTarget": "api:build",
-        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/split-demo.js"],
-        "inspect": true
+        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/split-demo.js"]
       }
     },
     "launchdarkly-demo": {
       "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
       "options": {
-        "waitUntilTargets": ["js-launchdarkly-provider:build", "openfeature-js:build"],
         "buildTarget": "api:build",
-        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/launchdarkly-demo.js"],
-        "inspect": true
+        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/launchdarkly-demo.js"]
       }
     },
     "lint": {
@@ -84,5 +100,11 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": [
+    "js-env-provider",
+    "js-cloudbees-provider",
+    "js-launchdarkly-provider",
+    "js-split-provider"
+  ]
 }
