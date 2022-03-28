@@ -3,13 +3,19 @@
   "sourceRoot": "packages/js-env-provider/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/js-env-provider",
         "main": "packages/js-env-provider/src/index.ts",
-        "tsConfig": "packages/js-env-provider/tsconfig.lib.json",
-        "assets": ["packages/js-env-provider/*.md"]
+        "tsConfig": "packages/js-env-provider/tsconfig.lib.json"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
       }
     },
     "lint": {

@@ -1,9 +1,9 @@
 'use strict';
 
-const { openfeature } = require('../dist/packages/openfeature-js/src');
+const { openfeature } = require('../dist/packages/openfeature-js/main');
 const {
   OpenFeatureSplitProvider,
-} = require('../dist/packages/js-split-provider/src');
+} = require('../dist/packages/js-split-provider/main');
 const { SplitFactory } = require('@splitsoftware/splitio');
 
 /**

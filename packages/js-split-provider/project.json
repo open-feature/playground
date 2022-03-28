@@ -3,13 +3,19 @@
   "sourceRoot": "packages/js-split-provider/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/js-split-provider",
         "main": "packages/js-split-provider/src/index.ts",
-        "tsConfig": "packages/js-split-provider/tsconfig.lib.json",
-        "assets": ["packages/js-split-provider/*.md"]
+        "tsConfig": "packages/js-split-provider/tsconfig.lib.json"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
       }
     },
     "lint": {

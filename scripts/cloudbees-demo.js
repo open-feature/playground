@@ -1,7 +1,7 @@
 'use strict';
 
-const { openfeature } = require('../dist/packages/openfeature-js/src');
-const { CloudbeesProvider } = require("../dist/packages/js-cloudbees-provider/src");
+const { openfeature } = require('../dist/packages/openfeature-js/main');
+const { CloudbeesProvider } = require("../dist/packages/js-cloudbees-provider/main");
 
 /**
  * Registers the environment variable provider to the globally scoped

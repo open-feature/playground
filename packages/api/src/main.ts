@@ -12,7 +12,7 @@ const app = express();
 const oFeatClient = openfeature.getClient('api');
 
 app.get('/api', async (req, res) => {
-  const message = (await oFeatClient.getVariation('new-welcome-message')).boolValue
+  const message = await oFeatClient.getBooleanValue('new-welcome-message', false)
     ? 'Welcome to the next gen api!'
     : 'Welcome to the api!';
   res.send({ message });

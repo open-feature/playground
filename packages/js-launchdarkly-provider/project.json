@@ -3,13 +3,19 @@
   "sourceRoot": "packages/js-launchdarkly-provider/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/js-launchdarkly-provider",
         "main": "packages/js-launchdarkly-provider/src/index.ts",
-        "tsConfig": "packages/js-launchdarkly-provider/tsconfig.lib.json",
-        "assets": ["packages/js-launchdarkly-provider/*.md"]
+        "tsConfig": "packages/js-launchdarkly-provider/tsconfig.lib.json"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
       }
     },
     "lint": {
