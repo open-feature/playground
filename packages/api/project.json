@@ -53,7 +53,7 @@
     "split-demo": {
       "executor": "@nrwl/node:node",
       "options": {
-        "waitUntilTargets": ["js-split-adaptor:build", "openfeature-js:build"],
+        "waitUntilTargets": ["js-split-provider:build", "openfeature-js:build"],
         "buildTarget": "api:build",
         "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/split-demo.js"],
         "inspect": true

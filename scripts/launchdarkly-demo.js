@@ -10,4 +10,6 @@ const {
  * OpenFeature object.
  */
 console.log('Registering the OpenFeature LaunchDarkly provider');
-openfeature.registerProvider(new OpenFeatureLaunchDarklyProvider(process.env.LD_KEY));
+openfeature.registerProvider(
+  new OpenFeatureLaunchDarklyProvider(process.env.LD_KEY)
+);

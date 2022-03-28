@@ -2,16 +2,16 @@
 
 const { openfeature } = require('../dist/packages/openfeature-js/src');
 const {
-  OpenFeatureSplitAdaptor,
-} = require('../dist/packages/js-split-adaptor/src');
+  OpenFeatureSplitProvider,
+} = require('../dist/packages/js-split-provider/src');
 const { SplitFactory } = require('@splitsoftware/splitio');
 
 /**
- * Registers the Split client using the OpenFeature Split Adaptor.
+ * Registers the Split client using the OpenFeature Split Provider.
  */
 console.log('Registering the OpenFeature Split Provider');
 openfeature.registerProvider(
-  new OpenFeatureSplitAdaptor(
+  new OpenFeatureSplitProvider(
     SplitFactory({
       core: {
         authorizationKey: process.env.SPLIT_KEY ?? '',

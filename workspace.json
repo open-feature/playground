@@ -5,7 +5,7 @@
     "fibonacci": "packages/fibonacci",
     "js-env-provider": "packages/js-env-provider",
     "js-cloudbees-provider": "packages/js-cloudbees-provider",
-    "js-split-adaptor": "packages/js-split-adaptor",
+    "js-split-provider": "packages/js-split-provider",
     "js-launchdarkly-provider": "packages/js-launchdarkly-provider",
     "openfeature-js": "packages/openfeature-js"
   }

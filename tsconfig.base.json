@@ -19,9 +19,7 @@
       "@openfeature/fibonacci": ["packages/fibonacci/src/index.ts"],
       "@openfeature/js-cloudbees-provider": ["packages/js-cloudbees-provider/src/index.ts"],
       "@openfeature/js-env-provider": ["packages/js-env-provider/src/index.ts"],
-      "@openfeature/js-split-adaptor": [
-        "packages/js-split-adaptor/src/index.ts"
-      ],
+      "@openfeature/js-split-provider": ["packages/js-split-provider/src/index.ts"],
       "@openfeature/js-launchdarkly-provider": ["packages/js-launchdarkly-provider/src/index.ts"],
       "@openfeature/openfeature-js": ["packages/openfeature-js/src/index.ts"]
     }
