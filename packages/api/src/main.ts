@@ -6,10 +6,12 @@ import * as express from 'express';
 import { openfeature } from '@openfeature/openfeature-js';
 import { fibonacci } from '@openfeature/fibonacci';
 import { query, validationResult } from 'express-validator';
+import { OpenTelemetryHook } from '@openfeature/extra';
 
 const app = express();
 
 const oFeatClient = openfeature.getClient('api');
+oFeatClient.registerHooks(new OpenTelemetryHook('test'));
 
 app.get('/api', async (req, res) => {
   const message = await oFeatClient.getBooleanValue('new-welcome-message', false)

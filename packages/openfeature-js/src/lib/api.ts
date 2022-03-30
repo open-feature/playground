@@ -1,6 +1,6 @@
 import { OpenFeatureClient } from './client';
 import { getGlobal, registerGlobal } from './global';
-import { Features, FeatureProvider } from './types';
+import { Features, FeatureProvider, Client } from './types';
 
 export class OpenFeatureAPI {
   private provider?: FeatureProvider;
@@ -16,7 +16,7 @@ export class OpenFeatureAPI {
     return instance;
   }
 
-  public getClient(name?: string, version?: string): Features {
+  public getClient(name?: string, version?: string): Client {
     return new OpenFeatureClient(this, { name, version });
   }
 
