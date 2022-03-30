@@ -1,9 +1,8 @@
-import { Span, trace, Tracer } from '@opentelemetry/api';
 import { OpenFeatureAPI } from './api';
 import { NOOP_FEATURE_PROVIDER } from './noop-provider';
-import { SpanProperties } from './span-properties';
 import {
-  Context, FeatureProvider, Features, FlagType
+  Client,
+  Context, FeatureProvider, Features, FlagType, Hook
 } from './types';
 
 type OpenFeatureClientOptions = {
@@ -11,23 +10,21 @@ type OpenFeatureClientOptions = {
   version?: string;
 };
 
-export class OpenFeatureClient implements Features {
-  private _name: string | undefined;
-  private _version?: string;
-
-  private _trace: Tracer;
+export class OpenFeatureClient extends Client {
+  private name: string | undefined;
+  private version?: string;
 
   constructor(
     private readonly api: OpenFeatureAPI,
     options: OpenFeatureClientOptions
   ) {
-    this._name = options.name;
-    this._version = options.version;
-    this._trace = trace.getTracer(OpenFeatureClient.name);
+    super();
+    this.name = options.name;
+    this.version = options.version;
   }
 
   isEnabled(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
-    return this.getBooleanValue(flagId, defaultValue, context);
+    return this.evaluateFlag('enabled', flagId, defaultValue, context);
   }
 
   getBooleanValue(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
@@ -48,57 +45,75 @@ export class OpenFeatureClient implements Features {
 
   private async evaluateFlag<T extends boolean | string | number | object>(
     type: FlagType,
-    id: string,
+    flagId: string,
     defaultValue: T,
-    context?: Context
+    context: Context = {}
   ): Promise<T> {
-    const span = this.startSpan(`feature flag - ${type}`);
+    
     try {
-      span.setAttribute(SpanProperties.FEATURE_FLAG_ID, id);
+      const mergedContext = this.hooks.reduce((accumulated: Context, hook: Hook): Context => {
+        if (typeof hook?.before === 'function') {
+          return { ...accumulated, ...hook.before(accumulated, flagId) };
+        }
+        return accumulated;
+      }, context);
 
       const provider = this.getProvider();
       let valuePromise: boolean | string | number | object;
       switch(type) {
+        case 'enabled': {
+          valuePromise = provider.isEnabled(flagId, defaultValue as boolean, context);
+          break;
+        }
         case 'boolean': {
-          valuePromise = provider.getBooleanValue(id, defaultValue as boolean, context);
+          valuePromise = provider.getBooleanValue(flagId, defaultValue as boolean, context);
           break;
         }
         case 'string': {
-          valuePromise = provider.getStringValue(id, defaultValue as string, context);
+          valuePromise = provider.getStringValue(flagId, defaultValue as string, context);
           break;
         }
         case 'number': {
-          valuePromise = provider.getNumberValue(id, defaultValue as number, context);
+          valuePromise = provider.getNumberValue(flagId, defaultValue as number, context);
           break;
         }
         case 'json': {
-          valuePromise = provider.getObjectValue(id, defaultValue as object, context);
+          valuePromise = provider.getObjectValue(flagId, defaultValue as object, context);
           break;
         }
       }
 
       const value = await valuePromise;
-      span.setAttribute(SpanProperties.FEATURE_FLAG_VALUE, value.toString());
-      return value as T;
+
+      const updatedValue = this.hooks.reduce((accumulated: unknown, hook) => {
+        if (typeof hook?.after === 'function') {
+          return hook.after(mergedContext, flagId, value);
+        }        
+      }, value);
+
+      this.hooks.forEach((hook) => {
+        if (typeof hook?.always === 'function') {
+          return hook.always(mergedContext, flagId, value);
+        }  
+      })
+
+      return updatedValue as T;
     } catch (err) {
       console.error(err);
-      span.setAttribute(SpanProperties.FEATURE_FLAG_VALUE, defaultValue.toString());
       return defaultValue;
-    } finally {
-      span.end();
     }
   }
 
-  private startSpan(spanName: string): Span {
-    return this._trace.startSpan(spanName, {
-      attributes: {
-        [SpanProperties.FEATURE_FLAG_CLIENT_NAME]: this._name,
-        [SpanProperties.FEATURE_FLAG_CLIENT_VERSION]:
-          this._version ?? 'unknown',
-        [SpanProperties.FEATURE_FLAG_SERVICE]: this.getProvider().name,
-      },
-    });
-  }
+  // private startSpan(spanName: string): Span {
+  //   return this._trace.startSpan(spanName, {
+  //     attributes: {
+  //       [SpanProperties.FEATURE_FLAG_CLIENT_NAME]: this.name,
+  //       [SpanProperties.FEATURE_FLAG_CLIENT_VERSION]:
+  //         this.version ?? 'unknown',
+  //       [SpanProperties.FEATURE_FLAG_SERVICE]: this.getProvider().name,
+  //     },
+  //   });
+  // }
 
   private getProvider(): FeatureProvider {
     return this.api.getProvider() ?? NOOP_FEATURE_PROVIDER;

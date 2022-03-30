@@ -1,8 +1,6 @@
-export type Context = {
-  userId?: string;
-};
+export type Context = { userId?: string; } & Record<string, unknown>; 
 
-export type FlagType = 'boolean' | 'string' | 'number' | 'json';
+export type FlagType = 'enabled' | 'boolean' | 'string' | 'number' | 'json';
 
 /**
  * This interface is common to both Providers and the SDK presented to the Application Author.
@@ -42,12 +40,29 @@ export interface FeatureProvider extends Features {
   name: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Client extends Features {}
+export abstract class Client implements Features {
 
-export type FlagEvaluationRequest = {
-  clientName: string;
-  clientVersion?: string;
-  flagId: string;
+  protected hooks: Hook[] = [];
+
+  abstract isEnabled(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean>;
+  abstract getBooleanValue(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean>;
+  abstract getStringValue(flagId: string, defaultValue: string, context?: Context): Promise<string>;
+  abstract getNumberValue(flagId: string, defaultValue: number, context?: Context): Promise<number>;
+  abstract getObjectValue<T extends object>(flagId: string, defaultValue: T, context?: Context): Promise<T>;
+  
+  registerHooks(...hooks: Hook[]): void {
+    this.hooks = [...this.hooks, ...hooks];
+  }
+}
+
+export interface Hook<T = unknown> {
+  before?(context: Context, flagId: string): Context;
+  after?(context: Context, flagId: string, flagValue: T): T;
+  error?(context: Context, flagId: string, error: Error): void;
+  always?(context: Context, flagId: string, flagValue?: T): void;
+}
+
+export interface FlagEvaluationOptions {
   context: Context;
-};
+  hooks: Hook[];
+}
