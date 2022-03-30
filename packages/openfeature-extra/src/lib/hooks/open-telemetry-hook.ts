@@ -1,6 +1,10 @@
-import { Context, Hook } from '@openfeature/openfeature-js';
+import {
+  Context,
+  FlagType,
+  Hook,
+  HookContext,
+} from '@openfeature/openfeature-js';
 import { Span, trace, Tracer } from '@opentelemetry/api';
-import { type } from 'os';
 
 export const SpanProperties = {
   FEATURE_FLAG_CLIENT_NAME: 'feature_flag_client_name',
@@ -10,48 +14,41 @@ export const SpanProperties = {
   FEATURE_FLAG_VALUE: 'feature_flag_variation_string',
 };
 
-export class OpenTelemetryHook implements Hook<number> {
-
+export class OpenTelemetryHook implements Hook {
   private tracer: Tracer;
+  /**
+   * NOTE: This only works if the object reference remains the same throughout
+   * the request.
+   */
+  private spans = new WeakMap<object, Span>();
 
   constructor(private readonly name: string) {
     this.tracer = trace.getTracer(name);
   }
 
-  before(context: Context, flagId: string) {
-    
-    const span = this.startSpan(`feature flag - ${type}`);
-    span.setAttribute(SpanProperties.FEATURE_FLAG_ID, flagId);
+  before(hookContext: HookContext) {
+    const span = this.tracer.startSpan(
+      `feature flag - ${hookContext.flagType}`
+    );
+    span.setAttributes({
+      [SpanProperties.FEATURE_FLAG_ID]: hookContext.flagId,
+      [SpanProperties.FEATURE_FLAG_CLIENT_NAME]: hookContext.client.name,
+      [SpanProperties.FEATURE_FLAG_CLIENT_VERSION]: hookContext.client.version,
+      [SpanProperties.FEATURE_FLAG_SERVICE]: hookContext.provider.name,
+    });
 
-    context['otel'] = {
-      span
-    };
-    return context;
+    this.spans.set(hookContext.context, span);
   }
 
-  after(context: Context, flagId: string, flagValue: number) {
-    ((context['otel'] as any).span as Span).setAttribute(SpanProperties.FEATURE_FLAG_VALUE, flagValue.toString());
+  finally(hookContext: HookContext, flagValue: unknown) {
+    const span = this.spans.get(hookContext.context);
+    span?.end();
+
     return flagValue;
   }
 
-  always(context: Context, flagId: string, flagValue?: number): void {
-    ((context['otel'] as any).span as Span).end();
-  }
-
-  error(context: Context, flagId: string, err: Error) {
-    // TODO: set error on span.
-    console.error(err);
-    // throw err;
-  }
-
-  private startSpan(spanName: string): Span {
-    return this.tracer.startSpan(spanName, {
-      attributes: {
-        [SpanProperties.FEATURE_FLAG_CLIENT_NAME]: this.name,
-        // TODO: fix this.
-        [SpanProperties.FEATURE_FLAG_CLIENT_VERSION]: '11' ?? 'unknown',
-        [SpanProperties.FEATURE_FLAG_SERVICE]: this.name,
-      },
-    });
+  error(hookContext: HookContext, err: Error) {
+    const span = this.spans.get(hookContext.context);
+    span?.recordException(err);
   }
 }
