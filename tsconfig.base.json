@@ -28,7 +28,8 @@
       "@openfeature/js-split-provider": [
         "packages/js-split-provider/src/index.ts"
       ],
-      "@openfeature/openfeature-js": ["packages/openfeature-js/src/index.ts"]
+      "@openfeature/openfeature-js": ["packages/openfeature-js/src/index.ts"],
+      "@openfeature/extra": ["packages/openfeature-extra/src/index.ts"]
     },
     "types": ["node"]
   },

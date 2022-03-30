@@ -7,6 +7,7 @@
     "js-env-provider": "packages/js-env-provider",
     "js-launchdarkly-provider": "packages/js-launchdarkly-provider",
     "js-split-provider": "packages/js-split-provider",
-    "openfeature-js": "packages/openfeature-js"
+    "openfeature-js": "packages/openfeature-js",
+    "openfeature-extra": "packages/openfeature-extra"
   }
 }

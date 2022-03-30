@@ -6,16 +6,49 @@ import * as express from 'express';
 import { openfeature } from '@openfeature/openfeature-js';
 import { fibonacci } from '@openfeature/fibonacci';
 import { query, validationResult } from 'express-validator';
+import { OpenTelemetryHook, LoggingHook } from '@openfeature/extra';
+import { buildMarkup } from './markup';
 
 const app = express();
+const appName = 'api'
 
-const oFeatClient = openfeature.getClient('api');
+openfeature.registerHooks(new OpenTelemetryHook(appName));
+const client = openfeature.getClient(appName);
+client.registerHooks(new LoggingHook());
 
 app.get('/api', async (req, res) => {
-  const message = await oFeatClient.getBooleanValue('new-welcome-message', false)
+  const message = (await client.getBooleanValue(
+    'new-welcome-message',
+    false
+  ))
     ? 'Welcome to the next gen api!'
     : 'Welcome to the api!';
   res.send({ message });
+});
+
+app.get('/hello', async (req, res) => {
+  const hexColor = (await client.getStringValue(
+    'hex-color',
+    '000000',
+    undefined,
+    {
+      hooks: [
+        {
+          after: (hookContext, flagValue: string) => {
+            // validate the hex value.
+            const hexPattern = /[0-9A-Fa-f]{6}/g;
+            if (hexPattern.test(flagValue)) {
+              return flagValue;
+            } else {
+              console.warn(`Got invalid flag value '${flagValue}' for ${hookContext.flagId}, returning ${hookContext.defaultValue}`)
+              return hookContext.defaultValue;
+            }
+          }
+        }
+      ]
+    }
+  ));
+  res.contentType('html').send(buildMarkup(hexColor));
 });
 
 app.get(

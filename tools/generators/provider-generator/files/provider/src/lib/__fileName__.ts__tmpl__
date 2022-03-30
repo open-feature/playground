@@ -1,28 +1,29 @@
 import {
   Context,
-  FeatureProvider
+  FeatureProvider,
+  FlagEvaluationOptions
 } from '@openfeature/openfeature-js';
 
 export class <%= libClassName %> implements FeatureProvider {
   name = '<%= name %>';
 
-  isEnabled(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
+  isEnabled(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
 
-  getBooleanValue(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
+  getBooleanValue(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
 
-  getStringValue(flagId: string, defaultValue: string, context?: Context): Promise<string> {
+  getStringValue(flagId: string, defaultValue: string, context: Context, options?: FlagEvaluationOptions): Promise<string> {
     throw new Error('Method not implemented.');
   }
 
-  getNumberValue(flagId: string, defaultValue: number, context?: Context): Promise<number> {
+  getNumberValue(flagId: string, defaultValue: number, context: Context, options?: FlagEvaluationOptions): Promise<number> {
     throw new Error('Method not implemented.');
   }
 
-  getObjectValue<T extends object>(flagId: string, defaultValue: T, context?: Context): Promise<T> {
+  getObjectValue<T extends object>(flagId: string, defaultValue: T, context: Context, options?: FlagEvaluationOptions): Promise<T> {
     throw new Error('Method not implemented.');
   }
 }

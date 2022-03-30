@@ -1,0 +1,38 @@
+{
+  "root": "packages/openfeature-extra",
+  "sourceRoot": "packages/openfeature-extra/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/openfeature-extra",
+        "main": "packages/openfeature-extra/src/index.ts",
+        "tsConfig": "packages/openfeature-extra/tsconfig.lib.json"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/openfeature-extra/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/openfeature-extra"],
+      "options": {
+        "jestConfig": "packages/openfeature-extra/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

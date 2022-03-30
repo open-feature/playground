@@ -8,6 +8,14 @@ export abstract class OpenFeatureError extends Error {
   abstract code: ErrorCodes;
 }
 
+export class GeneralError extends OpenFeatureError {
+  code: ErrorCodes;
+  constructor(message?: string) {
+      super(message);
+      Object.setPrototypeOf(this, FlagTypeError.prototype);
+      this.code = ErrorCodes.GeneralError;
+  }}
+
 export class FlagTypeError extends OpenFeatureError {
   code: ErrorCodes;
   constructor(message?: string) {
