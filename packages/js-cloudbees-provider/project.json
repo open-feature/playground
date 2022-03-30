@@ -3,13 +3,19 @@
   "sourceRoot": "packages/js-cloudbees-provider/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/js-cloudbees-provider",
         "main": "packages/js-cloudbees-provider/src/index.ts",
-        "tsConfig": "packages/js-cloudbees-provider/tsconfig.lib.json",
-        "assets": ["packages/js-cloudbees-provider/*.md"]
+        "tsConfig": "packages/js-cloudbees-provider/tsconfig.lib.json"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
       }
     },
     "lint": {

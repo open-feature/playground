@@ -3,13 +3,13 @@ import { openfeature } from '@openfeature/openfeature-js';
 const oFeatClient = openfeature.getClient('fibonacci');
 
 export async function fibonacci(num: number): Promise<number> {
-  const variation = await oFeatClient.getVariation('fib-algo');
+  const value = await oFeatClient.getStringValue('fib-algo', 'recursive');
   /**
    * TODO: See if variations should return OTel methods that allow developers to
    * define logs, metrics, and events related to the flag. It could be useful
    * here to determine the impact the algorithm has on performance.
    */
-  switch (variation.stringValue) {
+  switch (value) {
     case 'recursive':
       console.log('Running the recursive fibonacci function');
       return getNthFibRecursive(num);

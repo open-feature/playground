@@ -1,37 +1,71 @@
 import {
-  FeatureProvider,
-  FlagEvaluationRequest,
-  FlagEvaluationVariationResponse,
+  Context,
+  FeatureProvider, FlagTypeError,
+  parseValidJsonObject,
+  parseValidNumber
 } from '@openfeature/openfeature-js';
 import type { IClient } from '@splitsoftware/splitio/types/splitio';
 
 export class OpenFeatureSplitProvider implements FeatureProvider {
   name = 'split';
+  private initialized: Promise<void>;
 
-  constructor(private readonly client: IClient) {}
+  constructor(private readonly client: IClient) {
+    // we don't expose any init events at the moment (we might later) so for now, lets create a private
+    // promise to await into before we evaluate any flags.
+    this.initialized = new Promise((resolve) => {
+      client.on(client.Event.SDK_READY, () => {
+        console.log(`Split Provider initialized`);
+        resolve();
+      });
+    });
+  }
+  
+  async isEnabled(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
+    return this.getBooleanValue(flagId, defaultValue, context);
+  }
 
-  async evaluateFlag(
-    request: FlagEvaluationRequest
-  ): Promise<FlagEvaluationVariationResponse> {
-    console.log(`${this.name}: evaluation flag`);
+  /**
+   * Split doesn't directly handle booleans as treatment values.
+   * It will be up to the provider author and it's users to come up with conventions for converting strings to booleans.
+   */
+  async getBooleanValue(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
+    await this.initialized;
+    const stringValue = this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+    const asUnknown = stringValue as unknown;
 
-    const flagValue = this.client.getTreatment(
-      request.context.userId ?? 'anonymous',
-      request.flagId
-    );
+    switch (asUnknown) {
+      case 'on': 
+        return true;
+      case 'off':
+        return false;
+      case 'true': 
+        return true;
+      case 'false':
+        return false;
+      case true: 
+        return true;
+      case false:
+        return false;
+      default:
+        throw new FlagTypeError(`Invalid boolean value for ${asUnknown}`)
+    }
+  }
 
-    console.log(`Flag '${request.flagId}' has a value of '${flagValue}'`);
-    /**
-     * Split uses strings for treatment values. On and off are default but the
-     * values can be changed. "control" is a reserved treatment value and means
-     * something went wrong.
-     */
-    return {
-      enabled: !!flagValue,
-      boolValue:
-        typeof flagValue === 'string' &&
-        !['off', 'control'].includes(flagValue.toLowerCase()),
-      stringValue: flagValue,
-    };
+  async getStringValue(flagId: string, defaultValue: string, context?: Context): Promise<string> {
+    await this.initialized;
+    return this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+  }
+
+  async getNumberValue(flagId: string, defaultValue: number, context?: Context): Promise<number> {
+    await this.initialized;
+    const value = this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+    return parseValidNumber(value);
+  }
+
+  async getObjectValue<T extends object>(flagId: string, defaultValue: T, context?: Context): Promise<T> {
+    await this.initialized;
+    const value = this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+    return parseValidJsonObject(value);
   }
 }

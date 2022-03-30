@@ -1,21 +1,18 @@
-import { OpenFeatureAPI } from './api';
-import {
-  FeatureProvider,
-  Context,
-  FlagEvaluationVariationResponse,
-  Feature,
-} from './types';
-import { NOOP_FEATURE_PROVIDER } from './noop-provider';
 import { Span, trace, Tracer } from '@opentelemetry/api';
+import { OpenFeatureAPI } from './api';
+import { NOOP_FEATURE_PROVIDER } from './noop-provider';
 import { SpanProperties } from './span-properties';
+import {
+  Context, FeatureProvider, Features, FlagType
+} from './types';
 
 type OpenFeatureClientOptions = {
-  name: string;
+  name?: string;
   version?: string;
 };
 
-export class OpenFeatureClient implements Feature {
-  private _name: string;
+export class OpenFeatureClient implements Features {
+  private _name: string | undefined;
   private _version?: string;
 
   private _trace: Tracer;
@@ -29,49 +26,64 @@ export class OpenFeatureClient implements Feature {
     this._trace = trace.getTracer(OpenFeatureClient.name);
   }
 
-  // TODO: see if a default callback makes sense here
-  async isEnabled(id: string, context?: Context): Promise<boolean> {
-    return (await this.evaluateFlag('is_enabled', id, context)).enabled;
+  isEnabled(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
+    return this.getBooleanValue(flagId, defaultValue, context);
   }
 
-  async getVariation(
-    id: string,
-    context?: Context
-  ): Promise<FlagEvaluationVariationResponse> {
-    return this.evaluateFlag('variation', id, context);
+  getBooleanValue(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
+    return this.evaluateFlag('boolean', flagId, defaultValue, context);
   }
 
-  private async evaluateFlag(
-    type: 'is_enabled' | 'variation',
+  getStringValue(flagId: string, defaultValue: string, context?: Context): Promise<string> {
+    return this.evaluateFlag('string', flagId, defaultValue, context);
+  }
+
+  getNumberValue(flagId: string, defaultValue: number, context?: Context): Promise<number> {
+    return this.evaluateFlag('number', flagId, defaultValue, context);
+  }
+
+  getObjectValue<T extends object>(flagId: string, defaultValue: T, context?: Context): Promise<T> {
+    return this.evaluateFlag('json', flagId, defaultValue, context);
+  }
+
+  private async evaluateFlag<T extends boolean | string | number | object>(
+    type: FlagType,
     id: string,
+    defaultValue: T,
     context?: Context
-  ) {
+  ): Promise<T> {
     const span = this.startSpan(`feature flag - ${type}`);
     try {
       span.setAttribute(SpanProperties.FEATURE_FLAG_ID, id);
 
-      const response = await this.getProvider().evaluateFlag({
-        flagId: id,
-        context: context ?? {},
-        clientName: this._name,
-        clientVersion: this._version,
-      });
-
-      span.setAttribute(SpanProperties.FEATURE_FLAG_ENABLED, response.enabled);
-
-      if (response.stringValue) {
-        span.setAttribute(
-          SpanProperties.FEATURE_FLAG_VARIATION_STRING,
-          response.stringValue
-        );
+      const provider = this.getProvider();
+      let valuePromise: boolean | string | number | object;
+      switch(type) {
+        case 'boolean': {
+          valuePromise = provider.getBooleanValue(id, defaultValue as boolean, context);
+          break;
+        }
+        case 'string': {
+          valuePromise = provider.getStringValue(id, defaultValue as string, context);
+          break;
+        }
+        case 'number': {
+          valuePromise = provider.getNumberValue(id, defaultValue as number, context);
+          break;
+        }
+        case 'json': {
+          valuePromise = provider.getObjectValue(id, defaultValue as object, context);
+          break;
+        }
       }
 
-      return response;
+      const value = await valuePromise;
+      span.setAttribute(SpanProperties.FEATURE_FLAG_VALUE, value.toString());
+      return value as T;
     } catch (err) {
       console.error(err);
-      const enabled = false;
-      span.setAttribute(SpanProperties.FEATURE_FLAG_ENABLED, enabled);
-      return { enabled };
+      span.setAttribute(SpanProperties.FEATURE_FLAG_VALUE, defaultValue.toString());
+      return defaultValue;
     } finally {
       span.end();
     }

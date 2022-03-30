@@ -3,13 +3,19 @@
   "sourceRoot": "packages/fibonacci/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/fibonacci",
         "main": "packages/fibonacci/src/index.ts",
-        "tsConfig": "packages/fibonacci/tsconfig.lib.json",
-        "assets": ["packages/fibonacci/*.md"]
+        "tsConfig": "packages/fibonacci/tsconfig.lib.json"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
       }
     },
     "lint": {

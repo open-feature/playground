@@ -3,13 +3,19 @@
   "sourceRoot": "packages/openfeature-js/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/openfeature-js",
         "main": "packages/openfeature-js/src/index.ts",
-        "tsConfig": "packages/openfeature-js/tsconfig.lib.json",
-        "assets": ["packages/openfeature-js/*.md"]
+        "tsConfig": "packages/openfeature-js/tsconfig.lib.json"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
       }
     },
     "lint": {
