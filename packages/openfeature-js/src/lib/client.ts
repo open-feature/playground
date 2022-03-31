@@ -1,6 +1,6 @@
 import { OpenFeatureAPI } from './api';
 import { NOOP_FEATURE_PROVIDER } from './noop-provider';
-import { Client, Context, FeatureProvider, FlagType, Hook } from './types';
+import { Client, Context, FeatureProvider, FlagType, FlagValue, Hook } from './types';
 
 type OpenFeatureClientOptions = {
   name?: string;
@@ -133,7 +133,7 @@ export class OpenFeatureClient extends Client {
 
       const value = await valuePromise;
 
-      const updatedValue = this.hooks.reduce((_: unknown, hook) => {
+      const updatedValue = this.hooks.reduce((accumulated: FlagValue, hook) => {
         if (typeof hook?.after === 'function') {
           return hook.after(
             {
@@ -146,6 +146,7 @@ export class OpenFeatureClient extends Client {
             value
           );
         }
+        return accumulated;
       }, value);
 
       this.hooks.forEach((hook) => {
