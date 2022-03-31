@@ -6,15 +6,19 @@ import * as express from 'express';
 import { openfeature } from '@openfeature/openfeature-js';
 import { fibonacci } from '@openfeature/fibonacci';
 import { query, validationResult } from 'express-validator';
-import { OpenTelemetryHook } from '@openfeature/extra';
+import { OpenTelemetryHook, LoggingHook } from '@openfeature/extra';
 
 const app = express();
 
 const oFeatClient = openfeature.getClient('api');
-oFeatClient.registerHooks(new OpenTelemetryHook('test'));
+
+oFeatClient.registerHooks(new OpenTelemetryHook('test'), new LoggingHook());
 
 app.get('/api', async (req, res) => {
-  const message = await oFeatClient.getBooleanValue('new-welcome-message', false)
+  const message = (await oFeatClient.getBooleanValue(
+    'new-welcome-message',
+    false
+  ))
     ? 'Welcome to the next gen api!'
     : 'Welcome to the api!';
   res.send({ message });
