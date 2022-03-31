@@ -1,4 +1,4 @@
-import { Hook, HookContext } from '@openfeature/openfeature-js';
+import { FlagValue, Hook, HookContext } from '@openfeature/openfeature-js';
 import { Span, trace, Tracer } from '@opentelemetry/api';
 
 export const SpanProperties = {
@@ -6,7 +6,7 @@ export const SpanProperties = {
   FEATURE_FLAG_CLIENT_VERSION: 'feature_flag_client_version',
   FEATURE_FLAG_SERVICE: 'feature_flag_service',
   FEATURE_FLAG_ID: 'feature_flag_id',
-  FEATURE_FLAG_VALUE: 'feature_flag_variation_string',
+  FEATURE_FLAG_VALUE: 'feature_flag_value',
 };
 
 type OTelHookContext = {
@@ -35,6 +35,12 @@ export class OpenTelemetryHook implements Hook {
 
     hookContext.context._span = span;
     return hookContext.context;
+  }
+
+  after(hookContext: OTelHookContext, flagValue: FlagValue) {
+    const primitiveFlagValue = typeof flagValue === 'object' ? JSON.stringify(flagValue) : flagValue;
+    hookContext.context._span?.setAttribute(SpanProperties.FEATURE_FLAG_VALUE, primitiveFlagValue);
+    return flagValue;
   }
 
   finally(hookContext: OTelHookContext, flagValue: unknown) {
