@@ -104,7 +104,7 @@ export type HookContext = {
 };
 
 export interface Hook<T = unknown> {
-  before?(hookContext: HookContext): Context | void;
+  before?(hookContext: HookContext): Context;
   after?(hookContext: HookContext, flagValue: T): T;
   error?(hookContext: HookContext, error: Error): void;
   finally?(hookContext: HookContext, flagValue?: T): void;

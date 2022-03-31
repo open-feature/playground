@@ -1,9 +1,4 @@
-import {
-  Context,
-  FlagType,
-  Hook,
-  HookContext,
-} from '@openfeature/openfeature-js';
+import { Hook, HookContext } from '@openfeature/openfeature-js';
 import { Span, trace, Tracer } from '@opentelemetry/api';
 
 export const SpanProperties = {
@@ -14,19 +9,20 @@ export const SpanProperties = {
   FEATURE_FLAG_VALUE: 'feature_flag_variation_string',
 };
 
+type OTelHookContext = {
+  context: {
+    _span?: Span;
+  };
+} & HookContext;
+
 export class OpenTelemetryHook implements Hook {
   private tracer: Tracer;
-  /**
-   * NOTE: This only works if the object reference remains the same throughout
-   * the request.
-   */
-  private spans = new WeakMap<object, Span>();
 
   constructor(private readonly name: string) {
     this.tracer = trace.getTracer(name);
   }
 
-  before(hookContext: HookContext) {
+  before(hookContext: OTelHookContext) {
     const span = this.tracer.startSpan(
       `feature flag - ${hookContext.flagType}`
     );
@@ -37,18 +33,16 @@ export class OpenTelemetryHook implements Hook {
       [SpanProperties.FEATURE_FLAG_SERVICE]: hookContext.provider.name,
     });
 
-    this.spans.set(hookContext.context, span);
+    hookContext.context._span = span;
+    return hookContext.context;
   }
 
-  finally(hookContext: HookContext, flagValue: unknown) {
-    const span = this.spans.get(hookContext.context);
-    span?.end();
-
+  finally(hookContext: OTelHookContext, flagValue: unknown) {
+    hookContext.context._span?.end();
     return flagValue;
   }
 
-  error(hookContext: HookContext, err: Error) {
-    const span = this.spans.get(hookContext.context);
-    span?.recordException(err);
+  error(hookContext: OTelHookContext, err: Error) {
+    hookContext.context._span?.recordException(err);
   }
 }
