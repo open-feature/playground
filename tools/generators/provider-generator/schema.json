@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "cli": "nx",
+  "$id": "provider-generator",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Provider name",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "examples": ["Environment Variable"],
+      "x-prompt":  "What should the provider be named?"
+    }
+  },
+  "required": ["name"]
+}

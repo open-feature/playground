@@ -1,0 +1,8 @@
+import { <%= libClassName %> } from './<%= fileName %>';
+
+describe('<%= libClassName %>', () => {
+  it('should have the name property set', () => {
+    const provider = new <%= libClassName %>();
+    expect(provider.name).toEqual('<%= name %>');
+  });
+});

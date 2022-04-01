@@ -1,0 +1,11 @@
+'use strict';
+
+const { openfeature } = require('../dist/packages/openfeature-js/main');
+const { <%= libClassName %> } = require("../dist/packages/<%= libName %>/main");
+
+/**
+ * Registers the <%= name %> provider to the globally scoped
+ * OpenFeature object.
+ */
+console.log('Registering the OpenFeature <%= name %> provider');
+openfeature.registerProvider(new <%= libClassName %>());
