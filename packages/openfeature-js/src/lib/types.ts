@@ -3,8 +3,7 @@ export type Context = { userId?: string } & Record<string, unknown>;
 export type FlagType = 'enabled' | 'boolean' | 'string' | 'number' | 'json';
 
 export interface FlagEvaluationOptions {
-  hooks: Hook[] | undefined;
-  context?: Context | undefined;
+  hooks?: Hook[];
 }
 
 /**
@@ -20,6 +19,7 @@ export interface Features {
   isEnabled(
     flagId: string,
     defaultValue: boolean,
+    context?: Context,
     options?: FlagEvaluationOptions
   ): Promise<boolean>;
 
@@ -29,6 +29,7 @@ export interface Features {
   getBooleanValue(
     flagId: string,
     defaultValue: boolean,
+    context?: Context,
     options?: FlagEvaluationOptions
   ): Promise<boolean>;
 
@@ -38,6 +39,7 @@ export interface Features {
   getStringValue(
     flagId: string,
     defaultValue: string,
+    context?: Context,
     options?: FlagEvaluationOptions
   ): Promise<string>;
 
@@ -47,6 +49,7 @@ export interface Features {
   getNumberValue(
     flagId: string,
     defaultValue: number,
+    context?: Context,
     options?: FlagEvaluationOptions
   ): Promise<number>;
 
@@ -56,6 +59,7 @@ export interface Features {
   getObjectValue<T extends object>(
     flagId: string,
     defaultValue: T,
+    context?: Context,
     options?: FlagEvaluationOptions
   ): Promise<T>;
 }

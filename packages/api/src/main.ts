@@ -29,6 +29,7 @@ app.get('/hello', async (req, res) => {
   const hexColor = (await client.getStringValue(
     'hex-color',
     '000000',
+    undefined,
     {
       hooks: [
         {

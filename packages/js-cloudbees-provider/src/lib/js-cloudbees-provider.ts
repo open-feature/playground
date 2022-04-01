@@ -1,4 +1,5 @@
 import {
+  Context,
   FeatureProvider, FlagEvaluationOptions, parseValidJsonObject
 } from '@openfeature/openfeature-js';
 import * as Rox from 'rox-node';
@@ -23,27 +24,27 @@ export class CloudbeesProvider implements FeatureProvider {
    * This default value is returned by the SDK if the flag is not enabled ('targeting' is off)
    * See https://docs.cloudbees.com/docs/cloudbees-feature-management/latest/feature-flags/flag-default-values
   **/
-  async isEnabled(flagId: string, defaultValue: boolean, options?: FlagEvaluationOptions): Promise<boolean> {
+  async isEnabled(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
     // for CloudBees Feature Management, isEnabled is functionally equal to getBooleanValue. 
-    return this.getBooleanValue(flagId, defaultValue, options);
+    return this.getBooleanValue(flagId, defaultValue, context, options);
   }
 
-  async getBooleanValue(flagId: string, defaultValue: boolean, options?: FlagEvaluationOptions): Promise<boolean> {
+  async getBooleanValue(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
     await this.initialized;
-    return Rox.dynamicApi.isEnabled(flagId, defaultValue, options?.context);
+    return Rox.dynamicApi.isEnabled(flagId, defaultValue, context);
   }
 
-  async getStringValue(flagId: string, defaultValue: string, options?: FlagEvaluationOptions): Promise<string> {
+  async getStringValue(flagId: string, defaultValue: string, context: Context, options?: FlagEvaluationOptions): Promise<string> {
     await this.initialized;
-    return Rox.dynamicApi.value(flagId, defaultValue, options?.context);
+    return Rox.dynamicApi.value(flagId, defaultValue, context);
   }
 
-  async getNumberValue(flagId: string, defaultValue: number, options?: FlagEvaluationOptions): Promise<number> {
+  async getNumberValue(flagId: string, defaultValue: number, context: Context, options?: FlagEvaluationOptions): Promise<number> {
     await this.initialized;
-    return Rox.dynamicApi.getNumber(flagId, defaultValue, options?.context);
+    return Rox.dynamicApi.getNumber(flagId, defaultValue, context);
   }
 
-  async getObjectValue<T extends object>(flagId: string, defaultValue: T, options?: FlagEvaluationOptions): Promise<T> {
+  async getObjectValue<T extends object>(flagId: string, defaultValue: T, context: Context, options?: FlagEvaluationOptions): Promise<T> {
     await this.initialized;
     
     /**
@@ -51,7 +52,7 @@ export class CloudbeesProvider implements FeatureProvider {
      * and stringify the default.
      * This may not be performant, and other, more elegant solutions should be considered.
      */
-    const value =  Rox.dynamicApi.value(flagId, JSON.stringify(defaultValue), options?.context);
+    const value =  Rox.dynamicApi.value(flagId, JSON.stringify(defaultValue), context);
     return parseValidJsonObject(value);
   }
 }
