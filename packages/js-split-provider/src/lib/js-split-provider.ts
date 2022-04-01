@@ -1,6 +1,5 @@
 import {
-  Context,
-  FeatureProvider, FlagTypeError,
+  FeatureProvider, FlagEvaluationOptions, FlagTypeError,
   parseValidJsonObject,
   parseValidNumber
 } from '@openfeature/openfeature-js';
@@ -21,17 +20,17 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
     });
   }
   
-  async isEnabled(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
-    return this.getBooleanValue(flagId, defaultValue, context);
+  async isEnabled(flagId: string, defaultValue: boolean, options?: FlagEvaluationOptions): Promise<boolean> {
+    return this.getBooleanValue(flagId, defaultValue, options);
   }
 
   /**
    * Split doesn't directly handle booleans as treatment values.
    * It will be up to the provider author and it's users to come up with conventions for converting strings to booleans.
    */
-  async getBooleanValue(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
+  async getBooleanValue(flagId: string, defaultValue: boolean, options?: FlagEvaluationOptions): Promise<boolean> {
     await this.initialized;
-    const stringValue = this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+    const stringValue = this.client.getTreatment(options?.context?.userId ?? 'anonymous', flagId);
     const asUnknown = stringValue as unknown;
 
     switch (asUnknown) {
@@ -52,20 +51,20 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
     }
   }
 
-  async getStringValue(flagId: string, defaultValue: string, context?: Context): Promise<string> {
+  async getStringValue(flagId: string, defaultValue: string, options?: FlagEvaluationOptions): Promise<string> {
     await this.initialized;
-    return this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+    return this.client.getTreatment(options?.context?.userId ?? 'anonymous', flagId);
   }
 
-  async getNumberValue(flagId: string, defaultValue: number, context?: Context): Promise<number> {
+  async getNumberValue(flagId: string, defaultValue: number, options?: FlagEvaluationOptions): Promise<number> {
     await this.initialized;
-    const value = this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+    const value = this.client.getTreatment(options?.context?.userId ?? 'anonymous', flagId);
     return parseValidNumber(value);
   }
 
-  async getObjectValue<T extends object>(flagId: string, defaultValue: T, context?: Context): Promise<T> {
+  async getObjectValue<T extends object>(flagId: string, defaultValue: T, options?: FlagEvaluationOptions): Promise<T> {
     await this.initialized;
-    const value = this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+    const value = this.client.getTreatment(options?.context?.userId ?? 'anonymous', flagId);
     return parseValidJsonObject(value);
   }
 }

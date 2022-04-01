@@ -1,8 +1,11 @@
-import { OpenFeatureClient } from './client';
-
 export type Context = { userId?: string } & Record<string, unknown>;
 
 export type FlagType = 'enabled' | 'boolean' | 'string' | 'number' | 'json';
+
+export interface FlagEvaluationOptions {
+  hooks: Hook[] | undefined;
+  context?: Context | undefined;
+}
 
 /**
  * This interface is common to both Providers and the SDK presented to the Application Author.
@@ -17,7 +20,7 @@ export interface Features {
   isEnabled(
     flagId: string,
     defaultValue: boolean,
-    context?: Context
+    options?: FlagEvaluationOptions
   ): Promise<boolean>;
 
   /**
@@ -26,7 +29,7 @@ export interface Features {
   getBooleanValue(
     flagId: string,
     defaultValue: boolean,
-    context?: Context
+    options?: FlagEvaluationOptions
   ): Promise<boolean>;
 
   /**
@@ -35,7 +38,7 @@ export interface Features {
   getStringValue(
     flagId: string,
     defaultValue: string,
-    context?: Context
+    options?: FlagEvaluationOptions
   ): Promise<string>;
 
   /**
@@ -44,7 +47,7 @@ export interface Features {
   getNumberValue(
     flagId: string,
     defaultValue: number,
-    context?: Context
+    options?: FlagEvaluationOptions
   ): Promise<number>;
 
   /**
@@ -53,7 +56,7 @@ export interface Features {
   getObjectValue<T extends object>(
     flagId: string,
     defaultValue: T,
-    context?: Context
+    options?: FlagEvaluationOptions
   ): Promise<T>;
 }
 
@@ -61,46 +64,25 @@ export interface FeatureProvider extends Features {
   name: string;
 }
 
-export abstract class Client implements Features {
-  protected hooks: Hook[] = [];
+// consider this name.
+export interface HasHooks {
+  registerHooks(...hooks: Hook[]): void;
+  get hooks(): Hook[];
+}
 
-  abstract isEnabled(
-    flagId: string,
-    defaultValue: boolean,
-    context?: Context
-  ): Promise<boolean>;
-  abstract getBooleanValue(
-    flagId: string,
-    defaultValue: boolean,
-    context?: Context
-  ): Promise<boolean>;
-  abstract getStringValue(
-    flagId: string,
-    defaultValue: string,
-    context?: Context
-  ): Promise<string>;
-  abstract getNumberValue(
-    flagId: string,
-    defaultValue: number,
-    context?: Context
-  ): Promise<number>;
-  abstract getObjectValue<T extends object>(
-    flagId: string,
-    defaultValue: T,
-    context?: Context
-  ): Promise<T>;
-
-  registerHooks(...hooks: Hook[]): void {
-    this.hooks = [...this.hooks, ...hooks];
-  }
+// may want to convert this to an interface later.
+export interface Client extends HasHooks, Features {
+  readonly name?: string;
+  readonly version?: string;
 }
 
 export type HookContext = {
   flagId: string;
   flagType: FlagType;
   provider: FeatureProvider;
-  client: OpenFeatureClient;
+  client: Client;
   context: Context;
+  defaultValue: FlagValue;
 };
 
 export type FlagValue = boolean | string | number | object;
@@ -109,10 +91,5 @@ export interface Hook<T = FlagValue> {
   before?(hookContext: HookContext): Context;
   after?(hookContext: HookContext, flagValue: T): T;
   error?(hookContext: HookContext, error: Error): void;
-  finally?(hookContext: HookContext, flagValue?: T): void;
-}
-
-export interface FlagEvaluationOptions {
-  context: Context;
-  hooks: Hook[];
+  finally?(hookContext: HookContext): void;
 }
