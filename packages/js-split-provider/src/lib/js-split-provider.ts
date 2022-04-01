@@ -4,7 +4,7 @@ import {
   parseValidJsonObject,
   parseValidNumber
 } from '@openfeature/openfeature-js';
-import type { IClient } from '@splitsoftware/splitio/types/splitio';
+import type { IClient, Attributes } from '@splitsoftware/splitio/types/splitio';
 
 export class OpenFeatureSplitProvider implements FeatureProvider {
   name = 'split';
@@ -31,7 +31,8 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
    */
   async getBooleanValue(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
     await this.initialized;
-    const stringValue = this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+    // simply casting Context to Attributes is likely a bad idea.
+    const stringValue = this.client.getTreatment(context?.userId ?? 'anonymous', flagId, context as Attributes);
     const asUnknown = stringValue as unknown;
 
     switch (asUnknown) {
@@ -54,18 +55,18 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
 
   async getStringValue(flagId: string, defaultValue: string, context: Context, options?: FlagEvaluationOptions): Promise<string> {
     await this.initialized;
-    return this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+    return this.client.getTreatment(context?.userId ?? 'anonymous', flagId, context as Attributes);
   }
 
   async getNumberValue(flagId: string, defaultValue: number, context: Context, options?: FlagEvaluationOptions): Promise<number> {
     await this.initialized;
-    const value = this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+    const value = this.client.getTreatment(context?.userId ?? 'anonymous', flagId, context as Attributes);
     return parseValidNumber(value);
   }
 
   async getObjectValue<T extends object>(flagId: string, defaultValue: T, context: Context, options?: FlagEvaluationOptions): Promise<T> {
     await this.initialized;
-    const value = this.client.getTreatment(context?.userId ?? 'anonymous', flagId);
+    const value = this.client.getTreatment(context?.userId ?? 'anonymous', flagId, context as Attributes);
     return parseValidJsonObject(value);
   }
 }

@@ -92,7 +92,7 @@ export class OpenFeatureLaunchDarklyProvider implements FeatureProvider {
 
     // eventually we'll want a well-defined SDK context object, whose properties will be mapped appropriately to each provider. 
     const userKey = context?.userId  ?? 'anonymous';
-    const flagValue = await this.client.variation(flagId, { key: userKey}, defaultValue);
+    const flagValue = await this.client.variation(flagId, { key: userKey, ...context }, defaultValue);
 
     console.log(`Flag '${flagId}' has a value of '${flagValue}'`);
     return flagValue;
