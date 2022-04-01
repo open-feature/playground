@@ -1,99 +1,101 @@
 import { OpenFeatureAPI } from './api';
 import { NOOP_FEATURE_PROVIDER } from './noop-provider';
-import { Client, Context, FeatureProvider, FlagType, FlagValue, Hook } from './types';
+import { Client, Context, FeatureProvider, FlagEvaluationOptions, FlagType, FlagValue, Hook, HookContext } from './types';
 
 type OpenFeatureClientOptions = {
   name?: string;
   version?: string;
 };
 
-export class OpenFeatureClient extends Client {
-  public readonly name?: string;
-  public readonly version?: string;
+export class OpenFeatureClient implements Client {
+  readonly name?: string;
+  readonly version?: string;
+
+  private _hooks: Hook[] = [];
 
   constructor(
     private readonly api: OpenFeatureAPI,
     options: OpenFeatureClientOptions
   ) {
-    super();
     this.name = options.name;
     this.version = options.version;
+  }
+
+  get hooks(): Hook[] {
+    return this._hooks;
+  }
+
+  registerHooks(...hooks: Hook<FlagValue>[]): void {
+    this._hooks = hooks;
   }
 
   isEnabled(
     flagId: string,
     defaultValue: boolean,
-    context?: Context
+    options?: FlagEvaluationOptions
   ): Promise<boolean> {
-    return this.evaluateFlag('enabled', flagId, defaultValue, context);
+    return this.evaluateFlag('enabled', flagId, defaultValue, options);
   }
 
   getBooleanValue(
     flagId: string,
     defaultValue: boolean,
-    context?: Context
+    options?: FlagEvaluationOptions
   ): Promise<boolean> {
-    return this.evaluateFlag('boolean', flagId, defaultValue, context);
+    return this.evaluateFlag('boolean', flagId, defaultValue, options);
   }
 
   getStringValue(
     flagId: string,
     defaultValue: string,
-    context?: Context
+    options?: FlagEvaluationOptions
   ): Promise<string> {
-    return this.evaluateFlag('string', flagId, defaultValue, context);
+    return this.evaluateFlag('string', flagId, defaultValue, options);
   }
 
   getNumberValue(
     flagId: string,
     defaultValue: number,
-    context?: Context
+    options?: FlagEvaluationOptions
   ): Promise<number> {
-    return this.evaluateFlag('number', flagId, defaultValue, context);
+    return this.evaluateFlag('number', flagId, defaultValue, options);
   }
 
   getObjectValue<T extends object>(
     flagId: string,
     defaultValue: T,
-    context?: Context
+    options?: FlagEvaluationOptions
   ): Promise<T> {
-    return this.evaluateFlag('json', flagId, defaultValue, context);
+    return this.evaluateFlag('json', flagId, defaultValue, options);
   }
 
-  private async evaluateFlag<T extends boolean | string | number | object>(
+  private async evaluateFlag<T extends FlagValue>(
     flagType: FlagType,
     flagId: string,
     defaultValue: T,
-    context: Context = {}
+    options?: FlagEvaluationOptions
   ): Promise<T> {
     const provider = this.getProvider();
+    const flagHooks = options?.hooks || [];
+    const allHooks: Hook<FlagValue>[] = [...OpenFeatureAPI.getInstance().hooks , ...this.hooks, ...flagHooks];
+    let hookContext: HookContext = {
+      flagId,
+      flagType,
+      defaultValue,
+      context: options?.context || {},
+      client: this,
+      provider: this.getProvider()
+    };
+    let valuePromise: Promise<FlagValue>;
+    
     try {
-      const mergedContext = this.hooks.reduce(
-        (accumulated: Context, hook: Hook): Context => {
-          if (typeof hook?.before === 'function') {
-            return {
-              ...accumulated,
-              ...hook.before({
-                flagId,
-                flagType,
-                context: accumulated,
-                client: this,
-                provider,
-              }),
-            };
-          }
-          return accumulated;
-        },
-        context
-      );
-
-      let valuePromise: Promise<boolean | string | number | object>;
+      hookContext = this.beforeEvaluation(allHooks, hookContext);
       switch (flagType) {
         case 'enabled': {
           valuePromise = provider.isEnabled(
             flagId,
             defaultValue as boolean,
-            context
+            options
           );
           break;
         }
@@ -101,7 +103,7 @@ export class OpenFeatureClient extends Client {
           valuePromise = provider.getBooleanValue(
             flagId,
             defaultValue as boolean,
-            context
+            options
           );
           break;
         }
@@ -109,7 +111,7 @@ export class OpenFeatureClient extends Client {
           valuePromise = provider.getStringValue(
             flagId,
             defaultValue as string,
-            context
+            options
           );
           break;
         }
@@ -117,7 +119,7 @@ export class OpenFeatureClient extends Client {
           valuePromise = provider.getNumberValue(
             flagId,
             defaultValue as number,
-            context
+            options
           );
           break;
         }
@@ -125,68 +127,66 @@ export class OpenFeatureClient extends Client {
           valuePromise = provider.getObjectValue(
             flagId,
             defaultValue as object,
-            context
+            options
           );
           break;
         }
       }
 
       const value = await valuePromise;
-
-      const updatedValue = this.hooks.reduce((accumulated: FlagValue, hook) => {
-        if (typeof hook?.after === 'function') {
-          return hook.after(
-            {
-              flagId,
-              flagType,
-              context: mergedContext,
-              client: this,
-              provider,
-            },
-            value
-          );
-        }
-        return accumulated;
-      }, value);
-
-      this.hooks.forEach((hook) => {
-        if (typeof hook?.finally === 'function') {
-          return hook.finally(
-            {
-              flagId,
-              flagType,
-              context: mergedContext,
-              client: this,
-              provider,
-            },
-            value
-          );
-        }
-      });
-
-      return updatedValue as T;
+      return this.afterEvaluation(allHooks, hookContext, value) as T;
     } catch (err) {
       if (this.isError(err)) {
-        // Workaround for error scoping issue
-        const error = err;
-        this.hooks.forEach((hook) => {
-          if (typeof hook?.error === 'function') {
-            return hook.error(
-              {
-                flagId,
-                flagType,
-                // TODO: This may not be the last version of context.
-                context,
-                client: this,
-                provider,
-              },
-              error
-            );
-          }
-        });
+        this.errorEvaluation(allHooks, hookContext, err);
       }
       return defaultValue;
+    } finally {
+      this.finallyEvaluation(allHooks, hookContext);
     }
+  }
+
+  private beforeEvaluation(allHooks: Hook[], hookContext: HookContext): HookContext {
+    const mergedContext = allHooks.reduce(
+      (accumulated: Context, hook: Hook): Context => {
+        if (typeof hook?.before === 'function') {
+          return {
+            ...accumulated,
+            ...hook.before(hookContext),
+          };
+        }
+        return accumulated;
+      },
+      hookContext.context
+    );
+    hookContext.context = mergedContext;
+    return hookContext;
+  }
+
+  private afterEvaluation(allHooks: Hook[], hookContext: HookContext, flagValue: FlagValue): FlagValue {
+    return allHooks.reduce((accumulated: FlagValue, hook) => {
+      if (typeof hook?.after === 'function') {
+        return hook.after(hookContext, flagValue);
+      }
+      return accumulated;
+    }, flagValue);
+  }
+
+  private finallyEvaluation(allHooks: Hook[], hookContext: HookContext): void {
+    allHooks.forEach((hook) => {
+      if (typeof hook?.finally === 'function') {
+        return hook.finally(hookContext);
+      }
+    });
+  }
+
+  private errorEvaluation(allHooks: Hook[], hookContext: HookContext, err: Error): void {
+    // Workaround for error scoping issue
+    const error = err;
+    allHooks.forEach((hook) => {
+      if (typeof hook?.error === 'function') {
+        return hook.error(hookContext, error);
+      }
+    });
   }
 
   private getProvider(): FeatureProvider {

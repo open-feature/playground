@@ -15,6 +15,10 @@ type OTelHookContext = {
   };
 } & HookContext;
 
+
+/**
+ * A hook that adds standard OpenTelemetry data.
+ */
 export class OpenTelemetryHook implements Hook {
   private tracer: Tracer;
 
@@ -43,9 +47,8 @@ export class OpenTelemetryHook implements Hook {
     return flagValue;
   }
 
-  finally(hookContext: OTelHookContext, flagValue: unknown) {
+  finally(hookContext: OTelHookContext) {
     hookContext.context._span?.end();
-    return flagValue;
   }
 
   error(hookContext: OTelHookContext, err: Error) {
