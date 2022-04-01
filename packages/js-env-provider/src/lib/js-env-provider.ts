@@ -1,4 +1,5 @@
 import {
+  Context,
   FeatureProvider, FlagEvaluationOptions, FlagTypeError,
   FlagValueParseError,
   parseValidBoolean,
@@ -10,11 +11,11 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
 
   name =' environment variable';
   
-  isEnabled(flagId: string, defaultValue: boolean, options?: FlagEvaluationOptions): Promise<boolean> {
-    return this.getBooleanValue(flagId, defaultValue, options);
+  isEnabled(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
+    return this.getBooleanValue(flagId, defaultValue, context, options);
   }
 
-  getBooleanValue(flagId: string, defaultValue: boolean, options?: FlagEvaluationOptions): Promise<boolean> {
+  getBooleanValue(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
       return Promise.resolve(parseValidBoolean(stringValue));
@@ -23,7 +24,7 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
     }
   }
 
-  getStringValue(flagId: string, defaultValue: string, options?: FlagEvaluationOptions): Promise<string> {
+  getStringValue(flagId: string, defaultValue: string, context: Context, options?: FlagEvaluationOptions): Promise<string> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
       return Promise.resolve(stringValue);
@@ -32,7 +33,7 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
     }
   }
 
-  getNumberValue(flagId: string, defaultValue: number, options?: FlagEvaluationOptions): Promise<number> {
+  getNumberValue(flagId: string, defaultValue: number, context: Context, options?: FlagEvaluationOptions): Promise<number> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
       return Promise.resolve(parseValidNumber(stringValue));
@@ -41,7 +42,7 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
     }
   }
 
-  getObjectValue<T extends object>(flagId: string, defaultValue: T, options?: FlagEvaluationOptions): Promise<T> {
+  getObjectValue<T extends object>(flagId: string, defaultValue: T, context: Context, options?: FlagEvaluationOptions): Promise<T> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
       try {

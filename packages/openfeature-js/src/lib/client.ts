@@ -32,57 +32,64 @@ export class OpenFeatureClient implements Client {
   isEnabled(
     flagId: string,
     defaultValue: boolean,
+    context: Context,
     options?: FlagEvaluationOptions
   ): Promise<boolean> {
-    return this.evaluateFlag('enabled', flagId, defaultValue, options);
+    return this.evaluateFlag('enabled', flagId, defaultValue, context, options);
   }
 
   getBooleanValue(
     flagId: string,
     defaultValue: boolean,
+    context: Context,
     options?: FlagEvaluationOptions
   ): Promise<boolean> {
-    return this.evaluateFlag('boolean', flagId, defaultValue, options);
+    return this.evaluateFlag('boolean', flagId, defaultValue, context, options);
   }
 
   getStringValue(
     flagId: string,
     defaultValue: string,
+    context: Context,
     options?: FlagEvaluationOptions
   ): Promise<string> {
-    return this.evaluateFlag('string', flagId, defaultValue, options);
+    return this.evaluateFlag('string', flagId, defaultValue, context, options);
   }
 
   getNumberValue(
     flagId: string,
     defaultValue: number,
+    context: Context,
     options?: FlagEvaluationOptions
   ): Promise<number> {
-    return this.evaluateFlag('number', flagId, defaultValue, options);
+    return this.evaluateFlag('number', flagId, defaultValue, context, options);
   }
 
   getObjectValue<T extends object>(
     flagId: string,
     defaultValue: T,
+    context: Context,
     options?: FlagEvaluationOptions
   ): Promise<T> {
-    return this.evaluateFlag('json', flagId, defaultValue, options);
+    return this.evaluateFlag('json', flagId, defaultValue, context, options);
   }
 
   private async evaluateFlag<T extends FlagValue>(
     flagType: FlagType,
     flagId: string,
     defaultValue: T,
+    context: Context,
     options?: FlagEvaluationOptions
   ): Promise<T> {
     const provider = this.getProvider();
     const flagHooks = options?.hooks || [];
     const allHooks: Hook<FlagValue>[] = [...OpenFeatureAPI.getInstance().hooks , ...this.hooks, ...flagHooks];
+    context = context || {};
     let hookContext: HookContext = {
       flagId,
       flagType,
       defaultValue,
-      context: options?.context || {},
+      context: context || {},
       client: this,
       provider: this.getProvider()
     };
@@ -95,6 +102,7 @@ export class OpenFeatureClient implements Client {
           valuePromise = provider.isEnabled(
             flagId,
             defaultValue as boolean,
+            context,
             options
           );
           break;
@@ -103,6 +111,7 @@ export class OpenFeatureClient implements Client {
           valuePromise = provider.getBooleanValue(
             flagId,
             defaultValue as boolean,
+            context,
             options
           );
           break;
@@ -111,6 +120,7 @@ export class OpenFeatureClient implements Client {
           valuePromise = provider.getStringValue(
             flagId,
             defaultValue as string,
+            context,
             options
           );
           break;
@@ -119,6 +129,7 @@ export class OpenFeatureClient implements Client {
           valuePromise = provider.getNumberValue(
             flagId,
             defaultValue as number,
+            context,
             options
           );
           break;
@@ -127,6 +138,7 @@ export class OpenFeatureClient implements Client {
           valuePromise = provider.getObjectValue(
             flagId,
             defaultValue as object,
+            context,
             options
           );
           break;
