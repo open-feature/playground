@@ -1,5 +1,7 @@
 # openfeature-extra
 
+A library containing various extensions and extras, conforming to the interfaces defined in `openfeature-js`.
+
 This library was generated with [Nx](https://nx.dev).
 
 ## Building
