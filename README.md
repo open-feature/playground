@@ -36,7 +36,7 @@ Providers are an important part of OpenFeature. They're responsible for
 performing the flag evaluation and must adhere to the feature flag API. To get
 started, run the following command:
 
-``npm run provider-generator`
+`npm run provider-generator`
 
 You'll need to provide a name for the generator. After that, the output will
 contain the path to the new provider class and a start command.
