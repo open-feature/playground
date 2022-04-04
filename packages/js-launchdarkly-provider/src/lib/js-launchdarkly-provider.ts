@@ -1,7 +1,9 @@
 import {
   Context,
   FeatureProvider,
+  FlagEvaluationOptions,
   FlagTypeError,
+  FlagValue,
   FlagValueParseError
 } from '@openfeature/openfeature-js';
 import { init, LDClient } from 'launchdarkly-node-server-sdk';
@@ -29,11 +31,11 @@ export class OpenFeatureLaunchDarklyProvider implements FeatureProvider {
     
   }
   
-  isEnabled(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
+  isEnabled(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
     return this.getBooleanValue(flagId, defaultValue, context);
   }
 
-  async getBooleanValue(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
+  async getBooleanValue(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
     const value = await this.evaluateFlag(flagId, defaultValue, context);
     if (typeof value === 'boolean') {
       return value;
@@ -42,7 +44,7 @@ export class OpenFeatureLaunchDarklyProvider implements FeatureProvider {
     }
   }
 
-  async getStringValue(flagId: string, defaultValue: string, context?: Context): Promise<string> {
+  async getStringValue(flagId: string, defaultValue: string, context: Context, options?: FlagEvaluationOptions): Promise<string> {
     const value = await this.evaluateFlag(flagId, defaultValue, context);
     if (typeof value === 'string') {
       return value;
@@ -51,7 +53,7 @@ export class OpenFeatureLaunchDarklyProvider implements FeatureProvider {
     }
   }
 
-  async getNumberValue(flagId: string, defaultValue: number, context?: Context): Promise<number> {
+  async getNumberValue(flagId: string, defaultValue: number, context: Context, options?: FlagEvaluationOptions): Promise<number> {
     const value = await this.evaluateFlag(flagId, defaultValue, context);
     if (typeof value === 'number') {
       return value;
@@ -65,7 +67,7 @@ export class OpenFeatureLaunchDarklyProvider implements FeatureProvider {
    * and stringify the default.
    * This may not be performant, and other, more elegant solutions should be considered.
    */
-  async getObjectValue<T extends object>(flagId: string, defaultValue: T, context?: Context, ): Promise<T> {
+  async getObjectValue<T extends object>(flagId: string, defaultValue: T, context: Context): Promise<T> {
     const value = await this.evaluateFlag(flagId, JSON.stringify(defaultValue), context);
     if (typeof value === 'string') {
       // we may want to allow the parsing to be customized.
@@ -84,13 +86,13 @@ export class OpenFeatureLaunchDarklyProvider implements FeatureProvider {
   }
 
   // LD values can be boolean, number, or string: https://docs.launchdarkly.com/sdk/client-side/node-js#getting-started
-  private async evaluateFlag(flagId: string, defaultValue: boolean | string | number | object, context?: Context): Promise<boolean | number | string> {
+  private async evaluateFlag(flagId: string, defaultValue: FlagValue, context: Context): Promise<boolean | number | string> {
     // await the initialization before actually calling for a flag.
     await this.initialized;
 
     // eventually we'll want a well-defined SDK context object, whose properties will be mapped appropriately to each provider. 
     const userKey = context?.userId  ?? 'anonymous';
-    const flagValue = await this.client.variation(flagId, { key: userKey}, defaultValue);
+    const flagValue = await this.client.variation(flagId, { key: userKey, ...context }, defaultValue);
 
     console.log(`Flag '${flagId}' has a value of '${flagValue}'`);
     return flagValue;

@@ -1,21 +1,32 @@
 import {
   Context,
-  FeatureProvider, FlagTypeError,
+  FeatureProvider,
+  FlagEvaluationOptions,
+  FlagTypeError,
   FlagValueParseError,
   parseValidBoolean,
-  parseValidNumber
+  parseValidNumber,
 } from '@openfeature/openfeature-js';
 import { constantCase } from 'change-case';
 
 export class OpenFeatureEnvProvider implements FeatureProvider {
+  name = ' environment variable';
 
-  name =' environment variable';
-  
-  isEnabled(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
-    return this.getBooleanValue(flagId, defaultValue, context);
+  isEnabled(
+    flagId: string,
+    defaultValue: boolean,
+    context: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<boolean> {
+    return this.getBooleanValue(flagId, defaultValue, context, options);
   }
 
-  getBooleanValue(flagId: string, defaultValue: boolean, context?: Context): Promise<boolean> {
+  getBooleanValue(
+    flagId: string,
+    defaultValue: boolean,
+    context: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<boolean> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
       return Promise.resolve(parseValidBoolean(stringValue));
@@ -24,7 +35,12 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
     }
   }
 
-  getStringValue(flagId: string, defaultValue: string, context?: Context): Promise<string> {
+  getStringValue(
+    flagId: string,
+    defaultValue: string,
+    context: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<string> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
       return Promise.resolve(stringValue);
@@ -33,7 +49,12 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
     }
   }
 
-  getNumberValue(flagId: string, defaultValue: number, context?: Context): Promise<number> {
+  getNumberValue(
+    flagId: string,
+    defaultValue: number,
+    context: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<number> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
       return Promise.resolve(parseValidNumber(stringValue));
@@ -42,7 +63,12 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
     }
   }
 
-  getObjectValue<T extends object>(flagId: string, defaultValue: T, context?: Context): Promise<T> {
+  getObjectValue<T extends object>(
+    flagId: string,
+    defaultValue: T,
+    context: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<T> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
       try {

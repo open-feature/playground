@@ -1,11 +1,12 @@
 import { OpenFeatureClient } from './client';
 import { getGlobal, registerGlobal } from './global';
-import { Features, FeatureProvider } from './types';
+import { Client, FeatureProvider, FlagValue, HasHooks, Hook } from './types';
 
-export class OpenFeatureAPI {
+export class OpenFeatureAPI implements HasHooks {
   private provider?: FeatureProvider;
+  private _hooks: Hook[] = [];
 
-  public static getInstance(): OpenFeatureAPI {
+  static getInstance(): OpenFeatureAPI {
     const globalApi = getGlobal();
     if (globalApi) {
       return globalApi;
@@ -16,15 +17,23 @@ export class OpenFeatureAPI {
     return instance;
   }
 
-  public getClient(name?: string, version?: string): Features {
+  get hooks() {
+    return this._hooks;
+  }
+
+  getClient(name?: string, version?: string): Client {
     return new OpenFeatureClient(this, { name, version });
   }
 
-  public registerProvider(provider: FeatureProvider): void {
+  registerProvider(provider: FeatureProvider): void {
     this.provider = provider;
   }
 
-  public getProvider(): FeatureProvider | undefined {
+  getProvider(): FeatureProvider | undefined {
     return this.provider;
+  }
+
+  registerHooks(...hooks: Hook<FlagValue>[]): void {
+    this._hooks = hooks;
   }
 }
