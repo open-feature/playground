@@ -82,14 +82,14 @@ export class OpenFeatureClient implements Client {
     options?: FlagEvaluationOptions
   ): Promise<T> {
     const provider = this.getProvider();
-    const flagHooks = options?.hooks || [];
+    const flagHooks = options?.hooks ?? [];
     const allHooks: Hook<FlagValue>[] = [...OpenFeatureAPI.getInstance().hooks , ...this.hooks, ...flagHooks];
-    context = context || {};
+    context = context ?? {};
     let hookContext: HookContext = {
       flagId,
       flagType,
       defaultValue,
-      context: context || {},
+      context,
       client: this,
       provider: this.getProvider()
     };
