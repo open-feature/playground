@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "provider-generator": "nx workspace-generator provider-generator",
     "no-op-demo": "nx serve api",
     "cloudbees-demo": "nx run api:cloudbees-demo",
     "env-var-demo": "nx run api:env-var-demo",
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "@nrwl/cli": "13.9.5",
+    "@nrwl/devkit": "13.9.5",
     "@nrwl/eslint-plugin-nx": "13.9.5",
     "@nrwl/express": "^13.9.5",
     "@nrwl/jest": "13.9.5",
