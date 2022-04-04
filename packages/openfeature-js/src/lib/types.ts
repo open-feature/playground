@@ -74,7 +74,6 @@ export interface HasHooks {
   get hooks(): Hook[];
 }
 
-// may want to convert this to an interface later.
 export interface Client extends HasHooks, Features {
   readonly name?: string;
   readonly version?: string;

@@ -1,8 +1,10 @@
 import {
   Context,
-  FeatureProvider, FlagEvaluationOptions, FlagTypeError,
+  FeatureProvider,
+  FlagEvaluationOptions,
+  FlagTypeError,
   parseValidJsonObject,
-  parseValidNumber
+  parseValidNumber,
 } from '@openfeature/openfeature-js';
 import type { IClient, Attributes } from '@splitsoftware/splitio/types/splitio';
 
@@ -20,8 +22,13 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
       });
     });
   }
-  
-  async isEnabled(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
+
+  async isEnabled(
+    flagId: string,
+    defaultValue: boolean,
+    context: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<boolean> {
     return this.getBooleanValue(flagId, defaultValue, context, options);
   }
 
@@ -29,44 +36,80 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
    * Split doesn't directly handle booleans as treatment values.
    * It will be up to the provider author and it's users to come up with conventions for converting strings to booleans.
    */
-  async getBooleanValue(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
+  async getBooleanValue(
+    flagId: string,
+    defaultValue: boolean,
+    context: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<boolean> {
     await this.initialized;
     // simply casting Context to Attributes is likely a bad idea.
-    const stringValue = this.client.getTreatment(context?.userId ?? 'anonymous', flagId, context as Attributes);
+    const stringValue = this.client.getTreatment(
+      context?.userId ?? 'anonymous',
+      flagId,
+      context as Attributes
+    );
     const asUnknown = stringValue as unknown;
 
     switch (asUnknown) {
-      case 'on': 
+      case 'on':
         return true;
       case 'off':
         return false;
-      case 'true': 
+      case 'true':
         return true;
       case 'false':
         return false;
-      case true: 
+      case true:
         return true;
       case false:
         return false;
       default:
-        throw new FlagTypeError(`Invalid boolean value for ${asUnknown}`)
+        throw new FlagTypeError(`Invalid boolean value for ${asUnknown}`);
     }
   }
 
-  async getStringValue(flagId: string, defaultValue: string, context: Context, options?: FlagEvaluationOptions): Promise<string> {
+  async getStringValue(
+    flagId: string,
+    defaultValue: string,
+    context: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<string> {
     await this.initialized;
-    return this.client.getTreatment(context?.userId ?? 'anonymous', flagId, context as Attributes);
+    return this.client.getTreatment(
+      context?.userId ?? 'anonymous',
+      flagId,
+      context as Attributes
+    );
   }
 
-  async getNumberValue(flagId: string, defaultValue: number, context: Context, options?: FlagEvaluationOptions): Promise<number> {
+  async getNumberValue(
+    flagId: string,
+    defaultValue: number,
+    context: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<number> {
     await this.initialized;
-    const value = this.client.getTreatment(context?.userId ?? 'anonymous', flagId, context as Attributes);
+    const value = this.client.getTreatment(
+      context?.userId ?? 'anonymous',
+      flagId,
+      context as Attributes
+    );
     return parseValidNumber(value);
   }
 
-  async getObjectValue<T extends object>(flagId: string, defaultValue: T, context: Context, options?: FlagEvaluationOptions): Promise<T> {
+  async getObjectValue<T extends object>(
+    flagId: string,
+    defaultValue: T,
+    context: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<T> {
     await this.initialized;
-    const value = this.client.getTreatment(context?.userId ?? 'anonymous', flagId, context as Attributes);
+    const value = this.client.getTreatment(
+      context?.userId ?? 'anonymous',
+      flagId,
+      context as Attributes
+    );
     return parseValidJsonObject(value);
   }
 }

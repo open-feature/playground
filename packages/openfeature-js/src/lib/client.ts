@@ -1,6 +1,15 @@
 import { OpenFeatureAPI } from './api';
 import { NOOP_FEATURE_PROVIDER } from './noop-provider';
-import { Client, Context, FeatureProvider, FlagEvaluationOptions, FlagType, FlagValue, Hook, HookContext } from './types';
+import {
+  Client,
+  Context,
+  FeatureProvider,
+  FlagEvaluationOptions,
+  FlagType,
+  FlagValue,
+  Hook,
+  HookContext,
+} from './types';
 
 type OpenFeatureClientOptions = {
   name?: string;
@@ -83,7 +92,11 @@ export class OpenFeatureClient implements Client {
   ): Promise<T> {
     const provider = this.getProvider();
     const flagHooks = options?.hooks ?? [];
-    const allHooks: Hook<FlagValue>[] = [...OpenFeatureAPI.getInstance().hooks , ...this.hooks, ...flagHooks];
+    const allHooks: Hook<FlagValue>[] = [
+      ...OpenFeatureAPI.getInstance().hooks,
+      ...this.hooks,
+      ...flagHooks,
+    ];
     context = context ?? {};
     let hookContext: HookContext = {
       flagId,
@@ -91,10 +104,10 @@ export class OpenFeatureClient implements Client {
       defaultValue,
       context,
       client: this,
-      provider: this.getProvider()
+      provider: this.getProvider(),
     };
     let valuePromise: Promise<FlagValue>;
-    
+
     try {
       hookContext = this.beforeEvaluation(allHooks, hookContext);
       switch (flagType) {
@@ -157,7 +170,10 @@ export class OpenFeatureClient implements Client {
     }
   }
 
-  private beforeEvaluation(allHooks: Hook[], hookContext: HookContext): HookContext {
+  private beforeEvaluation(
+    allHooks: Hook[],
+    hookContext: HookContext
+  ): HookContext {
     const mergedContext = allHooks.reduce(
       (accumulated: Context, hook: Hook): Context => {
         if (typeof hook?.before === 'function') {
@@ -174,7 +190,11 @@ export class OpenFeatureClient implements Client {
     return hookContext;
   }
 
-  private afterEvaluation(allHooks: Hook[], hookContext: HookContext, flagValue: FlagValue): FlagValue {
+  private afterEvaluation(
+    allHooks: Hook[],
+    hookContext: HookContext,
+    flagValue: FlagValue
+  ): FlagValue {
     return allHooks.reduce((accumulated: FlagValue, hook) => {
       if (typeof hook?.after === 'function') {
         return hook.after(hookContext, flagValue);
@@ -191,7 +211,11 @@ export class OpenFeatureClient implements Client {
     });
   }
 
-  private errorEvaluation(allHooks: Hook[], hookContext: HookContext, err: Error): void {
+  private errorEvaluation(
+    allHooks: Hook[],
+    hookContext: HookContext,
+    err: Error
+  ): void {
     // Workaround for error scoping issue
     const error = err;
     allHooks.forEach((hook) => {

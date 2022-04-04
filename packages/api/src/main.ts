@@ -10,9 +10,10 @@ import { OpenTelemetryHook, LoggingHook } from '@openfeature/extra';
 import { buildMarkup } from './markup';
 
 const app = express();
+const appName = 'api'
 
-openfeature.registerHooks(new OpenTelemetryHook('test'));
-const client = openfeature.getClient('api');
+openfeature.registerHooks(new OpenTelemetryHook(appName));
+const client = openfeature.getClient(appName);
 client.registerHooks(new LoggingHook());
 
 app.get('/api', async (req, res) => {
