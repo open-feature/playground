@@ -9,24 +9,18 @@ export const SpanProperties = {
   FEATURE_FLAG_VALUE: 'feature_flag_value',
 };
 
-type OTelHookContext = {
-  context: {
-    _span?: Span;
-  };
-} & HookContext;
-
-
 /**
  * A hook that adds standard OpenTelemetry data.
  */
 export class OpenTelemetryHook implements Hook {
+  private spanMap = new WeakMap<HookContext, Span>();
   private tracer: Tracer;
 
-  constructor(private readonly name: string) {
+  constructor(name: string) {
     this.tracer = trace.getTracer(name);
   }
 
-  before(hookContext: OTelHookContext) {
+  before(hookContext: HookContext) {
     const span = this.tracer.startSpan(
       `feature flag - ${hookContext.flagType}`
     );
@@ -37,21 +31,24 @@ export class OpenTelemetryHook implements Hook {
       [SpanProperties.FEATURE_FLAG_SERVICE]: hookContext.provider.name,
     });
 
-    hookContext.context._span = span;
+    this.spanMap.set(hookContext, span);
     return hookContext.context;
   }
 
-  after(hookContext: OTelHookContext, flagValue: FlagValue) {
-    const primitiveFlagValue = typeof flagValue === 'object' ? JSON.stringify(flagValue) : flagValue;
-    hookContext.context._span?.setAttribute(SpanProperties.FEATURE_FLAG_VALUE, primitiveFlagValue);
+  after(hookContext: HookContext, flagValue: FlagValue) {
+    const primitiveFlagValue =
+      typeof flagValue === 'object' ? JSON.stringify(flagValue) : flagValue;
+    this.spanMap
+      .get(hookContext)
+      ?.setAttribute(SpanProperties.FEATURE_FLAG_VALUE, primitiveFlagValue);
     return flagValue;
   }
 
-  finally(hookContext: OTelHookContext) {
-    hookContext.context._span?.end();
+  finally(hookContext: HookContext) {
+    this.spanMap.get(hookContext)?.end();
   }
 
-  error(hookContext: OTelHookContext, err: Error) {
-    hookContext.context._span?.recordException(err);
+  error(hookContext: HookContext, err: Error) {
+    this.spanMap.get(hookContext)?.recordException(err);
   }
 }
