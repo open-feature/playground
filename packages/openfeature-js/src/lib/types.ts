@@ -1,4 +1,4 @@
-export type Context = { userId?: string } & Record<string, unknown>;
+export type Context = { userId: string } & Record<string, unknown>;
 
 export type FlagType = 'enabled' | 'boolean' | 'string' | 'number' | 'json';
 

@@ -5,9 +5,10 @@
     "fibonacci": "packages/fibonacci",
     "js-cloudbees-provider": "packages/js-cloudbees-provider",
     "js-env-provider": "packages/js-env-provider",
+    "js-flagsmith-v1-provider": "packages/js-flagsmith-v1-provider",
     "js-launchdarkly-provider": "packages/js-launchdarkly-provider",
     "js-split-provider": "packages/js-split-provider",
-    "openfeature-js": "packages/openfeature-js",
-    "openfeature-extra": "packages/openfeature-extra"
+    "openfeature-extra": "packages/openfeature-extra",
+    "openfeature-js": "packages/openfeature-js"
   }
 }

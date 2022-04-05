@@ -17,7 +17,7 @@ const client = openfeature.getClient(appName);
 client.registerHooks(new LoggingHook());
 
 app.get('/api', async (req, res) => {
-  const message = (await client.getBooleanValue(
+  const message = (await client.isEnabled(
     'new-welcome-message',
     false
   ))
