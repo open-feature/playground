@@ -21,26 +21,28 @@ const ANONYMOUS = 'anonymous';
  * Additional custom properties in Flagsmith are associated with the user (traits), and not passed directly to the flag evaluation.
  * This is a very basic transformer function that defines Flagsmith traits based on the OpenFeature context. Note that it
  * doesn't handle nested properties.
- *
- * We may want to generalize this concept, and provide a default for all providers.
- */
+ * */
 const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context) => {
-  if (typeof context?.userId === 'string') {
-    const promises = Object.keys(context).map((key) => {
-      if (
-        key !== 'userId' &&
-        (typeof context[key] === 'boolean' ||
-          typeof context[key] === 'string' ||
-          typeof context[key] === 'number')
-      ) {
-        // there's a bug in Flagsmith's typings, this should return a promise.
-        return flagsmith.setTrait(context.userId as string, key, context[key]);
+  // flagsmith requires a userId for any rule evaluation, so let's set it to anonymous in our demo implementation.
+  const userId = context?.userId || ANONYMOUS;
+  const promises = Object.keys(context).map((key) => {
+    if (
+      key !== 'userId' &&
+      (typeof context[key] === 'boolean' ||
+        typeof context[key] === 'string' ||
+        typeof context[key] === 'number')
+    ) {
+      // there's a bug in Flagsmith's typings, this should return a promise.
+      const value = context[key];
+      if (value) {
+        // flagsmith seems to have a bug with some numeric values, converting to string.
+        return flagsmith.setTrait(userId, key, `${value}`);
       }
-      return Promise.resolve();
-    });
-    await Promise.all(promises);
-  }
-  return context?.userId || ANONYMOUS;
+    }
+    return Promise.resolve();
+  });
+  await Promise.all(promises);
+  return userId;
 };
 
 /*
@@ -71,12 +73,9 @@ export class FlagsmithV1Provider implements FeatureProvider<string> {
   async isEnabledEvaluation(
     flagKey: string,
     _defaultValue: boolean,
-    userId: string | undefined
+    userId: string
   ): Promise<ProviderEvaluation<boolean>> {
-    const value =
-      userId === ANONYMOUS
-        ? await flagsmith.hasFeature(flagKey, userId)
-        : await flagsmith.hasFeature(flagKey);
+    const value = await flagsmith.hasFeature(flagKey, userId);
     return {
       value,
       reason: Reason.UNKNOWN,
@@ -86,7 +85,7 @@ export class FlagsmithV1Provider implements FeatureProvider<string> {
   async getBooleanEvaluation(
     flagKey: string,
     _defaultValue: boolean,
-    userId: string | undefined
+    userId: string
   ): Promise<ProviderEvaluation<boolean>> {
     const details = await this.evaluate(flagKey, userId);
     if (typeof details.value === 'boolean') {
@@ -102,7 +101,7 @@ export class FlagsmithV1Provider implements FeatureProvider<string> {
   async getStringEvaluation(
     flagKey: string,
     _defaultValue: string,
-    userId: string | undefined
+    userId: string
   ): Promise<ProviderEvaluation<string>> {
     const details = await this.evaluate(flagKey, userId);
     if (typeof details.value === 'string') {
@@ -118,7 +117,7 @@ export class FlagsmithV1Provider implements FeatureProvider<string> {
   async getNumberEvaluation(
     flagKey: string,
     _defaultValue: number,
-    userId: string | undefined
+    userId: string
   ): Promise<ProviderEvaluation<number>> {
     const details = await this.evaluate(flagKey, userId);
     if (typeof details.value === 'number') {
@@ -134,13 +133,12 @@ export class FlagsmithV1Provider implements FeatureProvider<string> {
   async getObjectEvaluation<U extends object>(
     flagKey: string,
     _defaultValue: U,
-    userId: string | undefined
+    userId: string
   ): Promise<ProviderEvaluation<U>> {
     const details = await this.evaluate(flagKey, userId);
     if (typeof details.value === 'string') {
       // we may want to allow the parsing to be customized.
       try {
-        // TODO update this.
         return {
           value: JSON.parse(details.value),
           reason: Reason.DEFAULT,
@@ -157,12 +155,9 @@ export class FlagsmithV1Provider implements FeatureProvider<string> {
 
   private async evaluate(
     flagKey: string,
-    userId: string | undefined
+    userId: string
   ): Promise<ProviderEvaluation<boolean | string | number>> {
-    const value =
-      userId === ANONYMOUS
-        ? await flagsmith.getValue(flagKey, userId)
-        : await flagsmith.getValue(flagKey);
+    const value = await flagsmith.getValue(flagKey, userId);
     return {
       value,
       reason: Reason.UNKNOWN,

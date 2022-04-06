@@ -1,5 +1,5 @@
 import { IsString } from 'class-validator';
-import { InstallTemplateData } from './types';
+import { InstallTemplateData } from '../types';
 
 export class InstallTemplate implements InstallTemplateData {
   @IsString()

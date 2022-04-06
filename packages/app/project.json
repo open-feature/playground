@@ -1,15 +1,16 @@
 {
-  "root": "packages/api",
-  "sourceRoot": "packages/api/src",
+  "root": "packages/app",
+  "sourceRoot": "packages/app/src",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/api",
-        "main": "packages/api/src/main.ts",
-        "tsConfig": "packages/api/tsconfig.app.json"
+        "outputPath": "dist/packages/app",
+        "main": "packages/app/src/main.ts",
+        "tsConfig": "packages/app/tsconfig.app.json",
+        "assets": ["packages/app/src/assets"]
       },
       "configurations": {
         "production": {
@@ -18,8 +19,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "packages/api/src/environments/environment.ts",
-              "with": "packages/api/src/environments/environment.prod.ts"
+              "replace": "packages/app/src/environments/environment.ts",
+              "with": "packages/app/src/environments/environment.prod.ts"
             }
           ]
         }
@@ -28,7 +29,7 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
-        "buildTarget": "api:build",
+        "buildTarget": "app:build",
         "runtimeArgs": ["-r", "./scripts/tracing.js"]
       }
     },
@@ -41,7 +42,7 @@
         }
       ],
       "options": {
-        "buildTarget": "api:build",
+        "buildTarget": "app:build",
         "runtimeArgs": [
           "-r",
           "./scripts/tracing.js",
@@ -59,7 +60,7 @@
         }
       ],
       "options": {
-        "buildTarget": "api:build",
+        "buildTarget": "app:build",
         "runtimeArgs": [
           "-r",
           "./scripts/tracing.js",
@@ -77,7 +78,7 @@
         }
       ],
       "options": {
-        "buildTarget": "api:build",
+        "buildTarget": "app:build",
         "runtimeArgs": [
           "-r",
           "./scripts/tracing.js",
@@ -95,28 +96,13 @@
         }
       ],
       "options": {
-        "buildTarget": "api:build",
+        "buildTarget": "app:build",
         "runtimeArgs": [
           "-r",
           "./scripts/tracing.js",
           "-r",
           "./scripts/launchdarkly-demo.js"
         ]
-      }
-    },
-    "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["packages/api/**/*.ts"]
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/api"],
-      "options": {
-        "jestConfig": "packages/api/jest.config.js",
-        "passWithNoTests": true
       }
     },
     "flagsmith-v1-demo": {
@@ -128,7 +114,7 @@
         }
       ],
       "options": {
-        "buildTarget": "api:build",
+        "buildTarget": "app:build",
         "runtimeArgs": [
           "-r",
           "./scripts/tracing.js",
@@ -146,13 +132,21 @@
         }
       ],
       "options": {
-        "buildTarget": "api:build",
+        "buildTarget": "app:build",
         "runtimeArgs": [
           "-r",
           "./scripts/tracing.js",
           "-r",
           "./scripts/flagsmith-v2-demo.js"
         ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/app"],
+      "options": {
+        "jestConfig": "packages/app/jest.config.js",
+        "passWithNoTests": true
       }
     }
   },
@@ -162,7 +156,6 @@
     "js-cloudbees-provider",
     "js-launchdarkly-provider",
     "js-split-provider",
-    "js-flagsmith-v1-provider",
-    "js-flagsmith-v2-provider"
+    "js-flagsmith-v1-provider"
   ]
 }

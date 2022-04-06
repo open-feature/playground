@@ -15,6 +15,7 @@ export class LoggingHook implements Hook {
     console.log(
       `Running 'before' logger hook for flag: ${hookContext.flagKey}`
     );
+    console.log(JSON.stringify(hookContext.context, undefined, 2));
     return hookContext.context;
   }
 

@@ -52,7 +52,7 @@ export class OpenFeatureSplitProvider implements FeatureProvider<Consumer> {
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
       this.client.on(this.client.Event.SDK_READY, () => {
-        console.log(`Split Provider initialized`);
+        console.log(`${this.name} provider initialized`);
         resolve();
       });
     });
