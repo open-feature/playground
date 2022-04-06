@@ -23,7 +23,7 @@ export class FlagsmithV1Provider implements FeatureProvider {
     context: Context,
     options?: FlagEvaluationOptions
   ): Promise<boolean> {
-    const value = await flagsmith.hasFeature(flagId, context.userId);
+    const value = await flagsmith.hasFeature(flagId, context?.['userId'] as string);
     if (typeof value === 'boolean') {
       return value;
     } else {
@@ -40,7 +40,7 @@ export class FlagsmithV1Provider implements FeatureProvider {
     options?: FlagEvaluationOptions
   ): Promise<boolean> {
     // TODO: talk about this semantic difference.
-    const value = await flagsmith.getValue(flagId, context.userId);
+    const value = await flagsmith.getValue(flagId, context?.['userId'] as string);
     if (typeof value === 'boolean') {
       return value;
     } else {
@@ -56,7 +56,7 @@ export class FlagsmithV1Provider implements FeatureProvider {
     context: Context,
     options?: FlagEvaluationOptions
   ): Promise<string> {
-    const value = await flagsmith.getValue(flagId, context.userId);
+    const value = await flagsmith.getValue(flagId, context?.['userId'] as string);
     if (typeof value === 'string') {
       return value;
     } else {
@@ -72,7 +72,7 @@ export class FlagsmithV1Provider implements FeatureProvider {
     context: Context,
     options?: FlagEvaluationOptions
   ): Promise<number> {
-    const value = await flagsmith.getValue(flagId, context.userId);
+    const value = await flagsmith.getValue(flagId, context?.['userId'] as string);
     if (typeof value === 'number') {
       return value;
     } else {
@@ -88,7 +88,7 @@ export class FlagsmithV1Provider implements FeatureProvider {
     context: Context,
     options?: FlagEvaluationOptions
   ): Promise<T> {
-    const value = await flagsmith.getValue(flagId, context.userId);
+    const value = await flagsmith.getValue(flagId, context?.['userId'] as string);
     if (typeof value === 'string') {
       // we may want to allow the parsing to be customized.
       try {

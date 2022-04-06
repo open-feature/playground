@@ -24,7 +24,7 @@ export class OpenFeatureLaunchDarklyProvider implements FeatureProvider {
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
       this.client.once('ready', () => {
-        console.log(`${this.name}: initialization complete.`);
+        console.log(`${this.name} provider initialized`);
         resolve();
       });
     });
@@ -91,7 +91,7 @@ export class OpenFeatureLaunchDarklyProvider implements FeatureProvider {
     await this.initialized;
 
     // eventually we'll want a well-defined SDK context object, whose properties will be mapped appropriately to each provider. 
-    const userKey = context?.userId  ?? 'anonymous';
+    const userKey = context?.['userId'] as string ?? 'anonymous';
     const flagValue = await this.client.variation(flagId, { key: userKey, ...context }, defaultValue);
 
     console.log(`Flag '${flagId}' has a value of '${flagValue}'`);

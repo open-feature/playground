@@ -1,3 +1,4 @@
+import { openfeature } from '..';
 import { OpenFeatureAPI } from './api';
 import { GeneralError } from './errors';
 import { NOOP_FEATURE_PROVIDER } from './noop-provider';
@@ -9,7 +10,7 @@ import {
   FlagType,
   FlagValue,
   Hook,
-  HookContext,
+  HookContext
 } from './types';
 
 type OpenFeatureClientOptions = {
@@ -20,15 +21,18 @@ type OpenFeatureClientOptions = {
 export class OpenFeatureClient implements Client {
   readonly name?: string;
   readonly version?: string;
+  readonly context?: Partial<Context>;
 
   private _hooks: Hook[] = [];
 
   constructor(
     private readonly api: OpenFeatureAPI,
-    options: OpenFeatureClientOptions
+    options: OpenFeatureClientOptions,
+    context: Partial<Context> = {}
   ) {
     this.name = options.name;
     this.version = options.version;
+    this.context = context;
   }
 
   get hooks(): Hook[] {
@@ -36,7 +40,7 @@ export class OpenFeatureClient implements Client {
   }
 
   registerHooks(...hooks: Hook<FlagValue>[]): void {
-    this._hooks = hooks;
+    this._hooks = [...this._hooks, ...hooks];
   }
 
   isEnabled(
@@ -98,7 +102,8 @@ export class OpenFeatureClient implements Client {
       ...this.hooks,
       ...flagHooks,
     ];
-    context = context ?? {};
+    // merge client context with evaluation context
+    context = { ...this.context, ...this.getAttributes(), ...context  }
     let hookContext: HookContext = {
       flagId,
       flagType,
@@ -172,6 +177,10 @@ export class OpenFeatureClient implements Client {
     } finally {
       this.finallyEvaluation(allHooks, hookContext);
     }
+  }
+
+  getAttributes(): Context {
+    return openfeature.getStorage() as any;
   }
 
   private beforeEvaluation(

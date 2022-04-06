@@ -15,7 +15,7 @@ export class CloudbeesProvider implements FeatureProvider {
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
       Rox.setup(appKey, {}).then(() => {
-        console.log(`CloudBees Provider initialized: appKey ${appKey}`);
+        console.log(`${this.name} provider initialized`);
         resolve();
       });
     });

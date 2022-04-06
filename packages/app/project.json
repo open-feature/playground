@@ -1,0 +1,124 @@
+{
+  "root": "packages/app",
+  "sourceRoot": "packages/app/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/app",
+        "main": "packages/app/src/main.ts",
+        "tsConfig": "packages/app/tsconfig.app.json",
+        "assets": ["packages/app/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "packages/app/src/environments/environment.ts",
+              "with": "packages/app/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "app:build"
+      }
+    },
+    "env-var-demo": {
+      "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
+      "options": {
+        "buildTarget": "app:build",
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/env-var-demo.js"
+        ]
+      }
+    },
+    "cloudbees-demo": {
+      "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
+      "options": {
+        "buildTarget": "app:build",
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/cloudbees-demo.js"
+        ]
+      }
+    },
+    "split-demo": {
+      "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
+      "options": {
+        "buildTarget": "app:build",
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/split-demo.js"
+        ]
+      }
+    },
+    "launchdarkly-demo": {
+      "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
+      "options": {
+        "buildTarget": "app:build",
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/launchdarkly-demo.js"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/app"],
+      "options": {
+        "jestConfig": "packages/app/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": [
+    "js-env-provider",
+    "js-cloudbees-provider",
+    "js-launchdarkly-provider",
+    "js-split-provider",
+    "js-flagsmith-v1-provider"
+  ]
+}

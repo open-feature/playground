@@ -6,6 +6,7 @@ import { FlagValue, Hook, HookContext } from '@openfeature/openfeature-js';
 export class LoggingHook implements Hook {
   before(hookContext: HookContext) {
     console.log(`Running 'before' logger hook for flag: ${hookContext.flagId}`);
+    console.log(JSON.stringify(hookContext.context, undefined, 2))
     return hookContext.context;
   }
 

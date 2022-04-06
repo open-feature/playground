@@ -17,7 +17,7 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
       client.on(client.Event.SDK_READY, () => {
-        console.log(`Split Provider initialized`);
+        console.log(`${this.name} provider initialized`);
         resolve();
       });
     });
@@ -45,7 +45,7 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
     await this.initialized;
     // simply casting Context to Attributes is likely a bad idea.
     const stringValue = this.client.getTreatment(
-      context?.userId ?? 'anonymous',
+      context?.['userId'] as string ?? 'anonymous',
       flagId,
       context as Attributes
     );
@@ -77,7 +77,7 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
   ): Promise<string> {
     await this.initialized;
     return this.client.getTreatment(
-      context?.userId ?? 'anonymous',
+      context?.['userId'] as string ?? 'anonymous',
       flagId,
       context as Attributes
     );
@@ -91,7 +91,7 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
   ): Promise<number> {
     await this.initialized;
     const value = this.client.getTreatment(
-      context?.userId ?? 'anonymous',
+      context?.['userId'] as string ?? 'anonymous',
       flagId,
       context as Attributes
     );
@@ -106,7 +106,7 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
   ): Promise<T> {
     await this.initialized;
     const value = this.client.getTreatment(
-      context?.userId ?? 'anonymous',
+      context?.['userId'] as string?? 'anonymous',
       flagId,
       context as Attributes
     );
