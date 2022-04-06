@@ -1,24 +1,34 @@
 import {
   Context,
+  ContextTransformer,
   FeatureProvider,
   FlagEvaluationOptions,
   FlagTypeError,
   FlagValue,
-  FlagValueParseError
+  FlagValueParseError,
+  noopContextTransformer,
+  ProviderOptions
 } from '@openfeature/openfeature-js';
 import { init, LDClient } from 'launchdarkly-node-server-sdk';
 
+export interface LaunchDarklyProviderOptions extends ProviderOptions {
+  sdkKey: string;
+}
+
 /**
- * A comically primitive LaunchDarkly provider demo
+ * A primitive LaunchDarkly provider
  */
 export class OpenFeatureLaunchDarklyProvider implements FeatureProvider {
   name = 'LaunchDarkly';
+  readonly contextTransformer: ContextTransformer;
+
   private client: LDClient;
   private initialized: Promise<void>;
 
-  constructor(sdkKey: string) {
+  constructor(options: LaunchDarklyProviderOptions) {
 
-    this.client = init(sdkKey);
+    this.client = init(options.sdkKey);
+    this.contextTransformer = options.contextTransformer || noopContextTransformer;
 
     // we don't expose any init events at the moment (we might later) so for now, lets create a private
     // promise to await into before we evaluate any flags.

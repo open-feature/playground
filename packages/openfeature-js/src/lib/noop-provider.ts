@@ -1,8 +1,11 @@
 import { Context, FeatureProvider, FlagEvaluationOptions } from './types';
+import { noopContextTransformer } from './utils';
 
 class NoopFeatureProvider implements FeatureProvider {
 
   readonly name = 'No-op Provider';
+
+  contextTransformer = noopContextTransformer;
 
   isEnabled(id: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
     return Promise.resolve(defaultValue);

@@ -1,4 +1,5 @@
 import { FlagTypeError, FlagValueParseError } from './errors';
+import { Context, ContextTransformer } from './types';
 
 export const parseValidNumber = (stringValue: string) => {
   const result = Number.parseFloat(stringValue);
@@ -38,4 +39,4 @@ export const parseValidJsonObject = <T extends object>(stringValue: string): T =
   }
 }
 
-
+export const noopContextTransformer: ContextTransformer = (context: Context) => context;

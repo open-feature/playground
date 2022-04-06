@@ -42,7 +42,12 @@
       ],
       "options": {
         "buildTarget": "api:build",
-        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/env-var-demo.js"]
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/env-var-demo.js"
+        ]
       }
     },
     "cloudbees-demo": {
@@ -55,7 +60,12 @@
       ],
       "options": {
         "buildTarget": "api:build",
-        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/cloudbees-demo.js"]
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/cloudbees-demo.js"
+        ]
       }
     },
     "split-demo": {
@@ -68,7 +78,12 @@
       ],
       "options": {
         "buildTarget": "api:build",
-        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/split-demo.js"]
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/split-demo.js"
+        ]
       }
     },
     "launchdarkly-demo": {
@@ -81,7 +96,12 @@
       ],
       "options": {
         "buildTarget": "api:build",
-        "runtimeArgs": ["-r", "./scripts/tracing.js", "-r", "./scripts/launchdarkly-demo.js"]
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/launchdarkly-demo.js"
+        ]
       }
     },
     "lint": {
@@ -98,6 +118,24 @@
         "jestConfig": "packages/api/jest.config.js",
         "passWithNoTests": true
       }
+    },
+    "flagsmith-v1-demo": {
+      "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
+      "options": {
+        "buildTarget": "api:build",
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/flagsmith-v1-demo.js"
+        ]
+      }
     }
   },
   "tags": [],
@@ -105,6 +143,7 @@
     "js-env-provider",
     "js-cloudbees-provider",
     "js-launchdarkly-provider",
-    "js-split-provider"
+    "js-split-provider",
+    "js-flagsmith-v1-provider"
   ]
 }

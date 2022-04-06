@@ -111,12 +111,13 @@ export class OpenFeatureClient implements Client {
 
     try {
       hookContext = this.beforeEvaluation(allHooks, hookContext);
+      const transformedContext = provider.contextTransformer(context);
       switch (flagType) {
         case 'enabled': {
           valuePromise = provider.isEnabled(
             flagId,
             defaultValue as boolean,
-            context,
+            transformedContext,
             options
           );
           break;
@@ -125,7 +126,7 @@ export class OpenFeatureClient implements Client {
           valuePromise = provider.getBooleanValue(
             flagId,
             defaultValue as boolean,
-            context,
+            transformedContext,
             options
           );
           break;
@@ -134,7 +135,7 @@ export class OpenFeatureClient implements Client {
           valuePromise = provider.getStringValue(
             flagId,
             defaultValue as string,
-            context,
+            transformedContext,
             options
           );
           break;
@@ -143,7 +144,7 @@ export class OpenFeatureClient implements Client {
           valuePromise = provider.getNumberValue(
             flagId,
             defaultValue as number,
-            context,
+            transformedContext,
             options
           );
           break;
@@ -152,7 +153,7 @@ export class OpenFeatureClient implements Client {
           valuePromise = provider.getObjectValue(
             flagId,
             defaultValue as object,
-            context,
+            transformedContext,
             options
           );
           break;

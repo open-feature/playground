@@ -1,27 +1,40 @@
 import {
   Context,
+  ContextTransformer,
   FeatureProvider,
   FlagEvaluationOptions,
   FlagTypeError,
   parseValidJsonObject,
   parseValidNumber,
+  ProviderOptions
 } from '@openfeature/openfeature-js';
 import type { IClient, Attributes } from '@splitsoftware/splitio/types/splitio';
+import { noopContextTransformer } from '@openfeature/openfeature-js';
+
+export interface SplitProviderOptions extends ProviderOptions {
+  splitClient: IClient;
+}
 
 export class OpenFeatureSplitProvider implements FeatureProvider {
   name = 'split';
+  readonly contextTransformer: ContextTransformer;
   private initialized: Promise<void>;
-
-  constructor(private readonly client: IClient) {
+  private client: IClient;
+  
+  constructor(options: SplitProviderOptions) {
+    this.client = options.splitClient;
+    this.contextTransformer = options.contextTransformer || noopContextTransformer;
     // we don't expose any init events at the moment (we might later) so for now, lets create a private
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
-      client.on(client.Event.SDK_READY, () => {
+      this.client.on(this.client.Event.SDK_READY, () => {
         console.log(`Split Provider initialized`);
         resolve();
       });
     });
   }
+
+  
 
   async isEnabled(
     flagId: string,

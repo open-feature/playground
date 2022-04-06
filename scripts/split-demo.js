@@ -11,11 +11,11 @@ const { SplitFactory } = require('@splitsoftware/splitio');
  */
 console.log('Registering the OpenFeature Split Provider');
 openfeature.registerProvider(
-  new OpenFeatureSplitProvider(
-    SplitFactory({
+  new OpenFeatureSplitProvider({
+    splitClient: SplitFactory({
       core: {
         authorizationKey: process.env.SPLIT_KEY ?? '',
       },
     }).client()
-  )
+  })
 );
