@@ -69,8 +69,6 @@ export class OpenFeatureLaunchDarklyProvider
     user: LDUser,
     options?: FlagEvaluationOptions
   ): Promise<boolean> {
-    console.log('user');
-    console.log(user);
     const value = await this.evaluateFlag(flagId, defaultValue, user);
     if (typeof value === 'boolean') {
       return value;
