@@ -12,5 +12,9 @@ const {
  */
 console.log('Registering the OpenFeature flagsmith-v2 provider');
 openfeature.registerProvider(new FlagsmithV2Provider({
-  client: new Flagsmith({ environmentKey: process.env.FLAGSMITH_ENV_KEY})
+  client: new Flagsmith({
+    environmentKey: process.env.FLAGSMITH_ENV_KEY,
+    enableLocalEvaluation: true,
+    environmentRefreshIntervalSeconds: 5
+  })
 }));

@@ -16,6 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "outDir": "lib",
+    "strictNullChecks": true,
     "paths": {
       "@openfeature/extra": ["packages/openfeature-extra/src/index.ts"],
       "@openfeature/fibonacci": ["packages/fibonacci/src/index.ts"],

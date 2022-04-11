@@ -83,8 +83,8 @@ export interface FeatureProvider<T = unknown> {
    isEnabled(
     flagId: string,
     defaultValue: boolean,
-    transformedContext?: T,
-    options?: FlagEvaluationOptions
+    transformedContext: T | undefined,
+    options?: FlagEvaluationOptions | undefined
   ): Promise<boolean>;
 
   /**
@@ -93,8 +93,8 @@ export interface FeatureProvider<T = unknown> {
   getBooleanValue(
     flagId: string,
     defaultValue: boolean,
-    transformedContext?: T,
-    options?: FlagEvaluationOptions
+    transformedContext: T | undefined,
+    options: FlagEvaluationOptions | undefined
   ): Promise<boolean>;
 
   /**
@@ -103,8 +103,8 @@ export interface FeatureProvider<T = unknown> {
   getStringValue(
     flagId: string,
     defaultValue: string,
-    transformedContext?: T,
-    options?: FlagEvaluationOptions
+    transformedContext: T | undefined,
+    options: FlagEvaluationOptions | undefined
   ): Promise<string>;
 
   /**
@@ -113,8 +113,8 @@ export interface FeatureProvider<T = unknown> {
   getNumberValue(
     flagId: string,
     defaultValue: number,
-    transformedContext?: T,
-    options?: FlagEvaluationOptions
+    transformedContext: T | undefined,
+    options: FlagEvaluationOptions | undefined
   ): Promise<number>;
 
   /**
@@ -123,8 +123,8 @@ export interface FeatureProvider<T = unknown> {
   getObjectValue<U extends object>(
     flagId: string,
     defaultValue: U,
-    transformedContext?: T,
-    options?: FlagEvaluationOptions
+    transformedContext: T | undefined,
+    options: FlagEvaluationOptions | undefined
   ): Promise<U>;
 }
 

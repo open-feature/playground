@@ -1,9 +1,12 @@
 import {
-  Context, FeatureProvider,
+  Context,
+  FeatureProvider,
   FlagEvaluationOptions,
   FlagTypeError,
-  FlagValueParseError, noopContextTransformer, parseValidBoolean,
-  parseValidNumber
+  FlagValueParseError,
+  noopContextTransformer,
+  parseValidBoolean,
+  parseValidNumber,
 } from '@openfeature/openfeature-js';
 import { constantCase } from 'change-case';
 

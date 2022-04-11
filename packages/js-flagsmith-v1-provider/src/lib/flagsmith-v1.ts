@@ -9,7 +9,7 @@ import {
 } from '@openfeature/openfeature-js';
 import * as flagsmith from 'flagsmith-nodejs'
 
-export interface FlagsmithProviderOptions extends ProviderOptions<Promise<string | undefined>> {
+export interface FlagsmithProviderOptions extends ProviderOptions<Promise<string & undefined>> {
   environmentID: string;
 }
 
@@ -20,7 +20,7 @@ export interface FlagsmithProviderOptions extends ProviderOptions<Promise<string
  * 
  * We may want to generalize this concept, and provide a default for all providers.
  */
-const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context): Promise<string | undefined> => {
+const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context) => {
   if (typeof context?.userId === 'string') {
     const promises = Object.keys(context).map((key) => {
       if (
@@ -66,7 +66,7 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
   async isEnabled(
     flagId: string,
     _defaultValue: boolean,
-    userId: string,
+    userId: string | undefined,
     _options?: FlagEvaluationOptions
   ): Promise<boolean> {
     const value = userId
@@ -84,7 +84,7 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
   async getBooleanValue(
     flagId: string,
     _defaultValue: boolean,
-    userId: string,
+    userId: string | undefined,
     _options?: FlagEvaluationOptions
   ): Promise<boolean> {
     const value = await this.getValue(flagId, userId);
@@ -100,7 +100,7 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
   async getStringValue(
     flagId: string,
     _defaultValue: string,
-    userId: string,
+    userId: string | undefined,
     _options?: FlagEvaluationOptions
   ): Promise<string> {
     const value = await this.getValue(flagId, userId);
@@ -116,7 +116,7 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
   async getNumberValue(
     flagId: string,
     _defaultValue: number,
-    userId: string,
+    userId: string | undefined,
     _options?: FlagEvaluationOptions
   ): Promise<number> {
     const value = await this.getValue(flagId, userId);
@@ -132,7 +132,7 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
   async getObjectValue<T extends object>(
     flagId: string,
     _defaultValue: T,
-    userId: string,
+    userId: string | undefined,
     _options?: FlagEvaluationOptions
   ): Promise<T> {
     const value = await this.getValue(flagId, userId);
@@ -150,7 +150,7 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
     }
   }
 
-  private getValue(flagId: string, userId: string) {
+  private getValue(flagId: string, userId: string | undefined) {
     return userId
       ? flagsmith.getValue(flagId, userId)
       : flagsmith.getValue(flagId);

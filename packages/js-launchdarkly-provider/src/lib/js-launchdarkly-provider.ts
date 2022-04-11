@@ -5,7 +5,8 @@ import {
   FlagEvaluationOptions,
   FlagTypeError,
   FlagValue,
-  FlagValueParseError, ProviderOptions
+  FlagValueParseError,
+  ProviderOptions,
 } from '@openfeature/openfeature-js';
 import { init, LDClient, LDUser } from 'launchdarkly-node-server-sdk';
 
@@ -20,8 +21,9 @@ const DEFAULT_CONTEXT_TRANSFORMER = (context: Context): LDUser => {
   const { userId, ...attributes } = context;
   return {
     key: userId || 'anonymous',
+    anonymous: userId ? false : true,
     // later, a well-defined set of standard attributes in Openfeature should be mapped to the appropriate standard attributes LaunchDarkly.
-    custom: attributes
+    custom: attributes,
   };
 };
 
@@ -119,7 +121,7 @@ export class OpenFeatureLaunchDarklyProvider
   async getObjectValue<T extends object>(
     flagId: string,
     defaultValue: T,
-    user: LDUser,
+    user: LDUser
   ): Promise<T> {
     const value = await this.evaluateFlag(
       flagId,
@@ -152,16 +154,12 @@ export class OpenFeatureLaunchDarklyProvider
   private async evaluateFlag(
     flagId: string,
     defaultValue: FlagValue,
-    user: LDUser,
+    user: LDUser
   ): Promise<boolean | number | string> {
     // await the initialization before actually calling for a flag.
     await this.initialized;
 
-    const flagValue = await this.client.variation(
-      flagId,
-      user,
-      defaultValue
-    );
+    const flagValue = await this.client.variation(flagId, user, defaultValue);
 
     console.log(`Flag '${flagId}' has a value of '${flagValue}'`);
     return flagValue;
