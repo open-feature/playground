@@ -7,36 +7,26 @@ import {
   FlagValueParseError,
   ProviderOptions,
 } from '@openfeature/openfeature-js';
-import * as flagsmith from 'flagsmith-nodejs'
+import Flagsmith from 'flagsmithv2';
 
-export interface FlagsmithProviderOptions extends ProviderOptions<Promise<string | undefined>> {
-  environmentID: string;
+type Identity = {
+  identifier?: string;
+  traits?: { [key: string]: boolean | number | string };
+}
+
+export interface FlagsmithV2ProviderOptions extends ProviderOptions<Identity> {
+  client: Flagsmith;
 }
 
 /**
- * Additional custom properties in Flagsmith are associated with the user (traits), and not passed directly to the flag evaluation.
- * This is a very basic transformer function that defines Flagsmith traits based on the OpenFeature context. Note that it 
- * doesn't handle nested properties.
- * 
- * We may want to generalize this concept, and provide a default for all providers.
+ * Transform the context into an object useful for the v2 Flagsmith API, an identifier string with a "dictionary" of traits.
  */
-const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context): Promise<string | undefined> => {
-  if (typeof context?.userId === 'string') {
-    const promises = Object.keys(context).map((key) => {
-      if (
-        key !== 'userId' &&
-        (typeof context[key] === 'boolean' ||
-          typeof context[key] === 'string' ||
-          typeof context[key] === 'number')
-      ) {
-        // there's a bug in Flagsmith's typings, this should return a promise.
-        return flagsmith.setTrait(context.userId as string, key, context[key]);
-      }
-      return Promise.resolve();
-    });
-    await Promise.all(promises);
-  }
-  return context?.userId;
+ const DEFAULT_CONTEXT_TRANSFORMER = (context: Context): Identity => {
+  const { userId, ...traits } = context;
+  return {
+    identifier: userId,
+    traits
+  };
 };
 
 /*
@@ -48,15 +38,14 @@ const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context): Promise<string | u
  * NOTE: Flagsmith defaults values to `null` and booleans to false. In this provider implementation, this will result in
  * a `FlagTypeError` for undefined flags, which in turn will result in the default passed to OpenFeature being used.
  */
-export class FlagsmithV1Provider implements FeatureProvider<string | undefined> {
-  name = 'flagsmith-v1';
-  readonly contextTransformer: ContextTransformer<Promise<string | undefined>>;
+export class FlagsmithV2Provider implements FeatureProvider<Identity> {
+  name = 'flagsmith-v2';
+  readonly contextTransformer: ContextTransformer<Identity>;
+  private client: Flagsmith;
 
-  constructor(options: FlagsmithProviderOptions) {
+  constructor(options: FlagsmithV2ProviderOptions) {
+    this.client = options.client;
     this.contextTransformer = options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
-    flagsmith.init({
-      environmentID: options.environmentID
-    });
     console.log(`${this.name} provider initialized`);
   }
 
@@ -66,12 +55,12 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
   async isEnabled(
     flagId: string,
     _defaultValue: boolean,
-    userId: string,
+    identity: Identity,
     _options?: FlagEvaluationOptions
   ): Promise<boolean> {
-    const value = userId
-      ? await flagsmith.hasFeature(flagId, userId)
-      : await flagsmith.hasFeature(flagId);
+    const value = identity.identifier
+      ? (await this.client.getIdentityFlags(identity.identifier, identity.traits)).isFeatureEnabled(flagId)
+      : (await this.client.getEnvironmentFlags()).isFeatureEnabled(flagId);
     if (typeof value === 'boolean') {
       return value;
     } else {
@@ -84,10 +73,10 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
   async getBooleanValue(
     flagId: string,
     _defaultValue: boolean,
-    userId: string,
+    identity: Identity,
     _options?: FlagEvaluationOptions
   ): Promise<boolean> {
-    const value = await this.getValue(flagId, userId);
+    const value = await this.getValue(flagId, identity);
     if (typeof value === 'boolean') {
       return value;
     } else {
@@ -100,10 +89,10 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
   async getStringValue(
     flagId: string,
     _defaultValue: string,
-    userId: string,
+    identity: Identity,
     _options?: FlagEvaluationOptions
   ): Promise<string> {
-    const value = await this.getValue(flagId, userId);
+    const value = await this.getValue(flagId, identity);
     if (typeof value === 'string') {
       return value;
     } else {
@@ -116,10 +105,10 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
   async getNumberValue(
     flagId: string,
     _defaultValue: number,
-    userId: string,
+    identity: Identity,
     _options?: FlagEvaluationOptions
   ): Promise<number> {
-    const value = await this.getValue(flagId, userId);
+    const value = await this.getValue(flagId, identity);
     if (typeof value === 'number') {
       return value;
     } else {
@@ -132,10 +121,10 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
   async getObjectValue<T extends object>(
     flagId: string,
     _defaultValue: T,
-    userId: string,
+    identity: Identity,
     _options?: FlagEvaluationOptions
   ): Promise<T> {
-    const value = await this.getValue(flagId, userId);
+    const value = await this.getValue(flagId, identity);
     if (typeof value === 'string') {
       // we may want to allow the parsing to be customized.
       try {
@@ -150,10 +139,10 @@ export class FlagsmithV1Provider implements FeatureProvider<string | undefined> 
     }
   }
 
-  private getValue(flagId: string, userId: string) {
-    return userId
-      ? flagsmith.getValue(flagId, userId)
-      : flagsmith.getValue(flagId);
+  private async getValue(flagId: string, identity: Identity) {
+    return identity.identifier
+    ? (await this.client.getIdentityFlags(identity.identifier, identity.traits)).getFeatureValue(flagId)
+    : (await this.client.getEnvironmentFlags()).getFeatureValue(flagId);
   }
 
   private getFlagTypeErrorMessage(

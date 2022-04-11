@@ -136,6 +136,24 @@
           "./scripts/flagsmith-v1-demo.js"
         ]
       }
+    },
+    "flagsmith-v2-demo": {
+      "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
+      "options": {
+        "buildTarget": "api:build",
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/flagsmith-v2-demo.js"
+        ]
+      }
     }
   },
   "tags": [],
@@ -144,6 +162,7 @@
     "js-cloudbees-provider",
     "js-launchdarkly-provider",
     "js-split-provider",
-    "js-flagsmith-v1-provider"
+    "js-flagsmith-v1-provider",
+    "js-flagsmith-v2-provider"
   ]
 }

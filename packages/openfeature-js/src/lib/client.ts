@@ -111,7 +111,7 @@ export class OpenFeatureClient implements Client {
 
     try {
       hookContext = this.beforeEvaluation(allHooks, hookContext);
-      const transformedContext = provider.contextTransformer(context);
+      const transformedContext = await provider.contextTransformer(context);
       switch (flagType) {
         case 'enabled': {
           valuePromise = provider.isEnabled(

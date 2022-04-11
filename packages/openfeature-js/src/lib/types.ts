@@ -76,7 +76,7 @@ export type ContextTransformer<T = unknown> = (context: Context) => T
  */
 export interface FeatureProvider<T = unknown> {
   name: string;
-  contextTransformer: ContextTransformer<T>;
+  contextTransformer: ContextTransformer<Promise<T> | T>;
   /**
    * Resolve a flag's activity. In some providers, this may be distinct from getting a boolean flag value.
    */

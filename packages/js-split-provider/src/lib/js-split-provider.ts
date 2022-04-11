@@ -15,15 +15,32 @@ export interface SplitProviderOptions extends ProviderOptions {
   splitClient: IClient;
 }
 
-export class OpenFeatureSplitProvider implements FeatureProvider {
+/**
+ * Transform the context into an object useful for the Split API, an key string with arbitrary Split "Attributes".
+ */
+ const DEFAULT_CONTEXT_TRANSFORMER = (context: Context): Consumer => {
+  const { userId, ...attributes } = context;
+  return {
+    key: userId || 'anonymous',
+    attributes
+  };
+};
+
+type Consumer = {
+  key: string;
+  attributes: Attributes
+};
+
+export class OpenFeatureSplitProvider implements FeatureProvider<Consumer> {
   name = 'split';
-  readonly contextTransformer: ContextTransformer;
+  readonly contextTransformer: ContextTransformer<Consumer>;
   private initialized: Promise<void>;
   private client: IClient;
   
   constructor(options: SplitProviderOptions) {
     this.client = options.splitClient;
-    this.contextTransformer = options.contextTransformer || noopContextTransformer;
+    // f contextTransformer to map context to split "Attributes".
+    this.contextTransformer = DEFAULT_CONTEXT_TRANSFORMER || noopContextTransformer;
     // we don't expose any init events at the moment (we might later) so for now, lets create a private
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
@@ -39,10 +56,10 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
   async isEnabled(
     flagId: string,
     defaultValue: boolean,
-    context: Context,
+    keyWithAttributes: Consumer,
     options?: FlagEvaluationOptions
   ): Promise<boolean> {
-    return this.getBooleanValue(flagId, defaultValue, context, options);
+    return this.getBooleanValue(flagId, defaultValue, keyWithAttributes, options);
   }
 
   /**
@@ -52,15 +69,15 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
   async getBooleanValue(
     flagId: string,
     defaultValue: boolean,
-    context: Context,
+    keyWithAttributes: Consumer,
     options?: FlagEvaluationOptions
   ): Promise<boolean> {
     await this.initialized;
     // simply casting Context to Attributes is likely a bad idea.
     const stringValue = this.client.getTreatment(
-      context?.userId ?? 'anonymous',
+      keyWithAttributes.key,
       flagId,
-      context as Attributes
+      keyWithAttributes.attributes
     );
     const asUnknown = stringValue as unknown;
 
@@ -85,28 +102,28 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
   async getStringValue(
     flagId: string,
     defaultValue: string,
-    context: Context,
+    keyWithAttributes: Consumer,
     options?: FlagEvaluationOptions
   ): Promise<string> {
     await this.initialized;
     return this.client.getTreatment(
-      context?.userId ?? 'anonymous',
+      keyWithAttributes.key,
       flagId,
-      context as Attributes
+      keyWithAttributes.attributes
     );
   }
 
   async getNumberValue(
     flagId: string,
     defaultValue: number,
-    context: Context,
+    keyWithAttributes: Consumer,
     options?: FlagEvaluationOptions
   ): Promise<number> {
     await this.initialized;
     const value = this.client.getTreatment(
-      context?.userId ?? 'anonymous',
+      keyWithAttributes.key,
       flagId,
-      context as Attributes
+      keyWithAttributes.attributes
     );
     return parseValidNumber(value);
   }
@@ -114,14 +131,14 @@ export class OpenFeatureSplitProvider implements FeatureProvider {
   async getObjectValue<T extends object>(
     flagId: string,
     defaultValue: T,
-    context: Context,
+    keyWithAttributes: Consumer,
     options?: FlagEvaluationOptions
   ): Promise<T> {
     await this.initialized;
     const value = this.client.getTreatment(
-      context?.userId ?? 'anonymous',
+      keyWithAttributes.key,
       flagId,
-      context as Attributes
+      keyWithAttributes.attributes
     );
     return parseValidJsonObject(value);
   }

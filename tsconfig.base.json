@@ -26,6 +26,9 @@
       "@openfeature/js-flagsmith-v1-provider": [
         "packages/js-flagsmith-v1-provider/src/index.ts"
       ],
+      "@openfeature/js-flagsmith-v2-provider": [
+        "packages/js-flagsmith-v2-provider/src/index.ts"
+      ],
       "@openfeature/js-launchdarkly-provider": [
         "packages/js-launchdarkly-provider/src/index.ts"
       ],
