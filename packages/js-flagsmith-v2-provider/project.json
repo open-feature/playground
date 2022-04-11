@@ -1,0 +1,39 @@
+{
+  "root": "packages/js-flagsmith-v2-provider",
+  "sourceRoot": "packages/js-flagsmith-v2-provider/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/js-flagsmith-v2-provider",
+        "main": "packages/js-flagsmith-v2-provider/src/index.ts",
+        "tsConfig": "packages/js-flagsmith-v2-provider/tsconfig.lib.json"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/js-flagsmith-v2-provider/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/js-flagsmith-v2-provider"],
+      "options": {
+        "jestConfig": "packages/js-flagsmith-v2-provider/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

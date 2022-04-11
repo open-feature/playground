@@ -8,7 +8,9 @@
     "cloudbees-demo": "nx run api:cloudbees-demo",
     "env-var-demo": "nx run api:env-var-demo",
     "split-demo": "nx run api:split-demo",
-    "launchdarkly-demo": "nx run api:launchdarkly-demo"
+    "launchdarkly-demo": "nx run api:launchdarkly-demo",
+    "flagsmith-v1-demo": "nx run api:flagsmith-v1-demo",
+    "flagsmith-v2-demo": "nx run api:flagsmith-v2-demo"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +23,8 @@
     "change-case": "^4.1.2",
     "express": "4.17.2",
     "express-validator": "^6.14.0",
+    "flagsmith-nodejs": "^1.1.1",
+    "flagsmithv2": "npm:flagsmith-nodejs@^2.0.0-beta.1",
     "launchdarkly-node-server-sdk": "^6.4.0",
     "tslib": "^2.3.1"
   },

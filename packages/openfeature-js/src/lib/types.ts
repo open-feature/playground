@@ -1,4 +1,4 @@
-export type Context = { userId?: string } & Record<string, unknown>;
+export type Context = { userId?: string } & Record<string, string | number | boolean>;
 
 export type FlagType = 'enabled' | 'boolean' | 'string' | 'number' | 'json';
 
@@ -7,8 +7,7 @@ export interface FlagEvaluationOptions {
 }
 
 /**
- * This interface is common to both Providers and the SDK presented to the Application Author.
- * This is incidental, and may not continue to be the case, especially as additional configuration is provided.
+ * This interface is presented to the application author
  */
 export interface Features {
   /**
@@ -64,14 +63,79 @@ export interface Features {
   ): Promise<T>;
 }
 
-export interface FeatureProvider extends Features {
+export type ContextTransformer<T = unknown> = (context: Context) => T
+
+/**
+ * Interface that providers must implement to resolve flag values for their particular
+ * backend or vendor.
+ * 
+ * Implementation for resolving all the required flag types must be defined.
+ * 
+ * Additionally, a ContextTransformer function that transforms the OpenFeature context to the requisite user/context/attribute representation (typeof T)
+ * must also be implemented. This function will run immediately before the flag value resolver functions, appropriately transforming the context.
+ */
+export interface FeatureProvider<T = unknown> {
   name: string;
+  contextTransformer: ContextTransformer<Promise<T> | T>;
+  /**
+   * Resolve a flag's activity. In some providers, this may be distinct from getting a boolean flag value.
+   */
+   isEnabled(
+    flagId: string,
+    defaultValue: boolean,
+    transformedContext: T | undefined,
+    options?: FlagEvaluationOptions | undefined
+  ): Promise<boolean>;
+
+  /**
+   * Resolve a boolean flag value. In some providers, this may be distinct from getting a flag's activity.
+   */
+  getBooleanValue(
+    flagId: string,
+    defaultValue: boolean,
+    transformedContext: T | undefined,
+    options: FlagEvaluationOptions | undefined
+  ): Promise<boolean>;
+
+  /**
+   * Resolve a string flag value.
+   */
+  getStringValue(
+    flagId: string,
+    defaultValue: string,
+    transformedContext: T | undefined,
+    options: FlagEvaluationOptions | undefined
+  ): Promise<string>;
+
+  /**
+   * Resolve a numeric flag value.
+   */
+  getNumberValue(
+    flagId: string,
+    defaultValue: number,
+    transformedContext: T | undefined,
+    options: FlagEvaluationOptions | undefined
+  ): Promise<number>;
+
+  /**
+   * Resolve an object flag value.
+   */
+  getObjectValue<U extends object>(
+    flagId: string,
+    defaultValue: U,
+    transformedContext: T | undefined,
+    options: FlagEvaluationOptions | undefined
+  ): Promise<U>;
 }
 
 // consider this name.
 export interface HasHooks {
   registerHooks(...hooks: Hook[]): void;
   get hooks(): Hook[];
+}
+
+export interface ProviderOptions<T = unknown> {
+  contextTransformer?: ContextTransformer<T>;
 }
 
 export interface Client extends HasHooks, Features {

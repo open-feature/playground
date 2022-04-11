@@ -4,6 +4,7 @@ import {
   FlagEvaluationOptions,
   FlagTypeError,
   FlagValueParseError,
+  noopContextTransformer,
   parseValidBoolean,
   parseValidNumber,
 } from '@openfeature/openfeature-js';
@@ -11,6 +12,7 @@ import { constantCase } from 'change-case';
 
 export class OpenFeatureEnvProvider implements FeatureProvider {
   name = ' environment variable';
+  readonly contextTransformer = noopContextTransformer;
 
   isEnabled(
     flagId: string,
@@ -23,9 +25,9 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
 
   getBooleanValue(
     flagId: string,
-    defaultValue: boolean,
-    context: Context,
-    options?: FlagEvaluationOptions
+    _defaultValue: boolean,
+    _context: Context,
+    _options?: FlagEvaluationOptions
   ): Promise<boolean> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
@@ -37,9 +39,9 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
 
   getStringValue(
     flagId: string,
-    defaultValue: string,
-    context: Context,
-    options?: FlagEvaluationOptions
+    _defaultValue: string,
+    _context: Context,
+    _options?: FlagEvaluationOptions
   ): Promise<string> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
@@ -51,9 +53,9 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
 
   getNumberValue(
     flagId: string,
-    defaultValue: number,
-    context: Context,
-    options?: FlagEvaluationOptions
+    _defaultValue: number,
+    _context: Context,
+    _options?: FlagEvaluationOptions
   ): Promise<number> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
@@ -65,9 +67,9 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
 
   getObjectValue<T extends object>(
     flagId: string,
-    defaultValue: T,
-    context: Context,
-    options?: FlagEvaluationOptions
+    _defaultValue: T,
+    _context: Context,
+    _options?: FlagEvaluationOptions
   ): Promise<T> {
     const stringValue = this.getVarValue(flagId);
     if (stringValue) {
