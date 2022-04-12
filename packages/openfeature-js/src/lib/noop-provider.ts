@@ -1,26 +1,57 @@
-import { Context, FeatureProvider, FlagEvaluationOptions } from './types';
+import { FeatureProvider, ProviderEvaluation, Reason } from './types';
 import { noopContextTransformer } from './utils';
 
 class NoopFeatureProvider implements FeatureProvider {
-
+  isEnabledEvaluation(
+    _: string,
+    defaultValue: boolean
+  ): Promise<ProviderEvaluation<boolean>> {
+    return Promise.resolve({
+      value: defaultValue,
+      reason: Reason.DEFAULT,
+    });
+  }
   readonly name = 'No-op Provider';
 
   contextTransformer = noopContextTransformer;
 
-  isEnabled(id: string, defaultValue: boolean, context: Context | undefined, options?: FlagEvaluationOptions): Promise<boolean> {
+  isEnabled(_: string, defaultValue: boolean): Promise<boolean> {
     return Promise.resolve(defaultValue);
   }
-  getBooleanValue(flagId: string, defaultValue: boolean, context: Context | undefined, options?: FlagEvaluationOptions): Promise<boolean> {
-    return Promise.resolve(defaultValue);
+
+  getBooleanEvaluation(
+    _: string,
+    defaultValue: boolean
+  ): Promise<ProviderEvaluation<boolean>> {
+    return this.noOp(defaultValue);
   }
-  getStringValue(flagId: string, defaultValue: string, context: Context | undefined, options?: FlagEvaluationOptions): Promise<string> {
-    return Promise.resolve(defaultValue);
+
+  getStringEvaluation(
+    _: string,
+    defaultValue: string
+  ): Promise<ProviderEvaluation<string>> {
+    return this.noOp(defaultValue);
   }
-  getNumberValue(flagId: string, defaultValue: number, context: Context | undefined, options?: FlagEvaluationOptions): Promise<number> {
-    return Promise.resolve(defaultValue);
+
+  getNumberEvaluation(
+    _: string,
+    defaultValue: number
+  ): Promise<ProviderEvaluation<number>> {
+    return this.noOp(defaultValue);
   }
-  getObjectValue<T extends object>(flagId: string, defaultValue: T, context: Context | undefined, options?: FlagEvaluationOptions): Promise<T> {
-    return Promise.resolve(defaultValue);
+
+  getObjectEvaluation<T extends object>(
+    _: string,
+    defaultValue: T
+  ): Promise<ProviderEvaluation<T>> {
+    return this.noOp<T>(defaultValue);
+  }
+
+  private noOp<T>(defaultValue: T) {
+    return Promise.resolve({
+      value: defaultValue,
+      reason: Reason.DEFAULT,
+    });
   }
 }
 

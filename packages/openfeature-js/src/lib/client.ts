@@ -5,11 +5,14 @@ import {
   Client,
   Context,
   FeatureProvider,
+  FlagEvaluationDetails,
   FlagEvaluationOptions,
-  FlagType,
   FlagValue,
+  FlagValueType,
   Hook,
   HookContext,
+  ProviderEvaluation,
+  Reason,
 } from './types';
 
 type OpenFeatureClientOptions = {
@@ -39,58 +42,117 @@ export class OpenFeatureClient implements Client {
     this._hooks = hooks;
   }
 
-  isEnabled(
-    flagId: string,
+  async isEnabled(
+    flagKey: string,
     defaultValue: boolean,
-    context: Context,
+    context?: Context,
     options?: FlagEvaluationOptions
   ): Promise<boolean> {
-    return this.evaluateFlag('enabled', flagId, defaultValue, context, options);
+    return (
+      await this.evaluateFlag(
+        'enabled',
+        flagKey,
+        defaultValue,
+        context,
+        options
+      )
+    ).value;
   }
 
-  getBooleanValue(
-    flagId: string,
+  async getBooleanValue(
+    flagKey: string,
     defaultValue: boolean,
-    context: Context,
+    context?: Context,
     options?: FlagEvaluationOptions
   ): Promise<boolean> {
-    return this.evaluateFlag('boolean', flagId, defaultValue, context, options);
+    return (
+      await this.getBooleanDetails(flagKey, defaultValue, context, options)
+    ).value;
   }
 
-  getStringValue(
-    flagId: string,
+  getBooleanDetails(
+    flagKey: string,
+    defaultValue: boolean,
+    // TODO make optional or required?
+    context?: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<FlagEvaluationDetails<boolean>> {
+    return this.evaluateFlag(
+      'boolean',
+      flagKey,
+      defaultValue,
+      context,
+      options
+    );
+  }
+
+  async getStringValue(
+    flagKey: string,
     defaultValue: string,
-    context: Context,
+    context?: Context,
     options?: FlagEvaluationOptions
   ): Promise<string> {
-    return this.evaluateFlag('string', flagId, defaultValue, context, options);
+    return (
+      await this.getStringDetails(flagKey, defaultValue, context, options)
+    ).value;
   }
 
-  getNumberValue(
-    flagId: string,
+  getStringDetails(
+    flagKey: string,
+    defaultValue: string,
+    context?: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<FlagEvaluationDetails<string>> {
+    return this.evaluateFlag('string', flagKey, defaultValue, context, options);
+  }
+
+  async getNumberValue(
+    flagKey: string,
     defaultValue: number,
-    context: Context,
+    context?: Context,
     options?: FlagEvaluationOptions
   ): Promise<number> {
-    return this.evaluateFlag('number', flagId, defaultValue, context, options);
+    return (
+      await this.getNumberDetails(flagKey, defaultValue, context, options)
+    ).value;
   }
 
-  getObjectValue<T extends object>(
-    flagId: string,
+  getNumberDetails(
+    flagKey: string,
+    defaultValue: number,
+    context?: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<FlagEvaluationDetails<number>> {
+    return this.evaluateFlag('number', flagKey, defaultValue, context, options);
+  }
+
+  async getObjectValue<T extends object>(
+    flagKey: string,
     defaultValue: T,
-    context: Context,
+    context?: Context,
     options?: FlagEvaluationOptions
   ): Promise<T> {
-    return this.evaluateFlag('json', flagId, defaultValue, context, options);
+    return (
+      await this.getObjectDetails(flagKey, defaultValue, context, options)
+    ).value;
+  }
+
+  getObjectDetails<T extends object>(
+    flagKey: string,
+    defaultValue: T,
+    context?: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<FlagEvaluationDetails<T>> {
+    return this.evaluateFlag('json', flagKey, defaultValue, context, options);
   }
 
   private async evaluateFlag<T extends FlagValue>(
-    flagType: FlagType,
-    flagId: string,
+    flagValueType: FlagValueType,
+    flagKey: string,
     defaultValue: T,
-    context: Context,
+    context: Context | undefined,
     options?: FlagEvaluationOptions
-  ): Promise<T> {
+  ): Promise<FlagEvaluationDetails<T>> {
     const provider = this.getProvider();
     const flagHooks = options?.hooks ?? [];
     const allHooks: Hook<FlagValue>[] = [
@@ -100,22 +162,30 @@ export class OpenFeatureClient implements Client {
     ];
     context = context ?? {};
     let hookContext: HookContext = {
-      flagId,
-      flagType,
+      flagKey,
+      flagValueType,
       defaultValue,
       context,
       client: this,
       provider: this.getProvider(),
+      executedHooks: {
+        after: [],
+        before: [],
+        error: [],
+        finally: [],
+      },
     };
-    let valuePromise: Promise<FlagValue>;
+    let evaluationDetailsPromise: Promise<ProviderEvaluation<FlagValue>>;
 
     try {
       hookContext = this.beforeEvaluation(allHooks, hookContext);
+      // TODO investigate why TS doesn't understand that this could be a
+      // promise. Perhaps we should make it always return a promise.
       const transformedContext = await provider.contextTransformer(context);
-      switch (flagType) {
+      switch (flagValueType) {
         case 'enabled': {
-          valuePromise = provider.isEnabled(
-            flagId,
+          evaluationDetailsPromise = provider.isEnabledEvaluation(
+            flagKey,
             defaultValue as boolean,
             transformedContext,
             options
@@ -123,8 +193,8 @@ export class OpenFeatureClient implements Client {
           break;
         }
         case 'boolean': {
-          valuePromise = provider.getBooleanValue(
-            flagId,
+          evaluationDetailsPromise = provider.getBooleanEvaluation(
+            flagKey,
             defaultValue as boolean,
             transformedContext,
             options
@@ -132,8 +202,8 @@ export class OpenFeatureClient implements Client {
           break;
         }
         case 'string': {
-          valuePromise = provider.getStringValue(
-            flagId,
+          evaluationDetailsPromise = provider.getStringEvaluation(
+            flagKey,
             defaultValue as string,
             transformedContext,
             options
@@ -141,8 +211,8 @@ export class OpenFeatureClient implements Client {
           break;
         }
         case 'number': {
-          valuePromise = provider.getNumberValue(
-            flagId,
+          evaluationDetailsPromise = provider.getNumberEvaluation(
+            flagKey,
             defaultValue as number,
             transformedContext,
             options
@@ -150,8 +220,8 @@ export class OpenFeatureClient implements Client {
           break;
         }
         case 'json': {
-          valuePromise = provider.getObjectValue(
-            flagId,
+          evaluationDetailsPromise = provider.getObjectEvaluation(
+            flagKey,
             defaultValue as object,
             transformedContext,
             options
@@ -163,13 +233,28 @@ export class OpenFeatureClient implements Client {
         }
       }
 
-      const value = await valuePromise;
-      return this.afterEvaluation(allHooks, hookContext, value) as T;
+      const evaluationDetails = await evaluationDetailsPromise;
+      return {
+        ...evaluationDetails,
+        value: this.afterEvaluation(
+          allHooks,
+          hookContext,
+          evaluationDetails
+        ) as T,
+        flagKey,
+        executedHooks: hookContext.executedHooks,
+      };
     } catch (err) {
       if (this.isError(err)) {
         this.errorEvaluation(allHooks, hookContext, err);
       }
-      return defaultValue;
+      // TODO: error condition - conditional typing.
+      return {
+        flagKey,
+        executedHooks: hookContext.executedHooks,
+        value: defaultValue,
+        reason: Reason.ERROR,
+      };
     } finally {
       this.finallyEvaluation(allHooks, hookContext);
     }
@@ -182,6 +267,7 @@ export class OpenFeatureClient implements Client {
     const mergedContext = allHooks.reduce(
       (accumulated: Context, hook: Hook): Context => {
         if (typeof hook?.before === 'function') {
+          hookContext.executedHooks.before.push(hook.name);
           return {
             ...accumulated,
             ...hook.before(hookContext),
@@ -198,19 +284,27 @@ export class OpenFeatureClient implements Client {
   private afterEvaluation(
     allHooks: Hook[],
     hookContext: HookContext,
-    flagValue: FlagValue
+    evaluationDetails: ProviderEvaluation<FlagValue>
   ): FlagValue {
     return allHooks.reduce((accumulated: FlagValue, hook) => {
       if (typeof hook?.after === 'function') {
-        return hook.after(hookContext, flagValue);
+        hookContext.executedHooks.after.push(hook.name);
+        return (
+          hook.after(hookContext, {
+            ...evaluationDetails,
+            flagKey: hookContext.flagKey,
+            executedHooks: hookContext.executedHooks,
+          }) ?? accumulated
+        );
       }
       return accumulated;
-    }, flagValue);
+    }, evaluationDetails.value);
   }
 
   private finallyEvaluation(allHooks: Hook[], hookContext: HookContext): void {
     allHooks.forEach((hook) => {
       if (typeof hook?.finally === 'function') {
+        hookContext.executedHooks.finally.push(hook.name);
         return hook.finally(hookContext);
       }
     });
@@ -225,6 +319,7 @@ export class OpenFeatureClient implements Client {
     const error = err;
     allHooks.forEach((hook) => {
       if (typeof hook?.error === 'function') {
+        hookContext.executedHooks.error.push(hook.name);
         return hook.error(hookContext, error);
       }
     });

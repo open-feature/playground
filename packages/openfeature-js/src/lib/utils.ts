@@ -1,42 +1,53 @@
-import { FlagTypeError, FlagValueParseError } from './errors';
+import { TypeMismatchError, ParseError } from './errors';
 import { Context, ContextTransformer } from './types';
 
-export const parseValidNumber = (stringValue: string) => {
+export const parseValidNumber = (stringValue: string | undefined) => {
+  if (stringValue === undefined) {
+    throw new ParseError(`Invalid 'undefined' value.`);
+  }
   const result = Number.parseFloat(stringValue);
   if (Number.isNaN(result)) {
-    throw new FlagTypeError(`Invalid numeric value ${stringValue}`);
+    throw new TypeMismatchError(`Invalid numeric value ${stringValue}`);
   }
   return result;
 };
 
-export const parseValidBoolean = (stringValue: string) => {
+export const parseValidBoolean = (stringValue: string | undefined) => {
   const asUnknown = stringValue as unknown;
 
   switch (asUnknown) {
-    case 'true': 
+    case 'true':
       return true;
     case 'false':
       return false;
-    case true: 
+    case true:
       return true;
     case false:
       return false;
     default:
-      throw new FlagTypeError(`Invalid boolean value for ${asUnknown}`)
+      throw new TypeMismatchError(`Invalid boolean value for ${asUnknown}`);
   }
 };
 
-export const parseValidJsonObject = <T extends object>(stringValue: string): T => {
+export const parseValidJsonObject = <T extends object>(
+  stringValue: string | undefined
+): T => {
+  if (stringValue === undefined) {
+    throw new ParseError(`Invalid 'undefined' JSON value.`);
+  }
   // we may want to allow the parsing to be customized.
   try {
     const value = JSON.parse(stringValue);
     if (typeof value === 'object') {
-      throw new FlagTypeError(`Flag value ${stringValue} had unexpected type ${typeof value}, expected "object"`);
+      throw new TypeMismatchError(
+        `Flag value ${stringValue} had unexpected type ${typeof value}, expected "object"`
+      );
     }
     return value;
   } catch (err) {
-    throw new FlagValueParseError(`Error parsing ${stringValue} as JSON`);
+    throw new ParseError(`Error parsing ${stringValue} as JSON`);
   }
-}
+};
 
-export const noopContextTransformer: ContextTransformer = (context: Context) => context;
+export const noopContextTransformer: ContextTransformer = (context: Context) =>
+  context;

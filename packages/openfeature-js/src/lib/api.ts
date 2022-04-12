@@ -1,8 +1,14 @@
 import { OpenFeatureClient } from './client';
 import { getGlobal, registerGlobal } from './global';
-import { Client, FeatureProvider, FlagValue, HasHooks, Hook } from './types';
+import {
+  Client,
+  FeatureProvider,
+  FlagValue,
+  FlagEvaluationLifeCycle,
+  Hook,
+} from './types';
 
-export class OpenFeatureAPI implements HasHooks {
+export class OpenFeatureAPI implements FlagEvaluationLifeCycle {
   private provider?: FeatureProvider;
   private _hooks: Hook[] = [];
 

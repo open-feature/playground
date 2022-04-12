@@ -71,7 +71,7 @@ To see this in action, we'll run the API app found
 registering a provider. Let's run the app and see what happens.
 
 1. Run `npm run no-op-demo`
-1. Open http://localhost:3333/api in your browser
+2. Open http://localhost:3333/api in your browser
 
 That's it! You should see **Welcome to the api!**. Unfortunately, that's all you
 can do without registering a provider. Thankfully, as we'll see in the next
@@ -99,8 +99,8 @@ provider **could** be implemented.
 Follow these steps to run the demo:
 
 1. copy `.env.example` to `.env`
-1. Run `npm run env-var-demo`
-1. Open http://localhost:3333/api in your browser
+2. Run `npm run env-var-demo`
+3. Open http://localhost:3333/api in your browser
 
 You should see **Welcome to the api!** just as before. Now, change the value of
 `new-welcome-message` to true and restart the app. It should show **Welcome
@@ -118,35 +118,65 @@ possible.
 Follow these steps to run the demo:
 
 1. Copy `.env.example` to `.env`
-1. Add a Split.io [service-side API
+2. Add a Split.io [service-side API
    key](https://help.split.io/hc/en-us/articles/360019916211-API-keys) to the
    `SPLIT_KEY` in the `.env` file.
-1. Create a new split called `new-welcome-message` with the default treatments
-1. Create a new split called `fib-algo` with the treatment values: `recursive`,
+3. Create a new split called `new-welcome-message` with the default treatments
+4. Create a new split called `fib-algo` with the treatment values: `recursive`,
    `memo`, `loop`, `binet`, and `default`.
-1. Run `npm run split-demo`
+5. Create a new split called `hex-color` with the treatment values: `CC0000`,
+   `00CC00`, `0000CC`, `chartreuse`.
+6. Run `npm run split-demo` and visit http://localhost:3333/api, http://localhost:3333/hello, or http://localhost:3333/fibonacci?num=40
 
-You can now remotely configure the welcome message and the algorithm used in
-the [Fibonacci
-library](./packages/fibonacci/src/lib/fibonacci.ts). The Fibonacci example is
-particularly interesting because registers a library-specific client. This would
-allow maintainers to include feature flagging in their libraries that could be
-remotely configured if desired. Also, if no provider is registered, the library
-will no-op and simply use the default algorithm.
+### CloudBees FM Provider Demo
 
-Experiment with different Fibonacci algorithms and hitting the API with these
-values:
+A CloudCees Feature Management provider demo.
 
-- http://localhost:3333/fibonacci?num=10
-- http://localhost:3333/fibonacci?num=20
-- http://localhost:3333/fibonacci?num=30
-- http://localhost:3333/fibonacci?num=40
-- http://localhost:3333/fibonacci?num=50
+Follow these steps to run the demo:
+
+1. Copy `.env.example` to `.env`
+2. Add a CloudBees app key to the `.env` file.
+3. Create a new boolean flag called `new-welcome-message`.
+4. Create a new flag called `fib-algo` with the values: `recursive`,
+   `memo`, `loop`, `binet`, and `default`.
+5. Create a new flag called `hex-color` with the values: `CC0000`,
+   `00CC00`, `0000CC`, `chartreuse`.
+6. Run `npm run cloudbees-demo` and visit http://localhost:3333/api, http://localhost:3333/hello, or http://localhost:3333/fibonacci?num=40
+
+### LaunchDarkly Provider Demo
+
+A LaunchDarkly provider demo.
+
+Follow these steps to run the demo:
+
+1. Copy `.env.example` to `.env`
+2. Add a LaunchDarkly SDK key to the `.env` file.
+3. Create a new boolean flag called `new-welcome-message`.
+4. Create a new feature flag called `fib-algo` with the values: `recursive`,
+   `memo`, `loop`, `binet`, and `default`.
+5. Create a new feature flag called `hex-color` with the values: `CC0000`,
+   `00CC00`, `0000CC`, `chartreuse`.
+6. Run `npm run launchdarkly-demo` and visit http://localhost:3333/api, http://localhost:3333/hello, or http://localhost:3333/fibonacci?num=40
+
+### Flagsmith (v1/v2) Provider Demo
+
+A Flagsmith provider demo.
+
+Follow these steps to run the demo:
+
+1. Copy `.env.example` to `.env`
+2. Add a Flagsmith Environment ID (v1) or a Environment key (v2) to the `.env` file.
+3. Create a new boolean feature called `new-welcome-message`.
+4. Create a new feature called `fib-algo` with the values: `recursive`,
+   `memo`, `loop`, `binet`, and `default`.
+5. Create a new feature called `hex-color` with the values: `CC0000`,
+   `00CC00`, `0000CC`, `chartreuse`.
+6. Run `npm run flagsmith-v1-demo` or `npm run flagsmith-v2-demo` and visit http://localhost:3333/api, http://localhost:3333/hello, or http://localhost:3333/fibonacci?num=40
+
+## OpenTelemetry Support
 
 Now, wouldn't it be nice if you could visually see the impact an algorithm had
 on a request? That's where OpenTelemetry support comes in.
-
-## OpenTelemetry Support
 
 Supporting OpenTelemetry natively in OpenFeature provides a number of
 advantages. The most obvious benefit is distributed traces would contain
@@ -162,11 +192,31 @@ overhead if you don't.
 ### OpenTelemetry Demo
 
 1. Start Zipkin in Docker: `docker run --rm -d -p 9411:9411 --name zipkin openzipkin/zipkin`
-1. Open http://localhost:9411/ in your browser
-1. Start one of the demos above or run `npm run no-op-demo`
-1. Open Zipkin and search for a trace
+2. Open http://localhost:9411/ in your browser
+3. Start one of the demos above or run `npm run no-op-demo`
+4. Open Zipkin and search for a trace
 
 ![Zipkin](./assets//images/zipkin-fibonacci.png)
+
+Experiment with different Fibonacci algorithms and hitting the API with these
+values:
+
+- http://localhost:3333/fibonacci?num=10
+- http://localhost:3333/fibonacci?num=20
+- http://localhost:3333/fibonacci?num=30
+- http://localhost:3333/fibonacci?num=40
+- http://localhost:3333/fibonacci?num=50
+
+### Validation Hook Demo
+
+"After" hooks can be used validate and intercept flag values. This is particularly useful
+if non-technical personnel have access to make changes to the feature flag values. Validators can
+ensure that only logical valid values for flags propagate through code.
+
+1. Start a provider demo (ie: `npm run env-var-demo`)
+2. Open http://localhost:3333/hello in your browser
+3. Change the value to any valid CSS hex value (ie: `AABB00`) and observe that value is used in the returned markup
+4. Change the value to any invalid CSS hex value (ie: `chartreuse`) and observe that value falls back to `000000`
 
 ### Baggage
 
@@ -209,7 +259,6 @@ header.
 
 ## Open Questions
 
-- How should a provider that requires an async start-up be handled?
 - What should happen if multiple providers are registered?
 - Could something similar to an OpenAPI be used to describe feature flags in code?
 - What OpenTelemetry semantic naming prefix should be used?

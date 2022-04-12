@@ -1,35 +1,40 @@
-export enum ErrorCodes { 
-  GeneralError = 'GENERAL_ERROR',
-  FlagTypeError = 'FLAG_TYPE_ERROR',
-  FlagValueParseError = 'FLAG_VALUE_PARSE_ERROR'   
-};;
-
+import { ErrorCode } from './types';
 export abstract class OpenFeatureError extends Error {
-  abstract code: ErrorCodes;
+  abstract code: ErrorCode;
 }
 
 export class GeneralError extends OpenFeatureError {
-  code: ErrorCodes;
+  code: ErrorCode;
   constructor(message?: string) {
-      super(message);
-      Object.setPrototypeOf(this, FlagTypeError.prototype);
-      this.code = ErrorCodes.GeneralError;
-  }}
-
-export class FlagTypeError extends OpenFeatureError {
-  code: ErrorCodes;
-  constructor(message?: string) {
-      super(message);
-      Object.setPrototypeOf(this, FlagTypeError.prototype);
-      this.code = ErrorCodes.FlagTypeError;
+    super(message);
+    Object.setPrototypeOf(this, TypeMismatchError.prototype);
+    this.code = ErrorCode.GENERAL;
   }
 }
 
-export class FlagValueParseError extends OpenFeatureError {
-  code: ErrorCodes;
+export class TypeMismatchError extends OpenFeatureError {
+  code: ErrorCode;
   constructor(message?: string) {
-      super(message);
-      Object.setPrototypeOf(this, FlagTypeError.prototype);
-      this.code = ErrorCodes.FlagValueParseError;
+    super(message);
+    Object.setPrototypeOf(this, TypeMismatchError.prototype);
+    this.code = ErrorCode.TYPE_MISMATCH;
+  }
+}
+
+export class FlagNotFoundError extends OpenFeatureError {
+  code: ErrorCode;
+  constructor(message?: string) {
+    super(message);
+    Object.setPrototypeOf(this, FlagNotFoundError.prototype);
+    this.code = ErrorCode.FLAG_NOT_FOUND;
+  }
+}
+
+export class ParseError extends OpenFeatureError {
+  code: ErrorCode;
+  constructor(message?: string) {
+    super(message);
+    Object.setPrototypeOf(this, TypeMismatchError.prototype);
+    this.code = ErrorCode.PARSE_ERROR;
   }
 }

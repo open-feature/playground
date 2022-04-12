@@ -2,17 +2,19 @@ import {
   Context,
   ContextTransformer,
   FeatureProvider,
-  FlagEvaluationOptions,
-  FlagTypeError,
-  FlagValueParseError,
+  ParseError,
+  parseValidJsonObject,
+  ProviderEvaluation,
   ProviderOptions,
+  Reason,
+  TypeMismatchError,
 } from '@openfeature/openfeature-js';
 import Flagsmith from 'flagsmithv2';
 
 type Identity = {
   identifier?: string;
   traits?: { [key: string]: boolean | number | string };
-}
+};
 
 export interface FlagsmithV2ProviderOptions extends ProviderOptions<Identity> {
   client: Flagsmith;
@@ -21,11 +23,11 @@ export interface FlagsmithV2ProviderOptions extends ProviderOptions<Identity> {
 /**
  * Transform the context into an object useful for the v2 Flagsmith API, an identifier string with a "dictionary" of traits.
  */
- const DEFAULT_CONTEXT_TRANSFORMER = (context: Context): Identity => {
+const DEFAULT_CONTEXT_TRANSFORMER = (context: Context): Identity => {
   const { userId, ...traits } = context;
   return {
     identifier: userId,
-    traits
+    traits,
   };
 };
 
@@ -45,111 +47,127 @@ export class FlagsmithV2Provider implements FeatureProvider<Identity> {
 
   constructor(options: FlagsmithV2ProviderOptions) {
     this.client = options.client;
-    this.contextTransformer = options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
+    this.contextTransformer =
+      options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
     console.log(`${this.name} provider initialized`);
   }
 
   /*
-  * Flagsmith differentiates between flag activity and boolean flag values, so in this provider,`isEnabled` is NOT a proxy to `getBooleanValue`.
-  */
-  async isEnabled(
-    flagId: string,
+   * Flagsmith differentiates between flag activity and boolean flag values, so in this provider,`isEnabled` is NOT a proxy to `getBooleanValue`.
+   */
+  async isEnabledEvaluation(
+    flagKey: string,
     _defaultValue: boolean,
-    identity: Identity,
-    _options?: FlagEvaluationOptions
-  ): Promise<boolean> {
+    identity: Identity
+  ): Promise<ProviderEvaluation<boolean>> {
     const value = identity.identifier
-      ? (await this.client.getIdentityFlags(identity.identifier, identity.traits)).isFeatureEnabled(flagId)
-      : (await this.client.getEnvironmentFlags()).isFeatureEnabled(flagId);
-    if (typeof value === 'boolean') {
-      return value;
-    } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'boolean')
-      );
-    }
+      ? (
+          await this.client.getIdentityFlags(
+            identity.identifier,
+            identity.traits
+          )
+        ).isFeatureEnabled(flagKey)
+      : (await this.client.getEnvironmentFlags()).isFeatureEnabled(flagKey);
+    return {
+      value,
+      reason: Reason.UNKNOWN,
+    };
   }
 
-  async getBooleanValue(
-    flagId: string,
+  async getBooleanEvaluation(
+    flagKey: string,
     _defaultValue: boolean,
-    identity: Identity,
-    _options?: FlagEvaluationOptions
-  ): Promise<boolean> {
-    const value = await this.getValue(flagId, identity);
-    if (typeof value === 'boolean') {
-      return value;
+    identity: Identity
+  ): Promise<ProviderEvaluation<boolean>> {
+    const details = await this.evaluate(flagKey, identity);
+    if (typeof details.value === 'boolean') {
+      const value = details.value;
+      return { ...details, value };
     } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'boolean')
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'boolean')
       );
     }
   }
 
-  async getStringValue(
-    flagId: string,
+  async getStringEvaluation(
+    flagKey: string,
     _defaultValue: string,
-    identity: Identity,
-    _options?: FlagEvaluationOptions
-  ): Promise<string> {
-    const value = await this.getValue(flagId, identity);
-    if (typeof value === 'string') {
-      return value;
+    identity: Identity
+  ): Promise<ProviderEvaluation<string>> {
+    const details = await this.evaluate(flagKey, identity);
+    if (typeof details.value === 'string') {
+      const value = details.value;
+      return { ...details, value };
     } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'string')
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'string')
       );
     }
   }
 
-  async getNumberValue(
-    flagId: string,
+  async getNumberEvaluation(
+    flagKey: string,
     _defaultValue: number,
-    identity: Identity,
-    _options?: FlagEvaluationOptions
-  ): Promise<number> {
-    const value = await this.getValue(flagId, identity);
-    if (typeof value === 'number') {
-      return value;
+    identity: Identity
+  ): Promise<ProviderEvaluation<number>> {
+    const details = await this.evaluate(flagKey, identity);
+    if (typeof details.value === 'number') {
+      const value = details.value;
+      return { ...details, value };
     } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'number')
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'number')
       );
     }
   }
 
-  async getObjectValue<T extends object>(
-    flagId: string,
-    _defaultValue: T,
-    identity: Identity,
-    _options?: FlagEvaluationOptions
-  ): Promise<T> {
-    const value = await this.getValue(flagId, identity);
-    if (typeof value === 'string') {
+  async getObjectEvaluation<U extends object>(
+    flagKey: string,
+    _defaultValue: U,
+    identity: Identity
+  ): Promise<ProviderEvaluation<U>> {
+    const details = await this.evaluate(flagKey, identity);
+    if (typeof details.value === 'string') {
       // we may want to allow the parsing to be customized.
       try {
-        return JSON.parse(value);
+        return {
+          value: parseValidJsonObject(details.value),
+          reason: Reason.DEFAULT,
+        };
       } catch (err) {
-        throw new FlagValueParseError(`Error parsing flag value for ${flagId}`);
+        throw new ParseError(`Error parsing flag value for ${flagKey}`);
       }
     } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'object')
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'object')
       );
     }
   }
 
-  private async getValue(flagId: string, identity: Identity) {
-    return identity.identifier
-    ? (await this.client.getIdentityFlags(identity.identifier, identity.traits)).getFeatureValue(flagId)
-    : (await this.client.getEnvironmentFlags()).getFeatureValue(flagId);
+  private async evaluate<T>(
+    flagKey: string,
+    identity: Identity
+  ): Promise<ProviderEvaluation<T>> {
+    const value = identity.identifier
+      ? (
+          await this.client.getIdentityFlags(
+            identity.identifier,
+            identity.traits
+          )
+        ).getFeatureValue(flagKey)
+      : (await this.client.getEnvironmentFlags()).getFeatureValue(flagKey);
+    return {
+      value,
+      reason: Reason.UNKNOWN,
+    };
   }
 
   private getFlagTypeErrorMessage(
-    flagId: string,
+    flagKey: string,
     value: unknown,
     expectedType: string
   ) {
-    return `Flag value ${flagId} had unexpected type ${typeof value}, expected ${expectedType}.`;
+    return `Flag value ${flagKey} had unexpected type ${typeof value}, expected ${expectedType}.`;
   }
 }

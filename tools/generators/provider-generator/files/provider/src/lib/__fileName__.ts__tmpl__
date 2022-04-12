@@ -7,23 +7,23 @@ import {
 export class <%= libClassName %> implements FeatureProvider {
   name = '<%= name %>';
 
-  isEnabled(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
+  isEnabled(flagKey: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
 
-  getBooleanValue(flagId: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
+  getBooleanValue(flagKey: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
     throw new Error('Method not implemented.');
   }
 
-  getStringValue(flagId: string, defaultValue: string, context: Context, options?: FlagEvaluationOptions): Promise<string> {
+  getStringValue(flagKey: string, defaultValue: string, context: Context, options?: FlagEvaluationOptions): Promise<string> {
     throw new Error('Method not implemented.');
   }
 
-  getNumberValue(flagId: string, defaultValue: number, context: Context, options?: FlagEvaluationOptions): Promise<number> {
+  getNumberValue(flagKey: string, defaultValue: number, context: Context, options?: FlagEvaluationOptions): Promise<number> {
     throw new Error('Method not implemented.');
   }
 
-  getObjectValue<T extends object>(flagId: string, defaultValue: T, context: Context, options?: FlagEvaluationOptions): Promise<T> {
+  getObjectValue<T extends object>(flagKey: string, defaultValue: T, context: Context, options?: FlagEvaluationOptions): Promise<T> {
     throw new Error('Method not implemented.');
   }
 }

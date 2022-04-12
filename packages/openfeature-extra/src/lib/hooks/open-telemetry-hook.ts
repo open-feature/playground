@@ -19,13 +19,14 @@ export class OpenTelemetryHook implements Hook {
   constructor(name: string) {
     this.tracer = trace.getTracer(name);
   }
+  name = 'open-telemetry';
 
   before(hookContext: HookContext) {
     const span = this.tracer.startSpan(
-      `feature flag - ${hookContext.flagType}`
+      `feature flag - ${hookContext.flagValueType}`
     );
     span.setAttributes({
-      [SpanProperties.FEATURE_FLAG_ID]: hookContext.flagId,
+      [SpanProperties.FEATURE_FLAG_ID]: hookContext.flagKey,
       [SpanProperties.FEATURE_FLAG_CLIENT_NAME]: hookContext.client.name,
       [SpanProperties.FEATURE_FLAG_CLIENT_VERSION]: hookContext.client.version,
       [SpanProperties.FEATURE_FLAG_SERVICE]: hookContext.provider.name,
@@ -41,7 +42,6 @@ export class OpenTelemetryHook implements Hook {
     this.spanMap
       .get(hookContext)
       ?.setAttribute(SpanProperties.FEATURE_FLAG_VALUE, primitiveFlagValue);
-    return flagValue;
   }
 
   finally(hookContext: HookContext) {

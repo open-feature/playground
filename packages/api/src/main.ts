@@ -3,7 +3,10 @@
  * This is only a minimal backend to get started.
  */
 import * as express from 'express';
-import { openfeature } from '@openfeature/openfeature-js';
+import {
+  FlagEvaluationDetails,
+  openfeature,
+} from '@openfeature/openfeature-js';
 import { fibonacci } from '@openfeature/fibonacci';
 import { query, validationResult } from 'express-validator';
 import {
@@ -38,14 +41,18 @@ app.get('/hello', async (req, res) => {
     {
       hooks: [
         {
-          after: (hookContext, flagValue: string) => {
+          name: '',
+          after: (
+            hookContext,
+            evaluationDetails: FlagEvaluationDetails<string>
+          ) => {
             // validate the hex value.
             const hexPattern = /[0-9A-Fa-f]{6}/g;
-            if (hexPattern.test(flagValue)) {
-              return flagValue;
+            if (hexPattern.test(evaluationDetails.value)) {
+              return evaluationDetails.value;
             } else {
               console.warn(
-                `Got invalid flag value '${flagValue}' for ${hookContext.flagId}, returning ${hookContext.defaultValue}`
+                `Got invalid flag value '${evaluationDetails.value}' for ${hookContext.flagKey}, returning ${hookContext.defaultValue}`
               );
               return hookContext.defaultValue;
             }

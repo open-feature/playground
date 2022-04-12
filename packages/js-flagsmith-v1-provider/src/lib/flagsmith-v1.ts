@@ -2,22 +2,24 @@ import {
   Context,
   ContextTransformer,
   FeatureProvider,
-  FlagEvaluationOptions,
-  FlagTypeError,
-  FlagValueParseError,
+  ParseError,
+  ProviderEvaluation,
   ProviderOptions,
+  Reason,
+  TypeMismatchError,
 } from '@openfeature/openfeature-js';
-import * as flagsmith from 'flagsmith-nodejs'
+import * as flagsmith from 'flagsmith-nodejs';
 
-export interface FlagsmithProviderOptions extends ProviderOptions<Promise<string & undefined>> {
+export interface FlagsmithProviderOptions
+  extends ProviderOptions<Promise<string & undefined>> {
   environmentID: string;
 }
 
 /**
  * Additional custom properties in Flagsmith are associated with the user (traits), and not passed directly to the flag evaluation.
- * This is a very basic transformer function that defines Flagsmith traits based on the OpenFeature context. Note that it 
+ * This is a very basic transformer function that defines Flagsmith traits based on the OpenFeature context. Note that it
  * doesn't handle nested properties.
- * 
+ *
  * We may want to generalize this concept, and provide a default for all providers.
  */
 const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context) => {
@@ -48,119 +50,128 @@ const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context) => {
  * NOTE: Flagsmith defaults values to `null` and booleans to false. In this provider implementation, this will result in
  * a `FlagTypeError` for undefined flags, which in turn will result in the default passed to OpenFeature being used.
  */
-export class FlagsmithV1Provider implements FeatureProvider<string | undefined> {
+export class FlagsmithV1Provider
+  implements FeatureProvider<string | undefined>
+{
   name = 'flagsmith-v1';
   readonly contextTransformer: ContextTransformer<Promise<string | undefined>>;
 
   constructor(options: FlagsmithProviderOptions) {
-    this.contextTransformer = options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
+    this.contextTransformer =
+      options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
     flagsmith.init({
-      environmentID: options.environmentID
+      environmentID: options.environmentID,
     });
     console.log(`${this.name} provider initialized`);
   }
 
   /*
-  * Flagsmith differentiates between flag activity and boolean flag values, so in this provider,`isEnabled` is NOT a proxy to `getBooleanValue`.
-  */
-  async isEnabled(
-    flagId: string,
+   * Flagsmith differentiates between flag activity and boolean flag values, so in this provider,`isEnabled` is NOT a proxy to `getBooleanValue`.
+   */
+  async isEnabledEvaluation(
+    flagKey: string,
     _defaultValue: boolean,
-    userId: string | undefined,
-    _options?: FlagEvaluationOptions
-  ): Promise<boolean> {
+    userId: string | undefined
+  ): Promise<ProviderEvaluation<boolean>> {
     const value = userId
-      ? await flagsmith.hasFeature(flagId, userId)
-      : await flagsmith.hasFeature(flagId);
-    if (typeof value === 'boolean') {
-      return value;
-    } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'boolean')
-      );
-    }
+      ? await flagsmith.hasFeature(flagKey, userId)
+      : await flagsmith.hasFeature(flagKey);
+    return {
+      value,
+      reason: Reason.UNKNOWN,
+    };
   }
 
-  async getBooleanValue(
-    flagId: string,
+  async getBooleanEvaluation(
+    flagKey: string,
     _defaultValue: boolean,
-    userId: string | undefined,
-    _options?: FlagEvaluationOptions
-  ): Promise<boolean> {
-    const value = await this.getValue(flagId, userId);
-    if (typeof value === 'boolean') {
-      return value;
+    userId: string | undefined
+  ): Promise<ProviderEvaluation<boolean>> {
+    const details = await this.evaluate(flagKey, userId);
+    if (typeof details.value === 'boolean') {
+      const value = details.value;
+      return { ...details, value };
     } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'boolean')
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'boolean')
       );
     }
   }
 
-  async getStringValue(
-    flagId: string,
+  async getStringEvaluation(
+    flagKey: string,
     _defaultValue: string,
-    userId: string | undefined,
-    _options?: FlagEvaluationOptions
-  ): Promise<string> {
-    const value = await this.getValue(flagId, userId);
-    if (typeof value === 'string') {
-      return value;
+    userId: string | undefined
+  ): Promise<ProviderEvaluation<string>> {
+    const details = await this.evaluate(flagKey, userId);
+    if (typeof details.value === 'string') {
+      const value = details.value;
+      return { ...details, value };
     } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'string')
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'string')
       );
     }
   }
 
-  async getNumberValue(
-    flagId: string,
+  async getNumberEvaluation(
+    flagKey: string,
     _defaultValue: number,
-    userId: string | undefined,
-    _options?: FlagEvaluationOptions
-  ): Promise<number> {
-    const value = await this.getValue(flagId, userId);
-    if (typeof value === 'number') {
-      return value;
+    userId: string | undefined
+  ): Promise<ProviderEvaluation<number>> {
+    const details = await this.evaluate(flagKey, userId);
+    if (typeof details.value === 'number') {
+      const value = details.value;
+      return { ...details, value };
     } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'number')
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'number')
       );
     }
   }
 
-  async getObjectValue<T extends object>(
-    flagId: string,
-    _defaultValue: T,
-    userId: string | undefined,
-    _options?: FlagEvaluationOptions
-  ): Promise<T> {
-    const value = await this.getValue(flagId, userId);
-    if (typeof value === 'string') {
+  async getObjectEvaluation<U extends object>(
+    flagKey: string,
+    _defaultValue: U,
+    userId: string | undefined
+  ): Promise<ProviderEvaluation<U>> {
+    const details = await this.evaluate(flagKey, userId);
+    if (typeof details.value === 'string') {
       // we may want to allow the parsing to be customized.
       try {
-        return JSON.parse(value);
+        // TODO update this.
+        return {
+          value: JSON.parse(details.value),
+          reason: Reason.DEFAULT,
+        };
       } catch (err) {
-        throw new FlagValueParseError(`Error parsing flag value for ${flagId}`);
+        throw new ParseError(`Error parsing flag value for ${flagKey}`);
       }
     } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'object')
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'object')
       );
     }
   }
 
-  private getValue(flagId: string, userId: string | undefined) {
-    return userId
-      ? flagsmith.getValue(flagId, userId)
-      : flagsmith.getValue(flagId);
+  private async evaluate(
+    flagKey: string,
+    userId: string | undefined
+  ): Promise<ProviderEvaluation<boolean | string | number>> {
+    const value = userId
+      ? await flagsmith.getValue(flagKey, userId)
+      : await flagsmith.getValue(flagKey);
+    return {
+      value,
+      reason: Reason.UNKNOWN,
+    };
   }
 
   private getFlagTypeErrorMessage(
-    flagId: string,
+    flagKey: string,
     value: unknown,
     expectedType: string
   ) {
-    return `Flag value ${flagId} had unexpected type ${typeof value}, expected ${expectedType}.`;
+    return `Flag value ${flagKey} had unexpected type ${typeof value}, expected ${expectedType}.`;
   }
 }

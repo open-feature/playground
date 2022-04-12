@@ -1,11 +1,11 @@
 import {
-  Context,
   ContextTransformer,
   FeatureProvider,
-  FlagEvaluationOptions,
   noopContextTransformer,
   parseValidJsonObject,
+  ProviderEvaluation,
   ProviderOptions,
+  Reason,
 } from '@openfeature/openfeature-js';
 import * as Rox from 'rox-node';
 
@@ -19,7 +19,8 @@ export class CloudbeesProvider implements FeatureProvider {
   private initialized: Promise<void>;
 
   constructor(options: CloudbeesProviderOptions) {
-    this.contextTransformer = options.contextTransformer || noopContextTransformer;
+    this.contextTransformer =
+      options.contextTransformer || noopContextTransformer;
     // we don't expose any init events at the moment (we might later) so for now, lets create a private
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
@@ -30,57 +31,55 @@ export class CloudbeesProvider implements FeatureProvider {
     });
   }
 
-  /**
-   * CloudBees Feature Management also defines a default value for a flag in code.
-   * This default value is returned by the SDK if the flag is not enabled ('targeting' is off)
-   * See https://docs.cloudbees.com/docs/cloudbees-feature-management/latest/feature-flags/flag-default-values
-   **/
-  async isEnabled(
-    flagId: string,
+  isEnabledEvaluation(
+    flagKey: string,
     defaultValue: boolean,
-    context: unknown,
-    options?: FlagEvaluationOptions
-  ): Promise<boolean> {
-    // for CloudBees Feature Management, isEnabled is functionally equal to getBooleanValue.
-    return this.getBooleanValue(flagId, defaultValue, context, options);
+    context: unknown
+  ): Promise<ProviderEvaluation<boolean>> {
+    return this.getBooleanEvaluation(flagKey, defaultValue, context);
   }
 
-  async getBooleanValue(
-    flagId: string,
+  async getBooleanEvaluation(
+    flagKey: string,
     defaultValue: boolean,
-    context: unknown,
-    _options?: FlagEvaluationOptions
-  ): Promise<boolean> {
+    context: unknown
+  ): Promise<ProviderEvaluation<boolean>> {
     await this.initialized;
-    return Rox.dynamicApi.isEnabled(flagId, defaultValue, context);
+    const value = Rox.dynamicApi.isEnabled(flagKey, defaultValue, context);
+    return {
+      value,
+      reason: Reason.UNKNOWN,
+    };
   }
 
-  async getStringValue(
-    flagId: string,
+  async getStringEvaluation(
+    flagKey: string,
     defaultValue: string,
-    context: unknown,
-    _options?: FlagEvaluationOptions
-  ): Promise<string> {
+    context: unknown
+  ): Promise<ProviderEvaluation<string>> {
     await this.initialized;
-    return Rox.dynamicApi.value(flagId, defaultValue, context);
+    return {
+      value: Rox.dynamicApi.value(flagKey, defaultValue, context),
+      reason: Reason.UNKNOWN,
+    };
   }
 
-  async getNumberValue(
-    flagId: string,
+  async getNumberEvaluation(
+    flagKey: string,
     defaultValue: number,
-    context: unknown,
-    _options?: FlagEvaluationOptions
-  ): Promise<number> {
+    context: unknown
+  ): Promise<ProviderEvaluation<number>> {
     await this.initialized;
-    return Rox.dynamicApi.getNumber(flagId, defaultValue, context);
+    return {
+      value: Rox.dynamicApi.getNumber(flagKey, defaultValue, context),
+      reason: Reason.UNKNOWN,
+    };
   }
-
-  async getObjectValue<T extends object>(
-    flagId: string,
-    defaultValue: T,
-    context: unknown,
-    _options?: FlagEvaluationOptions
-  ): Promise<T> {
+  async getObjectEvaluation<U extends object>(
+    flagKey: string,
+    defaultValue: U,
+    context: unknown
+  ): Promise<ProviderEvaluation<U>> {
     await this.initialized;
 
     /**
@@ -89,10 +88,13 @@ export class CloudbeesProvider implements FeatureProvider {
      * This may not be performant, and other, more elegant solutions should be considered.
      */
     const value = Rox.dynamicApi.value(
-      flagId,
+      flagKey,
       JSON.stringify(defaultValue),
       context
     );
-    return parseValidJsonObject(value);
+    return {
+      value: parseValidJsonObject(value),
+      reason: Reason.UNKNOWN,
+    };
   }
 }
