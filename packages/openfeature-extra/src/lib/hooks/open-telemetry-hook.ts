@@ -1,47 +1,59 @@
-import { FlagValue, Hook, HookContext } from '@openfeature/openfeature-js';
+import {
+  FlagEvaluationDetails,
+  FlagValue,
+  Hook,
+  HookContext,
+} from '@openfeature/openfeature-js';
 import { Span, trace, Tracer } from '@opentelemetry/api';
 
 export const SpanProperties = {
-  FEATURE_FLAG_CLIENT_NAME: 'feature_flag_client_name',
-  FEATURE_FLAG_CLIENT_VERSION: 'feature_flag_client_version',
-  FEATURE_FLAG_SERVICE: 'feature_flag_service',
-  FEATURE_FLAG_ID: 'feature_flag_id',
-  FEATURE_FLAG_VALUE: 'feature_flag_value',
+  FLAG_KEY: 'feature_flag.flag_key',
+  CLIENT_NAME: 'feature_flag.client.name',
+  CLIENT_VERSION: 'feature_flag.client.version',
+  PROVIDER_NAME: 'feature_flag.provider.name',
+  PROVIDER_MANAGEMENT_URL: 'feature_flag.provider.management_url',
+  VARIANT: 'feature_flag.evaluated.variant',
+  VALUE: 'feature_flag.evaluated.value',
 };
 
 /**
  * A hook that adds standard OpenTelemetry data.
  */
 export class OpenTelemetryHook implements Hook {
+  name = 'open-telemetry';
+
   private spanMap = new WeakMap<HookContext, Span>();
   private tracer: Tracer;
 
   constructor(name: string) {
     this.tracer = trace.getTracer(name);
   }
-  name = 'open-telemetry';
 
   before(hookContext: HookContext) {
     const span = this.tracer.startSpan(
       `feature flag - ${hookContext.flagValueType}`
     );
     span.setAttributes({
-      [SpanProperties.FEATURE_FLAG_ID]: hookContext.flagKey,
-      [SpanProperties.FEATURE_FLAG_CLIENT_NAME]: hookContext.client.name,
-      [SpanProperties.FEATURE_FLAG_CLIENT_VERSION]: hookContext.client.version,
-      [SpanProperties.FEATURE_FLAG_SERVICE]: hookContext.provider.name,
+      [SpanProperties.FLAG_KEY]: hookContext.flagKey,
+      [SpanProperties.CLIENT_NAME]: hookContext.client.name,
+      [SpanProperties.CLIENT_VERSION]: hookContext.client.version,
+      [SpanProperties.PROVIDER_NAME]: hookContext.provider.name,
     });
 
     this.spanMap.set(hookContext, span);
     return hookContext.context;
   }
 
-  after(hookContext: HookContext, flagValue: FlagValue) {
-    const primitiveFlagValue =
-      typeof flagValue === 'object' ? JSON.stringify(flagValue) : flagValue;
-    this.spanMap
-      .get(hookContext)
-      ?.setAttribute(SpanProperties.FEATURE_FLAG_VALUE, primitiveFlagValue);
+  after(hookContext: HookContext, flagValue: FlagEvaluationDetails<FlagValue>) {
+    if (flagValue.variant) {
+      this.spanMap
+        .get(hookContext)
+        ?.setAttribute(SpanProperties.VARIANT, flagValue.variant);
+    } else {
+      this.spanMap
+        .get(hookContext)
+        ?.setAttribute(SpanProperties.VALUE, JSON.stringify(flagValue.value));
+    }
   }
 
   finally(hookContext: HookContext) {
