@@ -31,6 +31,18 @@ export interface Features {
   ): Promise<boolean>;
 
   /**
+   * Get a boolean flag with additional details.
+   *
+   * NOTE: In some providers this has distinct behavior from getBooleanDetails
+   */
+  isEnabledDetails(
+    flagKey: string,
+    defaultValue: boolean,
+    context?: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<FlagEvaluationDetails<boolean>>;
+
+  /**
    * Get a boolean flag value.
    */
   getBooleanValue(

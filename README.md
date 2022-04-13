@@ -28,7 +28,11 @@ Available demos:
 - [No-op](#no-op-demo)
 - [Environment Variable Provider](#environment-variable-provider-demo)
 - [Split Provider](#split-provider-demo)
+- [CloudBees Feature Management Provider](#cloudbees-fm-provider-demo)
+- [LaunchDarkly Provider Demo](#launchdarkly-provider-demo)
+- [Flagsmith Provider Demo](#flagsmith-provider-demo)
 - [OpenTelemetry and Zipkin](#opentelemetry-demo)
+- [Validation Hook Demo](#validation-hook-demo)
 
 ## Create a new provider
 
@@ -158,9 +162,9 @@ Follow these steps to run the demo:
    `00CC00`, `0000CC`, `chartreuse`.
 6. Run `npm run launchdarkly-demo` and visit http://localhost:3333/api, http://localhost:3333/hello, or http://localhost:3333/fibonacci?num=40
 
-### Flagsmith (v1/v2) Provider Demo
+### Flagsmith Provider Demo
 
-A Flagsmith provider demo.
+A Flagsmith provider demo (supports v1 and v2).
 
 Follow these steps to run the demo:
 

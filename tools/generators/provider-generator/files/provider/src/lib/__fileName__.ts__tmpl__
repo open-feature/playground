@@ -1,29 +1,58 @@
 import {
-  Context,
+  ContextTransformer,
   FeatureProvider,
-  FlagEvaluationOptions
+  FlagEvaluationOptions,
+  noopContextTransformer,
+  ProviderEvaluation,
 } from '@openfeature/openfeature-js';
 
 export class <%= libClassName %> implements FeatureProvider {
+  
   name = '<%= name %>';
-
-  isEnabled(flagKey: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
+  contextTransformer: ContextTransformer<unknown> = noopContextTransformer;
+  
+  isEnabledEvaluation(
+    flagKey: string,
+    defaultValue: boolean,
+    transformedContext: unknown,
+    options?: FlagEvaluationOptions
+  ): Promise<ProviderEvaluation<boolean>> {
     throw new Error('Method not implemented.');
   }
 
-  getBooleanValue(flagKey: string, defaultValue: boolean, context: Context, options?: FlagEvaluationOptions): Promise<boolean> {
+  getBooleanEvaluation(
+    flagKey: string,
+    defaultValue: boolean,
+    transformedContext: unknown,
+    options: FlagEvaluationOptions | undefined
+  ): Promise<ProviderEvaluation<boolean>> {
     throw new Error('Method not implemented.');
   }
 
-  getStringValue(flagKey: string, defaultValue: string, context: Context, options?: FlagEvaluationOptions): Promise<string> {
+  getStringEvaluation(
+    flagKey: string,
+    defaultValue: string,
+    transformedContext: unknown,
+    options: FlagEvaluationOptions | undefined
+  ): Promise<ProviderEvaluation<string>> {
     throw new Error('Method not implemented.');
   }
 
-  getNumberValue(flagKey: string, defaultValue: number, context: Context, options?: FlagEvaluationOptions): Promise<number> {
+  getNumberEvaluation(
+    flagKey: string,
+    defaultValue: number,
+    transformedContext: unknown,
+    options: FlagEvaluationOptions | undefined
+  ): Promise<ProviderEvaluation<number>> {
     throw new Error('Method not implemented.');
   }
 
-  getObjectValue<T extends object>(flagKey: string, defaultValue: T, context: Context, options?: FlagEvaluationOptions): Promise<T> {
+  getObjectEvaluation<U extends object>(
+    flagKey: string,
+    defaultValue: U,
+    transformedContext: unknown,
+    options: FlagEvaluationOptions | undefined
+  ): Promise<ProviderEvaluation<U>> {
     throw new Error('Method not implemented.');
   }
 }

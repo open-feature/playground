@@ -49,14 +49,23 @@ export class OpenFeatureClient implements Client {
     options?: FlagEvaluationOptions
   ): Promise<boolean> {
     return (
-      await this.evaluateFlag(
-        'enabled',
-        flagKey,
-        defaultValue,
-        context,
-        options
-      )
+      await this.isEnabledDetails(flagKey, defaultValue, context, options)
     ).value;
+  }
+
+  isEnabledDetails(
+    flagKey: string,
+    defaultValue: boolean,
+    context?: Context,
+    options?: FlagEvaluationOptions
+  ): Promise<FlagEvaluationDetails<boolean>> {
+    return this.evaluateFlag(
+      'enabled',
+      flagKey,
+      defaultValue,
+      context,
+      options
+    );
   }
 
   async getBooleanValue(
@@ -73,7 +82,6 @@ export class OpenFeatureClient implements Client {
   getBooleanDetails(
     flagKey: string,
     defaultValue: boolean,
-    // TODO make optional or required?
     context?: Context,
     options?: FlagEvaluationOptions
   ): Promise<FlagEvaluationDetails<boolean>> {
@@ -154,14 +162,11 @@ export class OpenFeatureClient implements Client {
     options?: FlagEvaluationOptions
   ): Promise<FlagEvaluationDetails<T>> {
     const provider = this.getProvider();
-    const flagHooks = options?.hooks ?? [];
-    const allHooks: Hook<FlagValue>[] = [
-      ...OpenFeatureAPI.getInstance().hooks,
-      ...this.hooks,
-      ...flagHooks,
-    ];
+    const allHooks = this.getAllHooks(options);
     context = context ?? {};
-    let hookContext: HookContext = {
+
+    // this object reference must not change over the course of flag evaluation
+    const hookContext: HookContext = {
       flagKey,
       flagValueType,
       defaultValue,
@@ -178,9 +183,7 @@ export class OpenFeatureClient implements Client {
     let evaluationDetailsPromise: Promise<ProviderEvaluation<FlagValue>>;
 
     try {
-      hookContext = this.beforeEvaluation(allHooks, hookContext);
-      // TODO investigate why TS doesn't understand that this could be a
-      // promise. Perhaps we should make it always return a promise.
+      this.beforeEvaluation(allHooks, hookContext);
       const transformedContext = await provider.contextTransformer(context);
       switch (flagValueType) {
         case 'enabled': {
@@ -260,10 +263,7 @@ export class OpenFeatureClient implements Client {
     }
   }
 
-  private beforeEvaluation(
-    allHooks: Hook[],
-    hookContext: HookContext
-  ): HookContext {
+  private beforeEvaluation(allHooks: Hook[], hookContext: HookContext) {
     const mergedContext = allHooks.reduce(
       (accumulated: Context, hook: Hook): Context => {
         if (typeof hook?.before === 'function') {
@@ -278,7 +278,6 @@ export class OpenFeatureClient implements Client {
       hookContext.context
     );
     hookContext.context = mergedContext;
-    return hookContext;
   }
 
   private afterEvaluation(
@@ -323,6 +322,16 @@ export class OpenFeatureClient implements Client {
         return hook.error(hookContext, error);
       }
     });
+  }
+
+  private getAllHooks(options: FlagEvaluationOptions | undefined) {
+    const flagHooks = options?.hooks ?? [];
+    const allHooks: Hook<FlagValue>[] = [
+      ...OpenFeatureAPI.getInstance().hooks,
+      ...this.hooks,
+      ...flagHooks,
+    ];
+    return allHooks;
   }
 
   private getProvider(): FeatureProvider {
