@@ -251,7 +251,7 @@ export type FlagValue = boolean | string | number | object;
 
 export interface Hook<T extends FlagValue = FlagValue> {
   name: string;
-  before?(hookContext: Readonly<HookContext>): Context;
+  before?(hookContext: Readonly<HookContext>): Context | void;
   after?(
     hookContext: Readonly<HookContext>,
     evaluationDetails: FlagEvaluationDetails<T>

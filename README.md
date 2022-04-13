@@ -9,7 +9,79 @@ OpenTelemetry SDK, with a focus on the design principles outlined in the
 were written in TypeScript and focus on NodeJS, but the basic concepts should be
 language agnostic.
 
-## Getting started
+## Application Author API
+
+These are the APIs and interfaces that Application Author (who doesn't particularly care about the underlying feature flag implementation) uses OpenFeature to control "pivot points" in their code.
+
+```typescript
+// initialize OpenFeature and create a client
+openfeature.registerProvider(
+  new MyFeatureFlagSystemProvider({ apiKey: 'my-secret-api-key' })
+);
+const client = openfeature.getClient();
+
+// evaluate a boolean flag
+const myFlagEnabled = await client.isEnabled('my-boolean-flag-key', false); // false is the default enabled state
+
+// get a string flag value
+const myStringFlagValue = await client.getStringValue(
+  'my-string-flag-key',
+  'hello world!' //default value
+);
+
+// get a numeric flag value
+const myNumericFlagValue = await client.getNumberValue(
+  'my-numeric-flag-key',
+  1337 // 1337 is the default value
+);
+
+// get a object flag value
+const myObject = await client.getObjectValue<MyObject>(
+  'my-object-flag-key',
+  new MyObject() // MyObject instance is the default value
+);
+
+// provide additional attributes to flag evaluation
+const requestData = {
+  ip: req.headers['x-forwarded-for'] || req.socket.remoteAddress,
+};
+const myStringFlagValue = await client.getStringValue(
+  'my-string-flag-key',
+  'hello world!',
+  requestData
+);
+
+// get the details of a flag evaluation
+const { flagKey, value, variant, reason, errorCode, executedHooks } =
+  await client.getStringDetails('my-string-flag-key', 'hello world!');
+
+// attach additional handlers to the flag evaluation lifecycle (can also be attached globally and on client, to impact all evaluations)
+const myStringFlagValue = await client.getStringValue(
+  'my-string-flag-key',
+  'hello world!',
+  requestData,
+  {
+    hooks: [
+      {
+        name: 'log',
+        // "before" can be used for logging, telemetry configuration, and manipulating attributes
+        before: (hookContext) => {
+          console.log('before');
+        },
+        // "after" can be used for logging, telemetry cleanup, and even validating and manipulating the returned value
+        after: (
+          hookContext,
+          evaluationDetails: FlagEvaluationDetails<string>
+        ) => {
+          console.log('after');
+        },
+      },
+    ],
+  }
+);
+```
+
+## Getting started with the SDK experimentation project
 
 To run the demo scenarios described on this page, please make sure you have the
 following prerequisites configured on your system.

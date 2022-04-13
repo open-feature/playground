@@ -41,7 +41,7 @@ app.get('/hello', async (req, res) => {
     {
       hooks: [
         {
-          name: '',
+          name: 'validate-hex',
           after: (
             hookContext,
             evaluationDetails: FlagEvaluationDetails<string>
