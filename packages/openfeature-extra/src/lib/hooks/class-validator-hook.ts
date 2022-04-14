@@ -1,4 +1,8 @@
-import { FlagValue, Hook, HookContext } from '@openfeature/openfeature-js';
+import {
+  FlagEvaluationDetails,
+  Hook,
+  HookContext,
+} from '@openfeature/openfeature-js';
 import { validateSync } from 'class-validator';
 
 type Class = { new (data: any): any };
@@ -8,9 +12,10 @@ type Class = { new (data: any): any };
  */
 export class ClassValidatorHook implements Hook {
   constructor(private clazz: Class) {}
+  name = 'validator';
 
-  after(_: HookContext, flagValue: FlagValue) {
-    const instance = new this.clazz(flagValue);
+  after(_: HookContext, details: FlagEvaluationDetails<object>) {
+    const instance = new this.clazz(details.value);
     const result = validateSync(instance);
     if (result.length) {
       throw Error(`Invalid payload, result: ${result}`);

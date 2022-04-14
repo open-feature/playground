@@ -4,6 +4,7 @@
  */
 import * as express from 'express';
 import {
+  Context,
   FlagEvaluationDetails,
   openfeature,
 } from '@openfeature/openfeature-js';
@@ -16,8 +17,8 @@ import {
 } from '@openfeature/extra';
 import { buildHelloMarkup } from './hello-markup';
 import { InstallTemplateData } from './types';
-import { buildInstallMarkup } from './install-markup';
 import { InstallTemplate } from './install-template';
+import { buildInstallMarkup } from './install-markup';
 
 const app = express();
 const appName = 'api';
@@ -89,7 +90,8 @@ app.get('/install', async (req, res) => {
   ).replace(/"/g, '');
 
   // add to the attributes
-  const attributes = {
+  const attributes: Context = {
+    userId: 'anonymous',
     platform,
   };
 
