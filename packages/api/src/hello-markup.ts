@@ -1,4 +1,4 @@
-export const buildMarkup = (hexColorValue: string) => {
+export const buildHelloMarkup = (hexColorValue: string) => {
   return `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -10,5 +10,5 @@ export const buildMarkup = (hexColorValue: string) => {
     <span style="color: #${hexColorValue};">OpenFeature!</span>
   </body>
 </html>
-`
-}
+`;
+};

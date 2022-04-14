@@ -6,28 +6,32 @@ import * as express from 'express';
 import { openfeature } from '@openfeature/openfeature-js';
 import { fibonacci } from '@openfeature/fibonacci';
 import { query, validationResult } from 'express-validator';
-import { OpenTelemetryHook, LoggingHook } from '@openfeature/extra';
-import { buildMarkup } from './markup';
+import {
+  OpenTelemetryHook,
+  LoggingHook,
+  ClassValidatorHook,
+} from '@openfeature/extra';
+import { buildHelloMarkup } from './hello-markup';
+import { InstallTemplateData } from './types';
+import { buildInstallMarkup } from './install-markup';
+import { InstallTemplate } from './install-template';
 
 const app = express();
-const appName = 'api'
+const appName = 'api';
 
 openfeature.registerHooks(new OpenTelemetryHook(appName));
 const client = openfeature.getClient(appName);
 client.registerHooks(new LoggingHook());
 
 app.get('/api', async (req, res) => {
-  const message = (await client.isEnabled(
-    'new-welcome-message',
-    false
-  ))
+  const message = (await client.isEnabled('new-welcome-message', false))
     ? 'Welcome to the next gen api!'
     : 'Welcome to the api!';
   res.send({ message });
 });
 
 app.get('/hello', async (req, res) => {
-  const hexColor = (await client.getStringValue(
+  const hexColor = await client.getStringValue(
     'hex-color',
     '000000',
     undefined,
@@ -40,15 +44,17 @@ app.get('/hello', async (req, res) => {
             if (hexPattern.test(flagValue)) {
               return flagValue;
             } else {
-              console.warn(`Got invalid flag value '${flagValue}' for ${hookContext.flagId}, returning ${hookContext.defaultValue}`)
+              console.warn(
+                `Got invalid flag value '${flagValue}' for ${hookContext.flagId}, returning ${hookContext.defaultValue}`
+              );
               return hookContext.defaultValue;
             }
-          }
-        }
-      ]
+          },
+        },
+      ],
     }
-  ));
-  res.contentType('html').send(buildMarkup(hexColor));
+  );
+  res.contentType('html').send(buildHelloMarkup(hexColor));
 });
 
 app.get(
@@ -68,6 +74,29 @@ app.get(
     res.status(200).send(`${output}`);
   }
 );
+
+app.get('/install', async (req, res) => {
+  // get the platform
+  const platform = (
+    (req.header('Sec-CH-UA-Platform') as string) || 'Windows'
+  ).replace(/"/g, '');
+
+  // add to the attributes
+  const attributes = {
+    platform,
+  };
+
+  // pass it to our evaluation, adding a validator
+  const installTemplate = await client.getObjectValue<InstallTemplateData>(
+    'installation-instructions',
+    new InstallTemplate(),
+    attributes,
+    {
+      hooks: [new ClassValidatorHook(InstallTemplate)],
+    }
+  );
+  res.contentType('html').send(buildInstallMarkup(installTemplate));
+});
 
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {
