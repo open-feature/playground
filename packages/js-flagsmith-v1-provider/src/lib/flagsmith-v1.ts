@@ -15,6 +15,8 @@ export interface FlagsmithProviderOptions
   environmentID: string;
 }
 
+const ANONYMOUS = 'anonymous';
+
 /**
  * Additional custom properties in Flagsmith are associated with the user (traits), and not passed directly to the flag evaluation.
  * This is a very basic transformer function that defines Flagsmith traits based on the OpenFeature context. Note that it
@@ -38,7 +40,7 @@ const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context) => {
     });
     await Promise.all(promises);
   }
-  return context?.userId;
+  return context?.userId || ANONYMOUS;
 };
 
 /*
@@ -50,11 +52,9 @@ const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context) => {
  * NOTE: Flagsmith defaults values to `null` and booleans to false. In this provider implementation, this will result in
  * a `FlagTypeError` for undefined flags, which in turn will result in the default passed to OpenFeature being used.
  */
-export class FlagsmithV1Provider
-  implements FeatureProvider<string | undefined>
-{
+export class FlagsmithV1Provider implements FeatureProvider<string> {
   name = 'flagsmith-v1';
-  readonly contextTransformer: ContextTransformer<Promise<string | undefined>>;
+  readonly contextTransformer: ContextTransformer<Promise<string>>;
 
   constructor(options: FlagsmithProviderOptions) {
     this.contextTransformer =
@@ -73,9 +73,10 @@ export class FlagsmithV1Provider
     _defaultValue: boolean,
     userId: string | undefined
   ): Promise<ProviderEvaluation<boolean>> {
-    const value = userId
-      ? await flagsmith.hasFeature(flagKey, userId)
-      : await flagsmith.hasFeature(flagKey);
+    const value =
+      userId === ANONYMOUS
+        ? await flagsmith.hasFeature(flagKey, userId)
+        : await flagsmith.hasFeature(flagKey);
     return {
       value,
       reason: Reason.UNKNOWN,
@@ -158,9 +159,10 @@ export class FlagsmithV1Provider
     flagKey: string,
     userId: string | undefined
   ): Promise<ProviderEvaluation<boolean | string | number>> {
-    const value = userId
-      ? await flagsmith.getValue(flagKey, userId)
-      : await flagsmith.getValue(flagKey);
+    const value =
+      userId === ANONYMOUS
+        ? await flagsmith.getValue(flagKey, userId)
+        : await flagsmith.getValue(flagKey);
     return {
       value,
       reason: Reason.UNKNOWN,

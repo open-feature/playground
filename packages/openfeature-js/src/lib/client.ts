@@ -184,7 +184,12 @@ export class OpenFeatureClient implements Client {
 
     try {
       this.beforeEvaluation(allHooks, hookContext);
-      const transformedContext = await provider.contextTransformer(context);
+
+      // if a transformer is defined, run it to prepare the context.
+      const transformedContext =
+        typeof provider.contextTransformer === 'function'
+          ? await provider.contextTransformer(context)
+          : context;
       switch (flagValueType) {
         case 'enabled': {
           evaluationDetailsPromise = provider.isEnabledEvaluation(
@@ -251,7 +256,6 @@ export class OpenFeatureClient implements Client {
       if (this.isError(err)) {
         this.errorEvaluation(allHooks, hookContext, err);
       }
-      // TODO: error condition - conditional typing.
       return {
         flagKey,
         executedHooks: hookContext.executedHooks,
@@ -334,7 +338,7 @@ export class OpenFeatureClient implements Client {
     return allHooks;
   }
 
-  private getProvider(): FeatureProvider {
+  private getProvider(): FeatureProvider<unknown> {
     return this.api.getProvider() ?? NOOP_FEATURE_PROVIDER;
   }
 

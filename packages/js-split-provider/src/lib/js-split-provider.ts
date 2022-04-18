@@ -2,7 +2,6 @@ import {
   Context,
   ContextTransformer,
   FeatureProvider,
-  noopContextTransformer,
   parseValidJsonObject,
   parseValidNumber,
   ProviderEvaluation,
@@ -18,7 +17,7 @@ import type { Attributes, IClient } from '@splitsoftware/splitio/types/splitio';
  * It may be more idiomatic to only rely on that for the "isEnabled" calls,
  * and for all values store the data in teh associated "split config" JSON.
  */
-export interface SplitProviderOptions extends ProviderOptions {
+export interface SplitProviderOptions extends ProviderOptions<Consumer> {
   splitClient: IClient;
 }
 
@@ -48,7 +47,7 @@ export class OpenFeatureSplitProvider implements FeatureProvider<Consumer> {
     this.client = options.splitClient;
     // contextTransformer to map context to split "Attributes".
     this.contextTransformer =
-      DEFAULT_CONTEXT_TRANSFORMER || noopContextTransformer;
+      options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
     // we don't expose any init events at the moment (we might later) so for now, lets create a private
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {

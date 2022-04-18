@@ -1,7 +1,8 @@
 import { FeatureProvider, ProviderEvaluation, Reason } from './types';
-import { noopContextTransformer } from './utils';
 
 class NoopFeatureProvider implements FeatureProvider {
+  readonly contextTransformer = undefined;
+
   isEnabledEvaluation(
     _: string,
     defaultValue: boolean
@@ -12,8 +13,6 @@ class NoopFeatureProvider implements FeatureProvider {
     });
   }
   readonly name = 'No-op Provider';
-
-  contextTransformer = noopContextTransformer;
 
   isEnabled(_: string, defaultValue: boolean): Promise<boolean> {
     return Promise.resolve(defaultValue);

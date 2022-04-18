@@ -9,7 +9,7 @@ import {
 } from './types';
 
 export class OpenFeatureAPI implements FlagEvaluationLifeCycle {
-  private provider?: FeatureProvider;
+  private provider?: FeatureProvider<unknown>;
   private _hooks: Hook[] = [];
 
   static getInstance(): OpenFeatureAPI {
@@ -31,11 +31,11 @@ export class OpenFeatureAPI implements FlagEvaluationLifeCycle {
     return new OpenFeatureClient(this, { name, version });
   }
 
-  registerProvider(provider: FeatureProvider): void {
+  registerProvider(provider: FeatureProvider<unknown>): void {
     this.provider = provider;
   }
 
-  getProvider(): FeatureProvider | undefined {
+  getProvider(): FeatureProvider<unknown> | undefined {
     return this.provider;
   }
 

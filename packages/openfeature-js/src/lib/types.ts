@@ -125,18 +125,8 @@ export interface Features {
 
 export type ContextTransformer<T = unknown> = (context: Context) => T;
 
-/**
- * Interface that providers must implement to resolve flag values for their particular
- * backend or vendor.
- *
- * Implementation for resolving all the required flag types must be defined.
- *
- * Additionally, a ContextTransformer function that transforms the OpenFeature context to the requisite user/context/attribute representation (typeof T)
- * must also be implemented. This function will run immediately before the flag value resolver functions, appropriately transforming the context.
- */
-export interface FeatureProvider<T = unknown> {
+interface GenericProvider<T> {
   name: string;
-  contextTransformer: ContextTransformer<Promise<T> | T>;
 
   /**
    * Resolve a flag's activity. In some providers, this may be distinct from
@@ -189,6 +179,24 @@ export interface FeatureProvider<T = unknown> {
     options: FlagEvaluationOptions | undefined
   ): Promise<ProviderEvaluation<U>>;
 }
+
+type NonTransformingProvider = GenericProvider<Context>;
+
+interface TransformingProvider<T> extends GenericProvider<T> {
+  contextTransformer: ContextTransformer<Promise<T> | T> | undefined;
+}
+
+/**
+ * Interface that providers must implement to resolve flag values for their particular
+ * backend or vendor.
+ *
+ * Implementation for resolving all the required flag types must be defined.
+ *
+ * Additionally, a ContextTransformer function that transforms the OpenFeature context to the requisite user/context/attribute representation (typeof T)
+ * may also be implemented. This function will run immediately before the flag value resolver functions, appropriately transforming the context.
+ */
+export type FeatureProvider<T extends Context | unknown = Context> =
+  T extends Context ? NonTransformingProvider : TransformingProvider<T>;
 
 export interface FlagEvaluationLifeCycle {
   registerHooks(...hooks: Hook[]): void;

@@ -1,7 +1,6 @@
 import {
   FeatureProvider,
   FlagNotFoundError,
-  noopContextTransformer,
   parseValidBoolean,
   parseValidJsonObject,
   parseValidNumber,
@@ -50,7 +49,6 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
     });
   }
   name = ' environment variable';
-  readonly contextTransformer = noopContextTransformer;
 
   evaluateEnvironmentVariable(key: string): ProviderEvaluation<string> {
     // convert key to ENV_VAR style casing

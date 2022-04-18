@@ -1,5 +1,4 @@
-import { TypeMismatchError, ParseError } from './errors';
-import { Context, ContextTransformer } from './types';
+import { ParseError, TypeMismatchError } from './errors';
 
 export const parseValidNumber = (stringValue: string | undefined) => {
   if (stringValue === undefined) {
@@ -48,6 +47,3 @@ export const parseValidJsonObject = <T extends object>(
     throw new ParseError(`Error parsing ${stringValue} as JSON`);
   }
 };
-
-export const noopContextTransformer: ContextTransformer = (context: Context) =>
-  context;

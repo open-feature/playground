@@ -1,7 +1,5 @@
 import {
-  ContextTransformer,
   FeatureProvider,
-  noopContextTransformer,
   parseValidJsonObject,
   ProviderEvaluation,
   ProviderOptions,
@@ -15,12 +13,9 @@ export interface CloudbeesProviderOptions extends ProviderOptions {
 
 export class CloudbeesProvider implements FeatureProvider {
   name = 'cloudbees';
-  readonly contextTransformer: ContextTransformer<unknown>;
   private initialized: Promise<void>;
 
   constructor(options: CloudbeesProviderOptions) {
-    this.contextTransformer =
-      options.contextTransformer || noopContextTransformer;
     // we don't expose any init events at the moment (we might later) so for now, lets create a private
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
