@@ -210,7 +210,7 @@ export interface ProviderOptions<T = unknown> {
 export type ProviderEvaluation<T> = {
   value: T;
   variant?: string;
-  reason: Reason;
+  reason: Reason | string;
   errorCode?: ErrorCode;
 };
 
@@ -223,6 +223,11 @@ export type ExecutedHooks = {
   [P in keyof Omit<Hook<FlagValue>, 'name'>]-?: string[];
 };
 
+/**
+ * TODO: Do we want OpenFeature to rigorously define a set of reasons and force providers to map their own reasons?
+ * Do we anticipate Application Authors or Integrators writing logic based on these values, or are they
+ * only important for diagnostics/telemetry/troubleshooting?
+ */
 export enum Reason {
   DISABLED = 'DISABLED',
   SPLIT = 'SPLIT',
