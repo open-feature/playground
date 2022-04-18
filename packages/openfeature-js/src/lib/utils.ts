@@ -37,13 +37,13 @@ export const parseValidJsonObject = <T extends object>(
   // we may want to allow the parsing to be customized.
   try {
     const value = JSON.parse(stringValue);
-    if (typeof value === 'object') {
+    if (typeof value !== 'object') {
       throw new TypeMismatchError(
         `Flag value ${stringValue} had unexpected type ${typeof value}, expected "object"`
       );
     }
     return value;
   } catch (err) {
-    throw new ParseError(`Error parsing ${stringValue} as JSON`);
+    throw new ParseError(`Error parsing ${stringValue} as JSON, ${err}`);
   }
 };
