@@ -2,13 +2,19 @@ import {
   Context,
   ContextTransformer,
   FeatureProvider,
-  FlagEvaluationOptions,
-  FlagTypeError,
   FlagValue,
-  FlagValueParseError,
+  ParseError,
+  ProviderEvaluation,
   ProviderOptions,
+  Reason,
+  TypeMismatchError,
 } from '@openfeature/openfeature-js';
-import { init, LDClient, LDUser } from 'launchdarkly-node-server-sdk';
+import {
+  init,
+  LDClient,
+  LDEvaluationReason,
+  LDUser,
+} from 'launchdarkly-node-server-sdk';
 
 export interface LaunchDarklyProviderOptions extends ProviderOptions<LDUser> {
   sdkKey: string;
@@ -54,112 +60,140 @@ export class OpenFeatureLaunchDarklyProvider
     });
   }
 
-  isEnabled(
-    flagId: string,
+  isEnabledEvaluation(
+    flagKey: string,
     defaultValue: boolean,
-    user: LDUser,
-    options?: FlagEvaluationOptions
-  ): Promise<boolean> {
-    return this.getBooleanValue(flagId, defaultValue, user);
-  }
-
-  async getBooleanValue(
-    flagId: string,
-    defaultValue: boolean,
-    user: LDUser,
-    options?: FlagEvaluationOptions
-  ): Promise<boolean> {
-    const value = await this.evaluateFlag(flagId, defaultValue, user);
-    if (typeof value === 'boolean') {
-      return value;
-    } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'boolean')
-      );
-    }
-  }
-
-  async getStringValue(
-    flagId: string,
-    defaultValue: string,
-    user: LDUser,
-    options?: FlagEvaluationOptions
-  ): Promise<string> {
-    const value = await this.evaluateFlag(flagId, defaultValue, user);
-    if (typeof value === 'string') {
-      return value;
-    } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'string')
-      );
-    }
-  }
-
-  async getNumberValue(
-    flagId: string,
-    defaultValue: number,
-    user: LDUser,
-    options?: FlagEvaluationOptions
-  ): Promise<number> {
-    const value = await this.evaluateFlag(flagId, defaultValue, user);
-    if (typeof value === 'number') {
-      return value;
-    } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'number')
-      );
-    }
-  }
-
-  /**
-   * NOTE: objects are not supported in Launch Darkly, for demo purposes, we use the string API,
-   * and stringify the default.
-   * This may not be performant, and other, more elegant solutions should be considered.
-   */
-  async getObjectValue<T extends object>(
-    flagId: string,
-    defaultValue: T,
     user: LDUser
-  ): Promise<T> {
-    const value = await this.evaluateFlag(
-      flagId,
+  ): Promise<ProviderEvaluation<boolean>> {
+    return this.getBooleanEvaluation(flagKey, defaultValue, user);
+  }
+
+  async getBooleanEvaluation(
+    flagKey: string,
+    defaultValue: boolean,
+    user: LDUser
+  ): Promise<ProviderEvaluation<boolean>> {
+    const details = await this.evaluateFlag<boolean>(
+      flagKey,
+      defaultValue,
+      user
+    );
+    if (typeof details.value === 'boolean') {
+      return details;
+    } else {
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'boolean')
+      );
+    }
+  }
+
+  async getStringEvaluation(
+    flagKey: string,
+    defaultValue: string,
+    user: LDUser
+  ): Promise<ProviderEvaluation<string>> {
+    const details = await this.evaluateFlag<string>(
+      flagKey,
+      defaultValue,
+      user
+    );
+    if (typeof details.value === 'string') {
+      return details;
+    } else {
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'string')
+      );
+    }
+  }
+
+  async getNumberEvaluation(
+    flagKey: string,
+    defaultValue: number,
+    user: LDUser
+  ): Promise<ProviderEvaluation<number>> {
+    const details = await this.evaluateFlag<number>(
+      flagKey,
+      defaultValue,
+      user
+    );
+    if (typeof details.value === 'number') {
+      return details;
+    } else {
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'number')
+      );
+    }
+  }
+
+  async getObjectEvaluation<U extends object>(
+    flagKey: string,
+    defaultValue: U,
+    user: LDUser
+  ): Promise<ProviderEvaluation<U>> {
+    const details = await this.evaluateFlag<unknown>(
+      flagKey,
       JSON.stringify(defaultValue),
       user
     );
-    if (typeof value === 'string') {
+    if (typeof details.value === 'string') {
       // we may want to allow the parsing to be customized.
       try {
-        return JSON.parse(value);
+        return { ...details, value: JSON.parse(details.value) as U };
       } catch (err) {
-        throw new FlagValueParseError(`Error parsing flag value for ${flagId}`);
+        throw new ParseError(`Error parsing flag value for ${flagKey}`);
       }
     } else {
-      throw new FlagTypeError(
-        this.getFlagTypeErrorMessage(flagId, value, 'object')
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details, 'object')
       );
     }
   }
 
   private getFlagTypeErrorMessage(
-    flagId: string,
+    flagKey: string,
     value: unknown,
     expectedType: string
   ) {
-    return `Flag value ${flagId} had unexpected type ${typeof value}, expected ${expectedType}.`;
+    return `Flag value ${flagKey} had unexpected type ${typeof value}, expected ${expectedType}.`;
   }
 
   // LD values can be boolean, number, or string: https://docs.launchdarkly.com/sdk/client-side/node-js#getting-started
-  private async evaluateFlag(
-    flagId: string,
+  private async evaluateFlag<T>(
+    flagKey: string,
     defaultValue: FlagValue,
     user: LDUser
-  ): Promise<boolean | number | string> {
+  ): Promise<ProviderEvaluation<T>> {
     // await the initialization before actually calling for a flag.
     await this.initialized;
 
-    const flagValue = await this.client.variation(flagId, user, defaultValue);
+    const details = await this.client.variationDetail(
+      flagKey,
+      user,
+      defaultValue
+    );
+    return {
+      value: details.value,
+      variant: details.variationIndex?.toString(),
+      reason: this.mapReason(details.reason),
+    };
+  }
 
-    console.log(`Flag '${flagId}' has a value of '${flagValue}'`);
-    return flagValue;
+  private mapReason(reason: LDEvaluationReason) {
+    switch (reason.kind) {
+      case 'OFF':
+        return Reason.DISABLED;
+      case 'FALLTHROUGH':
+        return Reason.DEFAULT;
+      case 'TARGET_MATCH':
+        return Reason.TARGETING_MATCH;
+      case 'RULE_MATCH':
+        return Reason.TARGETING_MATCH;
+      case 'PREREQUISITE_FAILED':
+        return Reason.DEFAULT;
+      case 'ERROR':
+        return Reason.ERROR;
+      default:
+        return Reason.UNKNOWN;
+    }
   }
 }

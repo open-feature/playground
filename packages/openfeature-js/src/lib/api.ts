@@ -1,9 +1,15 @@
 import { OpenFeatureClient } from './client';
 import { getGlobal, registerGlobal } from './global';
-import { Client, FeatureProvider, FlagValue, HasHooks, Hook } from './types';
+import {
+  Client,
+  FeatureProvider,
+  FlagValue,
+  FlagEvaluationLifeCycle,
+  Hook,
+} from './types';
 
-export class OpenFeatureAPI implements HasHooks {
-  private provider?: FeatureProvider;
+export class OpenFeatureAPI implements FlagEvaluationLifeCycle {
+  private provider?: FeatureProvider<unknown>;
   private _hooks: Hook[] = [];
 
   static getInstance(): OpenFeatureAPI {
@@ -25,11 +31,11 @@ export class OpenFeatureAPI implements HasHooks {
     return new OpenFeatureClient(this, { name, version });
   }
 
-  registerProvider(provider: FeatureProvider): void {
+  registerProvider(provider: FeatureProvider<unknown>): void {
     this.provider = provider;
   }
 
-  getProvider(): FeatureProvider | undefined {
+  getProvider(): FeatureProvider<unknown> | undefined {
     return this.provider;
   }
 
