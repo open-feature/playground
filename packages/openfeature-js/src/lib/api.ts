@@ -1,12 +1,21 @@
-import { AsyncLocalStorage } from 'async_hooks';
 import { OpenFeatureClient } from './client';
 import { getGlobal, registerGlobal } from './global';
-import { Client, Context, FeatureProvider, FlagValue, HasHooks, Hook } from './types';
+import {
+  Client,
+  Context,
+  FeatureProvider,
+  FlagValue,
+  HasHooks,
+  HasTransactionContext,
+  Hook,
+  TransactionContext,
+} from './types';
+import { NoopTransactionContext } from './noop-transaction-context';
 
-export class OpenFeatureAPI implements HasHooks {
+export class OpenFeatureAPI implements HasHooks, HasTransactionContext {
   private provider?: FeatureProvider;
+  private transactionContext = new NoopTransactionContext();
   private _hooks: Hook[] = [];
-  private asyncLocalStorage = new AsyncLocalStorage();
 
   static getInstance(): OpenFeatureAPI {
     const globalApi = getGlobal();
@@ -23,7 +32,11 @@ export class OpenFeatureAPI implements HasHooks {
     return this._hooks;
   }
 
-  getClient(name?: string, version?: string, context?: Partial<Context>): Client {
+  getClient(
+    name?: string,
+    version?: string,
+    context?: Partial<Context>
+  ): Client {
     return new OpenFeatureClient(this, { name, version }, context);
   }
 
@@ -39,11 +52,17 @@ export class OpenFeatureAPI implements HasHooks {
     this._hooks = [...this._hooks, ...hooks];
   }
 
-  getStorage() {
-    return this.asyncLocalStorage.getStore();
+  registerTransactionContextPropagator(
+    transactionContext: TransactionContext
+  ): void {
+    this.transactionContext = transactionContext;
   }
 
-  runInContext(context: any, callback: ()=> void) {
-    return this.asyncLocalStorage.run(context, callback);
+  getTransactionContext(): Context {
+    return this.transactionContext.getTransactionContext();
+  }
+
+  setTransactionContext(context: Context, callback: () => void): void {
+    this.transactionContext.setTransactionContext(context, callback);
   }
 }

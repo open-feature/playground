@@ -74,6 +74,17 @@ export interface HasHooks {
   get hooks(): Hook[];
 }
 
+export interface HasTransactionContext extends TransactionContext {
+  registerTransactionContextPropagator(
+    transactionContext: TransactionContext
+  ): void;
+}
+
+export interface TransactionContext {
+  getTransactionContext(): Context;
+  setTransactionContext(context: Context, callback: () => void): void;
+}
+
 export interface Client extends HasHooks, Features {
   readonly name?: string;
   readonly version?: string;

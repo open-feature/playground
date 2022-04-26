@@ -10,24 +10,21 @@ import { OpenTelemetryHook, LoggingHook } from '@openfeature/extra';
 import { buildMarkup } from './markup';
 
 const app = express();
-const appName = 'api'
+const appName = 'api';
 
 openfeature.registerHooks(new OpenTelemetryHook(appName));
 const client = openfeature.getClient(appName);
 client.registerHooks(new LoggingHook());
 
 app.get('/api', async (req, res) => {
-  const message = (await client.isEnabled(
-    'new-welcome-message',
-    false
-  ))
+  const message = (await client.isEnabled('new-welcome-message', false))
     ? 'Welcome to the next gen api!'
     : 'Welcome to the api!';
   res.send({ message });
 });
 
 app.get('/hello', async (req, res) => {
-  const hexColor = (await client.getStringValue(
+  const hexColor = await client.getStringValue(
     'hex-color',
     '000000',
     undefined,
@@ -40,14 +37,16 @@ app.get('/hello', async (req, res) => {
             if (hexPattern.test(flagValue)) {
               return flagValue;
             } else {
-              console.warn(`Got invalid flag value '${flagValue}' for ${hookContext.flagId}, returning ${hookContext.defaultValue}`)
+              console.warn(
+                `Got invalid flag value '${flagValue}' for ${hookContext.flagId}, returning ${hookContext.defaultValue}`
+              );
               return hookContext.defaultValue;
             }
-          }
-        }
-      ]
+          },
+        },
+      ],
     }
-  ));
+  );
   res.contentType('html').send(buildMarkup(hexColor));
 });
 

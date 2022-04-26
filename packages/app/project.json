@@ -29,7 +29,8 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
-        "buildTarget": "app:build"
+        "buildTarget": "app:build",
+        "runtimeArgs": ["-r", "./scripts/tracing.js"]
       }
     },
     "env-var-demo": {

@@ -10,7 +10,7 @@ import {
   FlagType,
   FlagValue,
   Hook,
-  HookContext
+  HookContext,
 } from './types';
 
 type OpenFeatureClientOptions = {
@@ -103,7 +103,7 @@ export class OpenFeatureClient implements Client {
       ...flagHooks,
     ];
     // merge client context with evaluation context
-    context = { ...this.context, ...this.getAttributes(), ...context  }
+    context = { ...this.context, ...this.getTransactionContext(), ...context };
     let hookContext: HookContext = {
       flagId,
       flagType,
@@ -179,8 +179,8 @@ export class OpenFeatureClient implements Client {
     }
   }
 
-  getAttributes(): Context {
-    return openfeature.getStorage() as any;
+  getTransactionContext(): Context {
+    return openfeature.getTransactionContext();
   }
 
   private beforeEvaluation(
