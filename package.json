@@ -29,6 +29,7 @@
     "express-validator": "^6.14.0",
     "flagsmith-nodejs": "^1.1.1",
     "launchdarkly-node-server-sdk": "^6.4.0",
+    "passport": "^0.5.2",
     "passport-http": "^0.3.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
