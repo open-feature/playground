@@ -9,7 +9,7 @@ import {
   Reason,
   TypeMismatchError,
 } from '@openfeature/openfeature-js';
-import Flagsmith from 'flagsmithv2/build/sdk';
+import { Flagsmith } from 'flagsmithv2';
 
 type Identity = {
   identifier?: string;
