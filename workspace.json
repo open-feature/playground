@@ -1,7 +1,7 @@
 {
   "version": 2,
   "projects": {
-    "api": "packages/api",
+    "app": "packages/app",
     "fibonacci": "packages/fibonacci",
     "js-cloudbees-provider": "packages/js-cloudbees-provider",
     "js-env-provider": "packages/js-env-provider",

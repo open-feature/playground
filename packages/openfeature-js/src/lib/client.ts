@@ -1,3 +1,4 @@
+import { openfeature } from '..';
 import { OpenFeatureAPI } from './api';
 import { GeneralError } from './errors';
 import { NOOP_FEATURE_PROVIDER } from './noop-provider';
@@ -23,15 +24,18 @@ type OpenFeatureClientOptions = {
 export class OpenFeatureClient implements Client {
   readonly name?: string;
   readonly version?: string;
+  readonly context?: Context;
 
   private _hooks: Hook[] = [];
 
   constructor(
     private readonly api: OpenFeatureAPI,
-    options: OpenFeatureClientOptions
+    options: OpenFeatureClientOptions,
+    context: Context = {}
   ) {
     this.name = options.name;
     this.version = options.version;
+    this.context = context;
   }
 
   get hooks(): Hook[] {
@@ -39,7 +43,7 @@ export class OpenFeatureClient implements Client {
   }
 
   registerHooks(...hooks: Hook<FlagValue>[]): void {
-    this._hooks = hooks;
+    this._hooks = [...this._hooks, ...hooks];
   }
 
   async isEnabled(
@@ -162,17 +166,27 @@ export class OpenFeatureClient implements Client {
     options?: FlagEvaluationOptions
   ): Promise<FlagEvaluationDetails<T>> {
     const provider = this.getProvider();
-    const allHooks = this.getAllHooks(options);
-    context = context ?? {};
+    const flagHooks = options?.hooks ?? [];
+    const allHooks: Hook<FlagValue>[] = [
+      ...OpenFeatureAPI.getInstance().hooks,
+      ...this.hooks,
+      ...flagHooks,
+    ];
+    // merge client context with evaluation context
+    const mergedContext = {
+      ...this.context,
+      ...this.getTransactionContext(),
+      ...context,
+    };
 
     // this object reference must not change over the course of flag evaluation
     const hookContext: HookContext = {
       flagKey,
       flagValueType,
       defaultValue,
-      context,
+      context: mergedContext,
       client: this,
-      provider: this.getProvider(),
+      provider,
       executedHooks: {
         after: [],
         before: [],
@@ -188,8 +202,8 @@ export class OpenFeatureClient implements Client {
       // if a transformer is defined, run it to prepare the context.
       const transformedContext =
         typeof provider.contextTransformer === 'function'
-          ? await provider.contextTransformer(context)
-          : context;
+          ? await provider.contextTransformer(mergedContext)
+          : mergedContext;
       switch (flagValueType) {
         case 'enabled': {
           evaluationDetailsPromise = provider.isEnabledEvaluation(
@@ -267,6 +281,10 @@ export class OpenFeatureClient implements Client {
     }
   }
 
+  getTransactionContext(): Context {
+    return openfeature.getTransactionContext();
+  }
+
   private beforeEvaluation(allHooks: Hook[], hookContext: HookContext) {
     const mergedContext = allHooks.reduce(
       (accumulated: Context, hook: Hook): Context => {
@@ -339,7 +357,8 @@ export class OpenFeatureClient implements Client {
   }
 
   private getProvider(): FeatureProvider<unknown> {
-    return this.api.getProvider() ?? NOOP_FEATURE_PROVIDER;
+    return (this.api.getProvider() ??
+      NOOP_FEATURE_PROVIDER) as FeatureProvider<unknown>;
   }
 
   private isError(err: unknown): err is Error {

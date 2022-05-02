@@ -30,7 +30,7 @@ const DEFAULT_CONTEXT_TRANSFORMER = (context: Context): LDUser => {
     anonymous: userId ? false : true,
     // later, a well-defined set of standard attributes in Openfeature should be mapped to the appropriate standard attributes LaunchDarkly.
     custom: attributes,
-  };
+  } as LDUser;
 };
 
 /**
@@ -54,7 +54,7 @@ export class OpenFeatureLaunchDarklyProvider
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
       this.client.once('ready', () => {
-        console.log(`${this.name}: initialization complete.`);
+        console.log(`${this.name} provider initialized`);
         resolve();
       });
     });

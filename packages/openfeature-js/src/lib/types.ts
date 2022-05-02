@@ -3,6 +3,8 @@ export type Context = { userId?: string } & Record<
   string | number | boolean
 >;
 
+// export type Context = Record<string, unknown>;
+
 export type FlagValueType =
   | 'enabled'
   | 'boolean'
@@ -243,6 +245,17 @@ export enum ErrorCode {
   PARSE_ERROR = 'PARSE_ERROR',
   TYPE_MISMATCH = 'TYPE_MISMATCH',
   GENERAL = 'GENERAL',
+}
+
+export interface HasTransactionContext extends TransactionContext {
+  registerTransactionContextPropagator(
+    transactionContext: TransactionContext
+  ): void;
+}
+
+export interface TransactionContext {
+  getTransactionContext(): Context;
+  setTransactionContext(context: Context, callback: () => void): void;
 }
 
 export interface Client extends FlagEvaluationLifeCycle, Features {
