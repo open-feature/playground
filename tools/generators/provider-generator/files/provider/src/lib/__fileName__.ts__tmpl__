@@ -2,14 +2,12 @@ import {
   ContextTransformer,
   FeatureProvider,
   FlagEvaluationOptions,
-  noopContextTransformer,
   ProviderEvaluation,
 } from '@openfeature/openfeature-js';
 
 export class <%= libClassName %> implements FeatureProvider {
   
   name = '<%= name %>';
-  contextTransformer: ContextTransformer<unknown> = noopContextTransformer;
   
   isEnabledEvaluation(
     flagKey: string,

@@ -94,10 +94,10 @@ export default async function (tree: Tree, schema: NewProviderSchemaOptions) {
   });
 
   /**
-   * Update the API project
+   * Update the app project
    */
-  const apiProjectConfig = readProjectConfiguration(tree, 'api');
-  apiProjectConfig.targets![targetName] = {
+  const appProjectConfig = readProjectConfiguration(tree, 'app');
+  appProjectConfig.targets![targetName] = {
     executor: '@nrwl/node:node',
     dependsOn: [
       {
@@ -106,7 +106,7 @@ export default async function (tree: Tree, schema: NewProviderSchemaOptions) {
       },
     ],
     options: {
-      buildTarget: 'api:build',
+      buildTarget: 'app:build',
       runtimeArgs: [
         '-r',
         './scripts/tracing.js',
@@ -115,8 +115,8 @@ export default async function (tree: Tree, schema: NewProviderSchemaOptions) {
       ],
     },
   };
-  apiProjectConfig.implicitDependencies?.push(libName);
-  updateProjectConfiguration(tree, 'api', apiProjectConfig);
+  appProjectConfig.implicitDependencies?.push(libName);
+  updateProjectConfiguration(tree, 'app', appProjectConfig);
 
   /**
    * Update the package.json
@@ -125,7 +125,7 @@ export default async function (tree: Tree, schema: NewProviderSchemaOptions) {
     tree,
     'package.json'
   );
-  packageJson.scripts[targetName] = `nx run api:${targetName}`;
+  packageJson.scripts[targetName] = `nx run app:${targetName}`;
   updateJson(tree, 'package.json', () => packageJson);
 
   // Run prettier on all the files we modified
