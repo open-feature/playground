@@ -3,16 +3,16 @@ import { Client } from '@openfeature/openfeature-js';
 import { ClassValidatorHook } from '@openfeature/extra';
 import { InstallTemplate } from './install-template';
 import { OPENFEATURE_CLIENT, REQUEST_DATA } from '../constants';
-import { Attributes, InstallTemplateData } from '../types';
+import { RequestData, InstallTemplateData } from '../types';
 
 @Injectable()
 export class InstallService {
   constructor(
     @Inject(OPENFEATURE_CLIENT) private client: Client,
-    @Inject(REQUEST_DATA) private attributes: Attributes
+    @Inject(REQUEST_DATA) private attributes: RequestData
   ) {}
 
-  async buildInstallMarkup() {
+  async getInstallInstructions(): Promise<InstallTemplateData> {
     const template = await this.client.getObjectValue<InstallTemplateData>(
       'installation-instructions',
       new InstallTemplate(),
@@ -21,7 +21,11 @@ export class InstallService {
         hooks: [new ClassValidatorHook(InstallTemplate)],
       }
     );
+    return template;
+  }
 
+  async buildInstallMarkup() {
+    const template = await this.getInstallInstructions();
     return `<!DOCTYPE html>
   <html lang="en">
     <head>

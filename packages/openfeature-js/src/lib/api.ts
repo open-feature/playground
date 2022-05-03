@@ -8,7 +8,7 @@ import {
   FlagEvaluationLifeCycle,
   HasTransactionContext,
   Hook,
-  TransactionContext,
+  TransactionContextManager,
 } from './types';
 import { NoopTransactionContext } from './noop-transaction-context';
 
@@ -55,7 +55,7 @@ export class OpenFeatureAPI
   }
 
   registerTransactionContextPropagator(
-    transactionContext: TransactionContext
+    transactionContext: TransactionContextManager
   ): void {
     this.transactionContext = transactionContext;
   }

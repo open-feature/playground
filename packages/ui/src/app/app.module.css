@@ -1,1 +1,5 @@
 /* Your styles goes here. */
+html {
+  border: 0;
+  margin: 0;
+}
