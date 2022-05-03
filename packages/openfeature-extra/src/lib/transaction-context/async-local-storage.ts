@@ -1,7 +1,12 @@
-import { Context, TransactionContext } from '@openfeature/openfeature-js';
+import {
+  Context,
+  TransactionContextManager,
+} from '@openfeature/openfeature-js';
 import { AsyncLocalStorage } from 'async_hooks';
 
-export class AsyncLocalStorageTransactionContext implements TransactionContext {
+export class AsyncLocalStorageTransactionContext
+  implements TransactionContextManager
+{
   private asyncLocalStorage = new AsyncLocalStorage<Context>();
 
   getTransactionContext(): Context {

@@ -3,10 +3,10 @@ import { Client, FlagEvaluationDetails } from '@openfeature/openfeature-js';
 import { OPENFEATURE_CLIENT, REQUEST_DATA } from '../constants';
 
 @Injectable()
-export class HelloService {
+export class HexColorService {
   constructor(@Inject(OPENFEATURE_CLIENT) private client: Client) {}
 
-  async buildHelloMarkup() {
+  async getHexColor() {
     const hexColorValue = await this.client.getStringValue(
       'hex-color',
       '000000',
@@ -34,6 +34,11 @@ export class HelloService {
         ],
       }
     );
+    return `#${hexColorValue}`;
+  }
+
+  async buildHelloMarkup() {
+    const hexColorValue = await this.getHexColor();
     return `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -42,7 +47,7 @@ export class HelloService {
   </head>
   <body>
   	<span>Welcome to</span>
-    <span style="color: #${hexColorValue};">OpenFeature!</span>
+    <span style="color: ${hexColorValue};">OpenFeature!</span>
   </body>
 </html>
 `;

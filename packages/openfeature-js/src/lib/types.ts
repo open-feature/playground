@@ -207,13 +207,13 @@ export enum ErrorCode {
   GENERAL = 'GENERAL',
 }
 
-export interface HasTransactionContext extends TransactionContext {
+export interface HasTransactionContext extends TransactionContextManager {
   registerTransactionContextPropagator(
-    transactionContext: TransactionContext
+    transactionContext: TransactionContextManager
   ): void;
 }
 
-export interface TransactionContext {
+export interface TransactionContextManager {
   getTransactionContext(): Context;
   setTransactionContext(context: Context, callback: () => void): void;
 }

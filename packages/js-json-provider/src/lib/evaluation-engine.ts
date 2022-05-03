@@ -9,8 +9,6 @@ import { OpenFeatureFeatureFlags } from './flag';
 import { camelCase } from 'change-case';
 
 export class EvaluationEngine {
-  constructor() {}
-
   evaluate<T>(
     flags: OpenFeatureFeatureFlags,
     flagKey: string,

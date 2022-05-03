@@ -2,6 +2,17 @@
   "newWelcomeMessage": {
     "state": "enabled"
   },
+  "hexColor": {
+    "returnType": "string",
+    "variants": {
+      "red": "CC0000",
+      "green": "00CC00",
+      "blue": "0000CC",
+      "yellow": "yellow"
+    },
+    "defaultVariant": "blue",
+    "state": "enabled"
+  },
   "fibAlgo": {
     "returnType": "string",
     "variants": {
@@ -26,16 +37,5 @@
         ]
       }
     ]
-  },
-  "hexColor": {
-    "returnType": "string",
-    "variants": {
-      "red": "CC0000",
-      "green": "00CC00",
-      "blue": "0000CC",
-      "yellow": "yellow"
-    },
-    "defaultVariant": "blue",
-    "state": "enabled"
   }
 }
