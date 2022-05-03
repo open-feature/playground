@@ -148,6 +148,24 @@
         "jestConfig": "packages/app/jest.config.js",
         "passWithNoTests": true
       }
+    },
+    "json-demo": {
+      "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
+      "options": {
+        "buildTarget": "app:build",
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/json-demo.js"
+        ]
+      }
     }
   },
   "tags": [],
@@ -156,6 +174,7 @@
     "js-cloudbees-provider",
     "js-launchdarkly-provider",
     "js-split-provider",
-    "js-flagsmith-v1-provider"
+    "js-flagsmith-v1-provider",
+    "js-json-provider"
   ]
 }

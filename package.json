@@ -10,7 +10,8 @@
     "split-demo": "nx run app:split-demo",
     "launchdarkly-demo": "nx run app:launchdarkly-demo",
     "flagsmith-v1-demo": "nx run app:flagsmith-v1-demo",
-    "flagsmith-v2-demo": "nx run app:flagsmith-v2-demo"
+    "flagsmith-v2-demo": "nx run app:flagsmith-v2-demo",
+    "json-demo": "nx run app:json-demo"
   },
   "private": true,
   "dependencies": {
