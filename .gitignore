@@ -40,3 +40,6 @@ Thumbs.db
 
 # Environment vars
 .env
+
+# JSON file
+flags.json

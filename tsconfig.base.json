@@ -30,6 +30,9 @@
       "@openfeature/js-flagsmith-v2-provider": [
         "packages/js-flagsmith-v2-provider/src/index.ts"
       ],
+      "@openfeature/js-json-provider": [
+        "packages/js-json-provider/src/index.ts"
+      ],
       "@openfeature/js-launchdarkly-provider": [
         "packages/js-launchdarkly-provider/src/index.ts"
       ],

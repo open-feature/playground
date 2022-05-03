@@ -212,7 +212,7 @@ export interface ProviderOptions<T = unknown> {
 export type ProviderEvaluation<T> = {
   value: T;
   variant?: string;
-  reason: Reason | string;
+  reason?: Reason | string;
   errorCode?: ErrorCode;
 };
 

@@ -7,6 +7,7 @@
     "js-env-provider": "packages/js-env-provider",
     "js-flagsmith-v1-provider": "packages/js-flagsmith-v1-provider",
     "js-flagsmith-v2-provider": "packages/js-flagsmith-v2-provider",
+    "js-json-provider": "packages/js-json-provider",
     "js-launchdarkly-provider": "packages/js-launchdarkly-provider",
     "js-split-provider": "packages/js-split-provider",
     "openfeature-extra": "packages/openfeature-extra",

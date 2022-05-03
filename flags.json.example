@@ -1,0 +1,9 @@
+{
+  "new-welcome-message": true,
+  "fib-algo": "recursive",
+  "hex-color": "000000",
+  "installation-instructions": {
+    "os": "Windows",
+    "installationInstruction": "Download our .exe file."
+  }
+}
