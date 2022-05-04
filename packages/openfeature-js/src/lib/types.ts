@@ -5,12 +5,7 @@ export type Context = { userId?: string } & Record<
 
 // export type Context = Record<string, unknown>;
 
-export type FlagValueType =
-  | 'enabled'
-  | 'boolean'
-  | 'string'
-  | 'number'
-  | 'json';
+export type FlagValueType = 'boolean' | 'string' | 'number' | 'json';
 
 export interface FlagEvaluationOptions {
   hooks?: Hook[];
@@ -20,30 +15,6 @@ export interface FlagEvaluationOptions {
  * This interface is presented to the application author
  */
 export interface Features {
-  /**
-   * Get a boolean flag value.
-   *
-   * NOTE: In some providers this has distinct behavior from getBooleanValue
-   */
-  isEnabled(
-    flagKey: string,
-    defaultValue: boolean,
-    context?: Context,
-    options?: FlagEvaluationOptions
-  ): Promise<boolean>;
-
-  /**
-   * Get a boolean flag with additional details.
-   *
-   * NOTE: In some providers this has distinct behavior from getBooleanDetails
-   */
-  isEnabledDetails(
-    flagKey: string,
-    defaultValue: boolean,
-    context?: Context,
-    options?: FlagEvaluationOptions
-  ): Promise<FlagEvaluationDetails<boolean>>;
-
   /**
    * Get a boolean flag value.
    */
@@ -129,17 +100,6 @@ export type ContextTransformer<T = unknown> = (context: Context) => T;
 
 interface GenericProvider<T> {
   name: string;
-
-  /**
-   * Resolve a flag's activity. In some providers, this may be distinct from
-   * getting a boolean flag value.
-   */
-  isEnabledEvaluation(
-    flagKey: string,
-    defaultValue: boolean,
-    transformedContext: T,
-    options?: FlagEvaluationOptions | undefined
-  ): Promise<ProviderEvaluation<boolean>>;
 
   /**
    * Resolve a boolean flag and it's evaluation details. In some providers, this may be distinct from getting a flag's activity.

@@ -1,0 +1,70 @@
+newWelcomeMessage:
+  state: enabled
+
+fibAlgo:
+  returnType: string
+
+  variants:
+    recursive: recursive
+    memo: memo
+    loop: loop
+    binet: binet
+
+  defaultVariant: "recursive"
+
+  state: enabled
+  
+  rules:
+    - target:
+        variant: "loop"
+      conditions:
+        - context: email
+          op: equals
+          value: todd@awesome.com
+
+hexColor:
+  returnType: "string"
+  variants:
+    red: FF3207
+    blue: 074DFF
+    green: 07FF11
+    yellow: yellow
+
+  defaultVariant: "yellow"
+  state: enabled
+
+installationInstructions:
+  returnType: "object"
+
+  variants:
+    windows:
+      os: Windows
+      installationInstruction: "Download our .exe file."
+    macOS:
+      os: macOS
+      installationInstruction: "Download our .dmg file."
+    linux:
+      os: Linux
+      installationInstruction: "Install our killer app package using your distributions package manager."
+
+  defaultVariant: "windows"
+  state: enabled
+  rules:
+    - target:
+        variant: "windows"
+      conditions:
+        - context: platform
+          op: equals
+          value: Windows
+    - target:
+        variant: "macOS"
+      conditions:
+        - context: platform
+          op: equals
+          value: macOS
+    - target:
+        variant: "linux"
+      conditions:
+        - context: platform
+          op: equals
+          value: Linux

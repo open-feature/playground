@@ -46,32 +46,6 @@ export class OpenFeatureClient implements Client {
     this._hooks = [...this._hooks, ...hooks];
   }
 
-  async isEnabled(
-    flagKey: string,
-    defaultValue: boolean,
-    context?: Context,
-    options?: FlagEvaluationOptions
-  ): Promise<boolean> {
-    return (
-      await this.isEnabledDetails(flagKey, defaultValue, context, options)
-    ).value;
-  }
-
-  isEnabledDetails(
-    flagKey: string,
-    defaultValue: boolean,
-    context?: Context,
-    options?: FlagEvaluationOptions
-  ): Promise<FlagEvaluationDetails<boolean>> {
-    return this.evaluateFlag(
-      'enabled',
-      flagKey,
-      defaultValue,
-      context,
-      options
-    );
-  }
-
   async getBooleanValue(
     flagKey: string,
     defaultValue: boolean,
@@ -205,15 +179,6 @@ export class OpenFeatureClient implements Client {
           ? await provider.contextTransformer(mergedContext)
           : mergedContext;
       switch (flagValueType) {
-        case 'enabled': {
-          evaluationDetailsPromise = provider.isEnabledEvaluation(
-            flagKey,
-            defaultValue as boolean,
-            transformedContext,
-            options
-          );
-          break;
-        }
         case 'boolean': {
           evaluationDetailsPromise = provider.getBooleanEvaluation(
             flagKey,
