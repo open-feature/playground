@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "schema-to-types": "json2ts --input ./schemas/flag.schema.json --output ./packages/js-json-provider/src/lib/flag.d.ts",
     "provider-generator": "nx workspace-generator provider-generator",
     "no-op-demo": "nx serve app",
     "cloudbees-demo": "nx run app:cloudbees-demo",
@@ -25,6 +26,7 @@
     "@opentelemetry/exporter-zipkin": "~1.0.0",
     "@opentelemetry/sdk-node": "^0.27.0",
     "@opentelemetry/sdk-trace-node": "~1.0.0",
+    "ajv": "^8.11.0",
     "change-case": "^4.1.2",
     "class-validator": "^0.13.2",
     "continuation-local-storage": "^3.2.1",
@@ -65,6 +67,7 @@
     "eslint": "~8.7.0",
     "eslint-config-prettier": "8.1.0",
     "jest": "27.2.3",
+    "json-schema-to-typescript": "^10.1.5",
     "prettier": "^2.5.1",
     "rox-node": "^5.2.0",
     "ts-jest": "27.1.4",

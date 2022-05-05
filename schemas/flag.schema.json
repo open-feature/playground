@@ -5,6 +5,8 @@
   "type": "object",
   "patternProperties": {
     "^[A-Za-z]+$": {
+      "description": "The flag key that uniquely represents the flag.",
+      "type": "object",
       "properties": {
         "name": {
           "type": "string"
@@ -14,12 +16,7 @@
         },
         "returnType": {
           "type": "string",
-          "enum": [
-            "boolean",
-            "string",
-            "number",
-            "object"
-          ],
+          "enum": ["boolean", "string", "number", "object"],
           "default": "boolean"
         },
         "variants": {
@@ -27,7 +24,6 @@
           "patternProperties": {
             "^[A-Za-z]+$": {
               "properties": {
-                "$comment": "Type should change based on return type",
                 "value": {
                   "type": ["string", "number", "boolean", "object"]
                 }
@@ -39,65 +35,72 @@
           "default": { "enabled": true, "disabled": false }
         },
         "defaultVariant": {
-          "type": "string"
+          "type": "string",
+          "default": "enabled"
         },
         "state": {
           "type": "string",
-          "enum": [
-            "enabled",
-            "disabled"
-          ]
+          "enum": ["enabled", "disabled"],
+          "default": "enabled"
         },
         "rules": {
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "target": {
-                "type": "object",
-                "properties": {
-                  "variant": {
-                    "type": "string",
-                    "description": "The variant to use if the condition evaluates to true"
-                  }
-                }
-              },
-              "conditions": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "context": {
-                      "type": "string",
-                      "description": "The context key that should be evaluated in this condition"
-                    },
-                    "op": {
-                      "type": "string",
-                      "enum": [
-                        "equals",
-                        "starts_with",
-                        "ends_with"
-                      ]
-                    },
-                    "value": {
-                      "type": "string"
-                    }
-                  },
-                  "required": ["context", "op", "value"],
-                  "additionalProperties": false
-                }
-              }
-            },
-            "additionalProperties": false,
-            "required": ["target", "conditions"]
+            "$ref": "#/$defs/rule"
           },
-          "required": ["target", "conditions"],
           "default": []
         }
       },
-      "required": ["state", "returnType", "variants", "rules"],
+      "required": ["state"],
       "additionalProperties": false
     }
   },
-  "additionalProperties": false
+  "additionalProperties": false,
+
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "description": "A rule that ",
+      "properties": {
+        "action": {
+          "type": "object",
+          "description": "The action that should be taken if at least one condition evaluates to true.",
+          "properties": {
+            "variant": {
+              "type": "string",
+              "description": "The variant that should be return if one of the conditions evaluates to true."
+            }
+          },
+          "required": ["variant"],
+          "additionalProperties": false
+        },
+        "conditions": {
+          "type": "array",
+          "description": "The conditions that should that be evaluated.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "context": {
+                "type": "string",
+                "description": "The context key that should be evaluated in this condition"
+              },
+              "op": {
+                "type": "string",
+                "description": "The operation that should be performed",
+                "enum": ["equals", "starts_with", "ends_with"]
+              },
+              "value": {
+                "type": "string",
+                "description": "The value that should be evaluated"
+              }
+            },
+            "required": ["context", "op", "value"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["action", "conditions"],
+      "additionalProperties": false
+    }
+  }
 }

@@ -1,26 +1,34 @@
 import { EvaluationEngine } from './evaluation-engine';
+import Ajv2020 from 'ajv/dist/2020';
+import { OpenFeatureFeatureFlags } from './flag';
+
+const schema = require('../../../../schemas/flag.schema.json');
+
+const ajv = new Ajv2020({
+  useDefaults: true,
+  allowUnionTypes: true,
+  allowMatchingProperties: false,
+});
+
+const validate = ajv.compile<OpenFeatureFeatureFlags>(schema);
+
 describe('EvaluationEngine', () => {
   it('should return the default values', () => {
-    const evaluationEngine = new EvaluationEngine({
+    const flags: OpenFeatureFeatureFlags = {
       newWelcomeMessage: {
         state: 'enabled',
-        rules: [],
-        variants: {
-          on: true,
-          off: false,
-        },
-        defaultVariant: 'on',
-        returnType: 'boolean',
       },
-    });
-
+    };
+    const valid = validate(flags);
+    expect(valid).toBe(true);
+    const evaluationEngine = new EvaluationEngine();
     expect(
-      evaluationEngine.evaluate('newWelcomeMessage', 'boolean', {})
+      evaluationEngine.evaluate(flags, 'newWelcomeMessage', 'boolean', {})
     ).toBeTruthy();
   });
 
   it('should return the default values', () => {
-    const evaluationEngine = new EvaluationEngine({
+    const flags: OpenFeatureFeatureFlags = {
       fibAlgo: {
         returnType: 'string',
         variants: {
@@ -33,7 +41,7 @@ describe('EvaluationEngine', () => {
         state: 'enabled',
         rules: [
           {
-            target: {
+            action: {
               variant: 'binet',
             },
             conditions: [
@@ -46,10 +54,16 @@ describe('EvaluationEngine', () => {
           },
         ],
       },
-    });
+    };
+    const valid = validate(flags);
+    expect(valid).toBe(true);
+
+    const evaluationEngine = new EvaluationEngine();
 
     expect(
-      evaluationEngine.evaluate('fibAlgo', 'string', { email: 'user@test.com' })
+      evaluationEngine.evaluate(flags, 'fibAlgo', 'string', {
+        email: 'user@test.com',
+      })
     ).toEqual({
       value: 'binet',
       variant: 'binet',

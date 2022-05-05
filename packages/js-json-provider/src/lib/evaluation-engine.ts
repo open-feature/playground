@@ -5,17 +5,19 @@ import {
   FlagNotFoundError,
   TypeMismatchError,
 } from '@openfeature/openfeature-js';
-import { Flags } from './types';
+import { OpenFeatureFeatureFlags } from './flag';
+import { camelCase } from 'change-case';
 
 export class EvaluationEngine {
-  constructor(private readonly flags: Flags) {}
+  constructor() {}
 
   evaluate<T>(
+    flags: OpenFeatureFeatureFlags,
     flagKey: string,
     returnType: FlagValueType,
     context: Context
   ): ProviderEvaluation<T> {
-    const flag = this.flags[flagKey];
+    const flag = flags[camelCase(flagKey)];
 
     if (!flag || flag.state !== 'enabled') {
       throw new FlagNotFoundError(`${flagKey} not found.`);
@@ -25,13 +27,14 @@ export class EvaluationEngine {
       );
     }
 
-    const matchedRule = flag.rules.find((rule) => {
+    const matchedRule = (flag.rules ?? []).find((rule) => {
       return rule.conditions.find((condition) => {
         const conditionContextValue = context[condition.context];
+        if (condition.op === 'equals') {
+          return conditionContextValue === condition.value;
+        }
         if (typeof conditionContextValue === 'string') {
-          if (condition.op === 'equals') {
-            return conditionContextValue === condition.value;
-          } else if (condition.op === 'starts_with') {
+          if (condition.op === 'starts_with') {
             return conditionContextValue.startsWith(condition.value);
           } else if (condition.op === 'ends_with') {
             return conditionContextValue.endsWith(condition.value);
@@ -43,16 +46,14 @@ export class EvaluationEngine {
 
     if (matchedRule) {
       return {
-        // TODO fix typing
-        value: flag.variants[matchedRule.target.variant] as unknown as T,
-        variant: matchedRule.target.variant,
-        // TODO give a better reason
+        value: flag.variants![matchedRule.action.variant] as T,
+        variant: matchedRule.action.variant,
         reason: 'Rule match',
       };
     }
 
     return {
-      value: flag.variants[flag.defaultVariant] as unknown as T,
+      value: flag.variants![flag.defaultVariant!] as T,
       variant: flag.defaultVariant,
       reason: 'Default value',
     };
