@@ -1,9 +1,41 @@
 {
-  "new-welcome-message": true,
-  "fib-algo": "recursive",
-  "hex-color": "000000",
-  "installation-instructions": {
-    "os": "Windows",
-    "installationInstruction": "Download our .exe file."
+  "newWelcomeMessage": {
+    "state": "enabled"
+  },
+  "fibAlgo": {
+    "returnType": "string",
+    "variants": {
+      "recursive": "recursive",
+      "memo": "memo",
+      "loop": "loop",
+      "binet": "binet"
+    },
+    "defaultVariant": "recursive",
+    "state": "enabled",
+    "rules": [
+      {
+        "action": {
+          "variant": "binet"
+        },
+        "conditions": [
+          {
+            "context": "email",
+            "op": "ends_with",
+            "value": "@faas.com"
+          }
+        ]
+      }
+    ]
+  },
+  "hexColor": {
+    "returnType": "string",
+    "variants": {
+      "red": "CC0000",
+      "green": "00CC00",
+      "blue": "0000CC",
+      "yellow": "yellow"
+    },
+    "defaultVariant": "blue",
+    "state": "enabled"
   }
 }

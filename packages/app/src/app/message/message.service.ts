@@ -10,7 +10,7 @@ export class MessageService {
   ) {}
 
   async getMessage() {
-    const message = (await this.client.isEnabled(
+    const message = (await this.client.getBooleanValue(
       'new-welcome-message',
       false,
       this.attributes
