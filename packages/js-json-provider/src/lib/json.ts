@@ -22,8 +22,6 @@ const ajv = new Ajv2020({
   allowMatchingProperties: false,
 });
 
-console.log('schema', schema);
-
 const validate = ajv.compile<OpenFeatureFeatureFlags>(schema);
 
 export class JsonProvider implements FeatureProvider {
@@ -78,11 +76,8 @@ export class JsonProvider implements FeatureProvider {
     const flags = JSON.parse((await readFile(JSON_FILE)).toString());
     const valid = validate(flags);
     if (!valid) {
-      console.log(validate.errors);
       throw new GeneralError('Invalid flag config');
     }
-
-    console.log('flags are', flags);
 
     return flags;
   }
