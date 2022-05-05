@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://openfeature.dev/flag.schema.json",
   "title": "OpenFeature Feature Flags",
   "type": "object",
@@ -26,9 +26,17 @@
           "type": "object",
           "patternProperties": {
             "^[A-Za-z]+$": {
-              "value": ["string", "number", "boolean", "object"]
-            }
-          }
+              "properties": {
+                "$comment": "Type should change based on return type",
+                "value": {
+                  "type": ["string", "number", "boolean", "object"]
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "minProperties": 2,
+          "default": { "enabled": true, "disabled": false }
         },
         "defaultVariant": {
           "type": "string"
@@ -51,38 +59,43 @@
                   "variant": {
                     "type": "string",
                     "description": "The variant to use if the condition evaluates to true"
-                  },
-                  "conditions": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "context": {
-                          "type": "string",
-                          "description": "The context key that should be evaluated in this condition"
-                        },
-                        "op": {
-                          "type": "string",
-                          "enum": [
-                            "equals",
-                            "starts_with",
-                            "ends_with"
-                          ]
-                        },
-                        "value": {
-                          "type": "string"
-                        }
-                      },
-                      "required": ["properties", "op", "value"]
-                    }
                   }
                 }
+              },
+              "conditions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "context": {
+                      "type": "string",
+                      "description": "The context key that should be evaluated in this condition"
+                    },
+                    "op": {
+                      "type": "string",
+                      "enum": [
+                        "equals",
+                        "starts_with",
+                        "ends_with"
+                      ]
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["context", "op", "value"],
+                  "additionalProperties": false
+                }
               }
-            }
-          }
+            },
+            "additionalProperties": false,
+            "required": ["target", "conditions"]
+          },
+          "required": ["target", "conditions"],
+          "default": []
         }
       },
-      "required": ["state"],
+      "required": ["state", "returnType", "variants", "rules"],
       "additionalProperties": false
     }
   },
