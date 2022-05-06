@@ -2,6 +2,8 @@
   "version": 2,
   "projects": {
     "app": "packages/app",
+    "demo-react-weather-app": "packages/demo-react-weather-app",
+    "demo-react-weather-app-e2e": "packages/demo-react-weather-app-e2e",
     "fibonacci": "packages/fibonacci",
     "js-cloudbees-provider": "packages/js-cloudbees-provider",
     "js-env-provider": "packages/js-env-provider",

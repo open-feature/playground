@@ -12,7 +12,8 @@
     "launchdarkly-demo": "nx run app:launchdarkly-demo",
     "flagsmith-v1-demo": "nx run app:flagsmith-v1-demo",
     "flagsmith-v2-demo": "nx run app:flagsmith-v2-demo",
-    "json-demo": "nx run app:json-demo"
+    "json-demo": "nx run app:json-demo",
+    "react-weather-demo": "nx serve demo-react-weather-app"
   },
   "private": true,
   "dependencies": {

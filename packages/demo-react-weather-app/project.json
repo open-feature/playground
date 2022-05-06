@@ -1,0 +1,85 @@
+{
+  "root": "packages/demo-react-weather-app",
+  "sourceRoot": "packages/demo-react-weather-app/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/packages/demo-react-weather-app",
+        "index": "packages/demo-react-weather-app/src/index.html",
+        "baseHref": "/",
+        "main": "packages/demo-react-weather-app/src/main.tsx",
+        "polyfills": "packages/demo-react-weather-app/src/polyfills.ts",
+        "tsConfig": "packages/demo-react-weather-app/tsconfig.app.json",
+        "assets": [
+          "packages/demo-react-weather-app/src/favicon.ico",
+          "packages/demo-react-weather-app/src/assets"
+        ],
+        "styles": ["packages/demo-react-weather-app/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        },
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "packages/demo-react-weather-app/src/environments/environment.ts",
+              "with": "packages/demo-react-weather-app/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "demo-react-weather-app:build",
+        "hmr": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "demo-react-weather-app:build:development"
+        },
+        "production": {
+          "buildTarget": "demo-react-weather-app:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "packages/demo-react-weather-app/**/*.{ts,tsx,js,jsx}"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/demo-react-weather-app"],
+      "options": {
+        "jestConfig": "packages/demo-react-weather-app/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

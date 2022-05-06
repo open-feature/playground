@@ -1,0 +1,28 @@
+{
+  "root": "packages/demo-react-weather-app-e2e",
+  "sourceRoot": "packages/demo-react-weather-app-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "packages/demo-react-weather-app-e2e/cypress.json",
+        "devServerTarget": "demo-react-weather-app:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "demo-react-weather-app:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/demo-react-weather-app-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["demo-react-weather-app"]
+}
