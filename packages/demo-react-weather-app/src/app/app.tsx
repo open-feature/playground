@@ -1,9 +1,10 @@
-import {Typography} from '@mui/material'
+import {Container, Typography} from '@mui/material'
+import Weather from './Weather';
 export function App() {
   return (
-    <div>
-      <Typography variant='h1'>Oh Hai</Typography>
-    </div>
+    <Container maxWidth="xs">
+        <Weather />
+    </Container>
   );
 }
 
