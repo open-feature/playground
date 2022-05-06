@@ -1,7 +1,8 @@
+import {Typography} from '@mui/material'
 export function App() {
   return (
     <div>
-      hi
+      <Typography variant='h1'>Oh Hai</Typography>
     </div>
   );
 }
