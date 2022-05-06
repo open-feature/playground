@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Tabs, Tab, Stack, Divider, Typography, TextField, Button } from '@mui/material';
 
+// import {useBooleanFeatureFlag} from '../lib/feature-flags'
+
 interface Weather {
   temp: number,
   conditions: string
@@ -44,6 +46,7 @@ type WeatherDetailsProps = {
   weather:Weather
 }
 function WeatherDetails({weather}:WeatherDetailsProps) {
+  const includeConditions = true// useBooleanFeatureFlag('include-conditions-in-weather-display',false)
   return (
     <Box sx={{
       my: 4,
@@ -54,9 +57,11 @@ function WeatherDetails({weather}:WeatherDetailsProps) {
       <Typography alignSelf="center" variant="h1" component="h3">
         {weather.temp}&deg;F
       </Typography>
-      <Typography alignSelf="center" variant="h4" component="h3">
-        {weather.conditions}
-      </Typography>
+      {includeConditions && 
+        <Typography alignSelf="center" variant="h4" component="h3">
+          {weather.conditions}
+        </Typography>
+      }
     </Box>
   )
 }
