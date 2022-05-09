@@ -15,8 +15,8 @@ export class MessageService {
       false,
       this.attributes
     ))
-      ? 'Welcome to the next gen api!'
-      : 'Welcome to the api!';
+      ? 'Welcome to Fib3r: Fibonacci as a Service!'
+      : 'Welcome to FaaS: Fibonacci as a Service!';
     return { message };
   }
 }

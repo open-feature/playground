@@ -48,7 +48,7 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
       value: parseValidJsonObject(details.value),
     });
   }
-  name = ' environment variable';
+  name = 'environment variable';
 
   evaluateEnvironmentVariable(key: string): ProviderEvaluation<string> {
     // convert key to ENV_VAR style casing

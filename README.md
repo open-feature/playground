@@ -1,13 +1,19 @@
-# OpenFeature API and SDK Experimentation
+# OpenFeature Playground: Demo and API and SDK Experimentation
+
+The purpose of this repository is to demonstrate and experiment with existing and proposed functions of OpenFeature. These experiments were written in TypeScript and focus on NodeJS, but the basic concepts translate to most implementation languages.
+
+## Demo
+
+If you're new to OpenFeature, or feature-flags in general, we recommend you start by running the demo UI, along with the JSON-file provider. A guided tour will walk you through some basic concepts. To run the demo:
+
+- run `npm ci`
+- run the JSON-file provider: `npm run json-demo`
+- in a new terminal session run the UI: `npm run ui`
+- open [localhost:4200](http://localhost:4200) in your browser!
+
+You can also run the demo with any provider of your choice, by running that provider instead of the JSON-file provider.
 
 [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
-
-The purpose of this repository is to experiment with different techniques in
-order to help define the initial spec of OpenFeature. It was inspired by the
-OpenTelemetry SDK, with a focus on the design principles outlined in the
-[spec](https://github.com/open-feature/spec#design-principles). These experiments
-were written in TypeScript and focus on NodeJS, but the basic concepts should be
-language agnostic.
 
 ## Application Author API
 

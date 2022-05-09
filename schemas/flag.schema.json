@@ -63,8 +63,8 @@
       "description": "A rule that ",
       "properties": {
         "action": {
-          "type": "object",
           "description": "The action that should be taken if at least one condition evaluates to true.",
+          "type": "object",
           "properties": {
             "variant": {
               "type": "string",
