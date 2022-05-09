@@ -148,6 +148,7 @@ root.render(
     <TourProvider
       steps={styledSteps}
       maskClassName="tour-mask"
+      onClickMask={() => undefined}
       padding={50}
       disableFocusLock={true}
     >

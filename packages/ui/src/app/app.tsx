@@ -290,25 +290,29 @@ class App extends Component<
 
   // get all data (message, hex-color, and json).
   private async refreshPage() {
-    const promises: [
-      Promise<{ message: string }>,
-      Promise<{ color: string }>,
-      Promise<unknown>
-    ] = [
-      this.getData<{ message: string }>('/message'),
-      this.getData<{ color: string }>('/hex-color'),
-      this.getData<unknown>('/utils/json'),
-    ];
-    const [message, hexColor, json]: [
-      { message: string },
-      { color: string },
-      unknown
-    ] = await Promise.all(promises);
-    this.setState({
-      message: message.message,
-      hexColor: hexColor.color,
-      json,
-    });
+    try {
+      const promises: [
+        Promise<{ message: string }>,
+        Promise<{ color: string }>,
+        Promise<unknown>
+      ] = [
+        this.getData<{ message: string }>('/message'),
+        this.getData<{ color: string }>('/hex-color'),
+        this.getData<unknown>('/utils/json'),
+      ];
+      const [message, hexColor, json]: [
+        { message: string },
+        { color: string },
+        unknown
+      ] = await Promise.all(promises);
+      this.setState({
+        message: message.message,
+        hexColor: hexColor.color,
+        json,
+      });
+    } catch (err) {
+      throw new Error('Unable to refresh page. Is the server running?');
+    }
   }
 
   // thin wrapper around fetch for PUTing JSON.
