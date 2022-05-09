@@ -4,7 +4,12 @@ import JSONInput from 'react-json-editor-ajrm';
 const locale = require('react-json-editor-ajrm/locale/en');
 
 export type JsonOutput = {
-  jsObject: unknown;
+  jsObject: {
+    [key: string]: {
+      state: 'enabled' | 'disabled';
+      defaultVariant: string;
+    };
+  };
   json: string;
 };
 

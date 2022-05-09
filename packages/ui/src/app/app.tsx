@@ -14,11 +14,13 @@ import Ajv2020, {
 } from 'ajv/dist/2020';
 
 const BASE_URL = 'http://localhost:3333';
+const STEP_EDIT_HEX = 7;
+const STEP_SNAZZY = 9;
 const STEP_UH_OH = 11;
 const STEP_LOGIN = 13;
 const STEP_FAST_FIB = 14;
 const STEP_DONE = 15;
-const REFRESH_INTERVAL = 1000;
+const REFRESH_INTERVAL = 5000;
 
 class App extends Component<
   TourProps,
@@ -260,6 +262,21 @@ class App extends Component<
       if (valid) {
         await this.syncData(jsonOutput.json);
         this.setState({ errors: undefined });
+        if (this.props.isOpen) {
+          if (
+            // advance to next step after boolean flag change.
+            this.props.currentStep === STEP_EDIT_HEX - 1 &&
+            jsonOutput.jsObject['newWelcomeMessage'].state === 'enabled'
+          ) {
+            this.props.setCurrentStep(STEP_EDIT_HEX);
+          } else if (
+            // advance to next step after string flag change.
+            this.props.currentStep === STEP_SNAZZY - 1 &&
+            jsonOutput.jsObject['hexColor'].defaultVariant !== 'blue'
+          ) {
+            this.props.setCurrentStep(STEP_SNAZZY);
+          }
+        }
       } else {
         this.setState({ errors: this.validate.errors });
       }
@@ -311,7 +328,9 @@ class App extends Component<
         json,
       });
     } catch (err) {
-      throw new Error('Unable to refresh page. Is the server running?');
+      throw new Error(
+        'Unable to load page data... Did you forget to run the server?'
+      );
     }
   }
 
