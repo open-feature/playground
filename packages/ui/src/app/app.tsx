@@ -135,7 +135,28 @@ class App extends Component<
               width: '100%',
               height: '90vh',
             }}
-          ></div>
+          >
+            {/* image attribution */}
+            <div
+              style={{
+                position: 'absolute',
+                bottom: '10px',
+                left: '10px',
+                fontSize: '8px',
+                color: '#888',
+              }}
+            >
+              <a
+                style={{
+                  color: '#555',
+                  zIndex: 1000000,
+                }}
+                href="https://www.freepik.com/vectors/digital-devices"
+              >
+                Digital devices vector created by rawpixel.com - www.freepik.com
+              </a>
+            </div>
+          </div>
         </div>
 
         {/* fixed container */}

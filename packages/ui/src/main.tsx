@@ -3,6 +3,7 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import Page from './app/app';
 
+// Highlights an object/area in the JSON editor based on the key, and optionally the next key.
 const editorHighlightAreaSelectors = (
   startProperty: string,
   endProperty?: string
@@ -108,7 +109,17 @@ const steps: StepType[] = [
   {
     // step 16
     selector: 'html',
-    content: `Thanks for taking this quick tour of OpenFeature!`,
+    content: `That's it for our tour, but one more thing: as previously mentioned, one of the core benefits of OpenFeature is a consistent API across feature flag management systems...`,
+  },
+  {
+    // step 17
+    selector: 'html',
+    content: `You can start the same tour with a different demo "provider", and connect OpenFeature to the SaaS Vendor of your choice, or you can create a custom provider of your own! Check out this project's README for more info.`,
+  },
+  {
+    // step 18
+    selector: 'html',
+    content: `Thanks for taking this quick tour of OpenFeature.`,
   },
 ];
 
