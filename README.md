@@ -4,16 +4,16 @@
 
 The purpose of this repository is to demonstrate and experiment with existing and proposed functions of OpenFeature. These experiments were written in TypeScript and focus on NodeJS, but the basic concepts translate to most implementation languages.
 
-## Demo
+## Introductory Demo
 
 If you're new to OpenFeature, or feature-flags in general, we recommend you start by running the demo UI, along with the JSON-file provider. A guided tour will walk you through some basic concepts. To run the demo:
 
-- run `npm ci`
-- run the JSON-file provider: `npm run json-demo`
-- in a new terminal session run the UI: `npm run ui`
-- open [localhost:4200](http://localhost:4200) in your browser!
+1. Run `npm ci`
+2. Run the JSON-file provider: `npm run json-demo`
+3. In a new terminal session run the UI: `npm run ui`
+4. Open [localhost:4200](http://localhost:4200) in your browser!
 
-You can also run the demo with any provider of your choice, by running that provider instead of the JSON-file provider.
+You can also run the demo with any provider of your choice, by running that provider instead of the JSON-file provider (see [demo providers](#demo-providers)). You can also [generate scaffolding](#create-a-new-provider) to create your own custom provider.
 
 ## Application Author API
 
@@ -98,19 +98,19 @@ following prerequisites configured on your system.
 
 You can then clone the repo and install the dependencies.
 
-1. clone the repo: `git clone https://github.com/open-feature/sdk-research.git`
+1. clone the repo: `git clone https://github.com/open-feature/playground.git`
 1. Install dependencies: `npm ci`
 
 Available demos:
 
 - [No-op](#no-op-demo)
 - [Environment Variable Provider](#environment-variable-provider-demo)
+- [JSON-file Provider Demo](#json-file-provider-demo)
 - [Split Provider](#split-provider-demo)
 - [CloudBees Feature Management Provider](#cloudbees-fm-provider-demo)
 - [LaunchDarkly Provider Demo](#launchdarkly-provider-demo)
 - [Flagsmith Provider Demo](#flagsmith-provider-demo)
 - [OpenTelemetry and Zipkin](#opentelemetry-demo)
-- [Validation Hook Demo](#validation-hook-demo)
 
 ## Create a new provider
 
@@ -146,20 +146,23 @@ OpenFeature allows developers to register a provider. Providers are responsible 
 using the flag identity and context to determine the state of the feature. If no
 providers are registered, the flags will no-op and return the default value.
 
-### No-op Demo
+### Demo Providers
+
+#### No-op Demo
 
 To see this in action, we'll run the API app found
 [here](./packages/api/src/main.ts). Notice that we're using OpenFeature but not
 registering a provider. Let's run the app and see what happens.
 
 1. Run `npm run no-op-demo`
-2. Open http://localhost:3333/api in your browser
+2. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+3. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
 That's it! You should see **Welcome to the api!**. Unfortunately, that's all you
 can do without registering a provider. Thankfully, as we'll see in the next
 section, that part is easy.
 
-## Compatibility
+#### Compatibility
 
 Another key design principle of OpenFeature is compatibility with existing open source
 and commercial feature flag offerings. It should be possible to register a
@@ -172,7 +175,7 @@ application without registering a provider.
 > directly in the [app](./packages/api/src/main.ts). This is done before the
 > main app starts using the `-r` node cli argument. The config can be found [here](./packages/api/project.json).
 
-### Environment Variable Provider Demo
+#### Environment Variable Provider Demo
 
 The environment variable provider is a simple demo showing how environment
 variables could be used make flag evaluations. Its purpose is to show how a
@@ -182,7 +185,8 @@ Follow these steps to run the demo:
 
 1. copy `.env.example` to `.env`
 2. Run `npm run env-var-demo`
-3. Open http://localhost:3333/api in your browser
+3. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+4. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
 You should see **Welcome to the api!** just as before. Now, change the value of
 `new-welcome-message` to true and restart the app. It should show **Welcome
@@ -190,7 +194,24 @@ to the next gen api!** in your browser. Now we're getting somewhere, but
 it's still a bit too basic to be useful. The next demo will show how we could
 register a commercial feature flag tool using an existing SDK.
 
-### Split Provider Demo
+#### JSON-file Provider Demo
+
+The JSON provider is a simple demo showing how environment
+variables could be used make flag evaluations. Its purpose is to demonstrate a slightly more complex local provider, with some ability to do basic dynamic flag evaluation.
+
+Follow these steps to run the demo:
+
+1. Run `npm run json-demo`
+2. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+3. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
+
+You should see **Welcome to the api!** just as before. Now, change the value of
+`new-welcome-message` to true and restart the app. It should show **Welcome
+to the next gen api!** in your browser. Now we're getting somewhere, but
+it's still a bit too basic to be useful. The next demo will show how we could
+register a commercial feature flag tool using an existing SDK.
+
+#### Split Provider Demo
 
 The Split provider shows how an existing SDK, in this case Split's NodeJS SDK, can
 be used in OpenFeature. This is a simple example that doesn't cover every use
@@ -208,9 +229,11 @@ Follow these steps to run the demo:
    `memo`, `loop`, `binet`, and `default`.
 5. Create a new split called `hex-color` with the treatment values: `CC0000`,
    `00CC00`, `0000CC`, `chartreuse`.
-6. Run `npm run split-demo` and visit http://localhost:3333/api, http://localhost:3333/hello, or http://localhost:3333/fibonacci?num=40
+6. Run `npm run split-demo`
+7. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+8. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
-### CloudBees FM Provider Demo
+#### CloudBees FM Provider Demo
 
 A CloudCees Feature Management provider demo.
 
@@ -223,9 +246,11 @@ Follow these steps to run the demo:
    `memo`, `loop`, `binet`, and `default`.
 5. Create a new flag called `hex-color` with the values: `CC0000`,
    `00CC00`, `0000CC`, `chartreuse`.
-6. Run `npm run cloudbees-demo` and visit http://localhost:3333/api, http://localhost:3333/hello, or http://localhost:3333/fibonacci?num=40
+6. Run `npm run cloudbees-demo`
+7. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+8. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
-### LaunchDarkly Provider Demo
+#### LaunchDarkly Provider Demo
 
 A LaunchDarkly provider demo.
 
@@ -238,9 +263,12 @@ Follow these steps to run the demo:
    `memo`, `loop`, `binet`, and `default`.
 5. Create a new feature flag called `hex-color` with the values: `CC0000`,
    `00CC00`, `0000CC`, `chartreuse`.
-6. Run `npm run launchdarkly-demo` and visit http://localhost:3333/api, http://localhost:3333/hello, or http://localhost:3333/fibonacci?num=40
+6. Run `npm run launchdarkly-demo`
+7. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+8. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
-### Flagsmith Provider Demo
+
+#### Flagsmith Provider Demo
 
 A Flagsmith provider demo (supports v1 and v2).
 
@@ -253,7 +281,9 @@ Follow these steps to run the demo:
    `memo`, `loop`, `binet`, and `default`.
 5. Create a new feature called `hex-color` with the values: `CC0000`,
    `00CC00`, `0000CC`, `chartreuse`.
-6. Run `npm run flagsmith-v1-demo` or `npm run flagsmith-v2-demo` and visit http://localhost:3333/api, http://localhost:3333/hello, or http://localhost:3333/fibonacci?num=40
+6. Run `npm run flagsmith-v1-demo` or `npm run flagsmith-v2-demo`
+7. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+8. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
 ## OpenTelemetry Support
 
@@ -271,7 +301,7 @@ provider is not registered, the library no-ops. That means you are able to take
 advantage of all the great features of OpenTelemetry if you already use it, with minimal
 overhead if you don't.
 
-### OpenTelemetry Demo
+### OpenTelemetry Integration
 
 1. Start Zipkin in Docker: `docker run --rm -d -p 9411:9411 --name zipkin openzipkin/zipkin`
 2. Open http://localhost:9411/ in your browser
@@ -283,22 +313,12 @@ overhead if you don't.
 Experiment with different Fibonacci algorithms and hitting the API with these
 values:
 
-- http://localhost:3333/fibonacci?num=10
-- http://localhost:3333/fibonacci?num=20
-- http://localhost:3333/fibonacci?num=30
-- http://localhost:3333/fibonacci?num=40
-- http://localhost:3333/fibonacci?num=50
+- http://localhost:3333/calculate?num=10
+- http://localhost:3333/calculate?num=20
+- http://localhost:3333/calculate?num=30
+- http://localhost:3333/calculate?num=40
+- http://localhost:3333/calculate?num=50
 
-### Validation Hook Demo
-
-"After" hooks can be used validate and intercept flag values. This is particularly useful
-if non-technical personnel have access to make changes to the feature flag values. Validators can
-ensure that only logical valid values for flags propagate through code.
-
-1. Start a provider demo (ie: `npm run env-var-demo`)
-2. Open http://localhost:3333/hello in your browser
-3. Change the value to any valid CSS hex value (ie: `AABB00`) and observe that value is used in the returned markup
-4. Change the value to any invalid CSS hex value (ie: `chartreuse`) and observe that value falls back to `000000`
 
 ### Baggage
 

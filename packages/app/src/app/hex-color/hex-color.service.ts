@@ -37,7 +37,7 @@ export class HexColorService {
     return `#${hexColorValue}`;
   }
 
-  async buildHelloMarkup() {
+  async buildHexColorMarkup() {
     const hexColorValue = await this.getHexColor();
     return `<!DOCTYPE html>
 <html lang="en">
