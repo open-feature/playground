@@ -12,7 +12,7 @@ export class FibonacciAsAServiceController {
   constructor(
     private readonly messageService: MessageService,
     private readonly installService: InstallService,
-    private helloService: HexColorService
+    private hexColorService: HexColorService
   ) {}
 
   /**
@@ -26,13 +26,22 @@ export class FibonacciAsAServiceController {
 
   /**
    *
-   * @returns hex color for the UI.
+   * @returns hex color JSON for the UI.
    */
   @Get('hex-color')
   async getHexColor() {
     return {
-      color: await this.helloService.getHexColor(),
+      color: await this.hexColorService.getHexColor(),
     };
+  }
+
+  /**
+   *
+   * @returns hex color markup for standalone demo.
+   */
+  @Get('hex-color/markup')
+  getHexColorMarkup() {
+    return this.hexColorService.buildHexColorMarkup();
   }
 
   /**
