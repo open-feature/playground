@@ -88,7 +88,7 @@ export interface Features {
   /**
    * Get an object (JSON) flag with additional details.
    */
-  getObjectValue<T extends object>(
+  getObjectDetails<T extends object>(
     flagKey: string,
     defaultValue: T,
     context?: Context,
