@@ -15,6 +15,10 @@ If you're new to OpenFeature, or feature-flags in general, we recommend you star
 
 You can also run the demo with any provider of your choice, by running that provider instead of the JSON-file provider (see [demo providers](#demo-providers)). You can also [generate scaffolding](#create-a-new-provider) to create your own custom provider.
 
+A video recording of the demo flow is available:
+
+[![OpenFeature demo recording](https://img.youtube.com/vi/x0tVZvxV7Pc/0.jpg)](https://www.youtube.com/watch?v=x0tVZvxV7Pc)
+
 ## Application Author API
 
 These are the APIs and interfaces that Application Author (who doesn't particularly care about the underlying feature flag implementation) uses OpenFeature to control "pivot points" in their code.
