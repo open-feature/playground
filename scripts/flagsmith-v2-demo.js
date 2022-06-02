@@ -1,6 +1,6 @@
 'use strict';
 
-const { openfeature } = require('../dist/packages/openfeature-js/main');
+const { OpenFeature } = require('../dist/packages/openfeature-js/main');
 const Flagsmith = require('flagsmithv2').default;
 const {
   FlagsmithV2Provider,
@@ -11,10 +11,10 @@ const {
  * OpenFeature object.
  */
 console.log('Registering the OpenFeature flagsmith-v2 provider');
-openfeature.registerProvider(new FlagsmithV2Provider({
+OpenFeature.register = new FlagsmithV2Provider({
   client: new Flagsmith({
     environmentKey: process.env.FLAGSMITH_ENV_KEY,
     enableLocalEvaluation: true,
-    environmentRefreshIntervalSeconds: 5
-  })
-}));
+    environmentRefreshIntervalSeconds: 5,
+  }),
+});

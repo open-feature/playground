@@ -1,5 +1,5 @@
 import {
-  FlagEvaluationDetails,
+  EvaluationDetails,
   Hook,
   HookContext,
 } from '@openfeature/openfeature-js';
@@ -14,7 +14,7 @@ export class ClassValidatorHook implements Hook {
   constructor(private clazz: Class) {}
   name = 'validator';
 
-  after(_: HookContext, details: FlagEvaluationDetails<object>) {
+  after(_: Readonly<HookContext>, details: EvaluationDetails<object>) {
     const instance = new this.clazz(details.value);
     const result = validateSync(instance);
     if (result.length) {

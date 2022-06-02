@@ -1,8 +1,8 @@
 import {
-  FlagEvaluationDetails,
-  FlagValue,
   Hook,
   HookContext,
+  ResolutionDetails,
+  FlagValue,
 } from '@openfeature/openfeature-js';
 import { EOL } from 'os';
 
@@ -11,15 +11,15 @@ import { EOL } from 'os';
  */
 export class LoggingHook implements Hook {
   name = 'logging';
+
   before(hookContext: HookContext) {
     console.log(
       `Running 'before' logger hook for flag: ${hookContext.flagKey}`
     );
     console.log(JSON.stringify(hookContext.context, undefined, 2));
-    return hookContext.context;
   }
 
-  after(hookContext: HookContext, details: FlagEvaluationDetails<FlagValue>) {
+  after(hookContext: HookContext, details: ResolutionDetails<FlagValue>) {
     console.log(`Running 'after' logger hook for flag: ${hookContext.flagKey}`);
     console.log(
       `Evaluation details:${EOL}${JSON.stringify(details, undefined, 2)}`

@@ -1,13 +1,14 @@
 import {
-  Context,
-  ContextTransformer,
-  FeatureProvider,
   parseValidJsonObject,
   parseValidNumber,
-  ProviderEvaluation,
-  ProviderOptions,
-  Reason,
   TypeMismatchError,
+} from '@openfeature/extra';
+import {
+  ContextTransformer,
+  EvaluationContext,
+  Provider,
+  ProviderOptions,
+  ResolutionDetails,
 } from '@openfeature/openfeature-js';
 import type { Attributes, IClient } from '@splitsoftware/splitio/types/splitio';
 
@@ -24,11 +25,12 @@ export interface SplitProviderOptions extends ProviderOptions<Consumer> {
 /**
  * Transform the context into an object useful for the Split API, an key string with arbitrary Split "Attributes".
  */
-const DEFAULT_CONTEXT_TRANSFORMER = (context: Context): Consumer => {
-  const { userId, ...attributes } = context;
+const DEFAULT_CONTEXT_TRANSFORMER = (context: EvaluationContext): Consumer => {
+  const { targetingKey, ...attributes } = context;
   return {
-    key: userId || 'anonymous',
-    attributes,
+    key: targetingKey || 'anonymous',
+    // Stringify context objects include date.
+    attributes: JSON.parse(JSON.stringify(attributes)),
   };
 };
 
@@ -37,7 +39,7 @@ type Consumer = {
   attributes: Attributes;
 };
 
-export class OpenFeatureSplitProvider implements FeatureProvider<Consumer> {
+export class OpenFeatureSplitProvider implements Provider<Consumer> {
   name = 'split';
   readonly contextTransformer: ContextTransformer<Consumer>;
   private initialized: Promise<void>;
@@ -58,19 +60,11 @@ export class OpenFeatureSplitProvider implements FeatureProvider<Consumer> {
     });
   }
 
-  isEnabledEvaluation(
+  async resolveBooleanEvaluation(
     flagKey: string,
-    defaultValue: boolean,
+    _: boolean,
     consumer: Consumer
-  ): Promise<ProviderEvaluation<boolean>> {
-    return this.getBooleanEvaluation(flagKey, defaultValue, consumer);
-  }
-
-  async getBooleanEvaluation(
-    flagKey: string,
-    _defaultValue: boolean,
-    consumer: Consumer
-  ): Promise<ProviderEvaluation<boolean>> {
+  ): Promise<ResolutionDetails<boolean>> {
     const details = await this.evaluateTreatment(flagKey, consumer);
 
     let value: boolean;
@@ -101,28 +95,28 @@ export class OpenFeatureSplitProvider implements FeatureProvider<Consumer> {
     return { ...details, value };
   }
 
-  async getStringEvaluation(
+  async resolveStringEvaluation(
     flagKey: string,
-    _defaultValue: string,
+    _: string,
     consumer: Consumer
-  ): Promise<ProviderEvaluation<string>> {
+  ): Promise<ResolutionDetails<string>> {
     return this.evaluateTreatment(flagKey, consumer);
   }
 
-  async getNumberEvaluation(
+  async resolveNumberEvaluation(
     flagKey: string,
-    _defaultValue: number,
+    _: number,
     consumer: Consumer
-  ): Promise<ProviderEvaluation<number>> {
+  ): Promise<ResolutionDetails<number>> {
     const details = await this.evaluateTreatment(flagKey, consumer);
     return { ...details, value: parseValidNumber(details.value) };
   }
 
-  async getObjectEvaluation<U extends object>(
+  async resolveObjectEvaluation<U extends object>(
     flagKey: string,
-    _defaultValue: U,
+    _: U,
     consumer: Consumer
-  ): Promise<ProviderEvaluation<U>> {
+  ): Promise<ResolutionDetails<U>> {
     const details = await this.evaluateTreatment(flagKey, consumer);
     return { ...details, value: parseValidJsonObject(details.value) };
   }
@@ -130,16 +124,13 @@ export class OpenFeatureSplitProvider implements FeatureProvider<Consumer> {
   private async evaluateTreatment(
     flagKey: string,
     consumer: Consumer
-  ): Promise<ProviderEvaluation<string>> {
+  ): Promise<ResolutionDetails<string>> {
     await this.initialized;
     const value = this.client.getTreatment(
       consumer.key,
       flagKey,
       consumer.attributes
     );
-    return {
-      value,
-      reason: Reason.UNKNOWN,
-    };
+    return { value };
   }
 }

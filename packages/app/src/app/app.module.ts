@@ -4,8 +4,9 @@ import {
   AsyncLocalStorageTransactionContext,
   LoggingHook,
   OpenTelemetryHook,
+  TransactionContextHook,
 } from '@openfeature/extra';
-import { openfeature } from '@openfeature/openfeature-js';
+import { OpenFeature } from '@openfeature/openfeature-js';
 import { Request } from 'express';
 import { TransactionContextMiddleware } from './transaction-context.middleware';
 import { OPENFEATURE_CLIENT, REQUEST_DATA } from './constants';
@@ -17,10 +18,13 @@ import { RequestData } from './types';
 import { UtilsController } from './utils.controller';
 
 // register a global hook
-openfeature.registerHooks(new LoggingHook(), new OpenTelemetryHook('app'));
-openfeature.registerTransactionContextPropagator(
-  new AsyncLocalStorageTransactionContext()
+OpenFeature.addHooks(
+  new LoggingHook(),
+  new OpenTelemetryHook('app'),
+  new TransactionContextHook()
 );
+OpenFeature.transactionContextPropagator =
+  new AsyncLocalStorageTransactionContext();
 
 @Module({
   imports: [],
@@ -33,7 +37,7 @@ openfeature.registerTransactionContextPropagator(
     {
       provide: OPENFEATURE_CLIENT,
       useFactory: () => {
-        const client = openfeature.getClient('app');
+        const client = OpenFeature.getClient('app');
         return client;
       },
     },

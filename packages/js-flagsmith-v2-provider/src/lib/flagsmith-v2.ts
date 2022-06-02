@@ -1,19 +1,20 @@
 import {
-  Context,
-  ContextTransformer,
-  FeatureProvider,
   ParseError,
   parseValidJsonObject,
-  ProviderEvaluation,
-  ProviderOptions,
-  Reason,
   TypeMismatchError,
+} from '@openfeature/extra';
+import {
+  ContextTransformer,
+  EvaluationContext,
+  Provider,
+  ProviderOptions,
+  ResolutionDetails,
 } from '@openfeature/openfeature-js';
 import { Flagsmith } from 'flagsmithv2';
 
 type Identity = {
   identifier?: string;
-  traits?: { [key: string]: boolean | number | string };
+  traits?: { [key: string]: boolean | number | string | Date };
 };
 
 export interface FlagsmithV2ProviderOptions extends ProviderOptions<Identity> {
@@ -23,10 +24,10 @@ export interface FlagsmithV2ProviderOptions extends ProviderOptions<Identity> {
 /**
  * Transform the context into an object useful for the v2 Flagsmith API, an identifier string with a "dictionary" of traits.
  */
-const DEFAULT_CONTEXT_TRANSFORMER = (context: Context): Identity => {
-  const { userId, ...traits } = context;
+const DEFAULT_CONTEXT_TRANSFORMER = (context: EvaluationContext): Identity => {
+  const { targetingKey, ...traits } = context;
   return {
-    identifier: userId,
+    identifier: targetingKey,
     traits,
   };
 };
@@ -40,8 +41,9 @@ const DEFAULT_CONTEXT_TRANSFORMER = (context: Context): Identity => {
  * NOTE: Flagsmith defaults values to `null` and booleans to false. In this provider implementation, this will result in
  * a `FlagTypeError` for undefined flags, which in turn will result in the default passed to OpenFeature being used.
  */
-export class FlagsmithV2Provider implements FeatureProvider<Identity> {
+export class FlagsmithV2Provider implements Provider<Identity> {
   name = 'flagsmith-v2';
+
   readonly contextTransformer: ContextTransformer<Identity>;
   private client: Flagsmith;
 
@@ -52,33 +54,11 @@ export class FlagsmithV2Provider implements FeatureProvider<Identity> {
     console.log(`${this.name} provider initialized`);
   }
 
-  /*
-   * Flagsmith differentiates between flag activity and boolean flag values, so in this provider,`isEnabled` is NOT a proxy to `getBooleanValue`.
-   */
-  async isEnabledEvaluation(
+  async resolveBooleanEvaluation(
     flagKey: string,
-    _defaultValue: boolean,
+    _: boolean,
     identity: Identity
-  ): Promise<ProviderEvaluation<boolean>> {
-    const value = identity.identifier
-      ? (
-          await this.client.getIdentityFlags(
-            identity.identifier,
-            identity.traits
-          )
-        ).isFeatureEnabled(flagKey)
-      : (await this.client.getEnvironmentFlags()).isFeatureEnabled(flagKey);
-    return {
-      value,
-      reason: Reason.UNKNOWN,
-    };
-  }
-
-  async getBooleanEvaluation(
-    flagKey: string,
-    _defaultValue: boolean,
-    identity: Identity
-  ): Promise<ProviderEvaluation<boolean>> {
+  ): Promise<ResolutionDetails<boolean>> {
     const details = await this.evaluate(flagKey, identity);
     if (typeof details.value === 'boolean') {
       const value = details.value;
@@ -90,11 +70,11 @@ export class FlagsmithV2Provider implements FeatureProvider<Identity> {
     }
   }
 
-  async getStringEvaluation(
+  async resolveStringEvaluation(
     flagKey: string,
-    _defaultValue: string,
+    _: string,
     identity: Identity
-  ): Promise<ProviderEvaluation<string>> {
+  ): Promise<ResolutionDetails<string>> {
     const details = await this.evaluate(flagKey, identity);
     if (typeof details.value === 'string') {
       const value = details.value;
@@ -106,11 +86,11 @@ export class FlagsmithV2Provider implements FeatureProvider<Identity> {
     }
   }
 
-  async getNumberEvaluation(
+  async resolveNumberEvaluation(
     flagKey: string,
-    _defaultValue: number,
+    _: number,
     identity: Identity
-  ): Promise<ProviderEvaluation<number>> {
+  ): Promise<ResolutionDetails<number>> {
     const details = await this.evaluate(flagKey, identity);
     if (typeof details.value === 'number') {
       const value = details.value;
@@ -122,18 +102,17 @@ export class FlagsmithV2Provider implements FeatureProvider<Identity> {
     }
   }
 
-  async getObjectEvaluation<U extends object>(
+  async resolveObjectEvaluation<U extends object>(
     flagKey: string,
-    _defaultValue: U,
+    _: U,
     identity: Identity
-  ): Promise<ProviderEvaluation<U>> {
+  ): Promise<ResolutionDetails<U>> {
     const details = await this.evaluate(flagKey, identity);
     if (typeof details.value === 'string') {
       // we may want to allow the parsing to be customized.
       try {
         return {
           value: parseValidJsonObject(details.value),
-          reason: Reason.DEFAULT,
         };
       } catch (err) {
         throw new ParseError(`Error parsing flag value for ${flagKey}`);
@@ -148,7 +127,7 @@ export class FlagsmithV2Provider implements FeatureProvider<Identity> {
   private async evaluate<T>(
     flagKey: string,
     identity: Identity
-  ): Promise<ProviderEvaluation<T>> {
+  ): Promise<ResolutionDetails<T>> {
     const value = identity.identifier
       ? (
           await this.client.getIdentityFlags(
@@ -159,7 +138,6 @@ export class FlagsmithV2Provider implements FeatureProvider<Identity> {
       : (await this.client.getEnvironmentFlags()).getFeatureValue(flagKey);
     return {
       value,
-      reason: Reason.UNKNOWN,
     };
   }
 

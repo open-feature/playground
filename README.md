@@ -271,7 +271,6 @@ Follow these steps to run the demo:
 7. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
 8. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
-
 #### Flagsmith Provider Demo
 
 A Flagsmith provider demo (supports v1 and v2).
@@ -322,50 +321,3 @@ values:
 - http://localhost:3333/calculate?num=30
 - http://localhost:3333/calculate?num=40
 - http://localhost:3333/calculate?num=50
-
-
-### Baggage
-
-OpenTelemetry supports the w3c baggage standard by default. Extensive testing of
-baggage was out of scope for this experiment, but it's worth mentioning the
-potential value it could provide. Baggage is a set of user-defined properties
-that are associated with a request across a distributed system. In the context of
-a feature flag, it could be useful for evaluation caching or passing useful context
-to downstream services.
-
-The implementation of baggage in the node.js SDK is low level and not well
-documented. Baggage is also immutable according to the [OpenTelemetry
-spec](https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/baggage/api.md#overview).
-
-The following example shows a baggage could be created or extended in
-an express middleware function. OpenFeature could then read baggage and merge it
-with existing context.
-
-```typescript
-app.use(async (req, res, next) => {
-  const key = 'new-welcome-message';
-  const value = 'true';
-  const baggage = propagation.getBaggage(context.active());
-  context.with(
-    propagation.setBaggage(
-      context.active(),
-      baggage
-        ? baggage.setEntry(key, { value })
-        : propagation.createBaggage({ [key]: { value } })
-    ),
-    next
-  );
-});
-```
-
-It's also possible to set the header key `baggage` with a value like `foo=bar`.
-OpenTelemetry will then pass this value via baggage through the entire request.
-This could be used in OpenFeature to explicitly enable a feature flag using a
-header.
-
-## Open Questions
-
-- What should happen if multiple providers are registered?
-- Could something similar to an OpenAPI be used to describe feature flags in code?
-- What OpenTelemetry semantic naming prefix should be used?
-- Can we cache flag evaluation using the trace ID?

@@ -1,20 +1,13 @@
+import { ParseError, TypeMismatchError } from '@openfeature/extra';
+import { FlagValue } from '@openfeature/nodejs-sdk';
 import {
-  Context,
   ContextTransformer,
-  FeatureProvider,
-  FlagValue,
-  ParseError,
-  ProviderEvaluation,
+  EvaluationContext,
+  Provider,
   ProviderOptions,
-  Reason,
-  TypeMismatchError,
+  ResolutionDetails,
 } from '@openfeature/openfeature-js';
-import {
-  init,
-  LDClient,
-  LDEvaluationReason,
-  LDUser,
-} from 'launchdarkly-node-server-sdk';
+import { init, LDClient, LDUser } from 'launchdarkly-node-server-sdk';
 
 export interface LaunchDarklyProviderOptions extends ProviderOptions<LDUser> {
   sdkKey: string;
@@ -23,11 +16,11 @@ export interface LaunchDarklyProviderOptions extends ProviderOptions<LDUser> {
 /**
  * Transform the context into an object compatible with the Launch Darkly API, an object with a user "key", and other attributes.
  */
-const DEFAULT_CONTEXT_TRANSFORMER = (context: Context): LDUser => {
-  const { userId, ...attributes } = context;
+const DEFAULT_CONTEXT_TRANSFORMER = (context: EvaluationContext): LDUser => {
+  const { targetingKey, ...attributes } = context;
   return {
-    key: userId || 'anonymous',
-    anonymous: userId ? false : true,
+    key: targetingKey || 'anonymous',
+    anonymous: targetingKey ? false : true,
     // later, a well-defined set of standard attributes in Openfeature should be mapped to the appropriate standard attributes LaunchDarkly.
     custom: attributes,
   } as LDUser;
@@ -36,9 +29,7 @@ const DEFAULT_CONTEXT_TRANSFORMER = (context: Context): LDUser => {
 /**
  * A primitive LaunchDarkly provider
  */
-export class OpenFeatureLaunchDarklyProvider
-  implements FeatureProvider<LDUser>
-{
+export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
   name = 'LaunchDarkly';
   readonly contextTransformer: ContextTransformer<LDUser>;
 
@@ -60,19 +51,11 @@ export class OpenFeatureLaunchDarklyProvider
     });
   }
 
-  isEnabledEvaluation(
+  async resolveBooleanEvaluation(
     flagKey: string,
     defaultValue: boolean,
     user: LDUser
-  ): Promise<ProviderEvaluation<boolean>> {
-    return this.getBooleanEvaluation(flagKey, defaultValue, user);
-  }
-
-  async getBooleanEvaluation(
-    flagKey: string,
-    defaultValue: boolean,
-    user: LDUser
-  ): Promise<ProviderEvaluation<boolean>> {
+  ): Promise<ResolutionDetails<boolean>> {
     const details = await this.evaluateFlag<boolean>(
       flagKey,
       defaultValue,
@@ -87,11 +70,11 @@ export class OpenFeatureLaunchDarklyProvider
     }
   }
 
-  async getStringEvaluation(
+  async resolveStringEvaluation(
     flagKey: string,
     defaultValue: string,
     user: LDUser
-  ): Promise<ProviderEvaluation<string>> {
+  ): Promise<ResolutionDetails<string>> {
     const details = await this.evaluateFlag<string>(
       flagKey,
       defaultValue,
@@ -106,11 +89,11 @@ export class OpenFeatureLaunchDarklyProvider
     }
   }
 
-  async getNumberEvaluation(
+  async resolveNumberEvaluation(
     flagKey: string,
     defaultValue: number,
     user: LDUser
-  ): Promise<ProviderEvaluation<number>> {
+  ): Promise<ResolutionDetails<number>> {
     const details = await this.evaluateFlag<number>(
       flagKey,
       defaultValue,
@@ -125,11 +108,35 @@ export class OpenFeatureLaunchDarklyProvider
     }
   }
 
+  async resolveObjectEvaluation<U extends object>(
+    flagKey: string,
+    defaultValue: U,
+    user: LDUser
+  ): Promise<ResolutionDetails<U>> {
+    const details = await this.evaluateFlag<unknown>(
+      flagKey,
+      JSON.stringify(defaultValue),
+      user
+    );
+    if (typeof details.value === 'string') {
+      // we may want to allow the parsing to be customized.
+      try {
+        return { ...details, value: JSON.parse(details.value) as U };
+      } catch (err) {
+        throw new ParseError(`Error parsing flag value for ${flagKey}`);
+      }
+    } else {
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details, 'object')
+      );
+    }
+  }
+
   async getObjectEvaluation<U extends object>(
     flagKey: string,
     defaultValue: U,
     user: LDUser
-  ): Promise<ProviderEvaluation<U>> {
+  ): Promise<ResolutionDetails<U>> {
     const details = await this.evaluateFlag<unknown>(
       flagKey,
       JSON.stringify(defaultValue),
@@ -162,7 +169,7 @@ export class OpenFeatureLaunchDarklyProvider
     flagKey: string,
     defaultValue: FlagValue,
     user: LDUser
-  ): Promise<ProviderEvaluation<T>> {
+  ): Promise<ResolutionDetails<T>> {
     // await the initialization before actually calling for a flag.
     await this.initialized;
 
@@ -174,26 +181,7 @@ export class OpenFeatureLaunchDarklyProvider
     return {
       value: details.value,
       variant: details.variationIndex?.toString(),
-      reason: this.mapReason(details.reason),
+      reason: details.reason.kind,
     };
-  }
-
-  private mapReason(reason: LDEvaluationReason) {
-    switch (reason.kind) {
-      case 'OFF':
-        return Reason.DISABLED;
-      case 'FALLTHROUGH':
-        return Reason.DEFAULT;
-      case 'TARGET_MATCH':
-        return Reason.TARGETING_MATCH;
-      case 'RULE_MATCH':
-        return Reason.TARGETING_MATCH;
-      case 'PREREQUISITE_FAILED':
-        return Reason.DEFAULT;
-      case 'ERROR':
-        return Reason.ERROR;
-      default:
-        return Reason.UNKNOWN;
-    }
   }
 }

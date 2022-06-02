@@ -1,6 +1,6 @@
-import { openfeature } from '@openfeature/openfeature-js';
+import { OpenFeature } from '@openfeature/openfeature-js';
 
-const oFeatClient = openfeature.getClient('fibonacci');
+const oFeatClient = OpenFeature.getClient('fibonacci');
 
 export async function fibonacci(num: number): Promise<number> {
   const value = await oFeatClient.getStringValue('fib-algo', 'recursive');

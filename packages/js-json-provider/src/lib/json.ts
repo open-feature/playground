@@ -1,8 +1,7 @@
 import {
-  Context,
-  FeatureProvider,
-  GeneralError,
-  ProviderEvaluation,
+  EvaluationContext,
+  Provider,
+  ResolutionDetails,
 } from '@openfeature/openfeature-js';
 import Ajv2020 from 'ajv/dist/2020';
 import { copyFileSync, existsSync } from 'fs';
@@ -12,6 +11,7 @@ import { EvaluationEngine } from './evaluation-engine';
 import { OpenFeatureFeatureFlags } from './flag';
 
 import schema from '../../../../schemas/flag.schema.json';
+import { GeneralError } from '@openfeature/extra';
 
 const EXAMPLE_JSON_FILE = 'flags.json.example';
 const JSON_FILE = 'flags.json';
@@ -24,7 +24,9 @@ const ajv = new Ajv2020({
 
 const validate = ajv.compile<OpenFeatureFeatureFlags>(schema);
 
-export class JsonProvider implements FeatureProvider {
+export class JsonProvider implements Provider {
+  name = 'json';
+
   private readonly evaluationEngine = new EvaluationEngine();
 
   constructor() {
@@ -34,42 +36,40 @@ export class JsonProvider implements FeatureProvider {
     }
   }
 
-  name = 'json';
-
-  async getBooleanEvaluation(
+  async resolveBooleanEvaluation(
     flagKey: string,
     _: boolean,
-    context: Context
-  ): Promise<ProviderEvaluation<boolean>> {
+    context: EvaluationContext
+  ): Promise<ResolutionDetails<boolean>> {
     const flags = await this.getFlags();
     return this.evaluationEngine.evaluate(flags, flagKey, 'boolean', context);
   }
 
-  async getStringEvaluation(
+  async resolveStringEvaluation(
     flagKey: string,
     _: string,
-    context: Context
-  ): Promise<ProviderEvaluation<string>> {
+    context: EvaluationContext
+  ): Promise<ResolutionDetails<string>> {
     const flags = await this.getFlags();
     return this.evaluationEngine.evaluate(flags, flagKey, 'string', context);
   }
 
-  async getNumberEvaluation(
+  async resolveNumberEvaluation(
     flagKey: string,
     _: number,
-    context: Context
-  ): Promise<ProviderEvaluation<number>> {
+    context: EvaluationContext
+  ): Promise<ResolutionDetails<number>> {
     const flags = await this.getFlags();
     return this.evaluationEngine.evaluate(flags, flagKey, 'number', context);
   }
 
-  async getObjectEvaluation<U extends object>(
+  async resolveObjectEvaluation<U extends object>(
     flagKey: string,
     _: U,
-    context: Context
-  ): Promise<ProviderEvaluation<U>> {
+    context: EvaluationContext
+  ): Promise<ResolutionDetails<U>> {
     const flags = await this.getFlags();
-    return this.evaluationEngine.evaluate(flags, flagKey, 'json', context);
+    return this.evaluationEngine.evaluate(flags, flagKey, 'object', context);
   }
 
   private async getFlags() {

@@ -1,5 +1,5 @@
 import { Injectable, NestMiddleware, Inject } from '@nestjs/common';
-import { openfeature } from '@openfeature/openfeature-js';
+import { OpenFeature } from '@openfeature/openfeature-js';
 import { NextFunction, Request, Response } from 'express';
 import { REQUEST_DATA } from './constants';
 import { RequestData } from './types';
@@ -12,7 +12,7 @@ export class TransactionContextMiddleware implements NestMiddleware {
    * Adds our request data to the OpenFeature context via the configured TransactionContextManager
    */
   use(_req: Request, _res: Response, next: NextFunction) {
-    openfeature.setTransactionContext(
+    OpenFeature.setTransactionContext(
       { ts: new Date().getTime(), ...this.requestData },
       () => {
         next();
