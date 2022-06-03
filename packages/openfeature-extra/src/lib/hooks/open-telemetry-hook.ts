@@ -31,7 +31,7 @@ export class OpenTelemetryHook implements Hook {
 
   before(hookContext: HookContext) {
     const span = this.tracer.startSpan(
-      `feature flag - ${hookContext.flagType}`
+      `feature flag - ${hookContext.flagValueType}`
     );
     span.setAttributes({
       [SpanProperties.FLAG_KEY]: hookContext.flagKey,

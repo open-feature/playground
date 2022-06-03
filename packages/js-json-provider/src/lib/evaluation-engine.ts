@@ -1,13 +1,17 @@
 import { OpenFeatureFeatureFlags } from './flag';
 import { camelCase } from 'change-case';
-import { EvaluationContext, ResolutionDetails } from '@openfeature/nodejs-sdk';
+import {
+  EvaluationContext,
+  ResolutionDetails,
+  FlagValueType,
+} from '@openfeature/nodejs-sdk';
 import { FlagNotFoundError, TypeMismatchError } from '@openfeature/extra';
 
 export class EvaluationEngine {
   evaluate<T>(
     flags: OpenFeatureFeatureFlags,
     flagKey: string,
-    returnType: 'boolean' | 'string' | 'number' | 'object',
+    returnType: FlagValueType,
     context: EvaluationContext
   ): ResolutionDetails<T> {
     const flag = flags[camelCase(flagKey)];

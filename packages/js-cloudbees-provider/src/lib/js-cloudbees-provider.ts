@@ -11,6 +11,11 @@ export interface CloudbeesProviderOptions extends ProviderOptions {
   appKey: string;
 }
 
+/**
+ * NOTE: This is an unofficial provider that was created for demonstration
+ * purposes only. The playground environment will be updated to use official
+ * providers once they're available.
+ */
 export class CloudbeesProvider implements Provider {
   name = 'cloudbees';
   private initialized: Promise<void>;
