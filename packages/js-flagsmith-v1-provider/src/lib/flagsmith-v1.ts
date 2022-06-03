@@ -44,6 +44,10 @@ const DEFAULT_CONTEXT_TRANSFORMER = async (context: EvaluationContext) => {
 };
 
 /*
+ * NOTE: This is an unofficial provider that was created for demonstration
+ * purposes only. The playground environment will be updated to use official
+ * providers once they're available.
+ *
  * Minimum provider for Flagsmith.
  *
  * NOTE: Flagsmith differentiates between flag activity and boolean flag values, so in this provider, `isEnabled`

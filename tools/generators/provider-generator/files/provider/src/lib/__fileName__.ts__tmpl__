@@ -1,56 +1,32 @@
 import {
-  ContextTransformer,
-  FeatureProvider,
+  EvaluationContext,
   FlagEvaluationOptions,
-  ProviderEvaluation,
+  Provider,
+  ResolutionDetails,
 } from '@openfeature/openfeature-js';
 
-export class <%= libClassName %> implements FeatureProvider {
+/**
+ * NOTE: This is an unofficial provider that was created for demonstration
+ * purposes only. The playground environment will be updated to use official
+ * providers once they're available.
+ */
+export class <%= libClassName %> implements Provider {
   
   name = '<%= name %>';
   
-  isEnabledEvaluation(
-    flagKey: string,
-    defaultValue: boolean,
-    transformedContext: unknown,
-    options?: FlagEvaluationOptions
-  ): Promise<ProviderEvaluation<boolean>> {
+  resolveBooleanEvaluation(flagKey: string, defaultValue: boolean, transformedContext: EvaluationContext, options: FlagEvaluationOptions | undefined): Promise<ResolutionDetails<boolean>> {
     throw new Error('Method not implemented.');
   }
 
-  getBooleanEvaluation(
-    flagKey: string,
-    defaultValue: boolean,
-    transformedContext: unknown,
-    options: FlagEvaluationOptions | undefined
-  ): Promise<ProviderEvaluation<boolean>> {
+  resolveStringEvaluation(flagKey: string, defaultValue: string, transformedContext: EvaluationContext, options: FlagEvaluationOptions | undefined): Promise<ResolutionDetails<string>> {
     throw new Error('Method not implemented.');
   }
 
-  getStringEvaluation(
-    flagKey: string,
-    defaultValue: string,
-    transformedContext: unknown,
-    options: FlagEvaluationOptions | undefined
-  ): Promise<ProviderEvaluation<string>> {
+  resolveNumberEvaluation(flagKey: string, defaultValue: number, transformedContext: EvaluationContext, options: FlagEvaluationOptions | undefined): Promise<ResolutionDetails<number>> {
     throw new Error('Method not implemented.');
   }
 
-  getNumberEvaluation(
-    flagKey: string,
-    defaultValue: number,
-    transformedContext: unknown,
-    options: FlagEvaluationOptions | undefined
-  ): Promise<ProviderEvaluation<number>> {
-    throw new Error('Method not implemented.');
-  }
-
-  getObjectEvaluation<U extends object>(
-    flagKey: string,
-    defaultValue: U,
-    transformedContext: unknown,
-    options: FlagEvaluationOptions | undefined
-  ): Promise<ProviderEvaluation<U>> {
+  resolveObjectEvaluation<U extends object>(flagKey: string, defaultValue: U, transformedContext: EvaluationContext, options: FlagEvaluationOptions | undefined): Promise<ResolutionDetails<U>> {
     throw new Error('Method not implemented.');
   }
 }

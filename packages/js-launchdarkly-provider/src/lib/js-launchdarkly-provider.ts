@@ -27,7 +27,9 @@ const DEFAULT_CONTEXT_TRANSFORMER = (context: EvaluationContext): LDUser => {
 };
 
 /**
- * A primitive LaunchDarkly provider
+ * NOTE: This is an unofficial provider that was created for demonstration
+ * purposes only. The playground environment will be updated to use official
+ * providers once they're available.
  */
 export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
   name = 'LaunchDarkly';
