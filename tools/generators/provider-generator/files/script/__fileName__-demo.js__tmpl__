@@ -1,6 +1,6 @@
 'use strict';
 
-const { openfeature } = require('../dist/packages/openfeature-js/main');
+const { OpenFeature } = require('../dist/packages/openfeature-js/main');
 const { <%= libClassName %> } = require("../dist/packages/<%= libName %>/main");
 
 /**
@@ -8,4 +8,4 @@ const { <%= libClassName %> } = require("../dist/packages/<%= libName %>/main");
  * OpenFeature object.
  */
 console.log('Registering the OpenFeature <%= name %> provider');
-openfeature.registerProvider(new <%= libClassName %>());
+OpenFeature.provider = new <%= libClassName %>();

@@ -1,6 +1,6 @@
 'use strict';
 
-const { openfeature } = require('../dist/packages/openfeature-js/main');
+const { OpenFeature } = require('../dist/packages/openfeature-js/main');
 const { JsonProvider } = require('../dist/packages/js-json-provider/main');
 
 /**
@@ -8,4 +8,4 @@ const { JsonProvider } = require('../dist/packages/js-json-provider/main');
  * OpenFeature object.
  */
 console.log('Registering the OpenFeature json provider');
-openfeature.registerProvider(new JsonProvider());
+OpenFeature.provider = new JsonProvider();

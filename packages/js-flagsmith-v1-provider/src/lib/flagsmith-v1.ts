@@ -1,12 +1,10 @@
+import { ParseError, TypeMismatchError } from '@openfeature/extra';
 import {
-  Context,
   ContextTransformer,
-  FeatureProvider,
-  ParseError,
-  ProviderEvaluation,
+  EvaluationContext,
+  Provider,
   ProviderOptions,
-  Reason,
-  TypeMismatchError,
+  ResolutionDetails,
 } from '@openfeature/openfeature-js';
 import * as flagsmith from 'flagsmith-nodejs';
 
@@ -22,9 +20,9 @@ const ANONYMOUS = 'anonymous';
  * This is a very basic transformer function that defines Flagsmith traits based on the OpenFeature context. Note that it
  * doesn't handle nested properties.
  * */
-const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context) => {
+const DEFAULT_CONTEXT_TRANSFORMER = async (context: EvaluationContext) => {
   // flagsmith requires a userId for any rule evaluation, so let's set it to anonymous in our demo implementation.
-  const userId = context?.userId || ANONYMOUS;
+  const userId = context?.targetingKey || ANONYMOUS;
   const promises = Object.keys(context).map((key) => {
     if (
       key !== 'userId' &&
@@ -46,6 +44,10 @@ const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context) => {
 };
 
 /*
+ * NOTE: This is an unofficial provider that was created for demonstration
+ * purposes only. The playground environment will be updated to use official
+ * providers once they're available.
+ *
  * Minimum provider for Flagsmith.
  *
  * NOTE: Flagsmith differentiates between flag activity and boolean flag values, so in this provider, `isEnabled`
@@ -54,8 +56,9 @@ const DEFAULT_CONTEXT_TRANSFORMER = async (context: Context) => {
  * NOTE: Flagsmith defaults values to `null` and booleans to false. In this provider implementation, this will result in
  * a `FlagTypeError` for undefined flags, which in turn will result in the default passed to OpenFeature being used.
  */
-export class FlagsmithV1Provider implements FeatureProvider<string> {
+export class FlagsmithV1Provider implements Provider<string> {
   name = 'flagsmith-v1';
+
   readonly contextTransformer: ContextTransformer<Promise<string>>;
 
   constructor(options: FlagsmithProviderOptions) {
@@ -67,26 +70,11 @@ export class FlagsmithV1Provider implements FeatureProvider<string> {
     console.log(`${this.name} provider initialized`);
   }
 
-  /*
-   * Flagsmith differentiates between flag activity and boolean flag values, so in this provider,`isEnabled` is NOT a proxy to `getBooleanValue`.
-   */
-  async isEnabledEvaluation(
+  async resolveBooleanEvaluation(
     flagKey: string,
-    _defaultValue: boolean,
+    _: boolean,
     userId: string
-  ): Promise<ProviderEvaluation<boolean>> {
-    const value = await flagsmith.hasFeature(flagKey, userId);
-    return {
-      value,
-      reason: Reason.UNKNOWN,
-    };
-  }
-
-  async getBooleanEvaluation(
-    flagKey: string,
-    _defaultValue: boolean,
-    userId: string
-  ): Promise<ProviderEvaluation<boolean>> {
+  ): Promise<ResolutionDetails<boolean>> {
     const details = await this.evaluate(flagKey, userId);
     if (typeof details.value === 'boolean') {
       const value = details.value;
@@ -98,11 +86,11 @@ export class FlagsmithV1Provider implements FeatureProvider<string> {
     }
   }
 
-  async getStringEvaluation(
+  async resolveStringEvaluation(
     flagKey: string,
-    _defaultValue: string,
+    _: string,
     userId: string
-  ): Promise<ProviderEvaluation<string>> {
+  ): Promise<ResolutionDetails<string>> {
     const details = await this.evaluate(flagKey, userId);
     if (typeof details.value === 'string') {
       const value = details.value;
@@ -114,11 +102,11 @@ export class FlagsmithV1Provider implements FeatureProvider<string> {
     }
   }
 
-  async getNumberEvaluation(
+  async resolveNumberEvaluation(
     flagKey: string,
-    _defaultValue: number,
+    _: number,
     userId: string
-  ): Promise<ProviderEvaluation<number>> {
+  ): Promise<ResolutionDetails<number>> {
     const details = await this.evaluate(flagKey, userId);
     if (typeof details.value === 'number') {
       const value = details.value;
@@ -130,18 +118,17 @@ export class FlagsmithV1Provider implements FeatureProvider<string> {
     }
   }
 
-  async getObjectEvaluation<U extends object>(
+  async resolveObjectEvaluation<U extends object>(
     flagKey: string,
-    _defaultValue: U,
+    _: U,
     userId: string
-  ): Promise<ProviderEvaluation<U>> {
+  ): Promise<ResolutionDetails<U>> {
     const details = await this.evaluate(flagKey, userId);
     if (typeof details.value === 'string') {
       // we may want to allow the parsing to be customized.
       try {
         return {
           value: JSON.parse(details.value),
-          reason: Reason.DEFAULT,
         };
       } catch (err) {
         throw new ParseError(`Error parsing flag value for ${flagKey}`);
@@ -156,12 +143,9 @@ export class FlagsmithV1Provider implements FeatureProvider<string> {
   private async evaluate(
     flagKey: string,
     userId: string
-  ): Promise<ProviderEvaluation<boolean | string | number>> {
+  ): Promise<ResolutionDetails<boolean | string | number>> {
     const value = await flagsmith.getValue(flagKey, userId);
-    return {
-      value,
-      reason: Reason.UNKNOWN,
-    };
+    return { value };
   }
 
   private getFlagTypeErrorMessage(

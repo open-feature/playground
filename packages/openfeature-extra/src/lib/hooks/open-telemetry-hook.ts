@@ -1,8 +1,8 @@
 import {
-  FlagEvaluationDetails,
   FlagValue,
   Hook,
   HookContext,
+  ResolutionDetails,
 } from '@openfeature/openfeature-js';
 import { Span, trace, Tracer } from '@opentelemetry/api';
 
@@ -44,7 +44,7 @@ export class OpenTelemetryHook implements Hook {
     return hookContext.context;
   }
 
-  after(hookContext: HookContext, flagValue: FlagEvaluationDetails<FlagValue>) {
+  after(hookContext: HookContext, flagValue: ResolutionDetails<FlagValue>) {
     if (flagValue.variant) {
       this.spanMap
         .get(hookContext)

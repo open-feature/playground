@@ -1,6 +1,6 @@
 'use strict';
 
-const { openfeature } = require('../dist/packages/openfeature-js/main');
+const { OpenFeature } = require('../dist/packages/openfeature-js/main');
 const {
   OpenFeatureEnvProvider,
 } = require('../dist/packages/js-env-provider/main');
@@ -10,4 +10,4 @@ const {
  * OpenFeature object.
  */
 console.log('Registering the OpenFeature environment provider');
-openfeature.registerProvider(new OpenFeatureEnvProvider());
+OpenFeature.provider = new OpenFeatureEnvProvider();

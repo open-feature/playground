@@ -1,16 +1,23 @@
 import {
-  FeatureProvider,
   FlagNotFoundError,
   parseValidBoolean,
   parseValidJsonObject,
   parseValidNumber,
-  ProviderEvaluation,
-  Reason,
-} from '@openfeature/openfeature-js';
+} from '@openfeature/extra';
+import { Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import { constantCase } from 'change-case';
 
-export class OpenFeatureEnvProvider implements FeatureProvider {
-  isEnabledEvaluation(flagKey: string): Promise<ProviderEvaluation<boolean>> {
+/**
+ * NOTE: This is an unofficial provider that was created for demonstration
+ * purposes only. The playground environment will be updated to use official
+ * providers once they're available.
+ */
+export class OpenFeatureEnvProvider implements Provider {
+  name = 'environment variable';
+
+  resolveBooleanEvaluation(
+    flagKey: string
+  ): Promise<ResolutionDetails<boolean>> {
     const details = this.evaluateEnvironmentVariable(flagKey);
     return Promise.resolve({
       ...details,
@@ -18,20 +25,11 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
     });
   }
 
-  getBooleanEvaluation(flagKey: string): Promise<ProviderEvaluation<boolean>> {
-    const details = this.evaluateEnvironmentVariable(flagKey);
-    return Promise.resolve({
-      ...details,
-      value: parseValidBoolean(details.value),
-    });
-  }
-  async getStringEvaluation(
-    flagKey: string
-  ): Promise<ProviderEvaluation<string>> {
+  resolveStringEvaluation(flagKey: string): Promise<ResolutionDetails<string>> {
     return Promise.resolve(this.evaluateEnvironmentVariable(flagKey));
   }
 
-  getNumberEvaluation(flagKey: string): Promise<ProviderEvaluation<number>> {
+  resolveNumberEvaluation(flagKey: string): Promise<ResolutionDetails<number>> {
     const details = this.evaluateEnvironmentVariable(flagKey);
     return Promise.resolve({
       ...details,
@@ -39,27 +37,23 @@ export class OpenFeatureEnvProvider implements FeatureProvider {
     });
   }
 
-  getObjectEvaluation<U extends object>(
+  resolveObjectEvaluation<U extends object>(
     flagKey: string
-  ): Promise<ProviderEvaluation<U>> {
+  ): Promise<ResolutionDetails<U>> {
     const details = this.evaluateEnvironmentVariable(flagKey);
     return Promise.resolve({
       ...details,
       value: parseValidJsonObject(details.value),
     });
   }
-  name = 'environment variable';
 
-  evaluateEnvironmentVariable(key: string): ProviderEvaluation<string> {
+  evaluateEnvironmentVariable(key: string): ResolutionDetails<string> {
     // convert key to ENV_VAR style casing
     const envVarCaseKey = constantCase(key);
     const value = process.env[envVarCaseKey];
     if (!value) {
       throw new FlagNotFoundError();
     }
-    return {
-      value: value,
-      reason: Reason.DEFAULT,
-    };
+    return { value: value };
   }
 }

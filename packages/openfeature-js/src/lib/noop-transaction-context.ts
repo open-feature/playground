@@ -1,11 +1,11 @@
-import { Context, TransactionContextManager } from './types';
+import { EvaluationContext } from '@openfeature/nodejs-sdk';
 
-export class NoopTransactionContext implements TransactionContextManager {
-  getTransactionContext(): Context {
+export class NoopTransactionContext {
+  getTransactionContext(): EvaluationContext {
     return {};
   }
 
-  setTransactionContext(_: Context, callback: () => void): void {
+  setTransactionContext(_: EvaluationContext, callback: () => void): void {
     callback();
   }
 }

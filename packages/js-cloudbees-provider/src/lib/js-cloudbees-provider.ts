@@ -1,9 +1,9 @@
+import { parseValidJsonObject } from '@openfeature/extra';
 import {
-  FeatureProvider,
-  parseValidJsonObject,
-  ProviderEvaluation,
+  Provider,
+  EvaluationContext,
+  ResolutionDetails,
   ProviderOptions,
-  Reason,
 } from '@openfeature/openfeature-js';
 import * as Rox from 'rox-node';
 
@@ -11,7 +11,12 @@ export interface CloudbeesProviderOptions extends ProviderOptions {
   appKey: string;
 }
 
-export class CloudbeesProvider implements FeatureProvider {
+/**
+ * NOTE: This is an unofficial provider that was created for demonstration
+ * purposes only. The playground environment will be updated to use official
+ * providers once they're available.
+ */
+export class CloudbeesProvider implements Provider {
   name = 'cloudbees';
   private initialized: Promise<void>;
 
@@ -26,55 +31,44 @@ export class CloudbeesProvider implements FeatureProvider {
     });
   }
 
-  isEnabledEvaluation(
+  async resolveBooleanEvaluation(
     flagKey: string,
     defaultValue: boolean,
-    context: unknown
-  ): Promise<ProviderEvaluation<boolean>> {
-    return this.getBooleanEvaluation(flagKey, defaultValue, context);
-  }
-
-  async getBooleanEvaluation(
-    flagKey: string,
-    defaultValue: boolean,
-    context: unknown
-  ): Promise<ProviderEvaluation<boolean>> {
+    context: EvaluationContext
+  ): Promise<ResolutionDetails<boolean>> {
     await this.initialized;
-    const value = Rox.dynamicApi.isEnabled(flagKey, defaultValue, context);
     return {
-      value,
-      reason: Reason.UNKNOWN,
+      value: Rox.dynamicApi.isEnabled(flagKey, defaultValue, context),
     };
   }
 
-  async getStringEvaluation(
+  async resolveStringEvaluation(
     flagKey: string,
     defaultValue: string,
-    context: unknown
-  ): Promise<ProviderEvaluation<string>> {
+    context: EvaluationContext
+  ): Promise<ResolutionDetails<string>> {
     await this.initialized;
     return {
       value: Rox.dynamicApi.value(flagKey, defaultValue, context),
-      reason: Reason.UNKNOWN,
     };
   }
 
-  async getNumberEvaluation(
+  async resolveNumberEvaluation(
     flagKey: string,
     defaultValue: number,
-    context: unknown
-  ): Promise<ProviderEvaluation<number>> {
+    context: EvaluationContext
+  ): Promise<ResolutionDetails<number>> {
     await this.initialized;
     return {
       value: Rox.dynamicApi.getNumber(flagKey, defaultValue, context),
-      reason: Reason.UNKNOWN,
     };
   }
-  async getObjectEvaluation<U extends object>(
+
+  async resolveObjectEvaluation<U extends object>(
     flagKey: string,
     defaultValue: U,
-    context: unknown
-  ): Promise<ProviderEvaluation<U>> {
+    context: EvaluationContext
+  ): Promise<ResolutionDetails<U>> {
     await this.initialized;
 
     /**
@@ -89,7 +83,6 @@ export class CloudbeesProvider implements FeatureProvider {
     );
     return {
       value: parseValidJsonObject(value),
-      reason: Reason.UNKNOWN,
     };
   }
 }

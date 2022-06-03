@@ -1,20 +1,19 @@
-import {
-  FlagValueType,
-  Context,
-  ProviderEvaluation,
-  FlagNotFoundError,
-  TypeMismatchError,
-} from '@openfeature/openfeature-js';
 import { OpenFeatureFeatureFlags } from './flag';
 import { camelCase } from 'change-case';
+import {
+  EvaluationContext,
+  ResolutionDetails,
+  FlagValueType,
+} from '@openfeature/nodejs-sdk';
+import { FlagNotFoundError, TypeMismatchError } from '@openfeature/extra';
 
 export class EvaluationEngine {
   evaluate<T>(
     flags: OpenFeatureFeatureFlags,
     flagKey: string,
     returnType: FlagValueType,
-    context: Context
-  ): ProviderEvaluation<T> {
+    context: EvaluationContext
+  ): ResolutionDetails<T> {
     const flag = flags[camelCase(flagKey)];
 
     if (!flag || flag.state !== 'enabled') {

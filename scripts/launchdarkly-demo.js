@@ -1,6 +1,6 @@
 'use strict';
 
-const { openfeature } = require('../dist/packages/openfeature-js/main');
+const { OpenFeature } = require('../dist/packages/openfeature-js/main');
 const {
   OpenFeatureLaunchDarklyProvider,
 } = require('../dist/packages/js-launchdarkly-provider/main');
@@ -10,6 +10,6 @@ const {
  * OpenFeature object.
  */
 console.log('Registering the OpenFeature LaunchDarkly provider');
-openfeature.registerProvider(
-  new OpenFeatureLaunchDarklyProvider({ sdkKey: process.env.LD_KEY })
-);
+OpenFeature.provider = new OpenFeatureLaunchDarklyProvider({
+  sdkKey: process.env.LD_KEY,
+});

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Client, FlagEvaluationDetails } from '@openfeature/openfeature-js';
-import { OPENFEATURE_CLIENT, REQUEST_DATA } from '../constants';
+import { Client, EvaluationDetails } from '@openfeature/openfeature-js';
+import { OPENFEATURE_CLIENT } from '../constants';
 
 @Injectable()
 export class HexColorService {
@@ -14,20 +14,23 @@ export class HexColorService {
       {
         hooks: [
           {
-            name: 'validate-hex',
             after: (
               hookContext,
-              evaluationDetails: FlagEvaluationDetails<string>
+              evaluationDetails: EvaluationDetails<string>
             ) => {
               // validate the hex value.
               const hexPattern = /[0-9A-Fa-f]{6}/g;
-              if (hexPattern.test(evaluationDetails.value)) {
-                return evaluationDetails.value;
-              } else {
+              if (!hexPattern.test(evaluationDetails.value)) {
                 console.warn(
                   `Got invalid flag value '${evaluationDetails.value}' for ${hookContext.flagKey}, returning ${hookContext.defaultValue}`
                 );
-                return hookContext.defaultValue;
+                /**
+                 * Throwing an error in the after hook will be caught by the OpenFeature client
+                 * and the default value passed in the `getStringValue` method will be returned.
+                 */
+                throw new Error(
+                  `Invalid hex value: ${evaluationDetails.value}`
+                );
               }
             },
           },
