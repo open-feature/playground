@@ -17,12 +17,21 @@ import { MessageService } from './message/message.service';
 import { RequestData } from './types';
 import { UtilsController } from './utils.controller';
 
-// register a global hook
+/**
+ * Adding hooks to at the global level will ensure they always run
+ * as part of a flag evaluation lifecycle.
+ */
 OpenFeature.addHooks(
   new LoggingHook(),
   new OpenTelemetryHook('app'),
   new TransactionContextHook()
 );
+
+/**
+ * The transaction context propagator is an experimental feature
+ * that allows evaluation context to be set anywhere in a request
+ * and have it automatically available during a flag evaluation.
+ */
 OpenFeature.transactionContextPropagator =
   new AsyncLocalStorageTransactionContext();
 
