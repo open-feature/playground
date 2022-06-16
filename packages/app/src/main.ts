@@ -5,13 +5,119 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-
+import { OpenFeature, Provider } from '@openfeature/nodejs-sdk';
+import { CloudbeesProvider } from '@openfeature/js-cloudbees-provider';
+import { OpenFeatureEnvProvider } from '@openfeature/js-env-provider';
+import { FlagsmithV1Provider } from '@openfeature/js-flagsmith-v1-provider';
+import { FlagsmithV2Provider } from '@openfeature/js-flagsmith-v2-provider';
+import { JsonProvider } from '@openfeature/js-json-provider';
+import { OpenFeatureLaunchDarklyProvider } from '@openfeature/js-launchdarkly-provider';
+import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
 import { AppModule } from './app/app.module';
+import { SplitFactory } from '@splitsoftware/splitio';
+import { Flagsmith } from 'flagsmithv2';
+import { FlagdRESTProvider } from '@openfeature/flagd-rest-provider';
+
+const registerProvider = () => {
+  const providerId = process.argv[2];
+  let provider: Provider | undefined = undefined;
+
+  switch (providerId) {
+    case 'env':
+      provider = new OpenFeatureEnvProvider();
+      break;
+
+    case 'json':
+      provider = new JsonProvider();
+      break;
+
+    case 'flagd':
+      provider = new FlagdRESTProvider();
+      break;
+
+    case 'cloudbees': {
+      const appKey = process.env.CLOUDBEES_APP_KEY;
+      if (!appKey) {
+        console.error('"CLOUDBEES_APP_KEY" must be defined.');
+      } else {
+        provider = new CloudbeesProvider({
+          appKey,
+        });
+      }
+      break;
+    }
+
+    case 'flagsmithv1': {
+      const environmentID = process.env.FLAGSMITH_ENV_ID;
+      if (!environmentID) {
+        console.error('"FLAGSMITH_ENV_ID" must be defined.');
+      } else {
+        provider = new FlagsmithV1Provider({
+          environmentID,
+        }) as unknown as Provider; // TODO fix this
+      }
+      break;
+    }
+
+    case 'flagsmithv2': {
+      const environmentKey = process.env.FLAGSMITH_ENV_KEY;
+      if (!environmentKey) {
+        console.error('"FLAGSMITH_ENV_KEY" must be defined.');
+      } else {
+        const client = new Flagsmith({
+          environmentKey,
+          enableLocalEvaluation: true,
+          environmentRefreshIntervalSeconds: 5,
+        });
+        provider = new FlagsmithV2Provider({
+          client,
+        }) as unknown as Provider; // TODO fix this
+      }
+      break;
+    }
+
+    case 'launchdarkly': {
+      const sdkKey = process.env.LD_KEY;
+      if (!sdkKey) {
+        console.error('"LD_KEY" must be defined.');
+      } else {
+        provider = new OpenFeatureLaunchDarklyProvider({
+          sdkKey,
+        }) as unknown as Provider; // TODO fix this
+      }
+      break;
+    }
+
+    case 'split': {
+      const authorizationKey = process.env.SPLIT_KEY;
+      if (!authorizationKey) {
+        console.error('"LD_KEY" must be defined.');
+      } else {
+        const splitClient = SplitFactory({
+          core: {
+            authorizationKey,
+          },
+        }).client();
+        provider = new OpenFeatureSplitProvider({
+          splitClient,
+        });
+      }
+      break;
+    }
+  }
+
+  if (provider) {
+    OpenFeature.setProvider(provider);
+  } else {
+    console.warn('No provider set, falling back to no-op');
+  }
+};
 
 async function bootstrap() {
+  registerProvider();
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-  const port = process.env.PORT || 3333;
+  const port = process.env.PORT || 30000;
   await app.listen(port);
   Logger.log(`🚀 Application is running on: http://localhost:${port}`);
 }

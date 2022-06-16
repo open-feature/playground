@@ -16,6 +16,8 @@ import { InstallService } from './install/install.service';
 import { MessageService } from './message/message.service';
 import { RequestData } from './types';
 import { UtilsController } from './utils.controller';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 /**
  * Adding hooks to at the global level will ensure they always run
@@ -36,7 +38,11 @@ OpenFeature.transactionContextPropagator =
   new AsyncLocalStorageTransactionContext();
 
 @Module({
-  imports: [],
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '.', 'assets', 'public'),
+    }),
+  ],
   controllers: [FibonacciAsAServiceController, UtilsController],
   providers: [
     MessageService,

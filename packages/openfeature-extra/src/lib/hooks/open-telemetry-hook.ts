@@ -35,9 +35,9 @@ export class OpenTelemetryHook implements Hook {
     );
     span.setAttributes({
       [SpanProperties.FLAG_KEY]: hookContext.flagKey,
-      [SpanProperties.CLIENT_NAME]: hookContext.client.name,
-      [SpanProperties.CLIENT_VERSION]: hookContext.client.version,
-      [SpanProperties.PROVIDER_NAME]: hookContext.provider.name,
+      [SpanProperties.CLIENT_NAME]: hookContext.clientMetadata.name,
+      [SpanProperties.CLIENT_VERSION]: hookContext.clientMetadata.version,
+      [SpanProperties.PROVIDER_NAME]: hookContext.providerMetadata.name,
     });
 
     this.spanMap.set(hookContext, span);

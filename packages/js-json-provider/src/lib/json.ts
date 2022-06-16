@@ -1,3 +1,4 @@
+import { GeneralError } from '@openfeature/extra';
 import {
   EvaluationContext,
   Provider,
@@ -7,11 +8,9 @@ import Ajv2020 from 'ajv/dist/2020';
 import { copyFileSync, existsSync } from 'fs';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
+import schema from '../../../../schemas/flag.schema.json';
 import { EvaluationEngine } from './evaluation-engine';
 import { OpenFeatureFeatureFlags } from './flag';
-
-import schema from '../../../../schemas/flag.schema.json';
-import { GeneralError } from '@openfeature/extra';
 
 const EXAMPLE_JSON_FILE = 'flags.json.example';
 const JSON_FILE = 'flags.json';
@@ -30,7 +29,9 @@ const validate = ajv.compile<OpenFeatureFeatureFlags>(schema);
  * providers once they're available.
  */
 export class JsonProvider implements Provider {
-  name = 'json';
+  metadata = {
+    name: 'json',
+  };
 
   private readonly evaluationEngine = new EvaluationEngine();
 
