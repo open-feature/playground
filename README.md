@@ -159,7 +159,7 @@ To see this in action, we'll run the API app found
 registering a provider. Let's run the app and see what happens.
 
 1. Run `npm run no-op-demo`
-2. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+2. Open http://localhost:3000/message, http://localhost:3000/hex-color/markup, or http://localhost:3000/calculate?num=40 in your browser
 3. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
 That's it! You should see **Welcome to the api!**. Unfortunately, that's all you
@@ -189,7 +189,7 @@ Follow these steps to run the demo:
 
 1. copy `.env.example` to `.env`
 2. Run `npm run env-var-demo`
-3. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+3. Open http://localhost:3000/message, http://localhost:3000/hex-color/markup, or http://localhost:3000/calculate?num=40 in your browser
 4. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
 You should see **Welcome to the api!** just as before. Now, change the value of
@@ -206,7 +206,7 @@ variables could be used make flag evaluations. Its purpose is to demonstrate a s
 Follow these steps to run the demo:
 
 1. Run `npm run json-demo`
-2. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+2. Open http://localhost:3000/message, http://localhost:3000/hex-color/markup, or http://localhost:3000/calculate?num=40 in your browser
 3. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
 You should see **Welcome to the api!** just as before. Now, change the value of
@@ -234,7 +234,7 @@ Follow these steps to run the demo:
 5. Create a new split called `hex-color` with the treatment values: `CC0000`,
    `00CC00`, `0000CC`, `chartreuse`.
 6. Run `npm run split-demo`
-7. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+7. Open http://localhost:3000/message, http://localhost:3000/hex-color/markup, or http://localhost:3000/calculate?num=40 in your browser
 8. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
 #### CloudBees FM Provider Demo
@@ -251,7 +251,7 @@ Follow these steps to run the demo:
 5. Create a new flag called `hex-color` with the values: `CC0000`,
    `00CC00`, `0000CC`, `chartreuse`.
 6. Run `npm run cloudbees-demo`
-7. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+7. Open http://localhost:3000/message, http://localhost:3000/hex-color/markup, or http://localhost:3000/calculate?num=40 in your browser
 8. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
 #### LaunchDarkly Provider Demo
@@ -268,7 +268,7 @@ Follow these steps to run the demo:
 5. Create a new feature flag called `hex-color` with the values: `CC0000`,
    `00CC00`, `0000CC`, `chartreuse`.
 6. Run `npm run launchdarkly-demo`
-7. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+7. Open http://localhost:3000/message, http://localhost:3000/hex-color/markup, or http://localhost:3000/calculate?num=40 in your browser
 8. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
 #### Flagsmith Provider Demo
@@ -285,7 +285,7 @@ Follow these steps to run the demo:
 5. Create a new feature called `hex-color` with the values: `CC0000`,
    `00CC00`, `0000CC`, `chartreuse`.
 6. Run `npm run flagsmith-v1-demo` or `npm run flagsmith-v2-demo`
-7. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+7. Open http://localhost:3000/message, http://localhost:3000/hex-color/markup, or http://localhost:3000/calculate?num=40 in your browser
 8. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
 ## OpenTelemetry Support
@@ -316,8 +316,8 @@ overhead if you don't.
 Experiment with different Fibonacci algorithms and hitting the API with these
 values:
 
-- http://localhost:3333/calculate?num=10
-- http://localhost:3333/calculate?num=20
-- http://localhost:3333/calculate?num=30
-- http://localhost:3333/calculate?num=40
-- http://localhost:3333/calculate?num=50
+- http://localhost:3000/calculate?num=10
+- http://localhost:3000/calculate?num=20
+- http://localhost:3000/calculate?num=30
+- http://localhost:3000/calculate?num=40
+- http://localhost:3000/calculate?num=50

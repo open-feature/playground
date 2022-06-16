@@ -32,7 +32,9 @@ const DEFAULT_CONTEXT_TRANSFORMER = (context: EvaluationContext): LDUser => {
  * providers once they're available.
  */
 export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
-  name = 'LaunchDarkly';
+  metadata = {
+    name: 'LaunchDarkly',
+  };
   readonly contextTransformer: ContextTransformer<LDUser>;
 
   private client: LDClient;
@@ -47,7 +49,7 @@ export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
       this.client.once('ready', () => {
-        console.log(`${this.name} provider initialized`);
+        console.log(`${this.metadata.name} provider initialized`);
         resolve();
       });
     });

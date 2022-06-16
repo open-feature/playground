@@ -5,7 +5,7 @@ import {
   ResolutionDetails,
   ProviderOptions,
 } from '@openfeature/openfeature-js';
-import * as Rox from 'rox-node';
+import { setup, dynamicApi } from 'rox-node';
 
 export interface CloudbeesProviderOptions extends ProviderOptions {
   appKey: string;
@@ -17,14 +17,16 @@ export interface CloudbeesProviderOptions extends ProviderOptions {
  * providers once they're available.
  */
 export class CloudbeesProvider implements Provider {
-  name = 'cloudbees';
+  metadata = {
+    name: 'cloudbees',
+  };
   private initialized: Promise<void>;
 
   constructor(options: CloudbeesProviderOptions) {
     // we don't expose any init events at the moment (we might later) so for now, lets create a private
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
-      Rox.setup(options.appKey, {}).then(() => {
+      setup(options.appKey, {}).then(() => {
         console.log(`CloudBees Provider initialized: appKey ${options.appKey}`);
         resolve();
       });
@@ -38,7 +40,7 @@ export class CloudbeesProvider implements Provider {
   ): Promise<ResolutionDetails<boolean>> {
     await this.initialized;
     return {
-      value: Rox.dynamicApi.isEnabled(flagKey, defaultValue, context),
+      value: dynamicApi.isEnabled(flagKey, defaultValue, context),
     };
   }
 
@@ -49,7 +51,7 @@ export class CloudbeesProvider implements Provider {
   ): Promise<ResolutionDetails<string>> {
     await this.initialized;
     return {
-      value: Rox.dynamicApi.value(flagKey, defaultValue, context),
+      value: dynamicApi.value(flagKey, defaultValue, context),
     };
   }
 
@@ -60,7 +62,7 @@ export class CloudbeesProvider implements Provider {
   ): Promise<ResolutionDetails<number>> {
     await this.initialized;
     return {
-      value: Rox.dynamicApi.getNumber(flagKey, defaultValue, context),
+      value: dynamicApi.getNumber(flagKey, defaultValue, context),
     };
   }
 
@@ -76,7 +78,7 @@ export class CloudbeesProvider implements Provider {
      * and stringify the default.
      * This may not be performant, and other, more elegant solutions should be considered.
      */
-    const value = Rox.dynamicApi.value(
+    const value = dynamicApi.value(
       flagKey,
       JSON.stringify(defaultValue),
       context

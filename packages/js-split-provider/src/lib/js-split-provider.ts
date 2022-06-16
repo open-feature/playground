@@ -45,7 +45,9 @@ type Consumer = {
  * providers once they're available.
  */
 export class OpenFeatureSplitProvider implements Provider<Consumer> {
-  name = 'split';
+  metadata = {
+    name: 'split',
+  };
   readonly contextTransformer: ContextTransformer<Consumer>;
   private initialized: Promise<void>;
   private client: IClient;
@@ -59,7 +61,7 @@ export class OpenFeatureSplitProvider implements Provider<Consumer> {
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
       this.client.on(this.client.Event.SDK_READY, () => {
-        console.log(`${this.name} provider initialized`);
+        console.log(`${this.metadata.name} provider initialized`);
         resolve();
       });
     });

@@ -3,6 +3,7 @@ import {
   parseValidJsonObject,
   TypeMismatchError,
 } from '@openfeature/extra';
+import { JSONValue, ProviderMetadata } from '@openfeature/nodejs-sdk';
 import {
   ContextTransformer,
   EvaluationContext,
@@ -14,7 +15,9 @@ import { Flagsmith } from 'flagsmithv2';
 
 type Identity = {
   identifier?: string;
-  traits?: { [key: string]: boolean | number | string | Date };
+  traits?: {
+    [key: string]: boolean | number | string | Date | null | JSONValue;
+  };
 };
 
 export interface FlagsmithV2ProviderOptions extends ProviderOptions<Identity> {
@@ -46,7 +49,9 @@ const DEFAULT_CONTEXT_TRANSFORMER = (context: EvaluationContext): Identity => {
  * a `FlagTypeError` for undefined flags, which in turn will result in the default passed to OpenFeature being used.
  */
 export class FlagsmithV2Provider implements Provider<Identity> {
-  name = 'flagsmith-v2';
+  metadata = {
+    name: 'flagsmith-v2',
+  };
 
   readonly contextTransformer: ContextTransformer<Identity>;
   private client: Flagsmith;
@@ -55,7 +60,7 @@ export class FlagsmithV2Provider implements Provider<Identity> {
     this.client = options.client;
     this.contextTransformer =
       options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
-    console.log(`${this.name} provider initialized`);
+    console.log(`${this.metadata.name} provider initialized`);
   }
 
   async resolveBooleanEvaluation(
