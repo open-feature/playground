@@ -4,6 +4,7 @@ import {
   parseValidJsonObject,
   parseValidNumber,
 } from '@openfeature/extra';
+import { ProviderMetadata } from '@openfeature/nodejs-sdk';
 import { Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import { constantCase } from 'change-case';
 
@@ -13,7 +14,9 @@ import { constantCase } from 'change-case';
  * providers once they're available.
  */
 export class OpenFeatureEnvProvider implements Provider {
-  name = 'environment variable';
+  metadata = {
+    name: 'environment variable',
+  };
 
   resolveBooleanEvaluation(
     flagKey: string

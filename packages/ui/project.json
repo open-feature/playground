@@ -48,7 +48,8 @@
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "ui:build",
-        "hmr": true
+        "hmr": true,
+        "proxyConfig": "packages/ui/proxy.config.json"
       },
       "configurations": {
         "development": {
