@@ -1,0 +1,18 @@
+{
+  "/utils": {
+    "target": "http://localhost:30000",
+    "secure": false
+  },
+  "/message": {
+    "target": "http://localhost:30000",
+    "secure": false
+  },
+  "/hex-color": {
+    "target": "http://localhost:30000",
+    "secure": false
+  },
+  "/calculate": {
+    "target": "http://localhost:30000",
+    "secure": false
+  }
+}

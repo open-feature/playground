@@ -13,7 +13,6 @@ import Ajv2020, {
   ValidateFunction,
 } from 'ajv/dist/2020';
 
-const BASE_URL = 'http://localhost:30000';
 const STEP_EDIT_HEX = 7;
 const STEP_SNAZZY = 9;
 const STEP_UH_OH = 11;
@@ -362,7 +361,7 @@ class App extends Component<
 
   // thin wrapper around fetch for PUTing JSON.
   private async putJson(body: string) {
-    await fetch(`${BASE_URL}/utils/json`, {
+    await fetch(`/utils/json`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -374,7 +373,7 @@ class App extends Component<
   // thin wrapper around fetch that also passes email in auth header.
   private async getData<T>(path: string): Promise<T> {
     return await (
-      await fetch(`${BASE_URL}${path}`, {
+      await fetch(path, {
         headers: {
           ...(this.state.email && { Authorization: this.state.email }),
         },
