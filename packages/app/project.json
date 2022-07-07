@@ -166,6 +166,24 @@
           "./scripts/json-demo.js"
         ]
       }
+    },
+    "go-feature-flag-demo": {
+      "executor": "@nrwl/node:node",
+      "dependsOn": [
+        {
+          "target": "build",
+          "projects": "dependencies"
+        }
+      ],
+      "options": {
+        "buildTarget": "app:build",
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js",
+          "-r",
+          "./scripts/go-feature-flag-demo.js"
+        ]
+      }
     }
   },
   "tags": [],
@@ -175,6 +193,7 @@
     "js-launchdarkly-provider",
     "js-split-provider",
     "js-flagsmith-v1-provider",
-    "js-json-provider"
+    "js-json-provider",
+    "js-go-feature-flag-provider"
   ]
 }

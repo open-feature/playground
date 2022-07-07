@@ -13,7 +13,8 @@
     "flagsmith-v1-demo": "nx run app:flagsmith-v1-demo",
     "flagsmith-v2-demo": "nx run app:flagsmith-v2-demo",
     "json-demo": "nx run app:json-demo",
-    "ui": "nx run ui:serve"
+    "ui": "nx run ui:serve",
+    "go-feature-flag-demo": "nx run app:go-feature-flag-demo"
   },
   "private": true,
   "dependencies": {

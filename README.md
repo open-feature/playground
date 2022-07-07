@@ -114,7 +114,9 @@ Available demos:
 - [CloudBees Feature Management Provider](#cloudbees-fm-provider-demo)
 - [LaunchDarkly Provider Demo](#launchdarkly-provider-demo)
 - [Flagsmith Provider Demo](#flagsmith-provider-demo)
+- [GO Feature Flag Demo](#go-feature-flag-provider-demo)
 - [OpenTelemetry and Zipkin](#opentelemetry-demo)
+
 
 ## Create a new provider
 
@@ -287,6 +289,27 @@ Follow these steps to run the demo:
 6. Run `npm run flagsmith-v1-demo` or `npm run flagsmith-v2-demo`
 7. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
 8. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
+
+# Go-feature-flag Provider Demo
+
+A [go-feature-flag](https://gofeatureflag.org) provider demo.
+
+1. You should start by running an instance of `go-feature-flag-relay-proxy`.
+
+```shell
+  # download relay proxy configuration file
+  curl https://gist.githubusercontent.com/thomaspoignant/777c23351a07dc88d01bf162d2496115/raw/94eb003c7e98f00398dd62a9aea67b1f5f21fd42/goff-proxy.yaml -o goff-proxy.yaml
+
+  # download an example of flag configuration file
+  curl https://gist.githubusercontent.com/thomaspoignant/fefe16973c1272ff0682212564874c90/raw/d96c13f57132816f3989a3dd5caf5b582fe6565b/flags.yaml -o flags.yaml
+
+  # launch go-feature-flag relay proxy (here using the docker image)
+  docker run -p 1031:1031 -v $(pwd)/:/goff/ thomaspoignant/go-feature-flag-relay-proxy:latest
+```
+
+2. Run `npm run go-feature-flag-demo` provider demo
+3. Open http://localhost:3333/message, http://localhost:3333/hex-color/markup, or http://localhost:3333/calculate?num=40 in your browser
+4. Optionally, run the UI as described in the [introductory demo](#introductory-demo)
 
 ## OpenTelemetry Support
 
