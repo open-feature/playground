@@ -1,9 +1,5 @@
 import { GeneralError } from '@openfeature/extra';
-import {
-  EvaluationContext,
-  Provider,
-  ResolutionDetails,
-} from '@openfeature/openfeature-js';
+import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import Ajv2020 from 'ajv/dist/2020';
 import { copyFileSync, existsSync } from 'fs';
 import { readFile } from 'fs/promises';

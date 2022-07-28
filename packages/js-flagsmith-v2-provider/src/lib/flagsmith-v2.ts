@@ -1,8 +1,4 @@
-import {
-  ParseError,
-  parseValidJsonObject,
-  TypeMismatchError,
-} from '@openfeature/extra';
+import { ParseError, parseValidJsonObject, TypeMismatchError } from '@openfeature/extra';
 import { JSONValue, ProviderMetadata } from '@openfeature/nodejs-sdk';
 import {
   ContextTransformer,
@@ -58,56 +54,37 @@ export class FlagsmithV2Provider implements Provider<Identity> {
 
   constructor(options: FlagsmithV2ProviderOptions) {
     this.client = options.client;
-    this.contextTransformer =
-      options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
+    this.contextTransformer = options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
     console.log(`${this.metadata.name} provider initialized`);
   }
 
-  async resolveBooleanEvaluation(
-    flagKey: string,
-    _: boolean,
-    identity: Identity
-  ): Promise<ResolutionDetails<boolean>> {
+  async resolveBooleanEvaluation(flagKey: string, _: boolean, identity: Identity): Promise<ResolutionDetails<boolean>> {
     const details = await this.evaluate(flagKey, identity);
     if (typeof details.value === 'boolean') {
       const value = details.value;
       return { ...details, value };
     } else {
-      throw new TypeMismatchError(
-        this.getFlagTypeErrorMessage(flagKey, details.value, 'boolean')
-      );
+      throw new TypeMismatchError(this.getFlagTypeErrorMessage(flagKey, details.value, 'boolean'));
     }
   }
 
-  async resolveStringEvaluation(
-    flagKey: string,
-    _: string,
-    identity: Identity
-  ): Promise<ResolutionDetails<string>> {
+  async resolveStringEvaluation(flagKey: string, _: string, identity: Identity): Promise<ResolutionDetails<string>> {
     const details = await this.evaluate(flagKey, identity);
     if (typeof details.value === 'string') {
       const value = details.value;
       return { ...details, value };
     } else {
-      throw new TypeMismatchError(
-        this.getFlagTypeErrorMessage(flagKey, details.value, 'string')
-      );
+      throw new TypeMismatchError(this.getFlagTypeErrorMessage(flagKey, details.value, 'string'));
     }
   }
 
-  async resolveNumberEvaluation(
-    flagKey: string,
-    _: number,
-    identity: Identity
-  ): Promise<ResolutionDetails<number>> {
+  async resolveNumberEvaluation(flagKey: string, _: number, identity: Identity): Promise<ResolutionDetails<number>> {
     const details = await this.evaluate(flagKey, identity);
     if (typeof details.value === 'number') {
       const value = details.value;
       return { ...details, value };
     } else {
-      throw new TypeMismatchError(
-        this.getFlagTypeErrorMessage(flagKey, details.value, 'number')
-      );
+      throw new TypeMismatchError(this.getFlagTypeErrorMessage(flagKey, details.value, 'number'));
     }
   }
 
@@ -127,34 +104,20 @@ export class FlagsmithV2Provider implements Provider<Identity> {
         throw new ParseError(`Error parsing flag value for ${flagKey}`);
       }
     } else {
-      throw new TypeMismatchError(
-        this.getFlagTypeErrorMessage(flagKey, details.value, 'object')
-      );
+      throw new TypeMismatchError(this.getFlagTypeErrorMessage(flagKey, details.value, 'object'));
     }
   }
 
-  private async evaluate<T>(
-    flagKey: string,
-    identity: Identity
-  ): Promise<ResolutionDetails<T>> {
+  private async evaluate<T>(flagKey: string, identity: Identity): Promise<ResolutionDetails<T>> {
     const value = identity.identifier
-      ? (
-          await this.client.getIdentityFlags(
-            identity.identifier,
-            identity.traits
-          )
-        ).getFeatureValue(flagKey)
+      ? (await this.client.getIdentityFlags(identity.identifier, identity.traits)).getFeatureValue(flagKey)
       : (await this.client.getEnvironmentFlags()).getFeatureValue(flagKey);
     return {
       value,
     };
   }
 
-  private getFlagTypeErrorMessage(
-    flagKey: string,
-    value: unknown,
-    expectedType: string
-  ) {
+  private getFlagTypeErrorMessage(flagKey: string, value: unknown, expectedType: string) {
     return `Flag value ${flagKey} had unexpected type ${typeof value}, expected ${expectedType}.`;
   }
 }

@@ -12,11 +12,8 @@ export class TransactionContextMiddleware implements NestMiddleware {
    * Adds our request data to the OpenFeature context via the configured TransactionContextManager
    */
   use(_req: Request, _res: Response, next: NextFunction) {
-    OpenFeature.setTransactionContext(
-      { ts: new Date().getTime(), ...this.requestData },
-      () => {
-        next();
-      }
-    );
+    OpenFeature.setTransactionContext({ ts: new Date().getTime(), ...this.requestData }, () => {
+      next();
+    });
   }
 }

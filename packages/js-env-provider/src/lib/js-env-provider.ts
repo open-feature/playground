@@ -1,10 +1,4 @@
-import {
-  FlagNotFoundError,
-  parseValidBoolean,
-  parseValidJsonObject,
-  parseValidNumber,
-} from '@openfeature/extra';
-import { ProviderMetadata } from '@openfeature/nodejs-sdk';
+import { FlagNotFoundError, parseValidBoolean, parseValidJsonObject, parseValidNumber } from '@openfeature/extra';
 import { Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import { constantCase } from 'change-case';
 
@@ -18,9 +12,7 @@ export class OpenFeatureEnvProvider implements Provider {
     name: 'environment variable',
   };
 
-  resolveBooleanEvaluation(
-    flagKey: string
-  ): Promise<ResolutionDetails<boolean>> {
+  resolveBooleanEvaluation(flagKey: string): Promise<ResolutionDetails<boolean>> {
     const details = this.evaluateEnvironmentVariable(flagKey);
     return Promise.resolve({
       ...details,
@@ -40,9 +32,7 @@ export class OpenFeatureEnvProvider implements Provider {
     });
   }
 
-  resolveObjectEvaluation<U extends object>(
-    flagKey: string
-  ): Promise<ResolutionDetails<U>> {
+  resolveObjectEvaluation<U extends object>(flagKey: string): Promise<ResolutionDetails<U>> {
     const details = this.evaluateEnvironmentVariable(flagKey);
     return Promise.resolve({
       ...details,
