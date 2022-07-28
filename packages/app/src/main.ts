@@ -5,7 +5,7 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { OpenFeature, Provider } from '@openfeature/nodejs-sdk';
+import { NonTransformingProvider, OpenFeature, Provider, TransformingProvider } from '@openfeature/nodejs-sdk';
 import { CloudbeesProvider } from '@openfeature/js-cloudbees-provider';
 import { OpenFeatureEnvProvider } from '@openfeature/js-env-provider';
 import { FlagsmithV1Provider } from '@openfeature/js-flagsmith-v1-provider';
@@ -17,10 +17,11 @@ import { AppModule } from './app/app.module';
 import { SplitFactory } from '@splitsoftware/splitio';
 import { Flagsmith } from 'flagsmithv2';
 import { FlagdRESTProvider } from '@openfeature/flagd-rest-provider';
+import { GoFeatureFlagProvider } from '@openfeature/js-go-feature-flag-provider';
 
 const registerProvider = () => {
   const providerId = process.argv[2];
-  let provider: Provider | undefined = undefined;
+  let provider: NonTransformingProvider | TransformingProvider<unknown> | undefined = undefined;
 
   switch (providerId) {
     case 'env':
@@ -54,7 +55,7 @@ const registerProvider = () => {
       } else {
         provider = new FlagsmithV1Provider({
           environmentID,
-        }) as unknown as Provider; // TODO fix this
+        });
       }
       break;
     }
@@ -71,7 +72,7 @@ const registerProvider = () => {
         });
         provider = new FlagsmithV2Provider({
           client,
-        }) as unknown as Provider; // TODO fix this
+        });
       }
       break;
     }
@@ -83,7 +84,7 @@ const registerProvider = () => {
       } else {
         provider = new OpenFeatureLaunchDarklyProvider({
           sdkKey,
-        }) as unknown as Provider; // TODO fix this
+        });
       }
       break;
     }
@@ -102,6 +103,13 @@ const registerProvider = () => {
           splitClient,
         });
       }
+      break;
+    }
+
+    case 'go': {
+      provider = new GoFeatureFlagProvider({
+        endpoint: 'http://localhost:1031',
+      });
       break;
     }
   }

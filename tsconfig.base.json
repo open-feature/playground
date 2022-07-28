@@ -38,6 +38,9 @@
       "@openfeature/js-launchdarkly-provider": [
         "packages/js-launchdarkly-provider/src/index.ts"
       ],
+      "@openfeature/js-go-feature-flag-provider": [
+        "packages/js-go-feature-flag-provider/src/index.ts"
+      ],
       "@openfeature/js-split-provider": [
         "packages/js-split-provider/src/index.ts"
       ],
