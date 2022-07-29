@@ -1,13 +1,10 @@
 import { StepType, TourProvider } from '@reactour/tour';
 import { StrictMode } from 'react';
-import * as ReactDOM from 'react-dom/client';
+import { render } from 'react-dom/';
 import Page from './app/app';
 
 // Highlights an object/area in the JSON editor based on the key, and optionally the next key.
-const editorHighlightAreaSelectors = (
-  startProperty: string,
-  endProperty?: string
-) => {
+const editorHighlightAreaSelectors = (startProperty: string, endProperty?: string) => {
   let selectors = [`span[value="${startProperty}"]`];
 
   if (endProperty) {
@@ -150,11 +147,9 @@ const styledSteps = steps.map((step) => ({
   styles: { ...stepStye, ...step.styles },
 }));
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = document.getElementById('root');
 
-root.render(
+render(
   <StrictMode>
     <TourProvider
       steps={styledSteps}
@@ -165,5 +160,6 @@ root.render(
     >
       <Page />
     </TourProvider>
-  </StrictMode>
+  </StrictMode>,
+  root
 );
