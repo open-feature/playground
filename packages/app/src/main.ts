@@ -16,7 +16,7 @@ import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
 import { AppModule } from './app/app.module';
 import { SplitFactory } from '@splitsoftware/splitio';
 import { Flagsmith } from 'flagsmithv2';
-import { FlagdRESTProvider } from '@openfeature/flagd-rest-provider';
+import { FlagdProvider } from '@openfeature/flagd-provider';
 import { GoFeatureFlagProvider } from '@openfeature/js-go-feature-flag-provider';
 
 const registerProvider = () => {
@@ -33,7 +33,7 @@ const registerProvider = () => {
       break;
 
     case 'flagd':
-      provider = new FlagdRESTProvider();
+      provider = new FlagdProvider();
       break;
 
     case 'cloudbees': {
