@@ -43,3 +43,7 @@ Thumbs.db
 
 # JSON file
 flags.json
+
+# yalc stuff
+.yalc
+yalc.lock

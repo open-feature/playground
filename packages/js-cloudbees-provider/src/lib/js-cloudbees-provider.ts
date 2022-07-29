@@ -1,11 +1,8 @@
 import { parseValidJsonObject } from '@openfeature/extra';
-import {
-  Provider,
-  EvaluationContext,
-  ResolutionDetails,
-  ProviderOptions,
-} from '@openfeature/openfeature-js';
-import { setup, dynamicApi } from 'rox-node';
+import { Handler } from '@openfeature/nodejs-sdk';
+import { EvaluationContext, Provider, ProviderOptions, ResolutionDetails } from '@openfeature/openfeature-js';
+import { setup } from 'rox-node';
+import { dynamicApi, RoxFetcherResult } from 'rox-node';
 
 export interface CloudbeesProviderOptions extends ProviderOptions {
   appKey: string;
@@ -20,17 +17,23 @@ export class CloudbeesProvider implements Provider {
   metadata = {
     name: 'cloudbees',
   };
+
   private initialized: Promise<void>;
+  private handlers: { [key: string]: Handler } = {};
 
   constructor(options: CloudbeesProviderOptions) {
     // we don't expose any init events at the moment (we might later) so for now, lets create a private
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
-      setup(options.appKey, {}).then(() => {
+      setup(options.appKey, { configurationFetchedHandler: this.configurationFetchHandler.bind(this) }).then(() => {
         console.log(`CloudBees Provider initialized: appKey ${options.appKey}`);
         resolve();
       });
     });
+  }
+
+  addHandler(flagKey: string, handler: Handler): void {
+    this.handlers = { ...this.handlers, [flagKey]: handler };
   }
 
   async resolveBooleanEvaluation(
@@ -78,13 +81,16 @@ export class CloudbeesProvider implements Provider {
      * and stringify the default.
      * This may not be performant, and other, more elegant solutions should be considered.
      */
-    const value = dynamicApi.value(
-      flagKey,
-      JSON.stringify(defaultValue),
-      context
-    );
+    const value = dynamicApi.value(flagKey, JSON.stringify(defaultValue), context);
     return {
       value: parseValidJsonObject(value),
     };
+  }
+
+  // cloudbees doesn't identify what flag has changed, so we run them all
+  private configurationFetchHandler(fetcherResult: RoxFetcherResult) {
+    if (fetcherResult.hasChanges) {
+      Object.keys(this.handlers).forEach((key) => this.handlers[key](key));
+    }
   }
 }

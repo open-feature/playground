@@ -19,6 +19,17 @@ import { Flagsmith } from 'flagsmithv2';
 import { FlagdProvider } from '@openfeature/flagd-provider';
 import { GoFeatureFlagProvider } from '@openfeature/js-go-feature-flag-provider';
 
+const handlerDemo = () => {
+  const client = OpenFeature.getClient();
+  client.addHandler('new-welcome-message', async (key) => {
+    console.log(`Got update for ${key}, new value is ${await client.getBooleanValue(key, false)}`);
+  });
+
+  client.addHandler('hex-color', async (key) => {
+    console.log(`Got update for ${key}, new value is ${await client.getStringValue(key, '000000')}`);
+  });
+};
+
 const registerProvider = () => {
   const providerId = process.argv[2];
   let provider: NonTransformingProvider | TransformingProvider<unknown> | undefined = undefined;
@@ -123,6 +134,7 @@ const registerProvider = () => {
 
 async function bootstrap() {
   registerProvider();
+  handlerDemo();
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   const port = process.env.PORT || 30000;
