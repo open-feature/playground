@@ -1,7 +1,4 @@
-import {
-  OpenFeature as OpenFeatureBase,
-  EvaluationContext,
-} from '@openfeature/nodejs-sdk';
+import { OpenFeature as OpenFeatureBase, EvaluationContext } from '@openfeature/nodejs-sdk';
 
 export {
   EvaluationContext,
@@ -18,10 +15,7 @@ export {
 
 export interface TransactionContextManager {
   getTransactionContext(): EvaluationContext;
-  setTransactionContext(
-    evaluationContext: EvaluationContext,
-    callback: () => void
-  ): void;
+  setTransactionContext(evaluationContext: EvaluationContext, callback: () => void): void;
 }
 
 /**
@@ -39,26 +33,28 @@ class NoopTransactionContext {
   }
 }
 
-export class OpenFeature extends OpenFeatureBase {
-  private static _transactionContext = new NoopTransactionContext();
-
-  static set transactionContextPropagator(
-    transactionContext: TransactionContextManager
-  ) {
-    OpenFeature._transactionContext = transactionContext;
-  }
-
-  static getTransactionContext(): EvaluationContext {
-    return OpenFeature._transactionContext.getTransactionContext();
-  }
-
-  static setTransactionContext(
-    evaluationContext: EvaluationContext,
-    callback: () => void
-  ): void {
-    OpenFeature._transactionContext.setTransactionContext(
-      evaluationContext,
-      callback
-    );
-  }
+interface ContextPropogationExtras {
+  setTransactionContextPropagator: (manager: TransactionContextManager) => void;
+  getTransactionContext: () => EvaluationContext;
+  setTransactionContext: (evaluationContext: EvaluationContext, callback: () => void) => void;
 }
+
+const casted = OpenFeatureBase as any;
+
+// add context propogation
+casted._transactionContext = new NoopTransactionContext();
+casted.setTransactionContextPropagator = function (manager: TransactionContextManager) {
+  (OpenFeatureBase as any)._transactionContext = manager;
+};
+casted.getTransactionContext = function () {
+  return (OpenFeatureBase as any)._transactionContext.getTransactionContext();
+};
+casted.setTransactionContext = function (evaluationContext: EvaluationContext, callback: () => void): void {
+  casted._transactionContext.setTransactionContext(evaluationContext, callback);
+};
+
+export type OpenFeatureWithExtensions = typeof OpenFeatureBase & ContextPropogationExtras;
+const OpenFeature = OpenFeatureBase as OpenFeatureWithExtensions;
+Object.setPrototypeOf(OpenFeature, Object.getPrototypeOf(OpenFeatureBase));
+
+export { OpenFeature };

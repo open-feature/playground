@@ -13,7 +13,6 @@ import Ajv2020, {
   ValidateFunction,
 } from 'ajv/dist/2020';
 
-const BASE_URL = 'http://localhost:3333';
 const STEP_EDIT_HEX = 7;
 const STEP_SNAZZY = 9;
 const STEP_UH_OH = 11;
@@ -332,21 +331,26 @@ class App extends Component<
       const promises: [
         Promise<{ message: string }>,
         Promise<{ color: string }>,
-        Promise<unknown>
+        Promise<unknown>,
+        Promise<{ provider: string }>
       ] = [
         this.getData<{ message: string }>('/message'),
         this.getData<{ color: string }>('/hex-color'),
         this.getData<unknown>('/utils/json'),
+        this.getData<{ provider: string }>('/utils/provider'),
       ];
-      const [message, hexColor, json]: [
+      const [message, hexColor, json, provider]: [
         { message: string },
         { color: string },
-        unknown
+        unknown,
+        { provider: string }
       ] = await Promise.all(promises);
       this.setState({
         message: message.message,
         hexColor: hexColor.color,
         json,
+        // hide the editor unless we are using the JSON provider.
+        editorOn: provider.provider === 'json',
       });
     } catch (err) {
       throw new Error(
@@ -357,7 +361,7 @@ class App extends Component<
 
   // thin wrapper around fetch for PUTing JSON.
   private async putJson(body: string) {
-    await fetch(`${BASE_URL}/utils/json`, {
+    await fetch(`/utils/json`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -369,7 +373,7 @@ class App extends Component<
   // thin wrapper around fetch that also passes email in auth header.
   private async getData<T>(path: string): Promise<T> {
     return await (
-      await fetch(`${BASE_URL}${path}`, {
+      await fetch(path, {
         headers: {
           ...(this.state.email && { Authorization: this.state.email }),
         },

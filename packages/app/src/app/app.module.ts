@@ -16,27 +16,28 @@ import { InstallService } from './install/install.service';
 import { MessageService } from './message/message.service';
 import { RequestData } from './types';
 import { UtilsController } from './utils.controller';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 /**
  * Adding hooks to at the global level will ensure they always run
  * as part of a flag evaluation lifecycle.
  */
-OpenFeature.addHooks(
-  new LoggingHook(),
-  new OpenTelemetryHook('app'),
-  new TransactionContextHook()
-);
+OpenFeature.addHooks(new LoggingHook(), new OpenTelemetryHook('app'), new TransactionContextHook());
 
 /**
  * The transaction context propagator is an experimental feature
  * that allows evaluation context to be set anywhere in a request
  * and have it automatically available during a flag evaluation.
  */
-OpenFeature.transactionContextPropagator =
-  new AsyncLocalStorageTransactionContext();
+OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionContext());
 
 @Module({
-  imports: [],
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '.', 'assets', 'public'),
+    }),
+  ],
   controllers: [FibonacciAsAServiceController, UtilsController],
   providers: [
     MessageService,
@@ -55,9 +56,7 @@ OpenFeature.transactionContextPropagator =
       useFactory: (req: Request): RequestData => {
         const authHeaderValue = req.header('Authorization') as string;
         return {
-          ip:
-            (req.headers['x-forwarded-for'] as string) ||
-            (req.socket.remoteAddress as string),
+          ip: (req.headers['x-forwarded-for'] as string) || (req.socket.remoteAddress as string),
           email: authHeaderValue,
           method: req.method,
           path: req.path,
@@ -71,8 +70,6 @@ OpenFeature.transactionContextPropagator =
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(TransactionContextMiddleware)
-      .forRoutes(FibonacciAsAServiceController);
+    consumer.apply(TransactionContextMiddleware).forRoutes(FibonacciAsAServiceController);
   }
 }

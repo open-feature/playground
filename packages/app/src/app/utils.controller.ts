@@ -32,7 +32,26 @@ export class UtilsController {
    */
   @Get('json')
   async getJson() {
-    return await (await readFile(JSON_FILE)).toString();
+    return (
+      await readFile(JSON_FILE).catch((err) => {
+        // if this file isn't found, it's because we aren't running the JSON provider
+        if (err?.code === 'ENOENT') {
+          return '{}';
+        }
+        throw err;
+      })
+    ).toString();
+  }
+
+  /**
+   * Return the provider
+   * @returns provider object
+   */
+  @Get('provider')
+  async getProvider() {
+    return {
+      provider: process.argv[2],
+    };
   }
 
   /**

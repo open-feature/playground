@@ -1,4 +1,5 @@
 import { ParseError, TypeMismatchError } from '@openfeature/extra';
+import { ProviderMetadata } from '@openfeature/nodejs-sdk';
 import {
   ContextTransformer,
   EvaluationContext,
@@ -57,7 +58,9 @@ const DEFAULT_CONTEXT_TRANSFORMER = async (context: EvaluationContext) => {
  * a `FlagTypeError` for undefined flags, which in turn will result in the default passed to OpenFeature being used.
  */
 export class FlagsmithV1Provider implements Provider<string> {
-  name = 'flagsmith-v1';
+  metadata = {
+    name: 'flagsmith-v1',
+  };
 
   readonly contextTransformer: ContextTransformer<Promise<string>>;
 
@@ -67,7 +70,7 @@ export class FlagsmithV1Provider implements Provider<string> {
     flagsmith.init({
       environmentID: options.environmentID,
     });
-    console.log(`${this.name} provider initialized`);
+    console.log(`${this.metadata.name} provider initialized`);
   }
 
   async resolveBooleanEvaluation(
