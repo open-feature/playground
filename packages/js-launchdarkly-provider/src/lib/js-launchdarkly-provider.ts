@@ -42,7 +42,8 @@ export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
 
   constructor(options: LaunchDarklyProviderOptions) {
     this.client = init(options.sdkKey);
-    this.contextTransformer = options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
+    this.contextTransformer =
+      options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
 
     // we don't expose any init events at the moment (we might later) so for now, lets create a private
     // promise to await into before we evaluate any flags.
@@ -65,11 +66,17 @@ export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
     defaultValue: boolean,
     user: LDUser
   ): Promise<ResolutionDetails<boolean>> {
-    const details = await this.evaluateFlag<boolean>(flagKey, defaultValue, user);
+    const details = await this.evaluateFlag<boolean>(
+      flagKey,
+      defaultValue,
+      user
+    );
     if (typeof details.value === 'boolean') {
       return details;
     } else {
-      throw new TypeMismatchError(this.getFlagTypeErrorMessage(flagKey, details.value, 'boolean'));
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'boolean')
+      );
     }
   }
 
@@ -78,11 +85,17 @@ export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
     defaultValue: string,
     user: LDUser
   ): Promise<ResolutionDetails<string>> {
-    const details = await this.evaluateFlag<string>(flagKey, defaultValue, user);
+    const details = await this.evaluateFlag<string>(
+      flagKey,
+      defaultValue,
+      user
+    );
     if (typeof details.value === 'string') {
       return details;
     } else {
-      throw new TypeMismatchError(this.getFlagTypeErrorMessage(flagKey, details.value, 'string'));
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'string')
+      );
     }
   }
 
@@ -91,11 +104,17 @@ export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
     defaultValue: number,
     user: LDUser
   ): Promise<ResolutionDetails<number>> {
-    const details = await this.evaluateFlag<number>(flagKey, defaultValue, user);
+    const details = await this.evaluateFlag<number>(
+      flagKey,
+      defaultValue,
+      user
+    );
     if (typeof details.value === 'number') {
       return details;
     } else {
-      throw new TypeMismatchError(this.getFlagTypeErrorMessage(flagKey, details.value, 'number'));
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details.value, 'number')
+      );
     }
   }
 
@@ -104,7 +123,11 @@ export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
     defaultValue: U,
     user: LDUser
   ): Promise<ResolutionDetails<U>> {
-    const details = await this.evaluateFlag<unknown>(flagKey, JSON.stringify(defaultValue), user);
+    const details = await this.evaluateFlag<unknown>(
+      flagKey,
+      JSON.stringify(defaultValue),
+      user
+    );
     if (typeof details.value === 'string') {
       // we may want to allow the parsing to be customized.
       try {
@@ -113,7 +136,9 @@ export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
         throw new ParseError(`Error parsing flag value for ${flagKey}`);
       }
     } else {
-      throw new TypeMismatchError(this.getFlagTypeErrorMessage(flagKey, details, 'object'));
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details, 'object')
+      );
     }
   }
 
@@ -122,7 +147,11 @@ export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
     defaultValue: U,
     user: LDUser
   ): Promise<ResolutionDetails<U>> {
-    const details = await this.evaluateFlag<unknown>(flagKey, JSON.stringify(defaultValue), user);
+    const details = await this.evaluateFlag<unknown>(
+      flagKey,
+      JSON.stringify(defaultValue),
+      user
+    );
     if (typeof details.value === 'string') {
       // we may want to allow the parsing to be customized.
       try {
@@ -131,20 +160,34 @@ export class OpenFeatureLaunchDarklyProvider implements Provider<LDUser> {
         throw new ParseError(`Error parsing flag value for ${flagKey}`);
       }
     } else {
-      throw new TypeMismatchError(this.getFlagTypeErrorMessage(flagKey, details, 'object'));
+      throw new TypeMismatchError(
+        this.getFlagTypeErrorMessage(flagKey, details, 'object')
+      );
     }
   }
 
-  private getFlagTypeErrorMessage(flagKey: string, value: unknown, expectedType: string) {
+  private getFlagTypeErrorMessage(
+    flagKey: string,
+    value: unknown,
+    expectedType: string
+  ) {
     return `Flag value ${flagKey} had unexpected type ${typeof value}, expected ${expectedType}.`;
   }
 
   // LD values can be boolean, number, or string: https://docs.launchdarkly.com/sdk/client-side/node-js#getting-started
-  private async evaluateFlag<T>(flagKey: string, defaultValue: FlagValue, user: LDUser): Promise<ResolutionDetails<T>> {
+  private async evaluateFlag<T>(
+    flagKey: string,
+    defaultValue: FlagValue,
+    user: LDUser
+  ): Promise<ResolutionDetails<T>> {
     // await the initialization before actually calling for a flag.
     await this.initialized;
 
-    const details = await this.client.variationDetail(flagKey, user, defaultValue);
+    const details = await this.client.variationDetail(
+      flagKey,
+      user,
+      defaultValue
+    );
     return {
       value: details.value,
       variant: details.variationIndex?.toString(),

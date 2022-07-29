@@ -5,7 +5,12 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { NonTransformingProvider, OpenFeature, Provider, TransformingProvider } from '@openfeature/nodejs-sdk';
+import {
+  NonTransformingProvider,
+  OpenFeature,
+  Provider,
+  TransformingProvider,
+} from '@openfeature/nodejs-sdk';
 import { CloudbeesProvider } from '@openfeature/js-cloudbees-provider';
 import { OpenFeatureEnvProvider } from '@openfeature/js-env-provider';
 import { FlagsmithV1Provider } from '@openfeature/js-flagsmith-v1-provider';
@@ -22,17 +27,30 @@ import { GoFeatureFlagProvider } from '@openfeature/js-go-feature-flag-provider'
 const handlerDemo = () => {
   const client = OpenFeature.getClient();
   client.addHandler('new-welcome-message', async (key) => {
-    console.log(`Got update for ${key}, new value is ${await client.getBooleanValue(key, false)}`);
+    console.log(
+      `Got update for ${key}, new value is ${await client.getBooleanValue(
+        key,
+        false
+      )}`
+    );
   });
 
   client.addHandler('hex-color', async (key) => {
-    console.log(`Got update for ${key}, new value is ${await client.getStringValue(key, '000000')}`);
+    console.log(
+      `Got update for ${key}, new value is ${await client.getStringValue(
+        key,
+        '000000'
+      )}`
+    );
   });
 };
 
 const registerProvider = () => {
   const providerId = process.argv[2];
-  let provider: NonTransformingProvider | TransformingProvider<unknown> | undefined = undefined;
+  let provider:
+    | NonTransformingProvider
+    | TransformingProvider<unknown>
+    | undefined = undefined;
 
   switch (providerId) {
     case 'env':

@@ -1,6 +1,11 @@
 import { parseValidJsonObject } from '@openfeature/extra';
 import { Handler } from '@openfeature/nodejs-sdk';
-import { EvaluationContext, Provider, ProviderOptions, ResolutionDetails } from '@openfeature/openfeature-js';
+import {
+  EvaluationContext,
+  Provider,
+  ProviderOptions,
+  ResolutionDetails,
+} from '@openfeature/openfeature-js';
 import { setup } from 'rox-node';
 import { dynamicApi, RoxFetcherResult } from 'rox-node';
 
@@ -25,7 +30,9 @@ export class CloudbeesProvider implements Provider {
     // we don't expose any init events at the moment (we might later) so for now, lets create a private
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
-      setup(options.appKey, { configurationFetchedHandler: this.configurationFetchHandler.bind(this) }).then(() => {
+      setup(options.appKey, {
+        configurationFetchedHandler: this.configurationFetchHandler.bind(this),
+      }).then(() => {
         console.log(`CloudBees Provider initialized: appKey ${options.appKey}`);
         resolve();
       });
@@ -81,7 +88,11 @@ export class CloudbeesProvider implements Provider {
      * and stringify the default.
      * This may not be performant, and other, more elegant solutions should be considered.
      */
-    const value = dynamicApi.value(flagKey, JSON.stringify(defaultValue), context);
+    const value = dynamicApi.value(
+      flagKey,
+      JSON.stringify(defaultValue),
+      context
+    );
     return {
       value: parseValidJsonObject(value),
     };
