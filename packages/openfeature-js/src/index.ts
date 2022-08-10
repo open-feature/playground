@@ -4,8 +4,6 @@ export {
   EvaluationContext,
   Provider,
   ResolutionDetails,
-  ProviderOptions,
-  ContextTransformer,
   Client,
   EvaluationDetails,
   Hook,

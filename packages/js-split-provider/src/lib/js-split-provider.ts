@@ -1,15 +1,5 @@
-import {
-  parseValidJsonObject,
-  parseValidNumber,
-  TypeMismatchError,
-} from '@openfeature/extra';
-import {
-  ContextTransformer,
-  EvaluationContext,
-  Provider,
-  ProviderOptions,
-  ResolutionDetails,
-} from '@openfeature/openfeature-js';
+import { parseValidJsonObject, parseValidNumber, TypeMismatchError } from '@openfeature/extra';
+import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import type { Attributes, IClient } from '@splitsoftware/splitio/types/splitio';
 
 /**
@@ -18,21 +8,9 @@ import type { Attributes, IClient } from '@splitsoftware/splitio/types/splitio';
  * It may be more idiomatic to only rely on that for the "isEnabled" calls,
  * and for all values store the data in teh associated "split config" JSON.
  */
-export interface SplitProviderOptions extends ProviderOptions<Consumer> {
+export interface SplitProviderOptions {
   splitClient: IClient;
 }
-
-/**
- * Transform the context into an object useful for the Split API, an key string with arbitrary Split "Attributes".
- */
-const DEFAULT_CONTEXT_TRANSFORMER = (context: EvaluationContext): Consumer => {
-  const { targetingKey, ...attributes } = context;
-  return {
-    key: targetingKey || 'anonymous',
-    // Stringify context objects include date.
-    attributes: JSON.parse(JSON.stringify(attributes)),
-  };
-};
 
 type Consumer = {
   key: string;
@@ -44,19 +22,15 @@ type Consumer = {
  * purposes only. The playground environment will be updated to use official
  * providers once they're available.
  */
-export class OpenFeatureSplitProvider implements Provider<Consumer> {
+export class OpenFeatureSplitProvider implements Provider {
   metadata = {
     name: 'split',
   };
-  readonly contextTransformer: ContextTransformer<Consumer>;
   private initialized: Promise<void>;
   private client: IClient;
 
   constructor(options: SplitProviderOptions) {
     this.client = options.splitClient;
-    // contextTransformer to map context to split "Attributes".
-    this.contextTransformer =
-      options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
     // we don't expose any init events at the moment (we might later) so for now, lets create a private
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
@@ -70,9 +44,9 @@ export class OpenFeatureSplitProvider implements Provider<Consumer> {
   async resolveBooleanEvaluation(
     flagKey: string,
     _: boolean,
-    consumer: Consumer
+    context: EvaluationContext
   ): Promise<ResolutionDetails<boolean>> {
-    const details = await this.evaluateTreatment(flagKey, consumer);
+    const details = await this.evaluateTreatment(flagKey, this.transformContext(context));
 
     let value: boolean;
     switch (details.value as unknown) {
@@ -95,9 +69,7 @@ export class OpenFeatureSplitProvider implements Provider<Consumer> {
         value = false;
         break;
       default:
-        throw new TypeMismatchError(
-          `Invalid boolean value for ${details.value}`
-        );
+        throw new TypeMismatchError(`Invalid boolean value for ${details.value}`);
     }
     return { ...details, value };
   }
@@ -105,39 +77,44 @@ export class OpenFeatureSplitProvider implements Provider<Consumer> {
   async resolveStringEvaluation(
     flagKey: string,
     _: string,
-    consumer: Consumer
+    context: EvaluationContext
   ): Promise<ResolutionDetails<string>> {
-    return this.evaluateTreatment(flagKey, consumer);
+    return this.evaluateTreatment(flagKey, this.transformContext(context));
   }
 
   async resolveNumberEvaluation(
     flagKey: string,
     _: number,
-    consumer: Consumer
+    context: EvaluationContext
   ): Promise<ResolutionDetails<number>> {
-    const details = await this.evaluateTreatment(flagKey, consumer);
+    const details = await this.evaluateTreatment(flagKey, this.transformContext(context));
     return { ...details, value: parseValidNumber(details.value) };
   }
 
   async resolveObjectEvaluation<U extends object>(
     flagKey: string,
     _: U,
-    consumer: Consumer
+    context: EvaluationContext
   ): Promise<ResolutionDetails<U>> {
-    const details = await this.evaluateTreatment(flagKey, consumer);
+    const details = await this.evaluateTreatment(flagKey, this.transformContext(context));
     return { ...details, value: parseValidJsonObject(details.value) };
   }
 
-  private async evaluateTreatment(
-    flagKey: string,
-    consumer: Consumer
-  ): Promise<ResolutionDetails<string>> {
+  private async evaluateTreatment(flagKey: string, consumer: Consumer): Promise<ResolutionDetails<string>> {
     await this.initialized;
-    const value = this.client.getTreatment(
-      consumer.key,
-      flagKey,
-      consumer.attributes
-    );
+    const value = this.client.getTreatment(consumer.key, flagKey, consumer.attributes);
     return { value };
+  }
+
+  //Transform the context into an object useful for the Split API, an key string with arbitrary Split "Attributes".
+  private transformContext(context: EvaluationContext): Consumer {
+    {
+      const { targetingKey, ...attributes } = context;
+      return {
+        key: targetingKey || 'anonymous',
+        // Stringify context objects include date.
+        attributes: JSON.parse(JSON.stringify(attributes)),
+      };
+    }
   }
 }

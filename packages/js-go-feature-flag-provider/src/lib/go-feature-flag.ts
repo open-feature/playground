@@ -1,5 +1,5 @@
 import { FlagNotFoundError, GeneralError, TypeMismatchError } from '@openfeature/extra';
-import { ContextTransformer, EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
+import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import axios from 'axios';
 import {
   GoFeatureFlagProviderOptions,
@@ -9,66 +9,73 @@ import {
 } from './model';
 import { ProxyNotReady } from './proxy-not-ready';
 
-const DEFAULT_CONTEXT_TRANSFORMER = (context: EvaluationContext): GoFeatureFlagUser => {
-  // TODO: rework the context transformer
-  const { targetingKey, ...attributes } = context;
-  return {
-    key: targetingKey || (attributes['userId'] as string) || 'anonymous',
-    anonymous: !targetingKey,
-    custom: attributes,
-  };
-};
-
 /**
  * NOTE: This is an unofficial provider that was created for demonstration
  * purposes only. The playground environment will be updated to use official
  * providers once they're available.
  */
-export class GoFeatureFlagProvider implements Provider<GoFeatureFlagUser> {
+export class GoFeatureFlagProvider implements Provider {
   metadata = {
     name: 'go-feature-flag',
   };
   private config: GoFeatureFlagProviderOptions;
   private timeout: number;
 
-  contextTransformer: ContextTransformer<GoFeatureFlagUser | Promise<GoFeatureFlagUser>> | undefined;
-
   constructor(options: GoFeatureFlagProviderOptions) {
     this.config = options;
-    this.contextTransformer = options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
     this.timeout = options.timeout || 0; // default is 0 = no timeout
   }
 
   async resolveBooleanEvaluation(
     flagKey: string,
     defaultValue: boolean,
-    user: GoFeatureFlagUser
+    context: EvaluationContext
   ): Promise<ResolutionDetails<boolean>> {
-    return await this.resolveEvaluationGoFeatureFlagProxy<boolean>(flagKey, defaultValue, user, 'boolean');
+    return await this.resolveEvaluationGoFeatureFlagProxy<boolean>(
+      flagKey,
+      defaultValue,
+      this.transformContext(context),
+      'boolean'
+    );
   }
 
   async resolveStringEvaluation(
     flagKey: string,
     defaultValue: string,
-    user: GoFeatureFlagUser
+    context: EvaluationContext
   ): Promise<ResolutionDetails<string>> {
-    return await this.resolveEvaluationGoFeatureFlagProxy<string>(flagKey, defaultValue, user, 'string');
+    return await this.resolveEvaluationGoFeatureFlagProxy<string>(
+      flagKey,
+      defaultValue,
+      this.transformContext(context),
+      'string'
+    );
   }
 
   async resolveNumberEvaluation(
     flagKey: string,
     defaultValue: number,
-    user: GoFeatureFlagUser
+    context: EvaluationContext
   ): Promise<ResolutionDetails<number>> {
-    return await this.resolveEvaluationGoFeatureFlagProxy<number>(flagKey, defaultValue, user, 'number');
+    return await this.resolveEvaluationGoFeatureFlagProxy<number>(
+      flagKey,
+      defaultValue,
+      this.transformContext(context),
+      'number'
+    );
   }
 
   async resolveObjectEvaluation<U extends object>(
     flagKey: string,
     defaultValue: U,
-    user: GoFeatureFlagUser
+    context: EvaluationContext
   ): Promise<ResolutionDetails<U>> {
-    return await this.resolveEvaluationGoFeatureFlagProxy<U>(flagKey, defaultValue, user, 'object');
+    return await this.resolveEvaluationGoFeatureFlagProxy<U>(
+      flagKey,
+      defaultValue,
+      this.transformContext(context),
+      'object'
+    );
   }
 
   async resolveEvaluationGoFeatureFlagProxy<T>(
@@ -127,5 +134,17 @@ export class GoFeatureFlagProvider implements Provider<GoFeatureFlagUser> {
       value: apiResponseData.value,
       variant: apiResponseData.variationType,
     };
+  }
+
+  private transformContext(context: EvaluationContext): GoFeatureFlagUser {
+    {
+      // TODO: rework the context transformer
+      const { targetingKey, ...attributes } = context;
+      return {
+        key: targetingKey || (attributes['userId'] as string) || 'anonymous',
+        anonymous: !targetingKey,
+        custom: attributes,
+      };
+    }
   }
 }

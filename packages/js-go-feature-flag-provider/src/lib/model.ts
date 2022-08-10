@@ -1,5 +1,4 @@
 import { JSONValue } from '@openfeature/nodejs-sdk';
-import { ProviderOptions } from '@openfeature/openfeature-js';
 
 export interface GoFeatureFlagUser {
   key: string;
@@ -22,7 +21,7 @@ export interface GoFeatureFlagProxyResponse<T> {
   version?: string;
 }
 
-export interface GoFeatureFlagProviderOptions extends ProviderOptions<GoFeatureFlagUser> {
+export interface GoFeatureFlagProviderOptions {
   endpoint: string;
   timeout?: number; // in millisecond
 }
