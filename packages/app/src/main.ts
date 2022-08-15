@@ -5,23 +5,23 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { NonTransformingProvider, OpenFeature, Provider, TransformingProvider } from '@openfeature/nodejs-sdk';
+import { FlagdProvider } from '@openfeature/flagd-provider';
 import { CloudbeesProvider } from '@openfeature/js-cloudbees-provider';
 import { OpenFeatureEnvProvider } from '@openfeature/js-env-provider';
 import { FlagsmithV1Provider } from '@openfeature/js-flagsmith-v1-provider';
 import { FlagsmithV2Provider } from '@openfeature/js-flagsmith-v2-provider';
+import { GoFeatureFlagProvider } from '@openfeature/go-feature-flag-provider';
 import { JsonProvider } from '@openfeature/js-json-provider';
 import { OpenFeatureLaunchDarklyProvider } from '@openfeature/js-launchdarkly-provider';
 import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
-import { AppModule } from './app/app.module';
+import { OpenFeature, Provider } from '@openfeature/nodejs-sdk';
 import { SplitFactory } from '@splitsoftware/splitio';
 import { Flagsmith } from 'flagsmithv2';
-import { FlagdProvider } from '@openfeature/flagd-provider';
-import { GoFeatureFlagProvider } from '@openfeature/js-go-feature-flag-provider';
+import { AppModule } from './app/app.module';
 
 const registerProvider = () => {
   const providerId = process.argv[2];
-  let provider: NonTransformingProvider | TransformingProvider<unknown> | undefined = undefined;
+  let provider: Provider | undefined = undefined;
 
   switch (providerId) {
     case 'env':

@@ -1,12 +1,6 @@
 import { ParseError, parseValidJsonObject, TypeMismatchError } from '@openfeature/extra';
-import { JSONValue, ProviderMetadata } from '@openfeature/nodejs-sdk';
-import {
-  ContextTransformer,
-  EvaluationContext,
-  Provider,
-  ProviderOptions,
-  ResolutionDetails,
-} from '@openfeature/openfeature-js';
+import { JSONValue } from '@openfeature/nodejs-sdk';
+import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import { Flagsmith } from 'flagsmithv2';
 
 type Identity = {
@@ -16,20 +10,9 @@ type Identity = {
   };
 };
 
-export interface FlagsmithV2ProviderOptions extends ProviderOptions<Identity> {
+export interface FlagsmithV2ProviderOptions {
   client: Flagsmith;
 }
-
-/**
- * Transform the context into an object useful for the v2 Flagsmith API, an identifier string with a "dictionary" of traits.
- */
-const DEFAULT_CONTEXT_TRANSFORMER = (context: EvaluationContext): Identity => {
-  const { targetingKey, ...traits } = context;
-  return {
-    identifier: targetingKey,
-    traits,
-  };
-};
 
 /*
  * NOTE: This is an unofficial provider that was created for demonstration
@@ -44,22 +27,24 @@ const DEFAULT_CONTEXT_TRANSFORMER = (context: EvaluationContext): Identity => {
  * NOTE: Flagsmith defaults values to `null` and booleans to false. In this provider implementation, this will result in
  * a `FlagTypeError` for undefined flags, which in turn will result in the default passed to OpenFeature being used.
  */
-export class FlagsmithV2Provider implements Provider<Identity> {
+export class FlagsmithV2Provider implements Provider {
   metadata = {
     name: 'flagsmith-v2',
   };
 
-  readonly contextTransformer: ContextTransformer<Identity>;
   private client: Flagsmith;
 
   constructor(options: FlagsmithV2ProviderOptions) {
     this.client = options.client;
-    this.contextTransformer = options.contextTransformer || DEFAULT_CONTEXT_TRANSFORMER;
     console.log(`${this.metadata.name} provider initialized`);
   }
 
-  async resolveBooleanEvaluation(flagKey: string, _: boolean, identity: Identity): Promise<ResolutionDetails<boolean>> {
-    const details = await this.evaluate(flagKey, identity);
+  async resolveBooleanEvaluation(
+    flagKey: string,
+    _: boolean,
+    context: EvaluationContext
+  ): Promise<ResolutionDetails<boolean>> {
+    const details = await this.evaluate(flagKey, this.transformContext(context));
     if (typeof details.value === 'boolean') {
       const value = details.value;
       return { ...details, value };
@@ -68,8 +53,12 @@ export class FlagsmithV2Provider implements Provider<Identity> {
     }
   }
 
-  async resolveStringEvaluation(flagKey: string, _: string, identity: Identity): Promise<ResolutionDetails<string>> {
-    const details = await this.evaluate(flagKey, identity);
+  async resolveStringEvaluation(
+    flagKey: string,
+    _: string,
+    context: EvaluationContext
+  ): Promise<ResolutionDetails<string>> {
+    const details = await this.evaluate(flagKey, this.transformContext(context));
     if (typeof details.value === 'string') {
       const value = details.value;
       return { ...details, value };
@@ -78,8 +67,12 @@ export class FlagsmithV2Provider implements Provider<Identity> {
     }
   }
 
-  async resolveNumberEvaluation(flagKey: string, _: number, identity: Identity): Promise<ResolutionDetails<number>> {
-    const details = await this.evaluate(flagKey, identity);
+  async resolveNumberEvaluation(
+    flagKey: string,
+    _: number,
+    context: EvaluationContext
+  ): Promise<ResolutionDetails<number>> {
+    const details = await this.evaluate(flagKey, this.transformContext(context));
     if (typeof details.value === 'number') {
       const value = details.value;
       return { ...details, value };
@@ -91,9 +84,9 @@ export class FlagsmithV2Provider implements Provider<Identity> {
   async resolveObjectEvaluation<U extends object>(
     flagKey: string,
     _: U,
-    identity: Identity
+    context: EvaluationContext
   ): Promise<ResolutionDetails<U>> {
-    const details = await this.evaluate(flagKey, identity);
+    const details = await this.evaluate(flagKey, this.transformContext(context));
     if (typeof details.value === 'string') {
       // we may want to allow the parsing to be customized.
       try {
@@ -106,6 +99,15 @@ export class FlagsmithV2Provider implements Provider<Identity> {
     } else {
       throw new TypeMismatchError(this.getFlagTypeErrorMessage(flagKey, details.value, 'object'));
     }
+  }
+
+  // Transform the context into an object useful for the v2 Flagsmith API, an identifier string with a "dictionary" of traits.
+  private transformContext(context: EvaluationContext) {
+    const { targetingKey, ...traits } = context;
+    return {
+      identifier: targetingKey,
+      traits,
+    };
   }
 
   private async evaluate<T>(flagKey: string, identity: Identity): Promise<ResolutionDetails<T>> {

@@ -1,7 +1,0 @@
-{
-  "name": "@openfeature/js-go-feature-flag-provider",
-  "version": "0.0.1",
-  "dependencies": {
-    "axios": "^0.27.2"
-  }
-}
