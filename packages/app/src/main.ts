@@ -10,7 +10,7 @@ import { CloudbeesProvider } from '@openfeature/js-cloudbees-provider';
 import { OpenFeatureEnvProvider } from '@openfeature/js-env-provider';
 import { FlagsmithV1Provider } from '@openfeature/js-flagsmith-v1-provider';
 import { FlagsmithV2Provider } from '@openfeature/js-flagsmith-v2-provider';
-import { GoFeatureFlagProvider } from '@openfeature/js-go-feature-flag-provider';
+import { GoFeatureFlagProvider } from '@openfeature/go-feature-flag-provider';
 import { JsonProvider } from '@openfeature/js-json-provider';
 import { OpenFeatureLaunchDarklyProvider } from '@openfeature/js-launchdarkly-provider';
 import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
