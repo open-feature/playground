@@ -18,7 +18,7 @@
     "ui": "nx run ui:serve",
     "temp": "nx build",
     "build": "nx build --progress=true --all && nx build ui && cp -R dist/packages/ui/* dist/packages/app/assets/public/ && cp -R scripts/ dist/scripts",
-    "docker-build": "docker buildx build --platform=\"linux/ppc64le,linux/s390x,linux/amd64,linux/arm64\" . -t ghcr.io/open-feature/open-feature/open-feature-demo:latest",
+    "docker-build": "docker buildx build --platform=\"linux/ppc64le,linux/s390x,linux/amd64,linux/arm64\" . -t ghcr.io/open-feature/open-feature-demo:latest",
     "docker-build-push": "docker buildx build --push --platform=\"linux/ppc64le,linux/s390x,linux/amd64,linux/arm64\" . -t ghcr.io/open-feature/open-feature-demo:latest"
   },
   "private": true,
