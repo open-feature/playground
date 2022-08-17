@@ -1,11 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import {
-  AsyncLocalStorageTransactionContext,
-  LoggingHook,
-  OpenTelemetryHook,
-  TransactionContextHook,
-} from '@openfeature/extra';
+import { AsyncLocalStorageTransactionContext, LoggingHook, TransactionContextHook } from '@openfeature/extra';
+import { OpenTelemetryHook } from '@openfeature/open-telemetry-hook';
 import { OpenFeature } from '@openfeature/openfeature-js';
 import { Request } from 'express';
 import { TransactionContextMiddleware } from './transaction-context.middleware';
@@ -23,7 +19,7 @@ import { join } from 'path';
  * Adding hooks to at the global level will ensure they always run
  * as part of a flag evaluation lifecycle.
  */
-OpenFeature.addHooks(new LoggingHook(), new OpenTelemetryHook('app'), new TransactionContextHook());
+OpenFeature.addHooks(new LoggingHook(), new OpenTelemetryHook(), new TransactionContextHook());
 
 /**
  * The transaction context propagator is an experimental feature
