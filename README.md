@@ -241,7 +241,7 @@ Follow these steps to run the demo:
 
 #### CloudBees FM Provider Demo
 
-A CloudCees Feature Management provider demo.
+A CloudBees Feature Management provider demo.
 
 Follow these steps to run the demo:
 
