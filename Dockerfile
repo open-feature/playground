@@ -1,5 +1,5 @@
 # We are moving in the node_modules/dist because NX hangs if we build it in Docker. We'll have to look into this...
-FROM node:14-bullseye as builder
+FROM node:14.20.0-slim as builder
 
 WORKDIR /
 COPY node_modules /node_modules
