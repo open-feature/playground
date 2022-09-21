@@ -1,15 +1,8 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  InternalServerErrorException,
-  Put,
-} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, InternalServerErrorException, Put } from '@nestjs/common';
 import { join } from 'path';
 import { readFile, writeFile } from 'fs/promises';
 
-const JSON_FILE = join('flags.json');
+const JSON_FILE = join('config', 'flagd', 'flags.json');
 const JSON_SCHEMA_FILE = join('schemas', 'flag.schema.json');
 
 /**
@@ -23,7 +16,7 @@ export class UtilsController {
    */
   @Get('schema')
   async getSchema() {
-    return await (await readFile(JSON_SCHEMA_FILE)).toString();
+    return (await readFile(JSON_SCHEMA_FILE)).toString();
   }
 
   /**
@@ -44,21 +37,9 @@ export class UtilsController {
   }
 
   /**
-   * Return the provider
-   * @returns provider object
-   */
-  @Get('provider')
-  async getProvider() {
-    return {
-      provider: process.argv[2],
-    };
-  }
-
-  /**
    * Write JSON from editor
    * @param body JSON flag config
    */
-  // TODO we could add schema validation here, but probably more important in the UI.
   @Put('json')
   async putJson(@Body() body: unknown) {
     try {
@@ -67,7 +48,7 @@ export class UtilsController {
       throw new BadRequestException('Invalid JSON');
     }
     try {
-      await writeFile(JSON_FILE, JSON.stringify(body));
+      await writeFile(JSON_FILE, JSON.stringify(body, null, 2));
     } catch (err) {
       throw new InternalServerErrorException('Unable to write JSON file.');
     }

@@ -1,5 +1,5 @@
+import { Card } from '@mui/material';
 import React from 'react';
-import { boxShadow } from './style-mixins';
 
 export class Calculator extends React.Component<
   {
@@ -26,20 +26,19 @@ export class Calculator extends React.Component<
   }
   override render() {
     return (
-      <div
+      <Card
+        className="step-calculator"
         style={{
           userSelect: 'none',
           fontFamily: 'monospace',
           width: 'fit-content',
           height: '120px',
           border: `4px solid ${this.props.hexColor}`,
-          borderRadius: '4px',
-          transform: 'skew(-15deg)',
           fontSize: '60px',
           display: 'flex',
           pointerEvents: this.state.running ? 'none' : 'initial',
-
-          ...boxShadow,
+          direction: 'rtl',
+          zIndex: '100',
         }}
       >
         <div
@@ -108,11 +107,11 @@ export class Calculator extends React.Component<
               fontSize: '60px',
             }}
           >
-            <div style={{ transform: 'skew(15deg)' }}>&#8721;</div>
+            <div style={{ height: 72 }}>
+              <span style={{ lineHeight: '72px', verticalAlign: 'sub' }}>&#8721;</span>
+            </div>
           </div>
-          <div style={{ lineHeight: '33px' }}>{`=${
-            this.props.result ? this.props.result : ''
-          }`}</div>
+          <div style={{ lineHeight: '33px' }}>{`=${this.props.result ? this.props.result : ''}`}</div>
         </div>
         <div
           style={{
@@ -130,7 +129,7 @@ export class Calculator extends React.Component<
             &#9660;
           </span>
         </div>
-      </div>
+      </Card>
     );
   }
 

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Client } from '@openfeature/openfeature-js';
+import { Client } from '@openfeature/js-sdk';
 import { OPENFEATURE_CLIENT, REQUEST_DATA } from '../constants';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class MessageService {
       false,
       this.attributes
     ))
-      ? 'Welcome to Fib3r: Fibonacci as a Service!'
+      ? 'Fib3r: Math at the speed of the internet!'
       : 'Welcome to FaaS: Fibonacci as a Service!';
     return { message };
   }

@@ -1,6 +1,6 @@
 import { ParseError, TypeMismatchError } from '@openfeature/extra';
-import { FlagValue } from '@openfeature/nodejs-sdk';
-import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
+import { FlagValue, JsonValue } from '@openfeature/js-sdk';
+import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/js-sdk';
 import { init, LDClient, LDUser } from 'launchdarkly-node-server-sdk';
 
 export interface LaunchDarklyProviderOptions {
@@ -72,29 +72,7 @@ export class OpenFeatureLaunchDarklyProvider implements Provider {
     }
   }
 
-  async resolveObjectEvaluation<U extends object>(
-    flagKey: string,
-    defaultValue: U,
-    context: EvaluationContext
-  ): Promise<ResolutionDetails<U>> {
-    const details = await this.evaluateFlag<unknown>(
-      flagKey,
-      JSON.stringify(defaultValue),
-      this.transformContext(context)
-    );
-    if (typeof details.value === 'string') {
-      // we may want to allow the parsing to be customized.
-      try {
-        return { ...details, value: JSON.parse(details.value) as U };
-      } catch (err) {
-        throw new ParseError(`Error parsing flag value for ${flagKey}`);
-      }
-    } else {
-      throw new TypeMismatchError(this.getFlagTypeErrorMessage(flagKey, details, 'object'));
-    }
-  }
-
-  async getObjectEvaluation<U extends object>(
+  async resolveObjectEvaluation<U extends JsonValue>(
     flagKey: string,
     defaultValue: U,
     context: EvaluationContext
@@ -122,7 +100,6 @@ export class OpenFeatureLaunchDarklyProvider implements Provider {
     return {
       key: targetingKey || 'anonymous',
       anonymous: targetingKey ? false : true,
-      // later, a well-defined set of standard attributes in Openfeature should be mapped to the appropriate standard attributes LaunchDarkly.
       custom: attributes,
     } as LDUser;
   }

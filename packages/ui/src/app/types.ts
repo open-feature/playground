@@ -1,0 +1,1 @@
+export type Theme = { light: string, main: string, dark: string};

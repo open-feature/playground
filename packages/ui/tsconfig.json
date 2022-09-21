@@ -12,7 +12,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "*": ["node_modules/@types/*", "*"],
+      "*": ["node_modules/@types/*", "*"]
     }
   },
   "files": [],

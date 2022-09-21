@@ -1,14 +1,16 @@
 {
-  "root": "packages/js-split-provider",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/js-split-provider/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/js-split-provider",
         "main": "packages/js-split-provider/src/index.ts",
-        "tsConfig": "packages/js-split-provider/tsconfig.lib.json"
+        "tsConfig": "packages/js-split-provider/tsconfig.lib.json",
+        "target": "node",
+        "compiler": "tsc"
       },
       "configurations": {
         "production": {
@@ -29,7 +31,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/js-split-provider"],
       "options": {
-        "jestConfig": "packages/js-split-provider/jest.config.js",
+        "jestConfig": "packages/js-split-provider/jest.config.ts",
         "passWithNoTests": true
       }
     }
