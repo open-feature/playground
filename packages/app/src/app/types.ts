@@ -6,7 +6,7 @@ export type RequestData = {
   email?: string;
 };
 
-export interface InstallTemplateData {
+export type InstallTemplateData = {
   os: string;
   installationInstruction: string;
-}
+};

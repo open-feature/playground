@@ -14,7 +14,7 @@ import { GoFeatureFlagProvider } from '@openfeature/go-feature-flag-provider';
 import { JsonProvider } from '@openfeature/js-json-provider';
 import { OpenFeatureLaunchDarklyProvider } from '@openfeature/js-launchdarkly-provider';
 import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
-import { OpenFeature, Provider } from '@openfeature/nodejs-sdk';
+import { OpenFeature, Provider } from '@openfeature/js-sdk';
 import { SplitFactory } from '@splitsoftware/splitio';
 import { Flagsmith } from 'flagsmithv2';
 import { AppModule } from './app/app.module';
@@ -22,7 +22,7 @@ import { AppModule } from './app/app.module';
 const registerProvider = () => {
   const providerId = process.argv[2];
   let provider: Provider | undefined = undefined;
-
+  console.log('registering a provider');
   switch (providerId) {
     case 'env':
       provider = new OpenFeatureEnvProvider();

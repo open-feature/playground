@@ -1,4 +1,4 @@
-import { EvaluationContext } from '@openfeature/nodejs-sdk';
+import { EvaluationContext } from '@openfeature/js-sdk';
 
 export class NoopTransactionContext {
   getTransactionContext(): EvaluationContext {

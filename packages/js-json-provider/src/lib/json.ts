@@ -1,4 +1,5 @@
 import { GeneralError } from '@openfeature/extra';
+import { JsonValue } from '@openfeature/js-sdk';
 import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import Ajv2020 from 'ajv/dist/2020';
 import { copyFileSync, existsSync } from 'fs';
@@ -65,7 +66,7 @@ export class JsonProvider implements Provider {
     return this.evaluationEngine.evaluate(flags, flagKey, 'number', context);
   }
 
-  async resolveObjectEvaluation<U extends object>(
+  async resolveObjectEvaluation<U extends JsonValue>(
     flagKey: string,
     _: U,
     context: EvaluationContext

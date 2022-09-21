@@ -1,4 +1,5 @@
 import { parseValidJsonObject } from '@openfeature/extra';
+import { JsonValue } from '@openfeature/js-sdk';
 import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import { dynamicApi, setup } from 'rox-node';
 
@@ -61,7 +62,7 @@ export class CloudbeesProvider implements Provider {
     };
   }
 
-  async resolveObjectEvaluation<U extends object>(
+  async resolveObjectEvaluation<U extends JsonValue>(
     flagKey: string,
     defaultValue: U,
     context: EvaluationContext

@@ -1,4 +1,5 @@
 import { ParseError, TypeMismatchError } from '@openfeature/extra';
+import { JsonValue } from '@openfeature/js-sdk';
 import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import * as flagsmith from 'flagsmith-nodejs';
 
@@ -75,7 +76,7 @@ export class FlagsmithV1Provider implements Provider {
     }
   }
 
-  async resolveObjectEvaluation<U extends object>(
+  async resolveObjectEvaluation<U extends JsonValue>(
     flagKey: string,
     _: U,
     context: EvaluationContext

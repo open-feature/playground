@@ -1,13 +1,11 @@
 import { ParseError, parseValidJsonObject, TypeMismatchError } from '@openfeature/extra';
-import { JSONValue } from '@openfeature/nodejs-sdk';
+import { EvaluationContextValue, JsonValue } from '@openfeature/js-sdk';
 import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import { Flagsmith } from 'flagsmithv2';
 
 type Identity = {
   identifier?: string;
-  traits?: {
-    [key: string]: boolean | number | string | Date | null | JSONValue;
-  };
+  traits?: Record<string, EvaluationContextValue>;
 };
 
 export interface FlagsmithV2ProviderOptions {
@@ -81,7 +79,7 @@ export class FlagsmithV2Provider implements Provider {
     }
   }
 
-  async resolveObjectEvaluation<U extends object>(
+  async resolveObjectEvaluation<U extends JsonValue>(
     flagKey: string,
     _: U,
     context: EvaluationContext
@@ -102,7 +100,7 @@ export class FlagsmithV2Provider implements Provider {
   }
 
   // Transform the context into an object useful for the v2 Flagsmith API, an identifier string with a "dictionary" of traits.
-  private transformContext(context: EvaluationContext) {
+  private transformContext(context: EvaluationContext): Identity {
     const { targetingKey, ...traits } = context;
     return {
       identifier: targetingKey,

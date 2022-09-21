@@ -1,4 +1,4 @@
-import { OpenFeature as OpenFeatureBase, EvaluationContext } from '@openfeature/nodejs-sdk';
+import { OpenFeature as OpenFeatureBase, EvaluationContext } from '@openfeature/js-sdk';
 
 export {
   EvaluationContext,
@@ -9,7 +9,7 @@ export {
   Hook,
   HookContext,
   FlagValue,
-} from '@openfeature/nodejs-sdk';
+} from '@openfeature/js-sdk';
 
 export interface TransactionContextManager {
   getTransactionContext(): EvaluationContext;
@@ -31,7 +31,7 @@ class NoopTransactionContext {
   }
 }
 
-interface ContextPropogationExtras {
+interface ContextPropagationExtras {
   setTransactionContextPropagator: (manager: TransactionContextManager) => void;
   getTransactionContext: () => EvaluationContext;
   setTransactionContext: (evaluationContext: EvaluationContext, callback: () => void) => void;
@@ -39,7 +39,7 @@ interface ContextPropogationExtras {
 
 const casted = OpenFeatureBase as any;
 
-// add context propogation
+// add context propagation
 casted._transactionContext = new NoopTransactionContext();
 casted.setTransactionContextPropagator = function (manager: TransactionContextManager) {
   (OpenFeatureBase as any)._transactionContext = manager;
@@ -51,7 +51,7 @@ casted.setTransactionContext = function (evaluationContext: EvaluationContext, c
   casted._transactionContext.setTransactionContext(evaluationContext, callback);
 };
 
-export type OpenFeatureWithExtensions = typeof OpenFeatureBase & ContextPropogationExtras;
+export type OpenFeatureWithExtensions = typeof OpenFeatureBase & ContextPropagationExtras;
 const OpenFeature = OpenFeatureBase as OpenFeatureWithExtensions;
 Object.setPrototypeOf(OpenFeature, Object.getPrototypeOf(OpenFeatureBase));
 

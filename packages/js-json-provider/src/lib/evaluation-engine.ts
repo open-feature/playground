@@ -1,10 +1,6 @@
 import { OpenFeatureFeatureFlags } from './flag';
 import { camelCase } from 'change-case';
-import {
-  EvaluationContext,
-  ResolutionDetails,
-  FlagValueType,
-} from '@openfeature/nodejs-sdk';
+import { EvaluationContext, ResolutionDetails, FlagValueType } from '@openfeature/js-sdk';
 import { FlagNotFoundError, TypeMismatchError } from '@openfeature/extra';
 
 export class EvaluationEngine {

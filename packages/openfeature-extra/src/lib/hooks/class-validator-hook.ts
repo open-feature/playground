@@ -1,8 +1,5 @@
-import {
-  EvaluationDetails,
-  Hook,
-  HookContext,
-} from '@openfeature/openfeature-js';
+import { JsonObject } from '@openfeature/js-sdk';
+import { EvaluationDetails, Hook, HookContext } from '@openfeature/openfeature-js';
 import { validateSync } from 'class-validator';
 
 type Class = { new (data: any): any };
@@ -14,7 +11,7 @@ export class ClassValidatorHook implements Hook {
   constructor(private clazz: Class) {}
   name = 'validator';
 
-  after(_: Readonly<HookContext>, details: EvaluationDetails<object>) {
+  after(_: Readonly<HookContext>, details: EvaluationDetails<JsonObject>) {
     const instance = new this.clazz(details.value);
     const result = validateSync(instance);
     if (result.length) {

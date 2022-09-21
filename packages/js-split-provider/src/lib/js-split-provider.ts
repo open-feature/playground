@@ -1,4 +1,5 @@
 import { parseValidJsonObject, parseValidNumber, TypeMismatchError } from '@openfeature/extra';
+import { JsonValue } from '@openfeature/js-sdk';
 import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
 import type { Attributes, IClient } from '@splitsoftware/splitio/types/splitio';
 
@@ -6,7 +7,7 @@ import type { Attributes, IClient } from '@splitsoftware/splitio/types/splitio';
  * This simple provider implementation relies on storing all data as strings in the treatment value.
  *
  * It may be more idiomatic to only rely on that for the "isEnabled" calls,
- * and for all values store the data in teh associated "split config" JSON.
+ * and for all values store the data in the associated "split config" JSON.
  */
 export interface SplitProviderOptions {
   splitClient: IClient;
@@ -91,7 +92,7 @@ export class OpenFeatureSplitProvider implements Provider {
     return { ...details, value: parseValidNumber(details.value) };
   }
 
-  async resolveObjectEvaluation<U extends object>(
+  async resolveObjectEvaluation<U extends JsonValue>(
     flagKey: string,
     _: U,
     context: EvaluationContext

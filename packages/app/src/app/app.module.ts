@@ -19,7 +19,7 @@ import { join } from 'path';
  * Adding hooks to at the global level will ensure they always run
  * as part of a flag evaluation lifecycle.
  */
-OpenFeature.addHooks(new LoggingHook(), new OpenTelemetryHook(), new TransactionContextHook());
+OpenFeature.addHooks(new OpenTelemetryHook(), new TransactionContextHook());
 
 /**
  * The transaction context propagator is an experimental feature
