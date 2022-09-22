@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'fibonacci',
+/* eslint-disable */
+export default {
+  displayName: 'js-env-provider',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -10,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/fibonacci',
+  coverageDirectory: '../../coverage/packages/js-env-provider',
 };

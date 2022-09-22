@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'js-env-provider',
+/* eslint-disable */
+export default {
+  displayName: 'openfeature-js',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -10,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/js-env-provider',
+  coverageDirectory: '../../coverage/packages/openfeature-js',
 };

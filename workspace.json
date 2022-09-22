@@ -5,14 +5,13 @@
     "fibonacci": "packages/fibonacci",
     "js-cloudbees-provider": "packages/js-cloudbees-provider",
     "js-env-provider": "packages/js-env-provider",
-    "js-flagsmith-v1-provider": "packages/js-flagsmith-v1-provider",
-    "js-flagsmith-v2-provider": "packages/js-flagsmith-v2-provider",
-    "js-json-provider": "packages/js-json-provider",
+    "js-flagsmith-provider": "packages/js-flagsmith-provider",
     "js-launchdarkly-provider": "packages/js-launchdarkly-provider",
     "js-split-provider": "packages/js-split-provider",
     "openfeature-extra": "packages/openfeature-extra",
     "openfeature-js": "packages/openfeature-js",
     "ui": "packages/ui",
     "ui-e2e": "packages/ui-e2e"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

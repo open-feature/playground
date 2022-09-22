@@ -1,14 +1,16 @@
-module.exports = {
-  displayName: 'openfeature-js',
+/* eslint-disable */
+export default {
+  displayName: 'app',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
     },
   },
+  testEnvironment: 'node',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/openfeature-js',
+  coverageDirectory: '../../coverage/packages/app',
 };

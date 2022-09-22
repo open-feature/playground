@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'js-cloudbees-provider',
+/* eslint-disable */
+export default {
+  displayName: 'openfeature-extra',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -10,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/js-cloudbees-provider',
+  coverageDirectory: '../../coverage/packages/openfeature-extra',
 };

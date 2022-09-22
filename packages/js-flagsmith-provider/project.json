@@ -1,14 +1,15 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/js-cloudbees-provider/src",
+  "sourceRoot": "libs/js-flagsmith-provider/src",
+  "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/js-cloudbees-provider",
-        "main": "packages/js-cloudbees-provider/src/index.ts",
-        "tsConfig": "packages/js-cloudbees-provider/tsconfig.lib.json",
+        "outputPath": "dist/libs/js-flagsmith-provider",
+        "main": "libs/js-flagsmith-provider/src/index.ts",
+        "tsConfig": "libs/js-flagsmith-provider/tsconfig.lib.json",
         "target": "node",
         "compiler": "tsc"
       },
@@ -24,14 +25,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/js-cloudbees-provider/**/*.ts"]
+        "lintFilePatterns": ["libs/js-flagsmith-provider/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/js-cloudbees-provider"],
+      "outputs": ["coverage/libs/js-flagsmith-provider"],
       "options": {
-        "jestConfig": "packages/js-cloudbees-provider/jest.config.ts",
+        "jestConfig": "libs/js-flagsmith-provider/jest.config.ts",
         "passWithNoTests": true
       }
     }

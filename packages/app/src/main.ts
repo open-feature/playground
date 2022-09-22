@@ -8,31 +8,34 @@ import { NestFactory } from '@nestjs/core';
 import { FlagdProvider } from '@openfeature/flagd-provider';
 import { CloudbeesProvider } from '@openfeature/js-cloudbees-provider';
 import { OpenFeatureEnvProvider } from '@openfeature/js-env-provider';
-import { FlagsmithV1Provider } from '@openfeature/js-flagsmith-v1-provider';
-import { FlagsmithV2Provider } from '@openfeature/js-flagsmith-v2-provider';
+// import { FlagsmithV1Provider } from '@openfeature/js-flagsmith-v1-provider';
+// import { FlagsmithV2Provider } from '@openfeature/js-flagsmith-v2-provider';
 import { GoFeatureFlagProvider } from '@openfeature/go-feature-flag-provider';
-import { JsonProvider } from '@openfeature/js-json-provider';
+// import { JsonProvider } from '@openfeature/js-json-provider';
 import { OpenFeatureLaunchDarklyProvider } from '@openfeature/js-launchdarkly-provider';
 import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
 import { OpenFeature, Provider } from '@openfeature/js-sdk';
 import { SplitFactory } from '@splitsoftware/splitio';
-import { Flagsmith } from 'flagsmithv2';
+// import { Flagsmith } from 'flagsmithv2';
+// import * as Flagsmith from "flagsmith-nodejs";
 import { AppModule } from './app/app.module';
 
 const registerProvider = () => {
   const providerId = process.argv[2];
   let provider: Provider | undefined = undefined;
-  console.log('registering a provider');
+
   switch (providerId) {
     case 'env':
       provider = new OpenFeatureEnvProvider();
       break;
 
-    case 'json':
-      provider = new JsonProvider();
-      break;
+    // case 'json':
+    //   provider = new JsonProvider();
+    //   break;
 
     case 'flagd':
+      console.log('configuring flagd');
+      // provider = new FlagdProvider({ host: 'flagd' });
       provider = new FlagdProvider();
       break;
 
@@ -48,34 +51,22 @@ const registerProvider = () => {
       break;
     }
 
-    case 'flagsmithv1': {
-      const environmentID = process.env.FLAGSMITH_ENV_ID;
-      if (!environmentID) {
-        console.error('"FLAGSMITH_ENV_ID" must be defined.');
-      } else {
-        provider = new FlagsmithV1Provider({
-          environmentID,
-        });
-      }
-      break;
-    }
-
-    case 'flagsmithv2': {
-      const environmentKey = process.env.FLAGSMITH_ENV_KEY;
-      if (!environmentKey) {
-        console.error('"FLAGSMITH_ENV_KEY" must be defined.');
-      } else {
-        const client = new Flagsmith({
-          environmentKey,
-          enableLocalEvaluation: true,
-          environmentRefreshIntervalSeconds: 5,
-        });
-        provider = new FlagsmithV2Provider({
-          client,
-        });
-      }
-      break;
-    }
+    // case 'flagsmith': {
+    //   const environmentKey = process.env.FLAGSMITH_ENV_KEY;
+    //   if (!environmentKey) {
+    //     console.error('"FLAGSMITH_ENV_KEY" must be defined.');
+    //   } else {
+    //     const client = new Flagsmith({
+    //       environmentKey,
+    //       enableLocalEvaluation: true,
+    //       environmentRefreshIntervalSeconds: 5,
+    //     });
+    //     provider = new FlagsmithV2Provider({
+    //       client,
+    //     });
+    //   }
+    //   break;
+    // }
 
     case 'launchdarkly': {
       const sdkKey = process.env.LD_KEY;

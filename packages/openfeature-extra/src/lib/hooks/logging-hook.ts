@@ -1,9 +1,4 @@
-import {
-  Hook,
-  HookContext,
-  ResolutionDetails,
-  FlagValue,
-} from '@openfeature/openfeature-js';
+import { Hook, HookContext, ResolutionDetails, FlagValue } from '@openfeature/openfeature-js';
 import { EOL } from 'os';
 
 /**
@@ -13,24 +8,20 @@ export class LoggingHook implements Hook {
   name = 'logging';
 
   before(hookContext: HookContext) {
-    console.log(
-      `Running 'before' logger hook for flag: ${hookContext.flagKey}`
-    );
+    console.log(`Running 'before' logger hook for flag: ${hookContext.flagKey}`);
     console.log(JSON.stringify(hookContext.context, undefined, 2));
   }
 
   after(hookContext: HookContext, details: ResolutionDetails<FlagValue>) {
     console.log(`Running 'after' logger hook for flag: ${hookContext.flagKey}`);
-    console.log(
-      `Evaluation details:${EOL}${JSON.stringify(details, undefined, 2)}`
-    );
+    console.log(`Evaluation details:${EOL}${JSON.stringify(details, undefined, 2)}`);
   }
 
-  finally(hookContext: HookContext) {
-    console.log(
-      `Running 'finally' logger hook for flag: ${hookContext.flagKey}`
-    );
-  }
+  // finally(hookContext: HookContext) {
+  //   console.log(
+  //     `Running 'finally' logger hook for flag: ${hookContext.flagKey}`
+  //   );
+  // }
 
   error(hookContext: HookContext, err: Error) {
     console.log(`Running 'error' logger hook for flag: ${hookContext.flagKey}`);

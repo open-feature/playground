@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  demo:
+    # image: ghcr.io/open-feature/open-feature-demo:latest
+    build: .
+    ports:
+      - "30000:30000"
+    command:
+      - flagd
+    depends_on:
+      - flagd
+      - zipkin
+    volumes:
+      - ${PWD}/flags.json:/opt/playground/flags.json
+    #   - flagd-socket:/tmp/
+    #   - "flagd:"
+    environment:
+      # FLAGD_SOCKET_PATH: /tmp/flagd-socket
+      FLAGD_HOST: flagd
+      # CLOUDBEES_APP_KEY: 618538bd7ebdeef023b5ff0d
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+  flagd:
+    image: ghcr.io/open-feature/flagd:v0.1.0
+    command:
+      - start
+      - --uri
+      - /etc/flagd/flags.json
+      # - --socket-path
+      # - /tmp/flagd-socket
+    volumes:
+      - ${PWD}/flags.json:/etc/flagd/flags.json
+      # - flagd-socket:/tmp/
+    ports:
+      - "8013:8013"
+
+# volumes:
+#   flagd-flags:
+

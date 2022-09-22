@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'js-split-provider',
+/* eslint-disable */
+export default {
+  displayName: 'js-cloudbees-provider',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -10,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/js-split-provider',
+  coverageDirectory: '../../coverage/packages/js-cloudbees-provider',
 };

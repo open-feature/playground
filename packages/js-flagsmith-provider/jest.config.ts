@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'js-json-provider',
+/* eslint-disable */
+export default {
+  displayName: 'js-flagsmith-provider',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +12,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/packages/js-json-provider',
+  coverageDirectory: '../../coverage/libs/js-flagsmith-provider',
 };

@@ -1,20 +1,18 @@
 {
-  "root": "packages/app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/app/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/app",
         "main": "packages/app/src/main.ts",
         "tsConfig": "packages/app/tsconfig.app.json",
-        "assets": [
-          "packages/app/src/assets"
-        ]
+        "assets": ["packages/app/src/assets"],
+        "target": "node",
+        "compiler": "tsc"
       },
       "configurations": {
         "production": {
@@ -34,10 +32,7 @@
       "executor": "@nrwl/node:node",
       "options": {
         "buildTarget": "app:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ]
+        "runtimeArgs": ["-r", "./scripts/tracing.js"]
       }
     },
     "env-var-demo": {
@@ -50,13 +45,8 @@
       ],
       "options": {
         "buildTarget": "app:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ],
-        "args": [
-          "env"
-        ]
+        "runtimeArgs": ["-r", "./scripts/tracing.js"],
+        "args": ["env"]
       }
     },
     "cloudbees-demo": {
@@ -69,13 +59,8 @@
       ],
       "options": {
         "buildTarget": "app:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ],
-        "args": [
-          "cloudbees"
-        ]
+        "runtimeArgs": ["-r", "./scripts/tracing.js"],
+        "args": ["cloudbees"]
       }
     },
     "split-demo": {
@@ -88,13 +73,8 @@
       ],
       "options": {
         "buildTarget": "app:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ],
-        "args": [
-          "split"
-        ]
+        "runtimeArgs": ["-r", "./scripts/tracing.js"],
+        "args": ["split"]
       }
     },
     "launchdarkly-demo": {
@@ -107,16 +87,11 @@
       ],
       "options": {
         "buildTarget": "app:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ],
-        "args": [
-          "launchdarkly"
-        ]
+        "runtimeArgs": ["-r", "./scripts/tracing.js"],
+        "args": ["launchdarkly"]
       }
     },
-    "flagsmith-v1-demo": {
+    "flagsmith-demo": {
       "executor": "@nrwl/node:node",
       "dependsOn": [
         {
@@ -126,51 +101,8 @@
       ],
       "options": {
         "buildTarget": "app:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ],
-        "args": [
-          "flagsmithv1"
-        ]
-      }
-    },
-    "flagsmith-v2-demo": {
-      "executor": "@nrwl/node:node",
-      "dependsOn": [
-        {
-          "target": "build",
-          "projects": "dependencies"
-        }
-      ],
-      "options": {
-        "buildTarget": "app:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ],
-        "args": [
-          "flagsmithv2"
-        ]
-      }
-    },
-    "json-demo": {
-      "executor": "@nrwl/node:node",
-      "dependsOn": [
-        {
-          "target": "build",
-          "projects": "dependencies"
-        }
-      ],
-      "options": {
-        "buildTarget": "app:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ],
-        "args": [
-          "json"
-        ]
+        "runtimeArgs": ["-r", "./scripts/tracing.js"],
+        "args": ["flagsmithv2"]
       }
     },
     "flagd-demo": {
@@ -183,13 +115,8 @@
       ],
       "options": {
         "buildTarget": "app:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ],
-        "args": [
-          "flagd"
-        ]
+        "runtimeArgs": ["-r", "./scripts/tracing.js"],
+        "args": ["flagd"]
       }
     },
     "go-feature-flag-demo": {
@@ -202,22 +129,15 @@
       ],
       "options": {
         "buildTarget": "app:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ],
-        "args": [
-          "go"
-        ]
+        "runtimeArgs": ["-r", "./scripts/tracing.js"],
+        "args": ["go"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/packages/app"
-      ],
+      "outputs": ["coverage/packages/app"],
       "options": {
-        "jestConfig": "packages/app/jest.config.js",
+        "jestConfig": "packages/app/jest.config.ts",
         "passWithNoTests": true
       }
     }

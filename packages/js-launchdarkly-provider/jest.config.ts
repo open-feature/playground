@@ -1,5 +1,6 @@
-module.exports = {
-  displayName: 'openfeature-extra',
+/* eslint-disable */
+export default {
+  displayName: 's-launchdarkly-provider',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -10,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]s$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/packages/openfeature-extra',
+  coverageDirectory: '../../coverage/packages/s-launchdarkly-provider',
 };

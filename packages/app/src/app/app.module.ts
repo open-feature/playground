@@ -19,7 +19,7 @@ import { join } from 'path';
  * Adding hooks to at the global level will ensure they always run
  * as part of a flag evaluation lifecycle.
  */
-OpenFeature.addHooks(new OpenTelemetryHook(), new TransactionContextHook());
+OpenFeature.addHooks(new LoggingHook(), new OpenTelemetryHook(), new TransactionContextHook());
 
 /**
  * The transaction context propagator is an experimental feature
@@ -50,7 +50,8 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
     {
       provide: REQUEST_DATA,
       useFactory: (req: Request): RequestData => {
-        const authHeaderValue = req.header('Authorization') as string;
+        // TODO this is bad...
+        const authHeaderValue = req.header('Authorization') || 'unknown';
         return {
           ip: (req.headers['x-forwarded-for'] as string) || (req.socket.remoteAddress as string),
           email: authHeaderValue,

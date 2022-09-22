@@ -1,14 +1,16 @@
 {
-  "root": "packages/openfeature-js",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/openfeature-js/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/openfeature-js",
         "main": "packages/openfeature-js/src/index.ts",
-        "tsConfig": "packages/openfeature-js/tsconfig.lib.json"
+        "tsConfig": "packages/openfeature-js/tsconfig.lib.json",
+        "target": "node",
+        "compiler": "tsc"
       },
       "configurations": {
         "production": {
@@ -29,7 +31,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/openfeature-js"],
       "options": {
-        "jestConfig": "packages/openfeature-js/jest.config.js",
+        "jestConfig": "packages/openfeature-js/jest.config.ts",
         "passWithNoTests": true
       }
     }

@@ -1,11 +1,4 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Get,
-  InternalServerErrorException,
-  Put,
-} from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, InternalServerErrorException, Put } from '@nestjs/common';
 import { join } from 'path';
 import { readFile, writeFile } from 'fs/promises';
 
