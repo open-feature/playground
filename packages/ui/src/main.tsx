@@ -3,23 +3,6 @@ import { StrictMode } from 'react';
 import { render } from 'react-dom/';
 import Page from './app/app';
 
-// Highlights an object/area in the JSON editor based on the key, and optionally the next key.
-const editorHighlightAreaSelectors = (startProperty: string, endProperty?: string) => {
-  let selectors = [`span[value="${startProperty}"]`];
-
-  if (endProperty) {
-    selectors = [
-      ...selectors,
-      `span[value="${startProperty}"]~span[value="{"`,
-      `span[value="${startProperty}"]~span[value=","`,
-      `span[value="${startProperty}"]~span[value="}"]+span[value=","]`,
-      `span[value="${startProperty}"]~span[value="${endProperty}"]`,
-    ];
-  }
-
-  return selectors;
-};
-
 const steps: StepType[] = [
   {
     // step 0
@@ -53,9 +36,8 @@ const steps: StepType[] = [
   },
   {
     // step 6
-    selector: editorHighlightAreaSelectors('newWelcomeMessage')[0],
-    content: `Use the editor to change the state of the boolean "newWelcomeMessage" flag to "enabled" (click anywhere outside the editor to apply the change).`,
-    highlightedSelectors: editorHighlightAreaSelectors('newWelcomeMessage'),
+    selector: '.json-editor',
+    content: `Use the editor to change the state of the boolean "new-welcome-message" flag to "enabled" (click anywhere outside the editor to apply the change).`,
   },
   {
     // step 7
@@ -64,9 +46,8 @@ const steps: StepType[] = [
   },
   {
     // step 8
-    selector: editorHighlightAreaSelectors('hexColor', 'fibAlgo')[0],
-    content: `Use the editor to change the "defaultVariant" of the "hexColor" flag to match any of the defined variants.`,
-    highlightedSelectors: editorHighlightAreaSelectors('hexColor', 'fibAlgo'),
+    selector: '.json-editor',
+    content: `Use the editor to change the "defaultVariant" of the "hex-color" flag to match any of the defined variants.`,
   },
   {
     // step 9

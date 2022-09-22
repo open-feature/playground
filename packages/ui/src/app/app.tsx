@@ -7,11 +7,11 @@ import { Header } from './header';
 import { JsonEditor, JsonOutput } from './json-editor';
 import { Login } from './login';
 import { boxShadow } from './style-mixins';
-import Ajv2020, {
+import Ajv, {
   AnySchema,
   ErrorObject,
   ValidateFunction,
-} from 'ajv/dist/2020';
+} from 'ajv';
 
 const STEP_EDIT_HEX = 7;
 const STEP_SNAZZY = 9;
@@ -38,7 +38,7 @@ class App extends Component<
   }
 > {
   private validate: ValidateFunction | undefined;
-  private ajv: Ajv2020;
+  private ajv: Ajv;
 
   constructor(props: TourProps) {
     super(props);
@@ -52,15 +52,12 @@ class App extends Component<
       result: undefined,
       errors: undefined,
     };
-    this.refreshPage();
-    this.ajv = new Ajv2020({
+    this.ajv = new Ajv({
+      strict: false,
       useDefaults: true,
       allowUnionTypes: true,
       allowMatchingProperties: false,
     });
-    setInterval(() => {
-      this.refreshPage();
-    }, REFRESH_INTERVAL);
   }
   override render() {
     return (
@@ -245,6 +242,11 @@ class App extends Component<
 
   // auto-open the tour.
   override componentDidMount() {
+    this.refreshPage();
+    setInterval(() => {
+      this.refreshPage();
+    }, REFRESH_INTERVAL);
+
     this.props.setIsOpen(true);
 
     this.getData<AnySchema>('/utils/schema')
@@ -304,10 +306,15 @@ class App extends Component<
   }
 
   private onLoginClick() {
-    if (this.props.isOpen && this.props.currentStep === STEP_LOGIN - 1) {
-      this.props.setCurrentStep(STEP_LOGIN);
-    }
     this.setState({ showLoginModal: true });
+
+    // proceed to the login step
+    if (this.props.isOpen && this.props.currentStep === STEP_LOGIN - 1) {
+      setTimeout(() => {
+        // push this to the end of the event loop to make sure the model is up before we select it
+        this.props.setCurrentStep(STEP_LOGIN);
+      }, 0);
+    }
   }
 
   private onLogin(email: string | undefined) {
@@ -349,8 +356,8 @@ class App extends Component<
         message: message.message,
         hexColor: hexColor.color,
         json,
-        // hide the editor unless we are using the JSON provider.
-        editorOn: provider.provider === 'json',
+        // hide the editor unless we are using the flagd provider.
+        editorOn: provider.provider === 'flagd',
       });
     } catch (err) {
       throw new Error(

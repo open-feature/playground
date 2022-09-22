@@ -35,6 +35,7 @@ export class JsonEditor extends React.Component<{
               : undefined
           }
           onBlur={this.props.callBack}
+          onChange={this.props.callBack}
           placeholder={this.props.json}
           locale={locale.default}
           height="100%"
