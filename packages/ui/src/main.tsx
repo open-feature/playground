@@ -7,12 +7,22 @@ const steps: StepType[] = [
   {
     // step 0
     selector: 'html',
-    content: `Welcome to the OpenFeature demo! This is the landing page for our fictional killer app: Fibonacci as a service! First a few things about OpenFeature, and this demo...`,
+    content: (
+      <div>
+        <h3>Welcome to the OpenFeature demo!</h3>
+        <p>
+          This is the landing page for our fictional killer app: Fibonacci as a Service! First, a few things about
+          OpenFeature, and this demo...
+        </p>
+        <footer>Click the right arrow to continue</footer>
+      </div>
+    ),
   },
   {
     // step 1
     selector: '.step-buttons',
     content: `Use these buttons to toggle the editor, or resume the tour at any time.`,
+    padding: 20,
   },
   {
     // step 2
@@ -32,12 +42,12 @@ const steps: StepType[] = [
   {
     // step 5
     selector: '.step-name',
-    content: `The company has been in the process of changing the name of our app, but legal hasn't quite finished the process yet. Here, we've defined a simple boolean flag ('new-welcome-message') that we can use to update the name instantly without redeploying our application.`,
+    content: `The company has been in the process of changing the name of our app, but legal hasn't quite finished the process yet. Here, we've defined a simple feature flag that can be use to update the name instantly without redeploying our application.`,
   },
   {
     // step 6
     selector: '.json-editor',
-    content: `Use the editor to change the state of the boolean "new-welcome-message" flag to "enabled" (click anywhere outside the editor to apply the change).`,
+    content: `Use the editor to change enabled the new welcome message. This can be done by changing the default variant of the feature flag "new-welcome-message" to "on". Click anywhere outside the editor to apply the change.`,
   },
   {
     // step 7

@@ -13,20 +13,21 @@ const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
 const { ZipkinExporter } = require('@opentelemetry/exporter-zipkin');
 const { BatchSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 
+const serviceName = process.env['OTEL_SERVICE_NAME'] || 'fib3r';
+const zipkinUrl = process.env['ZIPKIN_URL'] || 'http://localhost:9411';
+
 const provider = new NodeTracerProvider({
   resource: new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: 'api-service',
+    [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
   }),
 });
 
 provider.addSpanProcessor(
   new BatchSpanProcessor(
     new ZipkinExporter({
-      // Won't work locally anymore
-      url: 'http://zipkin:9411/api/v2/spans',
+      url: `${zipkinUrl}/api/v2/spans`,
     })
   )
 );
 
-console.log('starting zipkin span processor');
 provider.register();

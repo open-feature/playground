@@ -51,7 +51,6 @@ export class UtilsController {
    * Write JSON from editor
    * @param body JSON flag config
    */
-  // TODO we could add schema validation here, but probably more important in the UI.
   @Put('json')
   async putJson(@Body() body: unknown) {
     try {
@@ -60,7 +59,7 @@ export class UtilsController {
       throw new BadRequestException('Invalid JSON');
     }
     try {
-      await writeFile(JSON_FILE, JSON.stringify(body));
+      await writeFile(JSON_FILE, JSON.stringify(body, null, 2));
     } catch (err) {
       throw new InternalServerErrorException('Unable to write JSON file.');
     }

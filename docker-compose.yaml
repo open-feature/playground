@@ -12,12 +12,15 @@ services:
       - zipkin
     volumes:
       - ${PWD}/flags.json:/opt/playground/flags.json
-    #   - flagd-socket:/tmp/
+      - flagd-socket:/tmp/
     #   - "flagd:"
     environment:
-      # FLAGD_SOCKET_PATH: /tmp/flagd-socket
-      FLAGD_HOST: flagd
+      FLAGD_SOCKET_PATH: /tmp/flagd-socket
+      #FLAGD_HOST: flagd
+      # OTEL_SERVICE_NAME: "test"
+      ZIPKIN_URL: http://zipkin:9411
       # CLOUDBEES_APP_KEY: 618538bd7ebdeef023b5ff0d
+
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
@@ -29,14 +32,14 @@ services:
       - start
       - --uri
       - /etc/flagd/flags.json
-      # - --socket-path
-      # - /tmp/flagd-socket
+      - --socket-path
+      - /tmp/flagd-socket
     volumes:
       - ${PWD}/flags.json:/etc/flagd/flags.json
-      # - flagd-socket:/tmp/
+      - flagd-socket:/tmp/
     ports:
       - "8013:8013"
 
-# volumes:
-#   flagd-flags:
+volumes:
+  flagd-flags:
 
