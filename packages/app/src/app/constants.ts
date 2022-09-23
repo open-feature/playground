@@ -11,10 +11,11 @@ export const GO_PROVIDER_ID = 'go';
 export const SaasProvidersEnvMap = {
   cloudbees: 'CLOUDBEES_APP_KEY',
   launchdarkly: 'LD_KEY',
-  split: 'SPLIT_KEY'
+  split: 'SPLIT_KEY',
 };
 
-export type ProviderIds = keyof typeof SaasProvidersEnvMap
+export type ProviderIds =
+  | keyof typeof SaasProvidersEnvMap
   | typeof FLAGD_PROVIDER_ID
   | typeof ENV_PROVIDER_ID
-  | typeof GO_PROVIDER_ID
+  | typeof GO_PROVIDER_ID;

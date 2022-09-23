@@ -11,7 +11,6 @@ FROM node:16-bullseye as app
 WORKDIR /opt/playground/
 COPY package*.json ./
 RUN npm ci --only=production
-# RUN npm ci
 
 COPY --from=builder /tmp/playground/dist ./dist
 # Tracing script

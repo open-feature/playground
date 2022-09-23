@@ -4,7 +4,7 @@ services:
     # image: ghcr.io/open-feature/open-feature-demo:latest
     build: .
     ports:
-      - "30000:30000"
+      - '30000:30000'
     command:
       - flagd
     depends_on:
@@ -19,13 +19,13 @@ services:
       #FLAGD_HOST: flagd
       # OTEL_SERVICE_NAME: "test"
       ZIPKIN_URL: http://zipkin:9411
-      # CLOUDBEES_APP_KEY: 618538bd7ebdeef023b5ff0d
+      # CLOUDBEES_APP_KEY: CHANGE_ME
 
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
     ports:
-      - "9411:9411"
+      - '9411:9411'
   flagd:
     image: ghcr.io/open-feature/flagd:v0.1.0
     command:
@@ -38,8 +38,7 @@ services:
       - ${PWD}/flags.json:/etc/flagd/flags.json
       - flagd-socket:/tmp/
     ports:
-      - "8013:8013"
+      - '8013:8013'
 
 volumes:
   flagd-flags:
-

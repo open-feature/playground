@@ -21,18 +21,21 @@ export class ProvidersController {
    * Return all configured providers
    * @returns array of provider ids.
    */
-   @Get()
-   async getAvailableProviders() {
+  @Get()
+  async getAvailableProviders() {
     console.log(process.env);
-    // TODO: add go feature flag 
+    // TODO: add go feature flag
     return [
       FLAGD_PROVIDER_ID,
       ENV_PROVIDER_ID,
-      ...Object.entries(SaasProvidersEnvMap).filter((v: [string, unknown])  => {
-        console.log(v[1]);
-        if (typeof v[1] === 'string') {
-          return !!process.env[v[1]];
-      };
-     }).map((v: [string, unknown]) => v[0])];
-   }
+      ...Object.entries(SaasProvidersEnvMap)
+        .filter((v: [string, unknown]) => {
+          console.log(v[1]);
+          if (typeof v[1] === 'string') {
+            return !!process.env[v[1]];
+          }
+        })
+        .map((v: [string, unknown]) => v[0]),
+    ];
+  }
 }

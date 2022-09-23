@@ -19,7 +19,7 @@ import { SplitFactory } from '@splitsoftware/splitio';
 // import { Flagsmith } from 'flagsmithv2';
 // import * as Flagsmith from "flagsmith-nodejs";
 import { AppModule } from './app/app.module';
-import { ProviderIds } from './app/constants'
+import { ProviderIds } from './app/constants';
 
 const registerProvider = () => {
   const providerId = process.argv[2] as ProviderIds;

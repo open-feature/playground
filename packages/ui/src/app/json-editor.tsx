@@ -29,11 +29,7 @@ export class JsonEditor extends React.Component<{
         }}
       >
         <JSONInput
-          error={
-            this.props.errorMessage
-              ? { reason: this.props.errorMessage, line: 0 }
-              : undefined
-          }
+          error={this.props.errorMessage ? { reason: this.props.errorMessage, line: 0 } : undefined}
           onBlur={this.props.callBack}
           onChange={this.props.callBack}
           placeholder={this.props.json}

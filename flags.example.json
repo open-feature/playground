@@ -33,9 +33,7 @@
             "in": [
               "@faas.com",
               {
-                "var": [
-                  "email"
-                ]
+                "var": ["email"]
               }
             ]
           },

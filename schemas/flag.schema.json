@@ -46,10 +46,7 @@
           "title:": "Flag state",
           "description": "Indicates whether the flag is functional. Disabled flags are treated as if they don't exist",
           "type": "string",
-          "enum": [
-            "ENABLED",
-            "DISABLED"
-          ]
+          "enum": ["ENABLED", "DISABLED"]
         },
         "defaultVariant": {
           "title": "Default variant",
@@ -62,10 +59,7 @@
           "description": "JsonLogic expressions to be used for dynamic evaluation. The \"context\" is passed as the data. Rules must resolve one of the defined variants, or the \"defaultVariant\" will be used."
         }
       },
-      "required": [
-        "state",
-        "defaultVariant"
-      ]
+      "required": ["state", "defaultVariant"]
     },
     "booleanVariants": {
       "type": "object",

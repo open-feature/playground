@@ -7,11 +7,7 @@ import { Header } from './header';
 import { JsonEditor, JsonOutput } from './json-editor';
 import { Login } from './login';
 import { boxShadow } from './style-mixins';
-import Ajv, {
-  AnySchema,
-  ErrorObject,
-  ValidateFunction,
-} from 'ajv';
+import Ajv, { AnySchema, ErrorObject, ValidateFunction } from 'ajv';
 
 const STEP_EDIT_HEX = 7;
 const STEP_SNAZZY = 9;
@@ -31,11 +27,8 @@ class App extends Component<
     email: string | null | undefined;
     editorOn: boolean;
     result: number | undefined;
-    availableProviders: string[],
-    errors:
-      | ErrorObject<string, Record<string, unknown>, unknown>[]
-      | null
-      | undefined;
+    availableProviders: string[];
+    errors: ErrorObject<string, Record<string, unknown>, unknown>[] | null | undefined;
   }
 > {
   private validate: ValidateFunction | undefined;
@@ -52,7 +45,7 @@ class App extends Component<
       editorOn: true,
       result: undefined,
       errors: undefined,
-      availableProviders: []
+      availableProviders: [],
     };
     this.ajv = new Ajv({
       strict: false,
@@ -126,8 +119,7 @@ class App extends Component<
           {/* background */}
           <div
             style={{
-              background:
-                'url(../assets/background.jpg) no-repeat center center ',
+              background: 'url(../assets/background.jpg) no-repeat center center ',
               backgroundSize: 'cover',
               opacity: '0.5',
               width: '100%',
@@ -196,9 +188,9 @@ class App extends Component<
           }}
         >
           <select name="provider" id="provider">
-            { this.state.availableProviders.map(p => {
-              return <option value={p}>{p}</option>
-            }) }
+            {this.state.availableProviders.map((p) => {
+              return <option value={p}>{p}</option>;
+            })}
           </select>
 
           <Button
@@ -226,9 +218,7 @@ class App extends Component<
         <div className="json-editor">
           <JsonEditor
             errorMessage={
-              this.state.errors
-                ? `${this.state.errors?.[0].schemaPath} ${this.state.errors?.[0].message}`
-                : undefined
+              this.state.errors ? `${this.state.errors?.[0].schemaPath} ${this.state.errors?.[0].message}` : undefined
             }
             hidden={!this.state.editorOn}
             callBack={this.onJsonUpdate.bind(this)}
@@ -255,14 +245,13 @@ class App extends Component<
       this.refreshPage();
     }, REFRESH_INTERVAL);
 
-
-
     this.props.setIsOpen(true);
 
     this.getData<string[]>('/providers')
-      .then(res => {
-        this.setState({ availableProviders: res })
-      }).catch((err) => {
+      .then((res) => {
+        this.setState({ availableProviders: res });
+      })
+      .catch((err) => {
         console.error(`Error getting available providers, ${err.message}`);
       });
 
@@ -279,20 +268,15 @@ class App extends Component<
 
   private onCalculate(n: number, finished: () => void) {
     this.setState({ result: undefined });
-    this.getData<{ result: number }>(`/calculate?num=${n}`).then(
-      (response: { result: number }) => {
-        this.setState({ result: response.result });
-        finished();
-        if (this.props.isOpen && this.props.currentStep === STEP_UH_OH - 1) {
-          this.props.setCurrentStep(STEP_UH_OH);
-        } else if (
-          this.props.isOpen &&
-          this.props.currentStep === STEP_DONE - 1
-        ) {
-          this.props.setCurrentStep(STEP_DONE);
-        }
+    this.getData<{ result: number }>(`/calculate?num=${n}`).then((response: { result: number }) => {
+      this.setState({ result: response.result });
+      finished();
+      if (this.props.isOpen && this.props.currentStep === STEP_UH_OH - 1) {
+        this.props.setCurrentStep(STEP_UH_OH);
+      } else if (this.props.isOpen && this.props.currentStep === STEP_DONE - 1) {
+        this.props.setCurrentStep(STEP_DONE);
       }
-    );
+    });
   }
 
   private async onJsonUpdate(jsonOutput: JsonOutput) {
@@ -377,9 +361,7 @@ class App extends Component<
         editorOn: provider.provider === 'flagd',
       });
     } catch (err) {
-      throw new Error(
-        'Unable to load page data... Did you forget to run the server?'
-      );
+      throw new Error('Unable to load page data... Did you forget to run the server?');
     }
   }
 
