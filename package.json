@@ -15,7 +15,9 @@
     "temp": "nx build",
     "build": "nx build app && nx build ui && cp -R dist/packages/ui/* dist/packages/app/assets/public/",
     "docker-build": "docker buildx build --platform=\"linux/ppc64le,linux/s390x,linux/amd64,linux/arm64\" . -t ghcr.io/open-feature/open-feature-demo:latest",
-    "docker-build-push": "docker buildx build --push --platform=\"linux/ppc64le,linux/s390x,linux/amd64,linux/arm64\" . -t ghcr.io/open-feature/open-feature-demo:latest"
+    "docker-build-push": "docker buildx build --push --platform=\"linux/ppc64le,linux/s390x,linux/amd64,linux/arm64\" . -t ghcr.io/open-feature/open-feature-demo:latest",
+    "lint": "nx run-many --all --target=lint",
+    "test": "nx run-many --all --target=test"
   },
   "private": true,
   "dependencies": {
@@ -44,8 +46,7 @@
     "core-js": "^3.25.2",
     "express": "4.18.1",
     "express-validator": "^6.14.2",
-    "flagsmith-nodejs": "^1.1.1",
-    "flagsmithv2": "npm:flagsmith-nodejs@^2.0.0-beta.1",
+    "flagsmith-nodejs": "^2.3.0",
     "jsoneditor-react": "^3.1.2",
     "launchdarkly-node-server-sdk": "^6.4.3",
     "react": "^17.0.2",

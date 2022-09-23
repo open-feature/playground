@@ -1,15 +1,17 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/js-flagsmith-provider/src",
+  "sourceRoot": "packages/js-flagsmith-provider/src",
   "projectType": "library",
   "targets": {
     "build": {
       "executor": "@nrwl/webpack:webpack",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
-        "outputPath": "dist/libs/js-flagsmith-provider",
-        "main": "libs/js-flagsmith-provider/src/index.ts",
-        "tsConfig": "libs/js-flagsmith-provider/tsconfig.lib.json",
+        "outputPath": "dist/packages/js-flagsmith-provider",
+        "main": "packages/js-flagsmith-provider/src/index.ts",
+        "tsConfig": "packages/js-flagsmith-provider/tsconfig.lib.json",
         "target": "node",
         "compiler": "tsc"
       },
@@ -23,16 +25,22 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["libs/js-flagsmith-provider/**/*.ts"]
+        "lintFilePatterns": [
+          "packages/js-flagsmith-provider/**/*.ts"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/js-flagsmith-provider"],
+      "outputs": [
+        "coverage/packages/js-flagsmith-provider"
+      ],
       "options": {
-        "jestConfig": "libs/js-flagsmith-provider/jest.config.ts",
+        "jestConfig": "packages/js-flagsmith-provider/jest.config.ts",
         "passWithNoTests": true
       }
     }

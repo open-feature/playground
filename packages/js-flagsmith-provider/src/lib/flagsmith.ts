@@ -1,14 +1,14 @@
 import { ParseError, parseValidJsonObject, TypeMismatchError } from '@openfeature/extra';
 import { EvaluationContextValue, JsonValue } from '@openfeature/js-sdk';
 import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
-import { Flagsmith } from 'flagsmithv2';
+import Flagsmith from 'flagsmith-nodejs';
 
 type Identity = {
   identifier?: string;
   traits?: Record<string, EvaluationContextValue>;
 };
 
-export interface FlagsmithV2ProviderOptions {
+export interface FlagsmithProviderOptions {
   client: Flagsmith;
 }
 
@@ -25,14 +25,14 @@ export interface FlagsmithV2ProviderOptions {
  * NOTE: Flagsmith defaults values to `null` and booleans to false. In this provider implementation, this will result in
  * a `FlagTypeError` for undefined flags, which in turn will result in the default passed to OpenFeature being used.
  */
-export class FlagsmithV2Provider implements Provider {
+export class FlagsmithProvider implements Provider {
   metadata = {
-    name: 'flagsmith-v2',
+    name: 'flagsmith',
   };
 
   private client: Flagsmith;
 
-  constructor(options: FlagsmithV2ProviderOptions) {
+  constructor(options: FlagsmithProviderOptions) {
     this.client = options.client;
     console.log(`${this.metadata.name} provider initialized`);
   }
