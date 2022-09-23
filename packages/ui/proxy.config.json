@@ -14,5 +14,9 @@
   "/calculate": {
     "target": "http://localhost:30000",
     "secure": false
+  },
+  "/providers": {
+    "target": "http://localhost:30000",
+    "secure": false
   }
 }

@@ -37,17 +37,6 @@ export class UtilsController {
   }
 
   /**
-   * Return the provider
-   * @returns provider object
-   */
-  @Get('provider')
-  async getProvider() {
-    return {
-      provider: process.argv[2],
-    };
-  }
-
-  /**
    * Write JSON from editor
    * @param body JSON flag config
    */

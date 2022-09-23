@@ -31,6 +31,7 @@ class App extends Component<
     email: string | null | undefined;
     editorOn: boolean;
     result: number | undefined;
+    availableProviders: string[],
     errors:
       | ErrorObject<string, Record<string, unknown>, unknown>[]
       | null
@@ -51,6 +52,7 @@ class App extends Component<
       editorOn: true,
       result: undefined,
       errors: undefined,
+      availableProviders: []
     };
     this.ajv = new Ajv({
       strict: false,
@@ -193,6 +195,12 @@ class App extends Component<
             zIndex: 2000,
           }}
         >
+          <select name="provider" id="provider">
+            { this.state.availableProviders.map(p => {
+              return <option value={p}>{p}</option>
+            }) }
+          </select>
+
           <Button
             onClick={() => {
               this.setState({ editorOn: !this.state.editorOn });
@@ -247,7 +255,16 @@ class App extends Component<
       this.refreshPage();
     }, REFRESH_INTERVAL);
 
+
+
     this.props.setIsOpen(true);
+
+    this.getData<string[]>('/providers')
+      .then(res => {
+        this.setState({ availableProviders: res })
+      }).catch((err) => {
+        console.error(`Error getting available providers, ${err.message}`);
+      });
 
     this.getData<AnySchema>('/utils/schema')
       .then((res) => {
