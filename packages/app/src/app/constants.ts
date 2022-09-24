@@ -14,8 +14,7 @@ export const SaasProvidersEnvMap = {
   split: 'SPLIT_KEY',
 };
 
-export type ProviderIds =
-  | keyof typeof SaasProvidersEnvMap
+export type ProviderId = keyof typeof SaasProvidersEnvMap
   | typeof FLAGD_PROVIDER_ID
   | typeof ENV_PROVIDER_ID
   | typeof GO_PROVIDER_ID;

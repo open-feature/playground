@@ -1,4 +1,9 @@
 import { TourProps, withTour } from '@reactour/tour';
+import Ajv, {
+  AnySchema,
+  ErrorObject,
+  ValidateFunction
+} from 'ajv';
 import { Component, ComponentType } from 'react';
 import Modal from 'react-modal';
 import { Button } from './button';
@@ -6,8 +11,8 @@ import { Calculator } from './calculator';
 import { Header } from './header';
 import { JsonEditor, JsonOutput } from './json-editor';
 import { Login } from './login';
+import { Select } from './select';
 import { boxShadow } from './style-mixins';
-import Ajv, { AnySchema, ErrorObject, ValidateFunction } from 'ajv';
 
 const STEP_EDIT_HEX = 7;
 const STEP_SNAZZY = 9;
@@ -187,11 +192,13 @@ class App extends Component<
             zIndex: 2000,
           }}
         >
-          <select name="provider" id="provider">
-            {this.state.availableProviders.map((p) => {
-              return <option value={p}>{p}</option>;
-            })}
-          </select>
+
+          <Select
+            name="provider"
+            id="provider"
+            options={this.state.availableProviders}
+            onChange={this.onSelectProvider}>
+          </Select>
 
           <Button
             onClick={() => {
@@ -318,6 +325,12 @@ class App extends Component<
     }
   }
 
+  private async onSelectProvider(providerId: string) {
+    await fetch(`/providers/current/${providerId}`, {
+      method: 'PUT',
+    });
+  }
+
   private onLogin(email: string | undefined) {
     if (email) {
       this.setState({ email, showLoginModal: false });
@@ -345,7 +358,7 @@ class App extends Component<
         this.getData<{ message: string }>('/message'),
         this.getData<{ color: string }>('/hex-color'),
         this.getData<unknown>('/utils/json'),
-        this.getData<{ provider: string }>('/utils/provider'),
+        this.getData<{ provider: string }>('/providers/current'),
       ];
       const [message, hexColor, json, provider]: [
         { message: string },

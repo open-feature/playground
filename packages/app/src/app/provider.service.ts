@@ -10,27 +10,39 @@ import { OpenFeatureLaunchDarklyProvider } from '@openfeature/js-launchdarkly-pr
 import { OpenFeature, Provider } from '@openfeature/js-sdk';
 import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
 import { SplitFactory } from '@splitsoftware/splitio';
-import { ProviderIds } from './constants';
+import { ProviderId } from './constants';
 // import { Flagsmith } from 'flagsmithv2';
 // import * as Flagsmith from "flagsmith-nodejs";
  
 
 @Injectable()
-export class MessageService {
-  constructor(
-    // @Inject(OPENFEATURE_CLIENT) private client: Client,
-    // @Inject(REQUEST_DATA) private attributes: any
-  ) {
-    //
+export class ProviderService {
+
+  private _currentProvider: ProviderId
+  private providerMap: Partial<Record<ProviderId, Provider>> = {};
+
+  constructor() {
+    this._currentProvider = process.argv[2] as ProviderId;
+    this.switchProvider(this._currentProvider as ProviderId);
   }
 
+  // private retreiveOrCreate(providerId: ProviderIds) {
+  //   if (!this.providerMap[providerId]) {
+  //     this.providerMap[providerId] = 
+  //   }
+  // }
 
-  private updateProvider(providerId: ProviderIds) {
+  get currentProvider() {
+    return this._currentProvider;
+  };
+  
+  // this could be simplified
+  switchProvider(providerId: ProviderId) {
     let provider: Provider | undefined = undefined;
   
     switch (providerId) {
       case 'env':
-        provider = new OpenFeatureEnvProvider();
+        provider = this.providerMap[providerId] || this.addToMap(providerId, new OpenFeatureEnvProvider());
         break;
   
       // case 'json':
@@ -40,7 +52,7 @@ export class MessageService {
       case 'flagd':
         console.log('configuring flagd');
         // provider = new FlagdProvider({ host: 'flagd' });
-        provider = new FlagdProvider();
+        provider = this.providerMap[providerId] || this.addToMap(providerId, new FlagdProvider());
         break;
   
       case 'cloudbees': {
@@ -48,38 +60,21 @@ export class MessageService {
         if (!appKey) {
           console.error('"CLOUDBEES_APP_KEY" must be defined.');
         } else {
-          provider = new CloudbeesProvider({
+          provider = this.providerMap[providerId] || this.addToMap(providerId, new CloudbeesProvider({
             appKey,
-          });
+          }));
         }
         break;
       }
-  
-      // case 'flagsmith': {
-      //   const environmentKey = process.env.FLAGSMITH_ENV_KEY;
-      //   if (!environmentKey) {
-      //     console.error('"FLAGSMITH_ENV_KEY" must be defined.');
-      //   } else {
-      //     const client = new Flagsmith({
-      //       environmentKey,
-      //       enableLocalEvaluation: true,
-      //       environmentRefreshIntervalSeconds: 5,
-      //     });
-      //     provider = new FlagsmithV2Provider({
-      //       client,
-      //     });
-      //   }
-      //   break;
-      // }
   
       case 'launchdarkly': {
         const sdkKey = process.env.LD_KEY;
         if (!sdkKey) {
           console.error('"LD_KEY" must be defined.');
         } else {
-          provider = new OpenFeatureLaunchDarklyProvider({
+          provider = this.providerMap[providerId] || this.addToMap(providerId, new OpenFeatureLaunchDarklyProvider({
             sdkKey,
-          });
+          }));
         }
         break;
       }
@@ -94,25 +89,32 @@ export class MessageService {
               authorizationKey,
             },
           }).client();
-          provider = new OpenFeatureSplitProvider({
+          provider = this.providerMap[providerId] || this.addToMap(providerId, new OpenFeatureSplitProvider({
             splitClient,
-          });
+          }));
         }
         break;
       }
   
       case 'go': {
-        provider = new GoFeatureFlagProvider({
+        provider = this.providerMap[providerId] || this.addToMap(providerId, new GoFeatureFlagProvider({
           endpoint: 'http://localhost:1031',
-        });
+        }));
         break;
       }
     }
   
     if (provider) {
       OpenFeature.setProvider(provider);
+      this._currentProvider = providerId;
     } else {
       console.warn('No provider set, falling back to no-op');
     }
   }
+  
+  private addToMap(providerId: ProviderId, provider: Provider) {
+    this.providerMap[providerId] = provider;
+    return provider;
+  }
+
 }
