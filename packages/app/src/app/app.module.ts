@@ -8,7 +8,6 @@ import { TransactionContextMiddleware } from './transaction-context.middleware';
 import { OPENFEATURE_CLIENT, REQUEST_DATA } from './constants';
 import { FibonacciAsAServiceController } from './fibonacci-as-a-service.controller';
 import { HexColorService } from './hex-color/hex-color.service';
-import { InstallService } from './install/install.service';
 import { MessageService } from './message/message.service';
 import { RequestData } from './types';
 import { UtilsController } from './utils.controller';
@@ -39,7 +38,6 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
   controllers: [FibonacciAsAServiceController, UtilsController, ProvidersController],
   providers: [
     MessageService,
-    InstallService,
     HexColorService,
     ProviderService,
     {

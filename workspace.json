@@ -3,7 +3,6 @@
   "projects": {
     "app": "packages/app",
     "fibonacci": "packages/fibonacci",
-    "js-cloudbees-provider": "packages/js-cloudbees-provider",
     "js-env-provider": "packages/js-env-provider",
     "js-flagsmith-provider": "packages/js-flagsmith-provider",
     "js-launchdarkly-provider": "packages/js-launchdarkly-provider",

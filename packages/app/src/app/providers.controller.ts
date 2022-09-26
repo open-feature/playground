@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Put } from '@nestjs/common';
-import { ENV_PROVIDER_ID, FLAGD_PROVIDER_ID, ProviderId, SaasProvidersEnvMap } from './constants';
+import { ProviderId } from './constants';
 import { ProviderService } from './provider.service';
 
 /**
@@ -38,6 +38,6 @@ export class ProvidersController {
    */
   @Put('current/:providerId')
   async setProvider(@Param('providerId') providerId: ProviderId) {
-    this.providerService.switchProvider(providerId);
+    await this.providerService.switchProvider(providerId);
   }
 }
