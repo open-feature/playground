@@ -1,0 +1,19 @@
+new-welcome-message:
+  disabled: true
+  true: true
+  false: false
+  default: false
+  percentage: 100
+
+hex-color:
+  true: CC0000
+  false: 00CC00
+  default: 00CC00
+  percentage: 100
+
+fib-algo:
+  true: recursive
+  false: memo
+  default: loop
+  percentage: 100
+  rule: email ew "@faas.com"

@@ -2,20 +2,23 @@ import { Injectable } from '@nestjs/common';
 import { FlagdProvider } from '@openfeature/flagd-provider';
 import { GoFeatureFlagProvider } from '@openfeature/go-feature-flag-provider';
 import { OpenFeatureEnvProvider } from '@openfeature/js-env-provider';
+import { FlagsmithProvider } from '@openfeature/js-flagsmith-provider';
 import { OpenFeatureLaunchDarklyProvider } from '@openfeature/js-launchdarkly-provider';
 import { OpenFeature, Provider } from '@openfeature/js-sdk';
 import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
 import { SplitFactory } from '@splitsoftware/splitio';
 import { CloudbeesProvider } from 'cloudbees-openfeature-provider-node';
+import Flagsmith from 'flagsmith-nodejs';
 import { ProviderId } from './constants';
-import Flagsmith  from 'flagsmith-nodejs';
-import { FlagsmithProvider } from '@openfeature/js-flagsmith-provider';
 
-type ProviderMap = Record<ProviderId, {
-  provider?: Provider
-  available?: () => boolean;
-  factory: () => Promise<Provider> | Provider;
-}>
+type ProviderMap = Record<
+  ProviderId,
+  {
+    provider?: Provider;
+    available?: () => boolean;
+    factory: () => Promise<Provider> | Provider;
+  }
+>;
 
 @Injectable()
 export class ProviderService {
@@ -34,7 +37,7 @@ export class ProviderService {
           });
         }
       },
-      available: () => !!process.env.LD_KEY
+      available: () => !!process.env.LD_KEY,
     },
     cloudbees: {
       factory: async () => {
@@ -45,7 +48,7 @@ export class ProviderService {
           return await CloudbeesProvider.build(appKey);
         }
       },
-      available: () => !!process.env.CLOUDBEES_APP_KEY
+      available: () => !!process.env.CLOUDBEES_APP_KEY,
     },
     split: {
       factory: () => {
@@ -63,14 +66,14 @@ export class ProviderService {
           });
         }
       },
-      available: () => !!process.env.SPLIT_KEY
+      available: () => !!process.env.SPLIT_KEY,
     },
-    go: {
+    ['go-feature-flag']: {
       factory: () =>
         new GoFeatureFlagProvider({
-          endpoint: process.env.GO_ENDPOINT as string,
+          endpoint: process.env.GO_FEATURE_FLAG_URL as string,
         }),
-        available: () => !!process.env.GO_ENDPOINT
+      available: () => !!process.env.GO_FEATURE_FLAG_URL,
     },
     flagsmith: {
       factory: () => {
@@ -88,7 +91,7 @@ export class ProviderService {
         }
       },
       // getting 401s from flagsmith at the moment.
-      available: () => false
+      available: () => false,
     },
   };
 
@@ -103,7 +106,7 @@ export class ProviderService {
 
   async switchProvider(providerId: ProviderId) {
     // get the provider, or run the factory function to make one.
-    const provider = this.providerMap[providerId].provider || await (this.providerMap[providerId].factory());
+    const provider = this.providerMap[providerId].provider || (await this.providerMap[providerId].factory());
     // cache the provider for later use
     this.providerMap[providerId].provider = provider;
 
@@ -116,8 +119,10 @@ export class ProviderService {
   }
 
   getAvailableProviders() {
-    return Object.entries(this.providerMap).filter(p => {
-      return p[1].available === undefined || p[1].available();
-    }).map(p => p[0]);
+    return Object.entries(this.providerMap)
+      .filter((p) => {
+        return p[1].available === undefined || p[1].available();
+      })
+      .map((p) => p[0]);
   }
 }

@@ -11,7 +11,7 @@ services:
       - flagd
       - zipkin
     volumes:
-      - ${PWD}/flags.json:/opt/playground/flags.json
+      - ${PWD}/config/flagd/flags.json:/opt/playground/config/flagd/flags.json
       - flagd-socket:/tmp/
     #   - "flagd:"
     environment:
@@ -19,6 +19,7 @@ services:
       #FLAGD_HOST: flagd
       # OTEL_SERVICE_NAME: "test"
       ZIPKIN_URL: http://zipkin:9411
+      GO_FEATURE_FLAG_URL: http://go-feature-flag:1031
       # CLOUDBEES_APP_KEY: CHANGE_ME
 
   zipkin:
@@ -26,6 +27,7 @@ services:
     container_name: zipkin
     ports:
       - '9411:9411'
+
   flagd:
     image: ghcr.io/open-feature/flagd:v0.1.0
     command:
@@ -35,10 +37,18 @@ services:
       - --socket-path
       - /tmp/flagd-socket
     volumes:
-      - ${PWD}/flags.json:/etc/flagd/flags.json
+      - ${PWD}/config/flagd/flags.json:/etc/flagd/flags.json
       - flagd-socket:/tmp/
     ports:
       - '8013:8013'
 
+  go-feature-flag:
+    image: thomaspoignant/go-feature-flag-relay-proxy:latest
+    volumes:
+      - ${PWD}/config/go-feature-flag:/goff/
+    ports:
+      - '1031:1031'
+
 volumes:
   flagd-flags:
+  flagd-socket:

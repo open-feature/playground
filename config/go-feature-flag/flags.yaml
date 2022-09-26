@@ -1,0 +1,30 @@
+# Go Feature Flag
+#
+# More information on configuring a feature flag can be found here:
+# https://docs.gofeatureflag.org/v0.28.0/flag_format/
+
+# Controls the welcome banner message
+# true: "Welcome to Fib3r: Fibonacci as a service!"
+# false: "Welcome to FaaS: Fibonacci as a service!"
+new-welcome-message:
+  true: false
+  false: false
+  default: false
+  percentage: 100
+
+# Must be a valid hex value
+# red: "CC0000"
+# green: "00CC00"
+# blue: "0000CC"
+hex-color:
+  true: CC0000
+  false: 00CC00
+  default: 0000CC
+  percentage: 100
+
+fib-algo:
+  true: binet
+  false: recursive
+  default: recursive
+  percentage: 100
+  rule: email ew "@faas.com"

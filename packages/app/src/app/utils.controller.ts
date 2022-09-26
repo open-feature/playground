@@ -2,7 +2,7 @@ import { BadRequestException, Body, Controller, Get, InternalServerErrorExceptio
 import { join } from 'path';
 import { readFile, writeFile } from 'fs/promises';
 
-const JSON_FILE = join('flags.json');
+const JSON_FILE = join('config', 'flagd', 'flags.json');
 const JSON_SCHEMA_FILE = join('schemas', 'flag.schema.json');
 
 /**
@@ -16,7 +16,7 @@ export class UtilsController {
    */
   @Get('schema')
   async getSchema() {
-    return await (await readFile(JSON_SCHEMA_FILE)).toString();
+    return (await readFile(JSON_SCHEMA_FILE)).toString();
   }
 
   /**
