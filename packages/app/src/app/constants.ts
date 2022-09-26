@@ -1,9 +1,6 @@
 export const OPENFEATURE_CLIENT = Symbol.for('OPENFEATURE_CLIENT');
 export const REQUEST_DATA = Symbol.for('REQUEST_DATA');
 
-export const EXAMPLE_JSON_FILE = 'flags.example.json';
-export const JSON_FILE = 'flags.json';
-
 export const ENV_PROVIDER_ID = 'env';
 export const FLAGD_PROVIDER_ID = 'flagd';
 export const GO_PROVIDER_ID = 'go-feature-flag';

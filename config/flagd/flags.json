@@ -9,16 +9,17 @@
       "defaultVariant": "off"
     },
     "hex-color": {
+      "state": "ENABLED",
       "variants": {
         "red": "CC0000",
         "green": "00CC00",
         "blue": "0000CC",
         "yellow": "yellow"
       },
-      "defaultVariant": "red",
-      "state": "ENABLED"
+      "defaultVariant": "red"
     },
     "fib-algo": {
+      "state": "ENABLED",
       "variants": {
         "recursive": "recursive",
         "memo": "memo",
@@ -26,14 +27,15 @@
         "binet": "binet"
       },
       "defaultVariant": "recursive",
-      "state": "ENABLED",
       "targeting": {
         "if": [
           {
             "in": [
               "@faas.com",
               {
-                "var": ["email"]
+                "var": [
+                  "email"
+                ]
               }
             ]
           },

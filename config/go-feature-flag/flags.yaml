@@ -19,9 +19,14 @@ new-welcome-message:
 hex-color:
   true: CC0000
   false: 00CC00
-  default: 0000CC
+  default: CC0000
   percentage: 100
 
+# Must be a valid algorithm name
+#  - recurive
+#  - memo
+#  - loop
+#  - binet
 fib-algo:
   true: binet
   false: recursive
