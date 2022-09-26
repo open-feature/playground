@@ -23,7 +23,7 @@
       "@openfeature/extra": ["packages/openfeature-extra/src/index.ts"],
       "@openfeature/fibonacci": ["packages/fibonacci/src/index.ts"],
       "@openfeature/js-env-provider": ["packages/js-env-provider/src/index.ts"],
-      "@openfeature/js-flagsmith-provider": ["packjs-flagsmith-provider/src/index.ts"],
+      "@openfeature/js-flagsmith-provider": ["packages/js-flagsmith-provider/src/index.ts"],
       "@openfeature/js-flagsmith-v1-provider": ["packages/js-flagsmith-v1-provider/src/index.ts"],
       "@openfeature/js-json-provider": ["packages/js-json-provider/src/index.ts"],
       "@openfeature/js-launchdarkly-provider": ["packages/js-launchdarkly-provider/src/index.ts"],

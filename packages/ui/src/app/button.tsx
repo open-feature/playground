@@ -7,10 +7,13 @@ export class Button extends React.Component<{
   width?: string;
   onClick: () => void;
   secondary?: boolean;
+  disabled?: boolean
 }> {
   override render() {
     return (
       <button
+        title={this.props.disabled ? 'editor not available for this provider' : 'open or close the json editor'}
+        disabled={this.props.disabled}
         onClick={this.props.onClick}
         style={{
           padding: '6px 32px',
@@ -22,9 +25,9 @@ export class Button extends React.Component<{
           fontSize: '16px',
           margin: '4px 2px',
           backgroundColor: this.props.secondary ? '#FFF' : this.props.hexColor,
-          color: this.props.secondary ? '#000' : '#FFF',
+          color: this.props.disabled ? '#888' : this.props.secondary ? '#000' : '#FFF',
           textAlign: 'center',
-          cursor: 'pointer',
+          cursor: this.props.disabled ? 'not-allowed' : 'pointer',
           ...boxShadow,
         }}
       >

@@ -8,6 +8,8 @@ import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
 import { SplitFactory } from '@splitsoftware/splitio';
 import { CloudbeesProvider } from 'cloudbees-openfeature-provider-node';
 import { ProviderId } from './constants';
+import Flagsmith  from 'flagsmith-nodejs';
+import { FlagsmithProvider } from '@openfeature/js-flagsmith-provider';
 
 type ProviderMap = Record<ProviderId, {
   provider?: Provider
@@ -70,6 +72,24 @@ export class ProviderService {
         }),
         available: () => !!process.env.GO_ENDPOINT
     },
+    flagsmith: {
+      factory: () => {
+        if (!process.env.FLAGSMITH_ENV_KEY) {
+          throw new Error('"FLAGSMITH_ENV_KEY" must be defined.');
+        } else {
+          const client = new Flagsmith({
+            environmentKey: process.env.FLAGSMITH_ENV_KEY as string,
+            enableLocalEvaluation: true,
+            environmentRefreshIntervalSeconds: 5,
+          });
+          return new FlagsmithProvider({
+            client,
+          });
+        }
+      },
+      // getting 401s from flagsmith at the moment.
+      available: () => false
+    },
   };
 
   constructor() {
@@ -97,7 +117,7 @@ export class ProviderService {
 
   getAvailableProviders() {
     return Object.entries(this.providerMap).filter(p => {
-      return p[1].available === undefined || p[1].available()
+      return p[1].available === undefined || p[1].available();
     }).map(p => p[0]);
   }
 }

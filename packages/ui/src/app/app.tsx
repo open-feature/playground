@@ -206,6 +206,7 @@ class App extends Component<
             }}
             hexColor="#000"
             secondary
+            disabled={this.state.currentProvider !== 'flagd'}
           >
             Toggle Editor
           </Button>
