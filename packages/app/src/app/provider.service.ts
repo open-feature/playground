@@ -7,7 +7,7 @@ import { OpenFeatureLaunchDarklyProvider } from '@openfeature/js-launchdarkly-pr
 import { OpenFeature, Provider } from '@openfeature/js-sdk';
 import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
 import { SplitFactory } from '@splitsoftware/splitio';
-import { ProviderId } from './constants';
+import { ENV_PROVIDER_ID, FLAGD_PROVIDER_ID, ProviderId, SaasProvidersEnvMap } from './constants';
 
 @Injectable()
 export class ProviderService {
@@ -82,5 +82,20 @@ export class ProviderService {
     } else {
       console.warn('No provider set, falling back to no-op');
     }
+  }
+
+  getAvailableProviders() {
+    // TODO: add go feature flag
+    return [
+      FLAGD_PROVIDER_ID,
+      ENV_PROVIDER_ID,
+      ...Object.entries(SaasProvidersEnvMap)
+        .filter((v: [string, unknown]) => {
+          if (typeof v[1] === 'string') {
+            return !!process.env[v[1]];
+          }
+        })
+        .map((v: [string, unknown]) => v[0]),
+    ];
   }
 }

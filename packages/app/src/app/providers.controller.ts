@@ -29,22 +29,11 @@ export class ProvidersController {
    */
   @Get()
   async getAvailableProviders() {
-    // TODO: add go feature flag
-    return [
-      FLAGD_PROVIDER_ID,
-      ENV_PROVIDER_ID,
-      ...Object.entries(SaasProvidersEnvMap)
-        .filter((v: [string, unknown]) => {
-          if (typeof v[1] === 'string') {
-            return !!process.env[v[1]];
-          }
-        })
-        .map((v: [string, unknown]) => v[0]),
-    ];
+    return this.providerService.getAvailableProviders();
   }
 
   /**
-   * Return all configured providers
+   * Switches the current provider
    * @returns array of provider ids.
    */
   @Put('current/:providerId')
