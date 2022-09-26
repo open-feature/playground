@@ -5,11 +5,12 @@ export class Select extends React.Component<{
   width?: string;
   name: string;
   id: string;
+  selected?: string;
   onChange: (value: string) => void;
 }> {
   override render() {
     return (
-      <select onChange={(e) => this.props.onChange(e.target.value)} name={this.props.name} id={this.props.id} 
+      <select onChange={(e) => this.props.onChange(e.target.value)} name={this.props.name} id={this.props.id}
         style={{padding: '6px 32px', 
         display: 'inline-block',
         borderRadius: '4px',
@@ -19,7 +20,7 @@ export class Select extends React.Component<{
         margin: '4px 2px',}}
       >
         { this.props.options.map(p => {
-          return <option key={p} value={p}>{p}</option>
+          return <option selected={this.props.selected === p} key={p} value={p}>{p}</option>
         }) }
       </select>
     );

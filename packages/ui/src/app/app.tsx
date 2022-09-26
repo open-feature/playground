@@ -31,9 +31,10 @@ class App extends Component<
     showLoginModal: boolean;
     email: string | null | undefined;
     editorOn: boolean;
-    result: number | undefined;
+    result?: number;
     availableProviders: string[];
-    errors: ErrorObject<string, Record<string, unknown>, unknown>[] | null | undefined;
+    currentProvider?: string;
+    errors?: ErrorObject<string, Record<string, unknown>, unknown>[] | null | undefined;
   }
 > {
   private validate: ValidateFunction | undefined;
@@ -48,8 +49,6 @@ class App extends Component<
       showLoginModal: false,
       email: localStorage.getItem('email'),
       editorOn: true,
-      result: undefined,
-      errors: undefined,
       availableProviders: [],
     };
     this.ajv = new Ajv({
@@ -196,6 +195,7 @@ class App extends Component<
           <Select
             name="provider"
             id="provider"
+            selected={this.state.currentProvider}
             options={this.state.availableProviders}
             onChange={this.onSelectProvider}>
           </Select>
@@ -369,6 +369,7 @@ class App extends Component<
       this.setState({
         message: message.message,
         hexColor: hexColor.color,
+        currentProvider: provider.provider,
         json,
         // hide the editor unless we are using the flagd provider.
         editorOn: provider.provider === 'flagd',

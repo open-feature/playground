@@ -72,7 +72,10 @@ export class ProviderService {
   }
 
   async switchProvider(providerId: ProviderId) {
+    // get the provider, or run the factory function to make one.
     const provider = this.providerMap[providerId].provider || await (this.providerMap[providerId].factory());
+    // cache the provider for later use
+    this.providerMap[providerId].provider = provider;
 
     if (provider) {
       OpenFeature.setProvider(provider);
