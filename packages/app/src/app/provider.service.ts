@@ -1,18 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { FlagdProvider } from '@openfeature/flagd-provider';
-import { OpenFeatureEnvProvider } from '@openfeature/js-env-provider';
 import { GoFeatureFlagProvider } from '@openfeature/go-feature-flag-provider';
+import { OpenFeatureEnvProvider } from '@openfeature/js-env-provider';
 import { OpenFeatureLaunchDarklyProvider } from '@openfeature/js-launchdarkly-provider';
 import { OpenFeature, Provider } from '@openfeature/js-sdk';
 import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
 import { SplitFactory } from '@splitsoftware/splitio';
-import { ENV_PROVIDER_ID, FLAGD_PROVIDER_ID, ProviderId, SaasProvidersEnvMap } from './constants';
 import { CloudbeesProvider } from 'cloudbees-openfeature-provider-node';
+import { ProviderId } from './constants';
+
+type ProviderMap = Record<ProviderId, {
+  provider?: Provider
+  available?: () => boolean;
+  factory: () => Promise<Provider> | Provider;
+}>
 
 @Injectable()
 export class ProviderService {
   private _currentProvider: ProviderId;
-  private providerMap: Record<ProviderId, { factory: () => Promise<Provider> | Provider; provider?: Provider }> = {
+  private providerMap: ProviderMap = {
     env: { factory: () => new OpenFeatureEnvProvider() },
     flagd: { factory: () => new FlagdProvider() },
     launchdarkly: {
@@ -26,6 +32,7 @@ export class ProviderService {
           });
         }
       },
+      available: () => !!process.env.LD_KEY
     },
     cloudbees: {
       factory: async () => {
@@ -36,6 +43,7 @@ export class ProviderService {
           return await CloudbeesProvider.build(appKey);
         }
       },
+      available: () => !!process.env.CLOUDBEES_APP_KEY
     },
     split: {
       factory: () => {
@@ -53,12 +61,14 @@ export class ProviderService {
           });
         }
       },
+      available: () => !!process.env.SPLIT_KEY
     },
     go: {
       factory: () =>
         new GoFeatureFlagProvider({
-          endpoint: 'http://localhost:1031',
+          endpoint: process.env.GO_ENDPOINT as string,
         }),
+        available: () => !!process.env.GO_ENDPOINT
     },
   };
 
@@ -86,17 +96,8 @@ export class ProviderService {
   }
 
   getAvailableProviders() {
-    // TODO: add go feature flag
-    return [
-      FLAGD_PROVIDER_ID,
-      ENV_PROVIDER_ID,
-      ...Object.entries(SaasProvidersEnvMap)
-        .filter((v: [string, unknown]) => {
-          if (typeof v[1] === 'string') {
-            return !!process.env[v[1]];
-          }
-        })
-        .map((v: [string, unknown]) => v[0]),
-    ];
+    return Object.entries(this.providerMap).filter(p => {
+      return p[1].available === undefined || p[1].available()
+    }).map(p => p[0]);
   }
 }
