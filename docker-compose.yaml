@@ -13,14 +13,14 @@ services:
     volumes:
       - ${PWD}/config/flagd/flags.json:/opt/playground/config/flagd/flags.json
       - flagd-socket:/tmp/
-    #   - "flagd:"
     environment:
-      FLAGD_SOCKET_PATH: /tmp/flagd-socket
-      #FLAGD_HOST: flagd
-      # OTEL_SERVICE_NAME: "test"
-      ZIPKIN_URL: http://zipkin:9411
-      GO_FEATURE_FLAG_URL: http://go-feature-flag:1031
-      # CLOUDBEES_APP_KEY: CHANGE_ME
+     - FLAGD_SOCKET_PATH=/tmp/flagd-socket
+     - ZIPKIN_URL=http://zipkin:9411
+     - GO_FEATURE_FLAG_URL=http://go-feature-flag:1031
+      # Set from the .env file
+     - HARNESS_KEY
+     - SPLIT_KEY
+     - CLOUDBEES_APP_KEY
 
   zipkin:
     image: openzipkin/zipkin

@@ -1,10 +1,9 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/js-harness-provider/src",
-  "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nrwl/webpack:webpack",
       "outputs": [
         "{options.outputPath}"
       ],
@@ -12,9 +11,8 @@
         "outputPath": "dist/packages/js-harness-provider",
         "main": "packages/js-harness-provider/src/index.ts",
         "tsConfig": "packages/js-harness-provider/tsconfig.lib.json",
-        "assets": [
-          "packages/js-harness-provider/*.md"
-        ]
+        "target": "node",
+        "compiler": "tsc"
       }
     },
     "lint": {

@@ -1,106 +1,113 @@
-import { Client } from '@harnessio/ff-nodejs-server-sdk';
-import { parseValidJsonObject, parseValidNumber, TypeMismatchError } from '@openfeature/extra';
-import { JsonValue } from '@openfeature/js-sdk';
-import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
+import { Client, Target } from '@harnessio/ff-nodejs-server-sdk';
+import { EvaluationContext, Provider, ResolutionDetails, JsonValue } from '@openfeature/openfeature-js';
 
 /**
  * NOTE: This is an unofficial provider that was created for demonstration
  * purposes only. The playground environment will be updated to use official
  * providers once they're available.
  */
-export class OpenFeatureSplitProvider implements Provider {
+export class OpenFeatureHarnessProvider implements Provider {
   metadata = {
     name: 'harness',
   };
-  private initialized: Promise<void>;
-  private client: IClient;
 
-  constructor(options: SplitProviderOptions) {
-    this.client = options.splitClient;
-    // we don't expose any init events at the moment (we might later) so for now, lets create a private
-    // promise to await into before we evaluate any flags.
-    this.initialized = new Promise((resolve) => {
-      this.client.on(this.client.Event.SDK_READY, () => {
-        console.log(`${this.metadata.name} provider initialized`);
-        resolve();
-      });
-    });
-  }
+  constructor(private readonly client: Client) {}
 
   async resolveBooleanEvaluation(
     flagKey: string,
-    _: boolean,
+    defaultValue: boolean,
     context: EvaluationContext
   ): Promise<ResolutionDetails<boolean>> {
-    const details = await this.evaluateTreatment(flagKey, this.transformContext(context));
+    const value = await this.client.boolVariation(
+      this.flagKeyCharConvert(flagKey),
+      this.transformContext(context),
+      defaultValue
+    );
 
-    let value: boolean;
-    switch (details.value as unknown) {
-      case 'on':
-        value = true;
-        break;
-      case 'off':
-        value = false;
-        break;
-      case 'true':
-        value = true;
-        break;
-      case 'false':
-        value = false;
-        break;
-      case true:
-        value = true;
-        break;
-      case false:
-        value = false;
-        break;
-      default:
-        throw new TypeMismatchError(`Invalid boolean value for ${details.value}`);
-    }
-    return { ...details, value };
+    return {
+      value,
+    };
   }
 
   async resolveStringEvaluation(
     flagKey: string,
-    _: string,
+    defaultValue: string,
     context: EvaluationContext
   ): Promise<ResolutionDetails<string>> {
-    return this.evaluateTreatment(flagKey, this.transformContext(context));
+    const value = await this.client.stringVariation(
+      this.flagKeyCharConvert(flagKey),
+      this.transformContext(context),
+      defaultValue
+    );
+
+    return {
+      value,
+    };
   }
 
   async resolveNumberEvaluation(
     flagKey: string,
-    _: number,
+    defaultValue: number,
     context: EvaluationContext
   ): Promise<ResolutionDetails<number>> {
-    const details = await this.evaluateTreatment(flagKey, this.transformContext(context));
-    return { ...details, value: parseValidNumber(details.value) };
+    const value = await this.client.numberVariation(
+      this.flagKeyCharConvert(flagKey),
+      this.transformContext(context),
+      defaultValue
+    );
+
+    return {
+      value,
+    };
   }
 
   async resolveObjectEvaluation<U extends JsonValue>(
     flagKey: string,
-    _: U,
+    defaultValue: U,
     context: EvaluationContext
   ): Promise<ResolutionDetails<U>> {
-    const details = await this.evaluateTreatment(flagKey, this.transformContext(context));
-    return { ...details, value: parseValidJsonObject(details.value) };
+    const value = (await this.client.jsonVariation(
+      this.flagKeyCharConvert(flagKey),
+      this.transformContext(context),
+      defaultValue || {}
+      // TODO see if type casting can be avoided
+    )) as unknown as U;
+
+    return {
+      value,
+    };
   }
 
-  private async evaluateTreatment(flagKey: string, consumer: Consumer): Promise<ResolutionDetails<string>> {
-    await this.initialized;
-    const value = this.client.getTreatment(consumer.key, flagKey, consumer.attributes);
-    return { value };
+  /**
+   * Harness enforces restrictions on the the flag key. Converting existing flag keys
+   * into a format that's supported.
+   *
+   * @see https://docs.harness.io/article/li0my8tcz3-entity-identifier-reference
+   */
+  private flagKeyCharConvert(flagKey: string): string {
+    return flagKey.replace(/-/g, '').toLowerCase();
   }
 
-  //Transform the context into an object useful for the Split API, an key string with arbitrary Split "Attributes".
-  private transformContext(context: EvaluationContext): Consumer {
-    {
-      const { targetingKey, ...attributes } = context;
-      return {
-        key: targetingKey || 'anonymous',
-        // Stringify context objects include date.
-        attributes: JSON.parse(JSON.stringify(attributes)),
-      };
+  /**
+   * Attempts to transform evaluation context into the format Harness expects.
+   */
+  private transformContext(context: EvaluationContext): Target {
+    console.log(context);
+    const { targetingKey: identifier, ...attributes } = context;
+
+    if (!identifier) {
+      throw new Error('Targeting key is required');
     }
+
+    const sanitizedAttributes = JSON.parse(JSON.stringify(attributes));
+
+    const transformedContext: Target = {
+      identifier,
+      name: typeof sanitizedAttributes['name'] === 'string' ? sanitizedAttributes['name'] : identifier,
+      anonymous: !!identifier,
+      attributes: sanitizedAttributes,
+    };
+
+    return transformedContext;
   }
 }

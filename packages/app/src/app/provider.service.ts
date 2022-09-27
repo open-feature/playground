@@ -10,6 +10,8 @@ import { SplitFactory } from '@splitsoftware/splitio';
 import { CloudbeesProvider } from 'cloudbees-openfeature-provider-node';
 import Flagsmith from 'flagsmith-nodejs';
 import { ProviderId } from './constants';
+import { Client } from '@harnessio/ff-nodejs-server-sdk';
+import { OpenFeatureHarnessProvider } from 'packages/js-harness-provider/src';
 
 type ProviderMap = Record<
   ProviderId,
@@ -92,6 +94,17 @@ export class ProviderService {
       },
       // getting 401s from flagsmith at the moment.
       available: () => false,
+    },
+    harness: {
+      factory: () => {
+        if (!process.env.HARNESS_KEY) {
+          throw new Error('"HARNESS_KEY" must be defined.');
+        } else {
+          const client = new Client(process.env.HARNESS_KEY);
+          return new OpenFeatureHarnessProvider(client);
+        }
+      },
+      available: () => !!process.env.HARNESS_KEY,
     },
   };
 

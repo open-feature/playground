@@ -1,5 +1,5 @@
 export type RequestData = {
-  userId: string;
+  targetingKey: string;
   ip: string;
   method: string;
   path: string;

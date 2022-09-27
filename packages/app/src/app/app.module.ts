@@ -50,14 +50,13 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
     {
       provide: REQUEST_DATA,
       useFactory: (req: Request): RequestData => {
-        // TODO this is bad...
-        const authHeaderValue = req.header('Authorization') || 'unknown';
+        const authHeaderValue = req.header('Authorization') || 'anonymous';
         return {
           ip: (req.headers['x-forwarded-for'] as string) || (req.socket.remoteAddress as string),
           email: authHeaderValue,
           method: req.method,
           path: req.path,
-          userId: authHeaderValue,
+          targetingKey: authHeaderValue,
         };
       },
       scope: Scope.REQUEST,

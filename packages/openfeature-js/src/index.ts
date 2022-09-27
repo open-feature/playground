@@ -9,6 +9,7 @@ export {
   Hook,
   HookContext,
   FlagValue,
+  JsonValue,
 } from '@openfeature/js-sdk';
 
 export interface TransactionContextManager {
