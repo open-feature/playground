@@ -9,27 +9,28 @@ services:
       - flagd
     depends_on:
       - flagd
-      - zipkin
+      - jaeger
     volumes:
       - ${PWD}/config/flagd/flags.json:/opt/playground/config/flagd/flags.json
       - flagd-socket:/tmp/
     environment:
      - FLAGD_SOCKET_PATH=/tmp/flagd-socket
-     - ZIPKIN_URL=http://zipkin:9411
+     - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+     - OTEL_EXPORTER_JAEGER_AGENT_PORT=6832
      - GO_FEATURE_FLAG_URL=http://go-feature-flag:1031
       # Set from the .env file
      - HARNESS_KEY
      - SPLIT_KEY
      - CLOUDBEES_APP_KEY
 
-  zipkin:
-    image: openzipkin/zipkin
-    container_name: zipkin
+  jaeger:
+    image: jaegertracing/all-in-one:1.38
     ports:
-      - '9411:9411'
+     - "6832:6832/udp"
+     - "16686:16686"
 
   flagd:
-    image: ghcr.io/open-feature/flagd:v0.1.0
+    image: ghcr.io/open-feature/flagd:v0.2.1
     command:
       - start
       - --uri
@@ -43,7 +44,7 @@ services:
       - '8013:8013'
 
   go-feature-flag:
-    image: thomaspoignant/go-feature-flag-relay-proxy:latest
+    image: thomaspoignant/go-feature-flag-relay-proxy:v0.3.0
     volumes:
       - ${PWD}/config/go-feature-flag:/goff/
     ports:

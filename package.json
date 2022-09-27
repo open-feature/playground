@@ -23,18 +23,17 @@
   "dependencies": {
     "@emotion/react": "11.10.4",
     "@harnessio/ff-nodejs-server-sdk": "^1.2.8",
-    "@nestjs/common": "9.1.1",
-    "@nestjs/core": "9.1.1",
-    "@nestjs/platform-express": "9.1.1",
+    "@nestjs/common": "9.1.2",
+    "@nestjs/core": "9.1.2",
+    "@nestjs/platform-express": "9.1.2",
     "@nestjs/serve-static": "^3.0.0",
     "@openfeature/flagd-provider": "^0.5.1",
     "@openfeature/go-feature-flag-provider": "^0.3.0",
     "@openfeature/js-sdk": "^0.4.0",
     "@openfeature/open-telemetry-hook": "^3.0.0",
     "@opentelemetry/api": "~1.2.0",
-    "@opentelemetry/auto-instrumentations-node": "^0.32.1",
-    "@opentelemetry/exporter-trace-otlp-http": "^0.33.0",
-    "@opentelemetry/exporter-zipkin": "~1.7.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.31.2",
+    "@opentelemetry/exporter-jaeger": "^1.7.0",
     "@opentelemetry/sdk-node": "^0.33.0",
     "@opentelemetry/sdk-trace-node": "~1.7.0",
     "@reactour/tour": "^3.1.4",
@@ -45,7 +44,7 @@
     "class-validator": "^0.13.2",
     "cloudbees-openfeature-provider-node": "^0.1.0",
     "continuation-local-storage": "^3.2.1",
-    "core-js": "^3.25.2",
+    "core-js": "^3.25.3",
     "express": "4.18.1",
     "express-validator": "^6.14.2",
     "flagsmith-nodejs": "^2.3.0",
@@ -64,7 +63,7 @@
   },
   "devDependencies": {
     "@nestjs/schematics": "9.0.3",
-    "@nestjs/testing": "9.1.1",
+    "@nestjs/testing": "9.1.2",
     "@nrwl/cli": "14.7.12",
     "@nrwl/cypress": "14.7.12",
     "@nrwl/devkit": "14.7.12",
@@ -107,6 +106,6 @@
     "styled-components": "^5.3.5",
     "ts-jest": "^28.0.8",
     "ts-node": "10.9.1",
-    "typescript": "4.8.3"
+    "typescript": "4.8.4"
   }
 }
