@@ -5,6 +5,7 @@
     "fibonacci": "packages/fibonacci",
     "js-env-provider": "packages/js-env-provider",
     "js-flagsmith-provider": "packages/js-flagsmith-provider",
+    "js-harness-provider": "packages/js-harness-provider",
     "js-launchdarkly-provider": "packages/js-launchdarkly-provider",
     "js-split-provider": "packages/js-split-provider",
     "openfeature-extra": "packages/openfeature-extra",
