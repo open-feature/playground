@@ -1,18 +1,15 @@
+import { Box, Modal, SelectChangeEvent } from '@mui/material';
 import { TourProps, withTour } from '@reactour/tour';
-import Ajv, {
-  AnySchema,
-  ErrorObject,
-  ValidateFunction
-} from 'ajv';
+import Ajv, { AnySchema, ErrorObject, ValidateFunction } from 'ajv';
 import { Component, ComponentType } from 'react';
-import Modal from 'react-modal';
-import { Button } from './button';
 import { Calculator } from './calculator';
+import { Footer } from './footer';
 import { Header } from './header';
 import { JsonEditor, JsonOutput } from './json-editor';
 import { Login } from './login';
-import { Select } from './select';
-import { boxShadow } from './style-mixins';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Background } from './background';
+import { Theme } from './types';
 
 const STEP_EDIT_HEX = 7;
 const STEP_SNAZZY = 9;
@@ -44,12 +41,13 @@ class App extends Component<
     super(props);
     this.state = {
       message: '',
-      hexColor: '#888',
+      hexColor: '#888888',
       json: {},
       showLoginModal: false,
       email: localStorage.getItem('email'),
       editorOn: true,
       availableProviders: [],
+      currentProvider: '',
     };
     this.ajv = new Ajv({
       strict: false,
@@ -60,180 +58,98 @@ class App extends Component<
   }
   override render() {
     return (
-      <div
-        style={{
-          display: 'flex',
-          fontFamily: 'sans-serif',
-          height: '100vh',
-        }}
-      >
-        {/* modal */}
-        <Modal
-          className={'step-login'}
-          style={{
-            overlay: {
-              zIndex: 1000,
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              width: this.state.editorOn ? '67vw' : '100vw',
-            },
-            content: {
-              width: '60%',
-              height: '40%',
-              position: 'unset',
-              fontFamily: 'sans-serif',
-              border: `4px solid ${this.state.hexColor}`,
-              borderRadius: '4px',
-              transform: 'skew(-15deg)',
-              overflow: 'hidden',
-              backgroundColor: 'white',
-              ...boxShadow,
-            },
-          }}
-          isOpen={this.state.showLoginModal}
-        >
-          <Login
-            onLogin={this.onLogin.bind(this)}
-            onCancel={() => this.setState({ showLoginModal: false })}
-            hexColor={this.state.hexColor}
-          />
-        </Modal>
-
+      <ThemeProvider theme={this.buildTheme(this.state.hexColor)}>
         <div
-          className="step-hex-color"
           style={{
-            width: this.state.editorOn ? '67vw' : '100vw',
-            height: '100px',
-            zIndex: 100,
+            display: 'flex',
+            fontFamily: 'sans-serif',
+            height: '100vh',
           }}
         >
-          {/* header */}
-          <Header
-            titleClassName="step-name"
-            loginClassName="step-click-login"
-            title={this.state.message}
-            hexColor={this.state.hexColor}
-            loggedIn={!!this.state.email}
-            onLogoutClick={() => this.setState({ email: undefined })}
-            onLoginClick={this.onLoginClick.bind(this)}
-          ></Header>
-
-          {/* background */}
-          <div
-            style={{
-              background: 'url(../assets/background.jpg) no-repeat center center ',
-              backgroundSize: 'cover',
-              opacity: '0.5',
-              width: '100%',
-              height: '90vh',
-            }}
+          <Background colors={this.generate(this.state.hexColor)} />
+          <Modal
+            open={this.state.showLoginModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
           >
-            {/* image attribution */}
-            <div
-              style={{
+            <Box
+              sx={{
                 position: 'absolute',
-                bottom: '10px',
-                left: '10px',
-                fontSize: '8px',
-                color: '#888',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                width: 400,
+                bgcolor: 'white',
               }}
             >
-              <a
-                style={{
-                  color: '#555',
-                  zIndex: 1000000,
-                }}
-                href="https://www.freepik.com/vectors/digital-devices"
-              >
-                Digital devices vector created by rawpixel.com - www.freepik.com
-              </a>
-            </div>
-          </div>
-        </div>
+              <Login
+                onLogin={this.onLogin.bind(this)}
+                onCancel={() => this.setState({ showLoginModal: false })}
+                hexColor={this.state.hexColor}
+              />
+            </Box>
+          </Modal>
 
-        {/* fixed container */}
-        <div
-          style={{
-            position: 'absolute',
-            width: this.state.editorOn ? '67vw' : '100vw',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-around',
-          }}
-        >
-          {/* calculator */}
           <div
-            className="fib"
+            className="step-hex-color"
             style={{
-              direction: 'rtl',
-              marginRight: '10%',
-              zIndex: '100',
+              width: this.state.editorOn ? '67vw' : '100vw',
+              height: '100px',
+              zIndex: 100,
             }}
           >
-            <Calculator
-              result={this.state.result}
-              onClick={this.onCalculate.bind(this)}
+            {/* header */}
+            <Header
+              titleClassName="step-name"
+              loginClassName="step-click-login"
+              title={this.state.message}
               hexColor={this.state.hexColor}
+              loggedIn={!!this.state.email}
+              onLogoutClick={() => this.setState({ email: undefined })}
+              onLoginClick={this.onLoginClick.bind(this)}
+            ></Header>
+          </div>
+
+          {/* fixed container */}
+          <div
+            style={{
+              position: 'absolute',
+              width: this.state.editorOn ? '67vw' : '100vw',
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+            }}
+          >
+            {/* calculator */}
+            <Calculator
+                result={this.state.result}
+                onClick={this.onCalculate.bind(this)}
+                hexColor={this.state.hexColor}
+              />
+          </div>
+
+          {/* editor */}
+          <div className="json-editor">
+            <JsonEditor
+              errorMessage={
+                this.state.errors ? `${this.state.errors?.[0].schemaPath} ${this.state.errors?.[0].message}` : undefined
+              }
+              hidden={!this.state.editorOn}
+              callBack={this.onJsonUpdate.bind(this)}
+              json={this.state.json}
             />
           </div>
-        </div>
 
-        <div
-          className="step-buttons"
-          style={{
-            position: 'absolute',
-            bottom: '30px',
-            right: '30px',
-            zIndex: 2000,
-          }}
-        >
-
-          <Select
-            name="provider"
-            id="provider"
-            selected={this.state.currentProvider}
-            options={this.state.availableProviders}
-            onChange={this.onSelectProvider}>
-          </Select>
-
-          <Button
-            onClick={() => {
-              this.setState({ editorOn: !this.state.editorOn });
-            }}
-            hexColor="#000"
-            secondary
-            disabled={this.state.currentProvider !== 'flagd'}
-          >
-            Toggle Editor
-          </Button>
-
-          <Button
-            onClick={() => {
-              this.props.setIsOpen(true);
-            }}
-            hexColor="#000"
-            secondary
-          >
-            Open Tour
-          </Button>
-        </div>
-
-        {/* editor */}
-        <div className="json-editor">
-          <JsonEditor
-            errorMessage={
-              this.state.errors ? `${this.state.errors?.[0].schemaPath} ${this.state.errors?.[0].message}` : undefined
-            }
-            hidden={!this.state.editorOn}
-            callBack={this.onJsonUpdate.bind(this)}
-            json={this.state.json}
+          <Footer
+            availableProviders={this.state.availableProviders}
+            currentProvider={this.state.currentProvider}
+            onOpenTour={() => this.props.setIsOpen(true)}
+            onSelectProvider={this.onSelectProvider}
           />
         </div>
-      </div>
+      </ThemeProvider>
     );
   }
 
@@ -272,6 +188,54 @@ class App extends Component<
       .catch((err) => {
         console.error(`Error getting flag schema, ${err.message}`);
       });
+  }
+
+  private generate(cssColor: string): Theme {
+    // TODO: simplify this.
+
+    const hex = cssColor.slice(1, 7);
+    const r = hex.slice(0, 2);
+    const g = hex.slice(2, 4);
+    const b = hex.slice(4, 6);
+
+    const shiftedR = this.shift(r);
+    const shiftedG = this.shift(g);
+    const shiftedB = this.shift(b);
+
+    return {
+      light: '#' + `${shiftedR.light}${shiftedG.light}${shiftedB.light}`.padStart(6, '0'),
+      main: cssColor,
+      dark: '#' + `${shiftedR.dark}${shiftedG.dark}${shiftedB.dark}`.padStart(6, '0'),
+    };
+  }
+
+  private shift(hex: string): Theme {
+    const UPPER = 255;
+    const main = Number.parseInt(hex, 16);
+    const light = Math.floor((UPPER - main) / 2 + main).toString(16);
+    const dark = Math.floor((main + 1) / 2).toString(16);
+    return {
+      light,
+      main: hex,
+      dark,
+    };
+  }
+
+  private buildTheme(hex: string) {
+    return createTheme({
+      palette: {
+        primary: {
+          ...this.generate(hex),
+          contrastText: '#fff',
+        },
+        secondary: {
+          light: '#000',
+          main: '#000',
+          dark: '#000',
+          contrastText: '#000',
+        },
+      },
+    });
   }
 
   private onCalculate(n: number, finished: () => void) {
@@ -326,8 +290,8 @@ class App extends Component<
     }
   }
 
-  private async onSelectProvider(providerId: string) {
-    await fetch(`/providers/current/${providerId}`, {
+  private async onSelectProvider(event: SelectChangeEvent<unknown>): Promise<void> {
+    await fetch(`/providers/current/${event.target.value}`, {
       method: 'PUT',
     });
   }

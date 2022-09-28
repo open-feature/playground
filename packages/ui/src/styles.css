@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+fieldset {
+  border-color: white !important;
+}
+
+.MuiInputBase-root > svg {
+  color: white
+}
+
+button.MuiButton-root  {
+  height: 40px !important;
+}

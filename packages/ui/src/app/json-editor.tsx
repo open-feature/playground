@@ -25,13 +25,13 @@ export class JsonEditor extends React.Component<{
         style={{
           width: this.props.hidden ? '0' : '33vw',
           overflow: 'hidden',
-          height: '100%',
+          // TODO: centralize this height
+          height: 'calc(100vh - 64px)',
         }}
       >
         <JSONInput
           error={this.props.errorMessage ? { reason: this.props.errorMessage, line: 0 } : undefined}
           onBlur={this.props.callBack}
-          onChange={this.props.callBack}
           placeholder={this.props.json}
           locale={locale.default}
           height="100%"

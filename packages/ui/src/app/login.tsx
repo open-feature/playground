@@ -1,6 +1,5 @@
+import { Button, Input } from '@mui/material';
 import React from 'react';
-import { Button } from './button';
-import { Input } from './input';
 
 export class Login extends React.Component<{
   hexColor: string;
@@ -27,35 +26,33 @@ export class Login extends React.Component<{
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '100%',
-            transform: 'skew(15deg)',
           }}
         >
-          <span style={{ padding: '24px', fontSize: '24px' }}>
-            Login to your Account
-          </span>
+          <span style={{ padding: '24px', fontSize: '24px' }}>Login to your Account</span>
           <Input
-            onChange={(email) => {
-              this.email = email;
+            style={{ textAlign: 'center' }}
+            placeholder="user@faas.com"
+            onChange={(event) => {
+              this.email = event.target.value;
             }}
             type="text"
           />
-          <Button
-            onClick={() => {
-              this.props.onLogin(this.email);
-            }}
-            width="273px"
-            hexColor={this.props.hexColor}
-          >
-            Login
-          </Button>
-          <Button
-            onClick={this.props.onCancel}
-            secondary
-            width="273px"
-            hexColor={this.props.hexColor}
-          >
-            Cancel
-          </Button>
+
+          <div style={{ margin: 8 }}>
+            <Button
+              style={{ width: 128, marginRight: 8 }}
+              variant="outlined"
+              onClick={() => {
+                this.props.onLogin(this.email);
+                alert(this.email);
+              }}
+            >
+              Login
+            </Button>
+            <Button style={{ width: 128 }} variant="outlined" onClick={() => this.props.onCancel()}>
+              Cancel
+            </Button>
+          </div>
         </div>
       </div>
     );
