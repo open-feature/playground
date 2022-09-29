@@ -4,11 +4,7 @@ const oFeatClient = OpenFeature.getClient('fibonacci');
 
 export async function fibonacci(num: number): Promise<number> {
   const value = await oFeatClient.getStringValue('fib-algo', 'recursive');
-  /**
-   * TODO: See if variations should return OTel methods that allow developers to
-   * define logs, metrics, and events related to the flag. It could be useful
-   * here to determine the impact the algorithm has on performance.
-   */
+
   switch (value) {
     case 'recursive':
       console.log('Running the recursive fibonacci function');
@@ -40,16 +36,11 @@ export function getNthFibRecursive(num: number): number {
 
 type Cache = { [num: number]: number };
 
-export function getNthFibRecursiveMemo(
-  num: number,
-  memo: Cache = { 1: 0, 2: 1 }
-): number {
+export function getNthFibRecursiveMemo(num: number, memo: Cache = { 1: 0, 2: 1 }): number {
   if (num in memo) {
     return memo[num];
   } else {
-    memo[num] =
-      getNthFibRecursiveMemo(num - 1, memo) +
-      getNthFibRecursiveMemo(num - 2, memo);
+    memo[num] = getNthFibRecursiveMemo(num - 1, memo) + getNthFibRecursiveMemo(num - 2, memo);
     return memo[num];
   }
 }
@@ -68,8 +59,6 @@ export function getNthFibLoop(num: number): number {
 
 export function getNthFibBinet(num: number): number {
   return Math.round(
-    (Math.pow((1 + Math.sqrt(5)) / 2, num - 1) -
-      Math.pow((1 - Math.sqrt(5)) / 2, num - 1)) /
-      Math.sqrt(5)
+    (Math.pow((1 + Math.sqrt(5)) / 2, num - 1) - Math.pow((1 - Math.sqrt(5)) / 2, num - 1)) / Math.sqrt(5)
   );
 }

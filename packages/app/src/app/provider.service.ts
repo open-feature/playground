@@ -47,7 +47,7 @@ export class ProviderService {
         if (!appKey) {
           throw new Error('"CLOUDBEES_APP_KEY" must be defined.');
         } else {
-          return await CloudbeesProvider.build(appKey);
+          return CloudbeesProvider.build(appKey);
         }
       },
       available: () => !!process.env.CLOUDBEES_APP_KEY,
@@ -110,7 +110,7 @@ export class ProviderService {
 
   constructor() {
     this._currentProvider = process.argv[2] as ProviderId;
-    this.switchProvider(this._currentProvider as ProviderId);
+    this.switchProvider(this._currentProvider);
   }
 
   get currentProvider() {
