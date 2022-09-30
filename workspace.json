@@ -9,7 +9,6 @@
     "js-launchdarkly-provider": "packages/js-launchdarkly-provider",
     "js-split-provider": "packages/js-split-provider",
     "openfeature-extra": "packages/openfeature-extra",
-    "openfeature-js": "packages/openfeature-js",
     "ui": "packages/ui"
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"

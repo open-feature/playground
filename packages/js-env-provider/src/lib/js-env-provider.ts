@@ -1,6 +1,6 @@
 import { FlagNotFoundError, parseValidBoolean, parseValidJsonObject, parseValidNumber } from '@openfeature/extra';
 import { JsonValue } from '@openfeature/js-sdk';
-import { Provider, ResolutionDetails } from '@openfeature/openfeature-js';
+import { Provider, ResolutionDetails } from '@openfeature/js-sdk';
 import { constantCase } from 'change-case';
 
 /**

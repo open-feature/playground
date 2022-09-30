@@ -1,6 +1,6 @@
 import { parseValidJsonObject, parseValidNumber, TypeMismatchError } from '@openfeature/extra';
 import { JsonValue } from '@openfeature/js-sdk';
-import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
+import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/js-sdk';
 import type { Attributes, IClient } from '@splitsoftware/splitio/types/splitio';
 
 /**

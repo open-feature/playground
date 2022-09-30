@@ -1,4 +1,4 @@
-import { OpenFeature } from '@openfeature/openfeature-js';
+import { OpenFeature } from '@openfeature/js-sdk';
 
 const oFeatClient = OpenFeature.getClient('fibonacci');
 

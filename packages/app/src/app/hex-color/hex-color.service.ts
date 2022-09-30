@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Client, EvaluationDetails } from '@openfeature/openfeature-js';
+import { Client, EvaluationDetails } from '@openfeature/js-sdk';
 import { OPENFEATURE_CLIENT } from '../constants';
 
 @Injectable()

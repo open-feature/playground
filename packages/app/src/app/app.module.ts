@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { AsyncLocalStorageTransactionContext, LoggingHook, TransactionContextHook } from '@openfeature/extra';
 import { OpenTelemetryHook } from '@openfeature/open-telemetry-hook';
-import { OpenFeature } from '@openfeature/openfeature-js';
+import { OpenFeature } from '@openfeature/js-sdk';
 import { Request } from 'express';
 import { TransactionContextMiddleware } from './transaction-context.middleware';
 import { OPENFEATURE_CLIENT, REQUEST_DATA } from './constants';

@@ -1,4 +1,4 @@
-import { Hook, HookContext, OpenFeature } from '@openfeature/openfeature-js';
+import { Hook, HookContext, OpenFeature } from '@openfeature/js-sdk';
 
 export class TransactionContextHook implements Hook {
   name = 'TransactionContext';

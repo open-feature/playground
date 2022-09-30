@@ -1,4 +1,4 @@
-import { Hook, HookContext, ResolutionDetails, FlagValue } from '@openfeature/openfeature-js';
+import { Hook, HookContext, ResolutionDetails, FlagValue } from '@openfeature/js-sdk';
 import { EOL } from 'os';
 
 /**

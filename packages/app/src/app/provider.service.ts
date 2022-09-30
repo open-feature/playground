@@ -47,7 +47,8 @@ export class ProviderService {
         if (!appKey) {
           throw new Error('"CLOUDBEES_APP_KEY" must be defined.');
         } else {
-          return CloudbeesProvider.build(appKey);
+          // TODO: this 'any' assertion is necessary until the CB provider is updated.
+          return CloudbeesProvider.build(appKey) as any;
         }
       },
       available: () => !!process.env.CLOUDBEES_APP_KEY,

@@ -1,6 +1,6 @@
 import { ParseError, parseValidJsonObject, TypeMismatchError } from '@openfeature/extra';
 import { EvaluationContextValue, JsonValue } from '@openfeature/js-sdk';
-import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/openfeature-js';
+import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/js-sdk';
 import Flagsmith from 'flagsmith-nodejs';
 
 type Identity = {
