@@ -146,7 +146,7 @@ render(
       steps={styledSteps}
       maskClassName="tour-mask"
       onClickMask={() => undefined}
-      padding={50}
+      padding={10}
       disableFocusLock={true}
     >
       <Page />
