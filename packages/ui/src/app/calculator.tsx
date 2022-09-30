@@ -27,6 +27,7 @@ export class Calculator extends React.Component<
   override render() {
     return (
       <Card
+        className="step-calculator"
         style={{
           userSelect: 'none',
           fontFamily: 'monospace',
@@ -106,7 +107,9 @@ export class Calculator extends React.Component<
               fontSize: '60px',
             }}
           >
-            <div style={{ transform: 'skew(15deg)' }}>&#8721;</div>
+            <div style={{ height: 72 }}>
+              <span style={{ lineHeight: '72px', verticalAlign: 'sub' }}>&#8721;</span>
+            </div>
           </div>
           <div style={{ lineHeight: '33px' }}>{`=${this.props.result ? this.props.result : ''}`}</div>
         </div>

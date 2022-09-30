@@ -1,18 +1,7 @@
-*{
-  margin: 0px;
-  padding: 0px;
-}
-
-body{
-  font-family: 'Exo', sans-serif;
-}
-
-
 .context {
   width: 100%;
   position: absolute;
   top:50vh;
-  
 }
 
 .context h1{
@@ -20,7 +9,6 @@ body{
   color: #fff;
   font-size: 50px;
 }
-
 
 .area{
   position: absolute; 
@@ -34,6 +22,7 @@ body{
   width: 100%;
   height: 100%;
   overflow: hidden;
+  padding-inline-start: 0;
 }
 
 .circles li{
@@ -45,7 +34,6 @@ body{
   background: rgba(255, 255, 255, 0.2);
   animation: animate 25s linear infinite;
   bottom: -150px;
-  
 }
 
 .circles li:nth-child(1){
@@ -54,7 +42,6 @@ body{
   height: 80px;
   animation-delay: 0s;
 }
-
 
 .circles li:nth-child(2){
   left: 10%;

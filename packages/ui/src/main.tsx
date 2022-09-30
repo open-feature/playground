@@ -20,8 +20,8 @@ const steps: StepType[] = [
   },
   {
     // step 1
-    selector: '.step-buttons',
-    content: `Use these buttons to toggle the editor, or resume the tour at any time.`,
+    selector: '.step-open-tour',
+    content: `Use this button to resume the tour at any time.`,
     padding: 20,
   },
   {
@@ -51,7 +51,7 @@ const steps: StepType[] = [
   },
   {
     // step 7
-    selector: '.step-hex-color',
+    selector: 'html',
     content: `Great! Now let's look into a flag with an associated string value. The design team is frequently experimenting with new color pallettes. Let's change our landing page's color.`,
   },
   {
@@ -66,12 +66,12 @@ const steps: StepType[] = [
   },
   {
     // step 10
-    selector: '.fib',
+    selector: '.step-calculator',
     content: `Let's give the fibonacci calculator a try, give it a click...`,
   },
   {
     // step 11
-    selector: '.fib',
+    selector: '.step-calculator',
     content: `Turns out, calculating fibonacci(n) recursively isn't exactly efficient... Luckily, top minds at our company have found a more efficient algorithm for calculating fibonacci(n). It's experimental, so we only want to allow employee's to test it. Let's see how OpenFeature can help with that...`,
   },
   {
@@ -86,7 +86,7 @@ const steps: StepType[] = [
   },
   {
     // step 14
-    selector: '.fib',
+    selector: '.step-calculator',
     content: `Flag evaluations can take into account contextual information, about the user, application, or action. The "fib-algo" flag returns a different result if our email ends with "@faas.com". Let's run the fibonacci calculator again as an employee to test the new algorithm...`,
   },
   {
@@ -101,8 +101,8 @@ const steps: StepType[] = [
   },
   {
     // step 17
-    selector: 'html',
-    content: `You can start the same tour with a different demo "provider", and connect OpenFeature to the SaaS Vendor of your choice, or you can create a custom provider of your own! Check out this project's README for more info.`,
+    selector: '.step-switch-provider',
+    content: `You can use this selector to change the active provider in real-time! Configure the demo flags in the SaaS Vendor of your choice, or you can create a custom provider of your own! Check out this project's README for more info.`,
   },
   {
     // step 18

@@ -1,4 +1,4 @@
-import { Button, Input } from '@mui/material';
+import { Button, FormControl, InputLabel, TextField } from '@mui/material';
 import React from 'react';
 
 export class Login extends React.Component<{
@@ -11,12 +11,15 @@ export class Login extends React.Component<{
   override render() {
     return (
       <div
+      className='step-login'
         style={{
+          fontFamily: 'sans-serif',
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
           height: '100%',
+          margin: 16,
         }}
       >
         <div
@@ -28,29 +31,40 @@ export class Login extends React.Component<{
             width: '100%',
           }}
         >
-          <span style={{ padding: '24px', fontSize: '24px' }}>Login to your Account</span>
-          <Input
-            style={{ textAlign: 'center' }}
-            placeholder="user@faas.com"
-            onChange={(event) => {
-              this.email = event.target.value;
-            }}
-            type="text"
-          />
+          <span style={{ padding: 8, fontSize: '24px' }}>Login to your Account</span>
+          <span color="#888" style={{ paddingBottom: 8, fontSize: '16px' }}>
+            Enter any email to login
+          </span>
+          <FormControl style={{ width: 160, color: 'white', borderColor: 'white' }}>
+            <InputLabel style={{ color: 'white', borderColor: 'white' }} id="email-input-label"></InputLabel>
+            <TextField
+              label="Email"
+              style={{ textAlign: 'center' }}
+              placeholder="user@faas.com"
+              onChange={(event) => {
+                this.email = event.target.value;
+              }}
+              type="text"
+            />
+          </FormControl>
 
           <div style={{ margin: 8 }}>
             <Button
+              color="secondary"
               style={{ width: 128, marginRight: 8 }}
+              variant="outlined"
+              onClick={() => this.props.onCancel()}
+            >
+              Cancel
+            </Button>
+            <Button
+              style={{ width: 128 }}
               variant="outlined"
               onClick={() => {
                 this.props.onLogin(this.email);
-                alert(this.email);
               }}
             >
               Login
-            </Button>
-            <Button style={{ width: 128 }} variant="outlined" onClick={() => this.props.onCancel()}>
-              Cancel
             </Button>
           </div>
         </div>

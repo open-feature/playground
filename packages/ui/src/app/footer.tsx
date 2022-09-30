@@ -1,9 +1,20 @@
-import { AppBar, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Toolbar } from '@mui/material';
+import {
+  AppBar,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  Toolbar,
+  Tooltip,
+} from '@mui/material';
 import React from 'react';
 
 export class Footer extends React.Component<{
   availableProviders: string[];
   currentProvider: string | undefined;
+  tourAvailable: boolean;
   onSelectProvider: (event: SelectChangeEvent<unknown>) => void;
   onOpenTour: () => void;
 }> {
@@ -11,7 +22,10 @@ export class Footer extends React.Component<{
     return (
       <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar style={{ display: 'flex', justifyContent: 'flex-end' }}>
-          <FormControl style={{ width: 160, color: 'white', borderColor: 'white', marginRight: 8 }}>
+          <FormControl
+            className="step-switch-provider"
+            style={{ width: 160, color: 'white', borderColor: 'white', marginRight: 8 }}
+          >
             <InputLabel style={{ color: 'white', borderColor: 'white' }} id="provider-select-label">
               Provider
             </InputLabel>
@@ -34,9 +48,19 @@ export class Footer extends React.Component<{
             </Select>
           </FormControl>
 
-          <Button variant="outlined" color="inherit" onClick={() => this.props.onOpenTour()}>
-            Open Tour
-          </Button>
+          <Tooltip title={this.props.tourAvailable ? '' : 'Tour not available with this provider'}>
+            <span>
+              <Button
+                disabled={!this.props.tourAvailable}
+                className="step-open-tour"
+                variant="outlined"
+                color="inherit"
+                onClick={() => this.props.onOpenTour()}
+              >
+                Open Tour
+              </Button>
+            </span>
+          </Tooltip>
         </Toolbar>
       </AppBar>
     );

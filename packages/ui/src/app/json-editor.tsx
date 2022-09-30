@@ -1,5 +1,6 @@
 import React from 'react';
 import JSONInput from 'react-json-editor-ajrm';
+import { HEIGHT_MINUS_HEADER } from './constants';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const locale = require('react-json-editor-ajrm/locale/en');
 
@@ -25,8 +26,7 @@ export class JsonEditor extends React.Component<{
         style={{
           width: this.props.hidden ? '0' : '33vw',
           overflow: 'hidden',
-          // TODO: centralize this height
-          height: 'calc(100vh - 64px)',
+          height: HEIGHT_MINUS_HEADER,
         }}
       >
         <JSONInput

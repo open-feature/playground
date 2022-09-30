@@ -15,7 +15,7 @@ export class MessageService {
       false,
       this.attributes
     ))
-      ? 'Welcome to Fib3r: Fibonacci as a Service!'
+      ? 'Fib3r: Math at the speed of the internet!'
       : 'Welcome to FaaS: Fibonacci as a Service!';
     return { message };
   }

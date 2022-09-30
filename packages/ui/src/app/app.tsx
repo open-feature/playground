@@ -10,6 +10,7 @@ import { Login } from './login';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Background } from './background';
 import { Theme } from './types';
+import { FLAGD_PROVIDER } from './constants';
 
 const STEP_EDIT_HEX = 7;
 const STEP_SNAZZY = 9;
@@ -63,7 +64,6 @@ class App extends Component<
           style={{
             display: 'flex',
             fontFamily: 'sans-serif',
-            height: '100vh',
           }}
         >
           <Background colors={this.generate(this.state.hexColor)} />
@@ -91,7 +91,6 @@ class App extends Component<
           </Modal>
 
           <div
-            className="step-hex-color"
             style={{
               width: this.state.editorOn ? '67vw' : '100vw',
               height: '100px',
@@ -124,10 +123,10 @@ class App extends Component<
           >
             {/* calculator */}
             <Calculator
-                result={this.state.result}
-                onClick={this.onCalculate.bind(this)}
-                hexColor={this.state.hexColor}
-              />
+              result={this.state.result}
+              onClick={this.onCalculate.bind(this)}
+              hexColor={this.state.hexColor}
+            />
           </div>
 
           {/* editor */}
@@ -143,10 +142,11 @@ class App extends Component<
           </div>
 
           <Footer
+            tourAvailable={this.state.currentProvider === FLAGD_PROVIDER}
             availableProviders={this.state.availableProviders}
             currentProvider={this.state.currentProvider}
             onOpenTour={() => this.props.setIsOpen(true)}
-            onSelectProvider={this.onSelectProvider}
+            onSelectProvider={this.onSelectProvider.bind(this)}
           />
         </div>
       </ThemeProvider>
@@ -162,7 +162,6 @@ class App extends Component<
     }
   }
 
-  // auto-open the tour.
   override componentDidMount() {
     this.refreshPage();
     setInterval(() => {
@@ -191,8 +190,7 @@ class App extends Component<
   }
 
   private generate(cssColor: string): Theme {
-    // TODO: simplify this.
-
+    // TODO: simplify this
     const hex = cssColor.slice(1, 7);
     const r = hex.slice(0, 2);
     const g = hex.slice(2, 4);
@@ -294,6 +292,7 @@ class App extends Component<
     await fetch(`/providers/current/${event.target.value}`, {
       method: 'PUT',
     });
+    this.refreshPage();
   }
 
   private onLogin(email: string | undefined) {
@@ -337,8 +336,9 @@ class App extends Component<
         currentProvider: provider.provider,
         json,
         // hide the editor unless we are using the flagd provider.
-        editorOn: provider.provider === 'flagd',
+        editorOn: provider.provider === FLAGD_PROVIDER,
       });
+      this.props.setIsOpen(this.props.isOpen && provider.provider === FLAGD_PROVIDER);
     } catch (err) {
       throw new Error('Unable to load page data... Did you forget to run the server?');
     }
