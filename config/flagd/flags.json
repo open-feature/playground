@@ -6,7 +6,7 @@
         "on": true,
         "off": false
       },
-      "defaultVariant": "off"
+      "defaultVariant": "on"
     },
     "hex-color": {
       "state": "ENABLED",
@@ -16,7 +16,7 @@
         "blue": "0d507b",
         "yellow": "yellow"
       },
-      "defaultVariant": "red"
+      "defaultVariant": "blue"
     },
     "fib-algo": {
       "state": "ENABLED",

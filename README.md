@@ -19,12 +19,13 @@ If you're brand new to feature flagging, considering reviewing the [OpenFeature 
   - [Experimenting with color](#experimenting-with-color)
   - [Test in production](#test-in-production)
 - [Available providers](#available-providers)
-  - [Environment Variable Provider](#environment-variable-provider)
-  - [FlagD Provider](#flagd-provider)
-  - [Go-feature-flag Provider](#go-feature-flag-provider)
-  - [Split Provider Demo](#split-provider-demo)
-  - [CloudBees FM Provider Demo](#cloudbees-fm-provider-demo)
-  - [LaunchDarkly Provider Demo](#launchdarkly-provider-demo)
+  - [Environment Variable](#environment-variable)
+  - [FlagD](#flagd)
+    - [Flag Configuration in FlagD](#flag-configuration-in-flagd)
+  - [Go Feature Flag](#go-feature-flag)
+  - [CloudBees Feature Management](#cloudbees-feature-management)
+  - [Split](#split)
+  - [LaunchDarkly](#launchdarkly)
   - [Flagsmith Provider Demo](#flagsmith-provider-demo)
 - [Experimenting beyond the demo](#experimenting-beyond-the-demo)
   - [Evaluation context](#evaluation-context)
@@ -46,30 +47,30 @@ In order to run the demo, you'll need the following tools available on your syst
 
 1. Clone the repo
 
-```sh
-git clone https://github.com/open-feature/playground.git
-```
+   ```sh
+   git clone https://github.com/open-feature/playground.git
+   ```
 
-2. Navigate to the playground folder
+1. Navigate to the playground folder
 
-```sh
-cd playground
-```
+   ```sh
+   cd playground
+   ```
 
-3. Copy `.env.example` to `.env`
+1. Copy `.env.example` to `.env`
 
-```sh
-cp .env.example .env
-```
+   ```sh
+   cp .env.example .env
+   ```
 
-4. Optionally, add feature flag vendors to the `.env`. See below for more information.
-5. Start the demo
+1. Optionally, add feature flag vendors to the `.env`. See below for more information.
+1. Start the demo
 
-```sh
-docker compose up
-```
+   ```sh
+   docker compose up
+   ```
 
-6. Open your favorite browser and navigate to http://localhost:30000/
+1. Open your favorite browser and navigate to http://localhost:30000/
 
 ## Links
 
@@ -100,41 +101,199 @@ Let's see how this could be done using OpenFeature. [Here](https://github.com/op
 
 ## Available providers
 
-The following [providers](https://docs.openfeature.dev/docs/reference/concepts/provider) can be used in the demo. Location the provider you're interested in trying to get started.
+The following [providers](https://docs.openfeature.dev/docs/reference/concepts/provider) can be used in the demo. Locate the provider you're interested in using to learn more.
 
-### Environment Variable Provider
+### Environment Variable
 
 The environment variable provider is a simple demo showing how environment
 variables could be used make flag evaluations. Its purpose is to show how a basic
 provider **could** be implemented.
 
-To get started, follow the instructions in the `How to run this demo` section. Once on the demo app, select `env` from the dropdown located at the bottom-right of the screen. To change a flag value, open the `.env` file in your favorite text editor. Update the flag values based on the options defined as comments above the flag key. When you're ready, save the file and restart the demo.
+To get started, follow the instructions in the [How to run the demo](#how-to-run-the-demo) section. Once on the demo app, select `env` from the dropdown located at the bottom-right of the screen. To change a flag value, open the `.env` file in your favorite text editor. Update the flag values based on the options defined as comments above the flag key. When you're ready, save the file and restart the demo.
 
 Using environment variables like this can be a good way to get started with feature flagging. However, the approach only support basic use cases and is quite cumbersome.
 
-### FlagD Provider
+### FlagD
 
-TODO: Add section on FlagD
+[FlagD](https://github.com/open-feature/flagd) is a OpenFeature compliant flag evaluation engine. It provides the ability to define flag configurations in various locations include a local file, a HTTP service, or directly from the Kubernetes API.
 
-### Go-feature-flag Provider
+In this demo, FlagD starts automatically as part of the Docker Compose file. It's configured to watch a local file `/config/flagd/flags.json` for flag configurations. Feel free to modify this file and see how it affects the demo. Valid configurations changes should be reflected almost immediately.
 
-TODO: Add section on Go Feature Flag
+#### Flag Configuration in FlagD
 
-### Split Provider Demo
+A FlagD configuration is represented as a JSON object. Feature flag configurations can be found under `flags` and each item within `flags` represents a flag key (the unique identifier for a flag) and its corresponding configuration.
 
-TODO: Add section on Split
+Valid flag configuration options include:
 
-### CloudBees FM Provider Demo
+##### State
 
-TODO: Add section on CloudBees
+`state` is **required** property. Validate states are "ENABLED" or "DISABLED". When the state is set to "DISABLED", OpenFeature will behave like the flag doesn't exist.
 
-### LaunchDarkly Provider Demo
+Example:
 
-TODO: Add section on LaunchDarkly
+```
+"state": "ENABLED"
+```
+
+##### Variants
+
+`variants` is a **required** property. It is an object containing the possible variations supported by the flag. All the values of the object **must** but the same type (e.g. boolean, numbers, string, JSON). The type used as the variant value will correspond directly affects how the flag is accessed in OpenFeature. For example, to use a flag configured with boolean values the `getBooleanValue` or `getBooleanDetails` methods should be used. If another method such as `getStringValue` is called, a type mismatch occurred and the default value is returned.
+
+Example:
+
+```
+"variants": {
+  "red": "c05543",
+  "green": "2f5230",
+  "blue": "0d507b"
+}
+```
+
+Example:
+
+```
+"variants": {
+  "on": true,
+  "off": false
+}
+```
+
+Example of an invalid configuration:
+
+```
+"variants": {
+  "on": true,
+  "off": "false"
+}
+```
+
+##### Default Variant
+
+`defaultVariant` is a **required** property. The value **must** match the name of one of the variants defined above. The default variant is always used unless a targeting rule explicitly overrides it.
+
+Example:
+
+```
+"variants": {
+  "on": true,
+  "off": false
+},
+"defaultVariant": "off"
+```
+
+Example:
+
+```
+"variants": {
+  "red": "c05543",
+  "green": "2f5230",
+  "blue": "0d507b"
+},
+"defaultVariant": "red"
+```
+
+Example of an invalid configuration:
+
+```
+"variants": {
+  "red": "c05543",
+  "green": "2f5230",
+  "blue": "0d507b"
+},
+"defaultVariant": "purple"
+```
+
+##### Targeting Rules
+
+`targeting` is an **optional** property. A targeting rule **must** be valid JSON. FlagD uses a modified version of [JSON Logic](https://jsonlogic.com/) behind the scenes. The output of the targeting rule **must** match the name of one of the variants defined above. If an invalid or null value is is returned by the targeting rule, the `defaultVariant` value is used.
+
+The [JSON Logic playground](https://jsonlogic.com/play.html) is a great way to experiment with new targeting rules. The follow example shows how a rule could be configured to return `binet` when the email (which comes from evaluation context) contains `@faas.com`. If the email wasn't included in the evaluation context or doesn't contain `@faas.com`, null is returned and the `defaultVariant` is used instead. Let's see how this targeting rule would look in the JSON Logic playground.
+
+1. Open the [JSON Logic playground](https://jsonlogic.com/play.html) in your favorite browser
+2. Add the follow JSON as the `Rule`:
+
+```json
+{
+  "if": [
+    {
+      "in": [
+        "@faas.com",
+        {
+          "var": ["email"]
+        }
+      ]
+    },
+    "binet",
+    null
+  ]
+}
+```
+
+3. Add the following JSON as the `Data`:
+
+```json
+{
+  "email": "test@faas.com"
+}
+```
+
+4. Click `Compute`
+5. confirm the output show `"binet"`
+6. Optionally, experiment with different rules and data
+
+### Go Feature Flag
+
+[Go Feature Flag](https://gofeatureflag.org/) is a open source feature flagging solution. It provides the ability to define flag configurations in various locations (HTTP, S3, GitHub, file, Google Cloud Storage, Kubernetes). OpenFeature is able to integrate with Go Feature Flag by using the [Go Feature Flag Relay Proxy](https://github.com/thomaspoignant/go-feature-flag-relay-proxy).
+
+In this demo, Go Feature Flag starts automatically as part of the Docker Compose file. It's configured to watch a local file `/config/go-feature-flag/flags.yaml` for flag configurations. Feel free to modify this file and see how it affects the demo. Valid configurations changes should be reflected almost immediately. Documentation on how to configure a flag can be found [here](https://docs.gofeatureflag.org/v0.28.0/flag_format/).
+
+### CloudBees Feature Management
+
+[CloudBees Feature Management](https://www.cloudbees.com/capabilities/feature-management) is a SaaS feature management platform. It supports bi-directional configuration as code and integrates with other CloudBees tools.
+
+Follow these steps to setup the application within CloudBees:
+
+1. Sign-in to your CloudBees Feature Management account. If you don't already have an account, the [free community edition](https://www.cloudbees.com/c/feature-management-free-trial-sign-up) will work fine.
+1. Within the CloudBees Feature Management UI, add a new application called `OpenFeature playground`. You can keep the default environment of `production`.
+1. In `App Settings` add a new custom STRING property called `email` as shown below. This is used in the `fib-algo` configuration to control the flag value via the email of the user logging into the playground application.
+
+<img src="./images/cloudbees/cb-email.png" width="50%">
+
+1. Create a new boolean flag called `new-welcome-message`.
+1. Create a new flag called `fib-algo` with the values: `recursive`, `memo`, `loop`, `binet`, and `default`.
+1. For the `fib-algo` flag, add a configuration. This can be a combination of the `email` regEx of `.*faas.com$` and set `recursive` in the else section.
+
+<img src="./images/cloudbees/cb-fib-algo.png" width="50%">
+
+1. Create a new flag called `hex-color` with the values: `c05543`, `2f5230`, and `0d507b`.
+1. For the `hex-color` flag, add a configuration. This can be any of the defined values as the one shown below
+
+<img src="./images/cloudbees/cb-hex-color.png" width="50%">
+
+1. Ensure for each flag, the configuration switch is set to ON as shown below
+
+<img src="./images/cloudbees/cb-config-on.png" width="20%">
+
+1. Ensure the completed list of flags look as follows
+
+<img src="./images/cloudbees/cb-flag-list.png" width="50%">
+
+1. Copy the production environment key found under `App settings` > `Environments`
+1. Open the `.env` file and make the value of `CLOUDBEES_APP_KEY` the key copied above
+
+Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `cloudbees` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via CloudBees!
+
+### Split
+
+Documentation coming soon
+
+### LaunchDarkly
+
+Documentation coming soon
 
 ### Flagsmith Provider Demo
 
-TODO: Add section on Flagsmith
+Documentation coming soon
 
 ## Experimenting beyond the demo
 

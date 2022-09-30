@@ -2,7 +2,8 @@ FROM node:16-bullseye AS builder
 WORKDIR /tmp/playground/
 COPY package*.json workspace.json tsconfig*.json nx.json babel.config.json ./
 COPY schemas/ ./schemas/
-RUN npm install
+# TODO Remove force once @openfeature/js-sdk@0.5.0 is avaliable
+RUN npm install --force
 COPY packages/ ./packages/
 RUN npm run build
 
@@ -10,7 +11,8 @@ FROM node:16-bullseye as app
 
 WORKDIR /opt/playground/
 COPY package*.json ./
-RUN npm ci --only=production
+# TODO Remove force once @openfeature/js-sdk@0.5.0 is avaliable
+RUN npm ci --omit=dev --force
 
 COPY --from=builder /tmp/playground/dist ./dist
 # Tracing script

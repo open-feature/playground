@@ -1,5 +1,4 @@
-import { JsonObject } from '@openfeature/js-sdk';
-import { EvaluationDetails, Hook, HookContext } from '@openfeature/js-sdk';
+import { EvaluationDetails, Hook, HookContext, JsonObject } from '@openfeature/js-sdk';
 import { validateSync } from 'class-validator';
 
 type Class = { new (data: any): any };

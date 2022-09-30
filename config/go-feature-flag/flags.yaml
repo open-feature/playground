@@ -13,13 +13,13 @@ new-welcome-message:
   percentage: 100
 
 # Must be a valid hex value
-# red: "CC0000"
-# green: "00CC00"
-# blue: "0000CC"
+# red: "c05543"
+# green: "2f5230"
+# blue: "0d507b"
 hex-color:
-  true: CC0000
-  false: 00CC00
-  default: CC0000
+  true: c05543
+  false: 2f5230
+  default: 2f5230
   percentage: 100
 
 # Must be a valid algorithm name
