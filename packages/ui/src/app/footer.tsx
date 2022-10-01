@@ -20,7 +20,7 @@ export class Footer extends React.Component<{
 }> {
   override render() {
     return (
-      <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+      <AppBar className='footer' position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
         <Toolbar style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <FormControl
             className="step-switch-provider"
@@ -43,7 +43,7 @@ export class Footer extends React.Component<{
               onChange={this.props.onSelectProvider}
             >
               {this.props.availableProviders.map((p) => {
-                return <MenuItem value={p}>{p}</MenuItem>;
+                return <MenuItem key={p} value={p}>{p}</MenuItem>;
               })}
             </Select>
           </FormControl>

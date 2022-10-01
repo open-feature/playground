@@ -3,10 +3,15 @@ import { StrictMode } from 'react';
 import { render } from 'react-dom/';
 import Page from './app/app';
 
+const htmlAndFooterSelectors = {
+  selector: 'html',
+  highlightedSelectors: ['html', '.footer'],
+};
+
 const steps: StepType[] = [
   {
     // step 0
-    selector: 'html',
+    ...htmlAndFooterSelectors,
     content: (
       <div>
         <h3>Welcome to the OpenFeature demo!</h3>
@@ -22,11 +27,10 @@ const steps: StepType[] = [
     // step 1
     selector: '.step-open-tour',
     content: `Use this button to resume the tour at any time.`,
-    padding: 20,
   },
   {
     // step 2
-    selector: 'html',
+    ...htmlAndFooterSelectors,
     content: `OpenFeature defines abstractions that allows the use of a single API to evaluate feature flags, no matter where your feature flags are managed (a SaaS vendor, a "in-house" implementation, OpenFeature's cloud native solution, or even a file).`,
   },
   {
@@ -36,7 +40,7 @@ const steps: StepType[] = [
   },
   {
     // step 4
-    selector: 'html',
+    ...htmlAndFooterSelectors,
     content: `Let's get started learning how OpenFeature is helping the authors of our fictional service manage this landing page!`,
   },
   {
@@ -51,7 +55,7 @@ const steps: StepType[] = [
   },
   {
     // step 7
-    selector: 'html',
+    ...htmlAndFooterSelectors,
     content: `Great! Now let's look into a flag with an associated string value. The design team is frequently experimenting with new color pallettes. Let's change our landing page's color.`,
   },
   {
@@ -61,7 +65,7 @@ const steps: StepType[] = [
   },
   {
     // step 9
-    selector: 'html',
+    ...htmlAndFooterSelectors,
     content: `Snazzy choice! Maybe you are a designer yourself? Feature flags provide a great means of allowing team-members who aren't engineers to control selected aspects of application characteristics.`,
   },
   {
@@ -91,12 +95,12 @@ const steps: StepType[] = [
   },
   {
     // step 15
-    selector: 'html',
+    ...htmlAndFooterSelectors,
     content: `Much better, we should enable this for all users soon!`,
   },
   {
     // step 16
-    selector: 'html',
+    ...htmlAndFooterSelectors,
     content: `That's it for our tour, but one more thing: as previously mentioned, one of the core benefits of OpenFeature is a consistent API across feature flag management systems...`,
   },
   {
@@ -106,7 +110,7 @@ const steps: StepType[] = [
   },
   {
     // step 18
-    selector: 'html',
+    ...htmlAndFooterSelectors,
     content: `Thanks for taking this quick tour of OpenFeature.`,
   },
 ];
@@ -121,13 +125,13 @@ const stepStye = {
   badge: (props: { [key: string]: unknown }) => {
     return {
       ...props,
-      backgroundColor: '#888',
+      background: '#888',
     };
   },
   dot: (props: { [key: string]: unknown }) => {
     return {
       ...props,
-      backgroundColor: '#888',
+      background: '#888',
     };
   },
 };

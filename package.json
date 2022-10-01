@@ -39,7 +39,7 @@
     "@opentelemetry/exporter-jaeger": "^1.7.0",
     "@opentelemetry/sdk-node": "^0.33.0",
     "@opentelemetry/sdk-trace-node": "~1.7.0",
-    "@reactour/tour": "^3.1.5",
+    "@reactour/tour": "^3.1.6",
     "@splitsoftware/openfeature-js-split-provider": "^1.0.2",
     "@splitsoftware/splitio": "^10.21.1",
     "@types/react-json-editor-ajrm": "^2.5.3",
