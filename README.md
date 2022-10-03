@@ -26,6 +26,7 @@ If you're brand new to feature flagging, considering reviewing the [OpenFeature 
   - [Go Feature Flag](#go-feature-flag)
   - [CloudBees Feature Management](#cloudbees-feature-management)
   - [Split](#split)
+  - [Harness](#harness)
   - [LaunchDarkly](#launchdarkly)
   - [Flagsmith Provider Demo](#flagsmith-provider-demo)
 - [Experimenting beyond the demo](#experimenting-beyond-the-demo)
@@ -245,34 +246,33 @@ In this demo, Go Feature Flag starts automatically as part of the Docker Compose
 
 ### CloudBees Feature Management
 
-[CloudBees Feature Management](https://www.cloudbees.com/capabilities/feature-management) is a SaaS feature management platform. It supports bi-directional configuration as code and integrates with other CloudBees tools.
+[CloudBees Feature Management](https://www.cloudbees.com/capabilities/feature-management) is an advanced feature flagging solution that lets your development teams quickly build and deploy applications without compromising on safety.
 
-Follow these steps to setup the application within CloudBees:
+Follow these steps to setup CloudBees for the demo:
 
-1. Sign-in to your CloudBees Feature Management account. If you don't already have an account, the [free community edition](https://www.cloudbees.com/c/feature-management-free-trial-sign-up) will work fine.
+1. Sign-in to your CloudBees Feature Management account. If you don't already have an account, you can use the [free community edition](https://www.cloudbees.com/c/feature-management-free-trial-sign-up).
 1. Within the CloudBees Feature Management UI, add a new application called `OpenFeature playground`. You can keep the default environment of `production`.
 1. In `App Settings` add a new custom STRING property called `email` as shown below. This is used in the `fib-algo` configuration to control the flag value via the email of the user logging into the playground application.
 
-<img src="./images/cloudbees/cb-email.png" width="50%">
+    <img src="./images/cloudbees/cb-email.png" width="50%">
 
 1. Create a new boolean flag called `new-welcome-message`.
+1. Create a new flag called `hex-color` with the values: `c05543`, `2f5230`, and `0d507b`.
+
+    <img src="./images/cloudbees/cb-hex-color.png" width="50%">
+
 1. Create a new flag called `fib-algo` with the values: `recursive`, `memo`, `loop`, `binet`, and `default`.
 1. For the `fib-algo` flag, add a configuration. This can be a combination of the `email` regEx of `.*faas.com$` and set `recursive` in the else section.
 
-<img src="./images/cloudbees/cb-fib-algo.png" width="50%">
-
-1. Create a new flag called `hex-color` with the values: `c05543`, `2f5230`, and `0d507b`.
-1. For the `hex-color` flag, add a configuration. This can be any of the defined values as the one shown below
-
-<img src="./images/cloudbees/cb-hex-color.png" width="50%">
+    <img src="./images/cloudbees/cb-fib-algo.png" width="50%">
 
 1. Ensure for each flag, the configuration switch is set to ON as shown below
 
-<img src="./images/cloudbees/cb-config-on.png" width="20%">
+    <img src="./images/cloudbees/cb-config-on.png" width="20%">
 
 1. Ensure the completed list of flags look as follows
 
-<img src="./images/cloudbees/cb-flag-list.png" width="50%">
+    <img src="./images/cloudbees/cb-flag-list.png" width="50%">
 
 1. Copy the production environment key found under `App settings` > `Environments`
 1. Open the `.env` file and make the value of `CLOUDBEES_APP_KEY` the key copied above
@@ -281,7 +281,62 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
 ### Split
 
-Documentation coming soon
+[Split](https://www.split.io/) is a feature delivery platform that powers feature flag management, software experimentation, and continuous delivery.
+
+Follow these steps to setup Split for the demo:
+
+1. Sign-in to your Split account. If you don't already have an account, you can use the [Split Free Edition](https://www.split.io/signup/).
+1. Create a new split called `new-welcome-message` and use the default treatments.
+
+    <img src="./images/split/new-welcome-message.png" width="50%">
+
+1. Create a new split called `hex-color` with the treatments: `c05543`, `2f5230`, and `0d507b`.
+
+    <img src="./images/split/hex-color.png" width="50%">
+
+1. Create a split called `fib-algo` with the values: `recursive`, `memo`, `loop`, `binet`, and `default`.
+
+    <img src="./images/split/fib-algo.png" width="50%">
+
+1. For the `fib-algo` flag, add a targeting rule that serves `binet` if the emails email address ends with `@faas.com`.
+
+    <img src="./images/split/fib-algo-targeting.png" width="50%">
+
+1. Create a new [server-side API key](https://help.split.io/hc/en-us/articles/360019916211-API-keys). This can be done by navigating to `Admin settings` > `API keys` > `Create API key`
+1. Open the `.env` file and make the value of `SPLIT_KEY` the key copied above
+
+Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `split` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via Split!
+
+### Harness
+
+[Harness Feature Flags](https://harness.io/products/feature-flags) provides automate progressive delivery and feature release pipelines to ship more features with less risk.
+
+Follow these steps to setup Harness for the demo:
+
+1. Sign-in to your Harness account. If you don't already have an account, you can use the [free plan](https://harness.io/pricing?module=ff#).
+1. Use an existing organization and project or [create a new one](https://docs.harness.io/article/36fw2u92i4-create-an-organization).
+1. Create a new boolean feature flag called `new-welcome-message` and confirm the ID is `newwelcomemessage`.
+
+    <img src="./images/harness/new-welcome-message.png" width="50%">
+
+1. Create a new multivariate feature flag called `hex-color` and confirm the ID is `hexcolor`. Add three variants with the following names and values: red - `c05543`, green - `2f5230`, and blue - `0d507b`.
+
+    <img src="./images/harness/hex-color.png" width="50%">
+
+1. Create a new multivariate feature flag called `fib-algo` and confirm the ID is `fibalgo`. Add these variants to both the name and value: `recursive`, `memo`, `loop`, `binet`, and `default`.
+
+    <img src="./images/harness/fib-algo.png" width="50%">
+
+1. Add a new targeting group called `Fib3r Employees` by going to `Target Management` > `Target Groups` > `New Target Group`.
+1. Add a targeting condition that looks for the `Identifier` to end with `@faas.com`.
+1. Add the fib-algo flag and set the variation to `binet`.
+
+    <img src="./images/harness/target-rules.png" width="50%">
+
+1. Create a new server-side SDK key. This can be done by navigating to `Environments` > `Development` > `New SDK Key`
+1. Open the `.env` file and make the value of `HARNESS_KEY` the key copied above
+
+Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `harness` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via Harness!
 
 ### LaunchDarkly
 

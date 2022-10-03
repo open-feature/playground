@@ -6,15 +6,14 @@
         "on": true,
         "off": false
       },
-      "defaultVariant": "on"
+      "defaultVariant": "off"
     },
     "hex-color": {
       "state": "ENABLED",
       "variants": {
         "red": "c05543",
         "green": "2f5230",
-        "blue": "0d507b",
-        "yellow": "yellow"
+        "blue": "0d507b"
       },
       "defaultVariant": "blue"
     },

@@ -16,10 +16,10 @@ const steps: StepType[] = [
       <div>
         <h3>Welcome to the OpenFeature demo!</h3>
         <p>
-          This is the landing page for our fictional killer app: Fibonacci as a Service! First, a few things about
-          OpenFeature, and this demo...
+          In this demo, we'll see how the team at Fib3r uses OpenFeature to safely experiment and release new features.
+          First, a few things about OpenFeature, and this demo.
         </p>
-        <footer>Click the right arrow to continue</footer>
+        <footer>When you're ready, click the right arrow to continue.</footer>
       </div>
     ),
   },
@@ -27,6 +27,9 @@ const steps: StepType[] = [
     // step 1
     selector: '.step-open-tour',
     content: `Use this button to resume the tour at any time.`,
+    position: (positionProps) => {
+      return [positionProps.windowWidth - 450, positionProps.windowHeight - 180];
+    },
   },
   {
     // step 2
@@ -41,7 +44,7 @@ const steps: StepType[] = [
   {
     // step 4
     ...htmlAndFooterSelectors,
-    content: `Let's get started learning how OpenFeature is helping the authors of our fictional service manage this landing page!`,
+    content: `Let's get started learning how OpenFeature is helping Fib3r manage this landing page!`,
   },
   {
     // step 5
@@ -56,12 +59,12 @@ const steps: StepType[] = [
   {
     // step 7
     ...htmlAndFooterSelectors,
-    content: `Great! Now let's look into a flag with an associated string value. The design team is frequently experimenting with new color pallettes. Let's change our landing page's color.`,
+    content: `Great! Now let's help the design team experiment with new color palette. Let's change our landing page's color.`,
   },
   {
     // step 8
     selector: '.json-editor',
-    content: `Use the editor to change the "defaultVariant" of the "hex-color" flag to match any of the defined variants.`,
+    content: `Use the editor to change the "defaultVariant" of the "hex-color" flag to match any of the defined colors.`,
   },
   {
     // step 9
@@ -71,12 +74,12 @@ const steps: StepType[] = [
   {
     // step 10
     selector: '.step-calculator',
-    content: `Let's give the fibonacci calculator a try, give it a click...`,
+    content: `Let's give the Fibonacci calculator a try, give it a click...`,
   },
   {
     // step 11
     selector: '.step-calculator',
-    content: `Turns out, calculating fibonacci(n) recursively isn't exactly efficient... Luckily, top minds at our company have found a more efficient algorithm for calculating fibonacci(n). It's experimental, so we only want to allow employee's to test it. Let's see how OpenFeature can help with that...`,
+    content: `Turns out, calculating fibonacci(n) recursively isn't exactly efficient... Luckily, Stack Overflow has a solution! It's experimental, so we only want to allow employee's to test it. Let's see how OpenFeature can help with that.`,
   },
   {
     // step 12
@@ -91,7 +94,7 @@ const steps: StepType[] = [
   {
     // step 14
     selector: '.step-calculator',
-    content: `Flag evaluations can take into account contextual information, about the user, application, or action. The "fib-algo" flag returns a different result if our email ends with "@faas.com". Let's run the fibonacci calculator again as an employee to test the new algorithm...`,
+    content: `Flag evaluations can take into account contextual information, about the user, application, or action. The "fib-algo" flag returns a different result if our email ends with "@faas.com". Let's run the fibonacci calculator again as an employee to test the new algorithm.`,
   },
   {
     // step 15
