@@ -11,7 +11,7 @@ import { CloudbeesProvider } from 'cloudbees-openfeature-provider-node';
 import Flagsmith from 'flagsmith-nodejs';
 import { ProviderId } from './constants';
 import { Client } from '@harnessio/ff-nodejs-server-sdk';
-import { OpenFeatureHarnessProvider } from 'packages/js-harness-provider/src';
+import { OpenFeatureHarnessProvider } from '@openfeature/js-harness-provider';
 
 type ProviderMap = Record<
   ProviderId,
