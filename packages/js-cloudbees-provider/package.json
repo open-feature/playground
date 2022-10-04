@@ -1,9 +1,0 @@
-{
-  "name": "@openfeature/js-cloudbees-provider",
-  "version": "0.0.1",
-  "type": "commonjs",
-  "dependencies": {
-    "@types/rox-node": "^5.0.1",
-    "rox-node": "^5.2.0"
-  }
-}

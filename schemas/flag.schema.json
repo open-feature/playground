@@ -1,106 +1,162 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://openfeature.dev/flag.schema.json",
-  "title": "OpenFeature Feature Flags",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "flagd Flag Configuration",
+  "description": "Defines flags for use in flagd, including typed variants and rules",
   "type": "object",
-  "patternProperties": {
-    "^[A-Za-z]+$": {
-      "description": "The flag key that uniquely represents the flag.",
+  "properties": {
+    "flags": {
       "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
-        },
-        "returnType": {
-          "type": "string",
-          "enum": ["boolean", "string", "number", "object"],
-          "default": "boolean"
-        },
-        "variants": {
-          "type": "object",
-          "patternProperties": {
-            "^[A-Za-z]+$": {
-              "properties": {
-                "value": {
-                  "type": ["string", "number", "boolean", "object"]
-                }
-              }
+      "$comment": "flag objects are one of the 4 flag types defined in $defs",
+      "additionalProperties": false,
+      "patternProperties": {
+        "^.{1,}$": {
+          "oneOf": [
+            {
+              "title": "Boolean flag",
+              "description": "A flag associated with boolean values",
+              "$ref": "#/$defs/booleanFlag"
             },
-            "additionalProperties": false
-          },
-          "minProperties": 2,
-          "default": { "enabled": true, "disabled": false }
-        },
-        "defaultVariant": {
-          "type": "string",
-          "default": "enabled"
-        },
-        "state": {
-          "type": "string",
-          "enum": ["enabled", "disabled"],
-          "default": "enabled"
-        },
-        "rules": {
-          "type": "array",
-          "items": {
-            "$ref": "#/$defs/rule"
-          },
-          "default": []
+            {
+              "title": "String flag",
+              "description": "A flag associated with string values",
+              "$ref": "#/$defs/stringFlag"
+            },
+            {
+              "title": "Numeric flag",
+              "description": "A flag associated with numeric values",
+              "$ref": "#/$defs/numberFlag"
+            },
+            {
+              "title": "Object flag",
+              "description": "A flag associated with arbitrary object values",
+              "$ref": "#/$defs/objectFlag"
+            }
+          ],
+          "unevaluatedProperties": false
         }
-      },
-      "required": ["state"],
-      "additionalProperties": false
+      }
     }
   },
-  "additionalProperties": false,
-
   "$defs": {
-    "rule": {
-      "type": "object",
-      "description": "A rule that ",
+    "flag": {
+      "title": "Flag base",
+      "description": "Base object for all flags",
       "properties": {
-        "action": {
-          "description": "The action that should be taken if at least one condition evaluates to true.",
-          "type": "object",
-          "properties": {
-            "variant": {
-              "type": "string",
-              "description": "The variant that should be return if one of the conditions evaluates to true."
-            }
-          },
-          "required": ["variant"],
-          "additionalProperties": false
+        "state": {
+          "title:": "Flag state",
+          "description": "Indicates whether the flag is functional. Disabled flags are treated as if they don't exist",
+          "type": "string",
+          "enum": ["ENABLED", "DISABLED"]
         },
-        "conditions": {
-          "type": "array",
-          "description": "The conditions that should that be evaluated.",
-          "items": {
-            "type": "object",
-            "properties": {
-              "context": {
-                "type": "string",
-                "description": "The context key that should be evaluated in this condition"
-              },
-              "op": {
-                "type": "string",
-                "description": "The operation that should be performed",
-                "enum": ["equals", "starts_with", "ends_with"]
-              },
-              "value": {
-                "type": "string",
-                "description": "The value that should be evaluated"
-              }
-            },
-            "required": ["context", "op", "value"],
-            "additionalProperties": false
-          }
+        "defaultVariant": {
+          "title": "Default variant",
+          "description": "The variant to serve if no dynamic targeting applies",
+          "type": "string"
+        },
+        "targeting": {
+          "type": "object",
+          "title": "Targeting Logic",
+          "description": "JsonLogic expressions to be used for dynamic evaluation. The \"context\" is passed as the data. Rules must resolve one of the defined variants, or the \"defaultVariant\" will be used."
         }
       },
-      "required": ["action", "conditions"],
-      "additionalProperties": false
+      "required": ["state", "defaultVariant"]
+    },
+    "booleanVariants": {
+      "type": "object",
+      "properties": {
+        "variants": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^.{1,}$": {
+              "type": "boolean"
+            }
+          },
+          "default": {
+            "on": true,
+            "off": false
+          }
+        }
+      }
+    },
+    "stringVariants": {
+      "type": "object",
+      "properties": {
+        "variants": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^.{1,}$": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "numberVariants": {
+      "type": "object",
+      "properties": {
+        "variants": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^.{1,}$": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "objectVariants": {
+      "type": "object",
+      "properties": {
+        "variants": {
+          "additionalProperties": false,
+          "patternProperties": {
+            "^.{1,}$": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "$comment": "Merge the variants with the base flag to build our typed flags",
+    "booleanFlag": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/flag"
+        },
+        {
+          "$ref": "#/$defs/booleanVariants"
+        }
+      ]
+    },
+    "stringFlag": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/flag"
+        },
+        {
+          "$ref": "#/$defs/stringVariants"
+        }
+      ]
+    },
+    "numberFlag": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/flag"
+        },
+        {
+          "$ref": "#/$defs/numberVariants"
+        }
+      ]
+    },
+    "objectFlag": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/flag"
+        },
+        {
+          "$ref": "#/$defs/objectVariants"
+        }
+      ]
     }
   }
 }

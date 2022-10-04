@@ -1,7 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { fibonacci } from '@openfeature/fibonacci';
 import { HexColorService } from './hex-color/hex-color.service';
-import { InstallService } from './install/install.service';
 import { MessageService } from './message/message.service';
 
 /**
@@ -11,7 +10,6 @@ import { MessageService } from './message/message.service';
 export class FibonacciAsAServiceController {
   constructor(
     private readonly messageService: MessageService,
-    private readonly installService: InstallService,
     private hexColorService: HexColorService
   ) {}
 

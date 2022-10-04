@@ -1,14 +1,16 @@
 {
-  "root": "packages/js-launchdarkly-provider",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/js-launchdarkly-provider/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/js-launchdarkly-provider",
         "main": "packages/js-launchdarkly-provider/src/index.ts",
-        "tsConfig": "packages/js-launchdarkly-provider/tsconfig.lib.json"
+        "tsConfig": "packages/js-launchdarkly-provider/tsconfig.lib.json",
+        "target": "node",
+        "compiler": "tsc"
       },
       "configurations": {
         "production": {
@@ -29,7 +31,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/js-launchdarkly-provider"],
       "options": {
-        "jestConfig": "packages/js-launchdarkly-provider/jest.config.js",
+        "jestConfig": "packages/js-launchdarkly-provider/jest.config.ts",
         "passWithNoTests": true
       }
     }
