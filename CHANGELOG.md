@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4](https://github.com/open-feature/playground/compare/openfeature-v0.0.3...openfeature-v0.0.4) (2022-10-04)
+
+
+### Bug Fixes
+
+* disable QEMU ([#70](https://github.com/open-feature/playground/issues/70)) ([ecfcf84](https://github.com/open-feature/playground/commit/ecfcf8469287faae1d311c4d965a3d360545b35c))
+
 ## [0.0.3](https://github.com/open-feature/playground/compare/openfeature-v0.0.2...openfeature-v0.0.3) (2022-10-04)
 
 
