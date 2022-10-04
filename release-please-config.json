@@ -5,7 +5,10 @@
       "release-type": "node",
       "prerelease": false,
       "bump-minor-pre-major": true,
-      "bump-patch-for-minor-pre-major": true
+      "bump-patch-for-minor-pre-major": true,
+      "extra-files": [
+        "docker-compose.yaml"
+      ]
     }
   }
 }
