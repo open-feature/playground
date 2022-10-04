@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.5](https://github.com/open-feature/playground/compare/openfeature-v0.0.4...openfeature-v0.0.5) (2022-10-04)
+
+
+### Features
+
+* use image in docker compose ([#72](https://github.com/open-feature/playground/issues/72)) ([66c554e](https://github.com/open-feature/playground/commit/66c554ee702971429219330d8db3d3bdd1a97b9a))
+
 ## [0.0.4](https://github.com/open-feature/playground/compare/openfeature-v0.0.3...openfeature-v0.0.4) (2022-10-04)
 
 
