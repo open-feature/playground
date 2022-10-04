@@ -1,8 +1,7 @@
 version: '3.8'
 services:
   demo:
-    # image: ghcr.io/open-feature/open-feature-demo:latest
-    build: .
+    image: ghcr.io/open-feature/playground:openfeature-v0.0.4 # x-release-please-version
     ports:
       - '30000:30000'
     command:
