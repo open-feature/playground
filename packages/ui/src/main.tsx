@@ -54,7 +54,7 @@ const steps: StepType[] = [
   {
     // step 6
     selector: '.json-editor',
-    content: `Use the editor to change enabled the new welcome message. This can be done by changing the default variant of the feature flag "new-welcome-message" to "on". Click anywhere outside the editor to apply the change.`,
+    content: `Use the editor to change the welcome message. This can be done by changing the "defaultVariant" of the feature flag "new-welcome-message" to "on". Click anywhere outside the editor to apply the change.`,
   },
   {
     // step 7
