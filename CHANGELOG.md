@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.6](https://github.com/open-feature/playground/compare/openfeature-v0.0.5...openfeature-v0.0.6) (2022-10-05)
+
+
+### Bug Fixes
+
+* address grammatical issues discovered in the tutorial ([#77](https://github.com/open-feature/playground/issues/77)) ([4834fcf](https://github.com/open-feature/playground/commit/4834fcf11037d656543068dd5f198d89622c6184)), closes [#74](https://github.com/open-feature/playground/issues/74)
+
 ## [0.0.5](https://github.com/open-feature/playground/compare/openfeature-v0.0.4...openfeature-v0.0.5) (2022-10-04)
 
 
