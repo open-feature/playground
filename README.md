@@ -311,7 +311,7 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
 ### Harness
 
-[Harness Feature Flags](https://harness.io/products/feature-flags) provides automate progressive delivery and feature release pipelines to ship more features with less risk.
+[Harness Feature Flags](https://harness.io/products/feature-flags) provides automated progressive delivery and feature release pipelines to ship more features with less risk.
 
 Follow these steps to setup Harness for the demo:
 
@@ -342,7 +342,31 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
 ### LaunchDarkly
 
-Documentation coming soon
+[LaunchDarkly](https://launchdarkly.com/) is a SaaS platform for developers to manage feature flags. By decoupling feature rollout and code deployment, LaunchDarkly enables developers to test their code live in production, gradually release features to groups of users, and manage flags throughout their entire lifecycle. This allows developers to release better software, with less risk.
+
+Follow these steps to setup LaunchDarkly for the demo:
+
+1. Sign-in to your LaunchDarkly account. If you don't already have an account, you can sign up for a [free trial](https://launchdarkly.com/pricing/).
+1. Create a new feature flag with the key `new-welcome-message` using the default boolean flag variation.
+
+    <img src="./images/launchdarkly/new-welcome-message.png" width="50%">
+
+1. Create a new feature flag with the key `hex-color`. Set the flag variations to `string` and add three variations with the following variation and name: `c05543` - red, `2f5230` - green, and `0d507b` - blue.
+
+    <img src="./images/launchdarkly/hex-color.png" width="50%">
+
+1. Create a new feature flag with the key `fib-algo`. Set the flag variations to `string` and add these variants to both the variation and name: `recursive`, `memo`, `loop`, `binet`, and `default`.
+
+    <img src="./images/launchdarkly/fib-algo.png" width="50%">
+
+1. Select the `fib-algo` flag and add a targeting rule that looks for the `email` to end with `@faas.com` and serves `binet`.
+
+    <img src="./images/launchdarkly/target-rules.png" width="50%">
+
+1. Navigate to `Account settings` > `Environments` and copy the SDK Key associated with the environment you would like to use.
+1. Open the `.env` file and make the value of `LD_KEY` the key copied above.
+
+Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `launchdarkly` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via LaunchDarkly!
 
 ### Flagsmith Provider Demo
 
