@@ -116,9 +116,8 @@ export class FlagsmithProvider implements Provider {
     if (!flags.isFeatureEnabled(flagKey)) {
       throw new FlagNotFoundError('The exists but is disabled.');
     }
-    const value = flags.getFeatureValue(flagKey);
-    console.log(JSON.stringify(value, null, 2));
-    return { value };
+
+    return { value: flags.getFeatureValue(flagKey) };
   }
 
   private getFlagTypeErrorMessage(flagKey: string, value: unknown, expectedType: string) {
