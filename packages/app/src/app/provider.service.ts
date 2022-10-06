@@ -86,6 +86,14 @@ export class ProviderService {
           const client = new Flagsmith({
             environmentKey: process.env.FLAGSMITH_ENV_KEY as string,
             enableLocalEvaluation: true,
+            /**
+             * Overriding the default API URL because it was returning a 502.
+             */
+            apiUrl: 'https://api.flagsmith.com/api/v1/',
+            /**
+             * Refresh aggressively for demo purposes.
+             * The Default value in Flagsmith is 60 seconds.
+             */
             environmentRefreshIntervalSeconds: 5,
           });
           return new FlagsmithProvider({
@@ -93,8 +101,7 @@ export class ProviderService {
           });
         }
       },
-      // getting 401s from flagsmith at the moment.
-      available: () => false,
+      available: () => !!process.env.FLAGSMITH_ENV_KEY,
     },
     harness: {
       factory: () => {

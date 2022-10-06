@@ -368,9 +368,41 @@ Follow these steps to setup LaunchDarkly for the demo:
 
 Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `launchdarkly` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via LaunchDarkly!
 
-### Flagsmith Provider Demo
+### Flagsmith
 
-Documentation coming soon
+[Flagsmith](https://flagsmith.com/) is an open-source feature flag and remote config service. Flagsmith offers many deployment options including: SaaS, private cloud, and on-premise.
+
+Follow these steps to setup Flagsmith for the demo:
+
+1. Sign-in to your Flagsmith account. If you don't already have an account, you can sign up for the [free plan](https://flagsmith.com/pricing/).
+1. Navigate to `Environment` > `Development` > `Features`.
+1. Create a new feature with the id `new-welcome-message`. Enabled the feature and add a `true` and `false` variation values. Confirm that `true` is the control value and set to 100%.
+
+    <img src="./images/flagsmith/new-welcome-message.png" width="50%">
+
+1. Create a new feature with the id `hex-color`. Enabled the feature and add a `c05543`, `2f5230` and `0d507b` variation values. Confirm that `c05543` is the control value and set to 100%.
+
+    <img src="./images/flagsmith/hex-color.png" width="50%">
+
+1. Create a new feature with the id `fib-algo`. Enabled the feature and add a `recursive`, `memo`, `loop`, `binet`, and `default` variation values. Confirm that `recursive` is the control value and set to 100%.
+
+    <img src="./images/flagsmith/fib-algo.png" width="50%">
+
+1. Create a new segment called `fib3r_employees` and add a rule that checks if email trait `email` contains `@faas.com`.
+
+    <img src="./images/launchdarkly/segment-config.png" width="50%">
+
+1. Select the `fib-algo` feature under the development environment and add a segment override. Select the `fib3r_employees` override, enable the override, and confirm the control is set to `binet`.
+
+    <img src="./images/launchdarkly/segment-override.png" width="50%">
+
+1. Navigate to `Environments` > `Development` > `Settings` and create a new server-side environment key.
+
+    <img src="./images/launchdarkly/server-side-key.png" width="50%">
+
+1. Open the `.env` file and make the value of `FLAGSMITH_ENV_KEY` the key copied above.
+
+Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `flagsmith` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via Flagsmith!
 
 ## Experimenting beyond the demo
 
