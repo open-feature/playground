@@ -390,15 +390,15 @@ Follow these steps to setup Flagsmith for the demo:
 
 1. Create a new segment called `fib3r_employees` and add a rule that checks if email trait `email` contains `@faas.com`.
 
-    <img src="./images/launchdarkly/segment-config.png" width="50%">
+    <img src="./images/flagsmith/segment-config.png" width="50%">
 
 1. Select the `fib-algo` feature under the development environment and add a segment override. Select the `fib3r_employees` override, enable the override, and confirm the control is set to `binet`.
 
-    <img src="./images/launchdarkly/segment-override.png" width="50%">
+    <img src="./images/flagsmith/segment-override.png" width="50%">
 
 1. Navigate to `Environments` > `Development` > `Settings` and create a new server-side environment key.
 
-    <img src="./images/launchdarkly/server-side-key.png" width="50%">
+    <img src="./images/flagsmith/server-side-key.png" width="50%">
 
 1. Open the `.env` file and make the value of `FLAGSMITH_ENV_KEY` the key copied above.
 
