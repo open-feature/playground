@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.7](https://github.com/open-feature/playground/compare/openfeature-v0.0.6...openfeature-v0.0.7) (2022-10-06)
+
+
+### Features
+
+* add flagsmith support to the playground ([#80](https://github.com/open-feature/playground/issues/80)) ([ef85b84](https://github.com/open-feature/playground/commit/ef85b84710592c5e1a0a4d916ebd4df3720f92f3))
+
 ## [0.0.6](https://github.com/open-feature/playground/compare/openfeature-v0.0.5...openfeature-v0.0.6) (2022-10-05)
 
 
