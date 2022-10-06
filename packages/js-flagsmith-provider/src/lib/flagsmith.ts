@@ -1,5 +1,5 @@
 import { ParseError, parseValidJsonObject, TypeMismatchError } from '@openfeature/extra';
-import { EvaluationContextValue, JsonValue } from '@openfeature/js-sdk';
+import { EvaluationContextValue, JsonValue, FlagNotFoundError } from '@openfeature/js-sdk';
 import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/js-sdk';
 import Flagsmith from 'flagsmith-nodejs';
 
@@ -109,12 +109,16 @@ export class FlagsmithProvider implements Provider {
   }
 
   private async evaluate<T>(flagKey: string, identity: Identity): Promise<ResolutionDetails<T>> {
-    const value = identity.identifier
-      ? (await this.client.getIdentityFlags(identity.identifier, identity.traits)).getFeatureValue(flagKey)
-      : (await this.client.getEnvironmentFlags()).getFeatureValue(flagKey);
-    return {
-      value,
-    };
+    const flags = await (identity.identifier
+      ? this.client.getIdentityFlags(identity.identifier, identity.traits)
+      : this.client.getEnvironmentFlags());
+
+    if (!flags.isFeatureEnabled(flagKey)) {
+      throw new FlagNotFoundError('The exists but is disabled.');
+    }
+    const value = flags.getFeatureValue(flagKey);
+    console.log(JSON.stringify(value, null, 2));
+    return { value };
   }
 
   private getFlagTypeErrorMessage(flagKey: string, value: unknown, expectedType: string) {
