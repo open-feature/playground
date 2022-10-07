@@ -22,13 +22,12 @@ If you're brand new to feature flagging, consider reviewing the [What are featur
 - [Available providers](#available-providers)
   - [Environment Variable](#environment-variable)
   - [FlagD](#flagd)
-    - [Flag Configuration in FlagD](#flag-configuration-in-flagd)
   - [Go Feature Flag](#go-feature-flag)
   - [CloudBees Feature Management](#cloudbees-feature-management)
   - [Split](#split)
   - [Harness](#harness)
   - [LaunchDarkly](#launchdarkly)
-  - [Flagsmith Provider Demo](#flagsmith-provider-demo)
+  - [Flagsmith](#flagsmith)
 - [Experimenting beyond the demo](#experimenting-beyond-the-demo)
   - [Evaluation context](#evaluation-context)
 - [Troubleshooting](#troubleshooting)
@@ -118,7 +117,8 @@ It supports the ability to define flag configurations in various locations inclu
 
 In this demo, FlagD starts automatically as part of the Docker Compose file. It's configured to watch a local file `/config/flagd/flags.json` for flag configurations. Feel free to modify this file and see how it affects the demo. Valid configurations changes should be reflected almost immediately.
 
-#### Flag Configuration in FlagD
+<details>
+  <summary>Flag Configuration in FlagD</summary>
 
 A FlagD configuration is represented as a JSON object. Feature flag configurations can be found under `flags` and each item within `flags` represents a flag key (the unique identifier for a flag) and its corresponding configuration.
 
@@ -240,6 +240,8 @@ The [JSON Logic playground](https://jsonlogic.com/play.html) is a great way to e
 5. confirm the output show `"binet"`
 6. Optionally, experiment with different rules and data
 
+</details>
+
 ### Go Feature Flag
 
 [Go Feature Flag](https://gofeatureflag.org/) is a open source feature flagging solution. It provides the ability to define flag configurations in various locations (HTTP, S3, GitHub, file, Google Cloud Storage, Kubernetes). OpenFeature is able to integrate with Go Feature Flag by using the [Go Feature Flag Relay Proxy](https://github.com/thomaspoignant/go-feature-flag-relay-proxy).
@@ -250,7 +252,8 @@ In this demo, Go Feature Flag starts automatically as part of the Docker Compose
 
 [CloudBees Feature Management](https://www.cloudbees.com/capabilities/feature-management) is an advanced feature flagging solution that lets your development teams quickly build and deploy applications without compromising on safety.
 
-Follow these steps to setup CloudBees for the demo:
+<details>
+  <summary>Follow these steps to setup CloudBees for the demo:</summary>
 
 1. Sign-in to your CloudBees Feature Management account. If you don't already have an account, you can use the [free community edition](https://www.cloudbees.com/c/feature-management-free-trial-sign-up).
 1. Within the CloudBees Feature Management UI, add a new application called `OpenFeature playground`. You can keep the default environment of `production`.
@@ -280,12 +283,14 @@ Follow these steps to setup CloudBees for the demo:
 1. Open the `.env` file and make the value of `CLOUDBEES_APP_KEY` the key copied above
 
 Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `cloudbees` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via CloudBees!
+</details>
 
 ### Split
 
 [Split](https://www.split.io/) is a feature delivery platform that powers feature flag management, software experimentation, and continuous delivery.
 
-Follow these steps to setup Split for the demo:
+<details>
+  <summary>Follow these steps to setup Split for the demo:</summary>
 
 1. Sign-in to your Split account. If you don't already have an account, you can use the [Split Free Edition](https://www.split.io/signup/).
 1. Create a new split called `new-welcome-message` and use the default treatments.
@@ -309,11 +314,14 @@ Follow these steps to setup Split for the demo:
 
 Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `split` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via Split!
 
+</details>
+
 ### Harness
 
 [Harness Feature Flags](https://harness.io/products/feature-flags) provides automated progressive delivery and feature release pipelines to ship more features with less risk.
 
-Follow these steps to setup Harness for the demo:
+<details>
+  <summary>Follow these steps to setup Harness for the demo:</summary>
 
 1. Sign-in to your Harness account. If you don't already have an account, you can use the [free plan](https://harness.io/pricing?module=ff#).
 1. Use an existing organization and project or [create a new one](https://docs.harness.io/article/36fw2u92i4-create-an-organization).
@@ -339,12 +347,14 @@ Follow these steps to setup Harness for the demo:
 1. Open the `.env` file and make the value of `HARNESS_KEY` the key copied above
 
 Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `harness` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via Harness!
+</details>
 
 ### LaunchDarkly
 
 [LaunchDarkly](https://launchdarkly.com/) is a SaaS platform for developers to manage feature flags. By decoupling feature rollout and code deployment, LaunchDarkly enables developers to test their code live in production, gradually release features to groups of users, and manage flags throughout their entire lifecycle. This allows developers to release better software, with less risk.
 
-Follow these steps to setup LaunchDarkly for the demo:
+<details>
+  <summary>Follow these steps to setup LaunchDarkly for the demo:</summary>
 
 1. Sign-in to your LaunchDarkly account. If you don't already have an account, you can sign up for a [free trial](https://launchdarkly.com/pricing/).
 1. Create a new feature flag with the key `new-welcome-message` using the default boolean flag variation.
@@ -367,12 +377,14 @@ Follow these steps to setup LaunchDarkly for the demo:
 1. Open the `.env` file and make the value of `LD_KEY` the key copied above.
 
 Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `launchdarkly` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via LaunchDarkly!
+</details>
 
 ### Flagsmith
 
 [Flagsmith](https://flagsmith.com/) is an open-source feature flag and remote config service. Flagsmith offers many deployment options including: SaaS, private cloud, and on-premise.
 
-Follow these steps to setup Flagsmith for the demo:
+<details>
+  <summary>Follow these steps to setup Flagsmith for the demo:</summary>
 
 1. Sign-in to your Flagsmith account. If you don't already have an account, you can sign up for the [free plan](https://flagsmith.com/pricing/).
 1. Navigate to `Environment` > `Development` > `Features`.
@@ -403,6 +415,7 @@ Follow these steps to setup Flagsmith for the demo:
 1. Open the `.env` file and make the value of `FLAGSMITH_ENV_KEY` the key copied above.
 
 Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `flagsmith` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via Flagsmith!
+</details>
 
 ## Experimenting beyond the demo
 
