@@ -4,7 +4,7 @@ COPY package*.json workspace.json tsconfig*.json nx.json babel.config.json ./
 COPY schemas/ ./schemas/
 RUN npm install
 COPY packages/ ./packages/
-RUN npm run build
+RUN npm run build:app
 
 FROM node:16-bullseye as app
 
@@ -17,7 +17,7 @@ COPY --from=builder /tmp/playground/dist ./dist
 COPY scripts ./scripts
 COPY schemas ./schemas
 
-LABEL org.opencontainers.image.source=https://github.com/open-feature/open-feature-demo
+LABEL org.opencontainers.image.source=https://github.com/open-feature/playground
 
 EXPOSE 30000
 

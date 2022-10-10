@@ -59,17 +59,34 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      - name: Build
+      - name: Build App Container
         uses: docker/build-push-action@v2
         with:
           # builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: ./Dockerfile
+          file: ./packages/app/Dockerfile
           # platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ needs.release-please.outputs.release_tag_name }}
+            ${{ env.REGISTRY }}/app:latest
+            ${{ env.REGISTRY }}/app:${{ needs.release-please.outputs.release_tag_name }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VERSION=${{ steps.meta.outputs.tags }}
+            COMMIT=${{ github.sha }}
+            DATE=${{ steps.date.outputs.date }}
+
+      - name: Build Fibonacci Service Container
+        uses: docker/build-push-action@v2
+        with:
+          # builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./packages/fibonacci-service/Dockerfile
+          # platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/fib-service:latest
+            ${{ env.REGISTRY }}/fib-service:${{ needs.release-please.outputs.release_tag_name }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VERSION=${{ steps.meta.outputs.tags }}

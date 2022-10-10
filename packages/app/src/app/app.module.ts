@@ -15,6 +15,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ProvidersController } from './providers.controller';
 import { ProviderService } from './provider.service';
+import { HttpModule } from '@nestjs/axios';
+import { FibonacciService } from './fibonacci/fibonacci.service';
 
 /**
  * Adding hooks to at the global level will ensure they always run
@@ -32,13 +34,15 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '.', 'assets', 'public'),
+      rootPath: join(__dirname, '..', 'ui'),
     }),
+    HttpModule,
   ],
   controllers: [FibonacciAsAServiceController, UtilsController, ProvidersController],
   providers: [
     MessageService,
     HexColorService,
+    FibonacciService,
     ProviderService,
     {
       provide: OPENFEATURE_CLIENT,
@@ -51,11 +55,13 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
       provide: REQUEST_DATA,
       useFactory: (req: Request): RequestData => {
         const authHeaderValue = req.header('Authorization') || 'anonymous';
+        const userAgent = req.header('user-agent');
         return {
           ip: (req.headers['x-forwarded-for'] as string) || (req.socket.remoteAddress as string),
           email: authHeaderValue,
           method: req.method,
           path: req.path,
+          ...(userAgent && { userAgent }),
           targetingKey: authHeaderValue,
         };
       },

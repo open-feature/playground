@@ -3,6 +3,7 @@ export type RequestData = {
   ip: string;
   method: string;
   path: string;
+  userAgent?: string;
   email?: string;
 };
 

@@ -1,0 +1,70 @@
+{
+  "name": "fibonacci-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/fibonacci-service/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/packages/fibonacci-service",
+        "main": "packages/fibonacci-service/src/main.ts",
+        "tsConfig": "packages/fibonacci-service/tsconfig.app.json",
+        "assets": [
+          "packages/fibonacci-service/src/assets"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "packages/fibonacci-service/src/environments/environment.ts",
+              "with": "packages/fibonacci-service/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/js:node",
+      "options": {
+        "buildTarget": "fibonacci-service:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "fibonacci-service:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/fibonacci-service/**/*.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/packages/fibonacci-service"
+      ],
+      "options": {
+        "jestConfig": "packages/fibonacci-service/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
