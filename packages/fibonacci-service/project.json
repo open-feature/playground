@@ -14,10 +14,7 @@
         "compiler": "tsc",
         "outputPath": "dist/packages/fibonacci-service",
         "main": "packages/fibonacci-service/src/main.ts",
-        "tsConfig": "packages/fibonacci-service/tsconfig.app.json",
-        "assets": [
-          "packages/fibonacci-service/src/assets"
-        ]
+        "tsConfig": "packages/fibonacci-service/tsconfig.app.json"
       },
       "configurations": {
         "production": {
