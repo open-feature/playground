@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.9](https://github.com/open-feature/playground/compare/openfeature-v0.0.8...openfeature-v0.0.9) (2022-10-11)
+
+
+### Bug Fixes
+
+* container build process ([74f67b2](https://github.com/open-feature/playground/commit/74f67b25da9f0f18cf4a1480576bf837ec7169b4))
+
 ## [0.0.8](https://github.com/open-feature/playground/compare/openfeature-v0.0.7...openfeature-v0.0.8) (2022-10-11)
 
 
