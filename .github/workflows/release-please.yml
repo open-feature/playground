@@ -68,8 +68,8 @@ jobs:
           # platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/app:latest
-            ${{ env.REGISTRY }}/app:${{ needs.release-please.outputs.release_tag_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:${{ needs.release-please.outputs.release_tag_name }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VERSION=${{ steps.meta.outputs.tags }}
@@ -85,8 +85,8 @@ jobs:
           # platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/fib-service:latest
-            ${{ env.REGISTRY }}/fib-service:${{ needs.release-please.outputs.release_tag_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:${{ needs.release-please.outputs.release_tag_name }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VERSION=${{ steps.meta.outputs.tags }}
