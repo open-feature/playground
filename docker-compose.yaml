@@ -1,7 +1,9 @@
 version: '3.8'
 services:
   demo:
-    image: ghcr.io/open-feature/playground:openfeature-v0.0.7 # x-release-please-version
+    # image: ghcr.io/open-feature/playground:app-v0.0.7 # x-release-please-version
+    build:
+      dockerfile: ./packages/app/Dockerfile
     ports:
       - '30000:30000'
     command:
@@ -10,6 +12,7 @@ services:
     depends_on:
       - flagd
       - jaeger
+      - fib-service
     volumes:
       - ${PWD}/config/flagd/flags.json:/opt/playground/config/flagd/flags.json
     environment:
@@ -17,6 +20,9 @@ services:
      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6832
      - GO_FEATURE_FLAG_URL=http://go-feature-flag:1031
+     - FIB_SERVICE_URL=http://fib-service:30001
+     - FIB_SERVICE_USER
+     - FIB_SERVICE_PASS
       # Provider values come from the .env
      - NEW_WELCOME_MESSAGE
      - FIB_ALGO
@@ -27,6 +33,19 @@ services:
      - LD_KEY
      - FLAGSMITH_ENV_KEY
      - CLOUDBEES_APP_KEY
+
+  fib-service:
+    # image: ghcr.io/open-feature/playground:fib-service-v0.0.7 # x-release-please-version
+    build:
+      dockerfile: ./packages/fibonacci-service/Dockerfile
+    expose:
+      - "30001"
+    environment:
+     - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+     - OTEL_EXPORTER_JAEGER_AGENT_PORT=6832
+     - OTEL_SERVICE_NAME=fibonacci-service
+     - FIB_SERVICE_USER
+     - FIB_SERVICE_PASS
 
   jaeger:
     image: jaegertracing/all-in-one:1.38

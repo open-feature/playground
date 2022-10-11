@@ -1,5 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, DefaultValuePipe, Get, ParseIntPipe, Query } from '@nestjs/common';
 import { fibonacci } from '@openfeature/fibonacci';
+import { FibonacciService } from './fibonacci/fibonacci.service';
 import { HexColorService } from './hex-color/hex-color.service';
 import { MessageService } from './message/message.service';
 
@@ -10,7 +11,8 @@ import { MessageService } from './message/message.service';
 export class FibonacciAsAServiceController {
   constructor(
     private readonly messageService: MessageService,
-    private hexColorService: HexColorService
+    private readonly fibonacciService: FibonacciService,
+    private readonly hexColorService: HexColorService
   ) {}
 
   /**
@@ -48,9 +50,7 @@ export class FibonacciAsAServiceController {
    * @returns
    */
   @Get('calculate')
-  async getFibonacci(@Query('num') num: string) {
-    return {
-      result: await fibonacci(Number.parseInt(num)),
-    };
+  async getFibonacci(@Query('num', new DefaultValuePipe(45), ParseIntPipe) num: number) {
+    return this.fibonacciService.calculateFibonacci(num);
   }
 }

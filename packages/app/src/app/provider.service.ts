@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { FlagdProvider } from '@openfeature/flagd-provider';
 import { GoFeatureFlagProvider } from '@openfeature/go-feature-flag-provider';
 import { OpenFeatureEnvProvider } from '@openfeature/js-env-provider';
@@ -24,6 +24,7 @@ type ProviderMap = Record<
 
 @Injectable()
 export class ProviderService {
+  private readonly logger = new Logger(ProviderService.name);
   private _currentProvider: ProviderId;
   private providerMap: ProviderMap = {
     env: { factory: () => new OpenFeatureEnvProvider() },
@@ -117,7 +118,14 @@ export class ProviderService {
   };
 
   constructor() {
-    this._currentProvider = process.argv[2] as ProviderId;
+    const configuredDefaultProvider = process.argv[2] as ProviderId;
+    if (this.providerMap[configuredDefaultProvider]) {
+      this._currentProvider = process.argv[2] as ProviderId;
+    } else {
+      this.logger.warn("Using FlagD because the default provider hasn't been defined.");
+      this._currentProvider = 'flagd';
+    }
+
     this.switchProvider(this._currentProvider);
   }
 

@@ -17,6 +17,14 @@
       },
       "defaultVariant": "blue"
     },
+    "use-remote-fib-service": {
+      "state": "ENABLED",
+      "variants": {
+        "on": true,
+        "off": false
+      },
+      "defaultVariant": "on"
+    },
     "fib-algo": {
       "state": "ENABLED",
       "variants": {
