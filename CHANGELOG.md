@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.12](https://github.com/open-feature/playground/compare/openfeature-v0.0.11...openfeature-v0.0.12) (2022-10-11)
+
+
+### Bug Fixes
+
+* bump ci step versions ([#92](https://github.com/open-feature/playground/issues/92)) ([23aaddf](https://github.com/open-feature/playground/commit/23aaddff89a4bf173844dd7b5e92f5dc33c0cd49))
+
 ## [0.0.11](https://github.com/open-feature/playground/compare/openfeature-v0.0.10...openfeature-v0.0.11) (2022-10-11)
 
 
