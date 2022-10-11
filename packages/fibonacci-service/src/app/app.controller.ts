@@ -6,7 +6,7 @@ import { AuthGuard } from './auth.guard';
 @UseGuards(new AuthGuard())
 export class AppController {
   @Get('calculate')
-  async getFibonacci(@Query('num', new DefaultValuePipe(50), ParseIntPipe) num: number) {
+  async getFibonacci(@Query('num', new DefaultValuePipe(45), ParseIntPipe) num: number) {
     return {
       result: getNthFibBinet(num),
     };
