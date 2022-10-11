@@ -23,7 +23,7 @@
         "on": true,
         "off": false
       },
-      "defaultVariant": "on"
+      "defaultVariant": "off"
     },
     "fib-algo": {
       "state": "ENABLED",
