@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.1](https://github.com/open-feature/playground/compare/v0.1.0...v0.1.1) (2022-10-11)
+
+
+### Bug Fixes
+
+* disable auth in fib service when env var aren't defined ([#95](https://github.com/open-feature/playground/issues/95)) ([18eff6b](https://github.com/open-feature/playground/commit/18eff6b75eb7bce6dbe07f52308cc9cfa0b3e307))
+* improve timing of fib demo ([#96](https://github.com/open-feature/playground/issues/96)) ([b4106df](https://github.com/open-feature/playground/commit/b4106df0203f55ad1f1fd2aa3c54c6e7d9bc7868))
+
 ## [0.1.0](https://github.com/open-feature/playground/compare/v0.0.12...v0.1.0) (2022-10-11)
 
 
