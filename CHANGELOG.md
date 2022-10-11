@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.11](https://github.com/open-feature/playground/compare/openfeature-v0.0.10...openfeature-v0.0.11) (2022-10-11)
+
+
+### Bug Fixes
+
+* disable monorepo tags in release please ([3a64a68](https://github.com/open-feature/playground/commit/3a64a68e5def97e8291c9f29fe84f792048ca5ca))
+
 ## [0.0.10](https://github.com/open-feature/playground/compare/openfeature-v0.0.9...openfeature-v0.0.10) (2022-10-11)
 
 
