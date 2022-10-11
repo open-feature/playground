@@ -8,19 +8,19 @@ export async function fibonacci(num: number): Promise<number> {
   switch (value) {
     case 'recursive':
       console.log('Running the recursive fibonacci function');
-      return await getNthFibRecursive(num);
+      return getNthFibRecursive(num);
     case 'memo':
       console.log('Running the memo fibonacci function');
-      return await getNthFibRecursiveMemo(num);
+      return getNthFibRecursiveMemo(num);
     case 'loop':
       console.log('Running the looping fibonacci function');
-      return await getNthFibLoop(num);
+      return getNthFibLoop(num);
     case 'binet':
       console.log('Running the binet fibonacci function');
-      return await getNthFibBinet(num);
+      return getNthFibBinet(num);
     default:
       console.log('Running the default recursive fibonacci function');
-      return await getNthFibRecursive(num);
+      return getNthFibRecursive(num);
   }
 }
 
@@ -48,8 +48,8 @@ function getNthFibRecursiveSync(num: number): number {
 
 type Cache = { [num: number]: number };
 
-export  function getNthFibRecursiveMemo(num: number, memo: Cache = { 1: 0, 2: 1 }): Promise<number> {
-  return Promise.resolve(getNthFibRecursiveMemoSync(num, memo));
+export  function getNthFibRecursiveMemo(num: number, memo: Cache = { 1: 0, 2: 1 }): number {
+  return getNthFibRecursiveMemoSync(num, memo);
 }
 
 function getNthFibRecursiveMemoSync(num: number, memo: Cache = { 1: 0, 2: 1 }): number {
@@ -61,7 +61,7 @@ function getNthFibRecursiveMemoSync(num: number, memo: Cache = { 1: 0, 2: 1 }): 
   }
 }
 
-export function getNthFibLoop(num: number): Promise<number> {
+export function getNthFibLoop(num: number): number {
   const previousTwoNum: [number, number] = [0, 1];
   let counter = 3;
   while (counter <= num) {
@@ -70,11 +70,11 @@ export function getNthFibLoop(num: number): Promise<number> {
     previousTwoNum[1] = nextNum;
     counter++;
   }
-  return Promise.resolve(num > 1 ? previousTwoNum[1] : previousTwoNum[0]);
+  return num > 1 ? previousTwoNum[1] : previousTwoNum[0];
 }
 
-export function getNthFibBinet(num: number): Promise<number> {
-  return Promise.resolve(Math.round(
+export function getNthFibBinet(num: number): number {
+  return Math.round(
     (Math.pow((1 + Math.sqrt(5)) / 2, num - 1) - Math.pow((1 - Math.sqrt(5)) / 2, num - 1)) / Math.sqrt(5)
-  ));
+  );
 }

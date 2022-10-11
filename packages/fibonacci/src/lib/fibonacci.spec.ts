@@ -24,20 +24,20 @@ describe('nth fibonacci', () => {
   for (const test of tests) {
     const [input, output] = test
     const testDescription = `${input} should be ${output}`
-    it(`Fibonacci Loop: ${testDescription}`, () => {
-      expect(getNthFibLoop(input)).toEqual(output);
+    it(`Fibonacci Loop: ${testDescription}`, async () => {
+      expect(await getNthFibLoop(input)).toEqual(output);
     });
 
-    it(`Fibonacci recursive: ${testDescription}`, () => {
-      expect(getNthFibRecursive(input)).toEqual(output);
+    it(`Fibonacci recursive: ${testDescription}`, async () => {
+      expect(await getNthFibRecursive(input)).toEqual(output);
     });
 
-    it(`Fibonacci memo: ${testDescription}`, () => {
-      expect(getNthFibRecursiveMemo(input)).toEqual(output);
+    it(`Fibonacci memo: ${testDescription}`, async () => {
+      expect(await getNthFibRecursiveMemo(input)).toEqual(output);
     });
 
-    it(`Fibonacci binet: ${testDescription}`, () => {
-      expect(getNthFibBinet(input)).toEqual(output);
+    it(`Fibonacci binet: ${testDescription}`, async () => {
+      expect(await getNthFibBinet(input)).toEqual(output);
     });
   }
 });
