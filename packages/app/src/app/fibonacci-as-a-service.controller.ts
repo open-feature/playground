@@ -50,7 +50,7 @@ export class FibonacciAsAServiceController {
    * @returns
    */
   @Get('calculate')
-  async getFibonacci(@Query('num', new DefaultValuePipe(45), ParseIntPipe) num: number) {
+  async getFibonacci(@Query('num', new DefaultValuePipe(40), ParseIntPipe) num: number) {
     return this.fibonacciService.calculateFibonacci(num);
   }
 }
