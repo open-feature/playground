@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.0.8](https://github.com/open-feature/playground/compare/openfeature-v0.0.7...openfeature-v0.0.8) (2022-10-11)
+
+
+### Features
+
+* add optional remote fib service ([#85](https://github.com/open-feature/playground/issues/85)) ([d5c9120](https://github.com/open-feature/playground/commit/d5c9120e2f9355b7d28e2dedab47cc2ea9300838))
+
+
+### Bug Fixes
+
+* set default fib value to 45 ([1ec403a](https://github.com/open-feature/playground/commit/1ec403a69b6827daf80f43c1134161af75f85b3f))
+
 ## [0.0.7](https://github.com/open-feature/playground/compare/openfeature-v0.0.6...openfeature-v0.0.7) (2022-10-06)
 
 
