@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.10](https://github.com/open-feature/playground/compare/openfeature-v0.0.9...openfeature-v0.0.10) (2022-10-11)
+
+
+### Bug Fixes
+
+* remove unused asset option from the build target ([c940a3e](https://github.com/open-feature/playground/commit/c940a3e35b26ee144b04ad05486d8600b6ea5cd1))
+
 ## [0.0.9](https://github.com/open-feature/playground/compare/openfeature-v0.0.8...openfeature-v0.0.9) (2022-10-11)
 
 
