@@ -21,7 +21,7 @@ export class Calculator extends React.Component<
     this.state = {
       millis: '--',
       running: false,
-      n: 45,
+      n: 40,
     };
   }
   override render() {

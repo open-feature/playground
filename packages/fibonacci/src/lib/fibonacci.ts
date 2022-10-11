@@ -24,23 +24,39 @@ export async function fibonacci(num: number): Promise<number> {
   }
 }
 
-export function getNthFibRecursive(num: number): number {
+export async function getNthFibRecursive(num: number): Promise<number> {
+  
+  // on very fast systems, recursive is faster than we want for the demo... so we add an artificial linear delay, based on n.
+  const minTimePromise = new Promise(resolve => setTimeout(resolve, Math.floor((num / 10) * 1000)));
+  
+  const [ result ] = await Promise.all([
+    getNthFibRecursiveSync(num),
+    minTimePromise,
+  ]);
+  return result;
+}
+
+function getNthFibRecursiveSync(num: number): number {
   if (num === 2) {
     return 1;
   } else if (num === 1) {
     return 0;
   } else {
-    return getNthFibRecursive(num - 1) + getNthFibRecursive(num - 2);
+    return getNthFibRecursiveSync(num - 1) + getNthFibRecursiveSync(num - 2);
   }
 }
 
 type Cache = { [num: number]: number };
 
-export function getNthFibRecursiveMemo(num: number, memo: Cache = { 1: 0, 2: 1 }): number {
+export  function getNthFibRecursiveMemo(num: number, memo: Cache = { 1: 0, 2: 1 }): number {
+  return getNthFibRecursiveMemoSync(num, memo);
+}
+
+function getNthFibRecursiveMemoSync(num: number, memo: Cache = { 1: 0, 2: 1 }): number {
   if (num in memo) {
     return memo[num];
   } else {
-    memo[num] = getNthFibRecursiveMemo(num - 1, memo) + getNthFibRecursiveMemo(num - 2, memo);
+    memo[num] = getNthFibRecursiveMemoSync(num - 1, memo) + getNthFibRecursiveMemoSync(num - 2, memo);
     return memo[num];
   }
 }
