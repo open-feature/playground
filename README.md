@@ -250,7 +250,7 @@ In this demo, Go Feature Flag starts automatically as part of the Docker Compose
 
 ### CloudBees Feature Management
 
-[CloudBees Feature Management](https://www.cloudbees.com/capabilities/feature-management) is an advanced feature flagging solution that lets your development teams quickly build and deploy applications without compromising on safety.
+[CloudBees Feature Management](https://www.cloudbees.com/capabilities/feature-management) is an advanced feature flagging solution that lets your development teams quickly build and deploy applications without compromising on safety. By providing a gradual release mechanism and a simple way to define target audiences, CloudBees Feature Management allows developers and product managers to optimize feature releases and customize the user experience. CloudBees Feature Management gives teams control over features that are in staging, production, or any environment in the deployment pipeline.
 
 <details>
   <summary>Follow these steps to setup CloudBees for the demo:</summary>
@@ -287,7 +287,7 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
 ### Split
 
-[Split](https://www.split.io/) is a feature delivery platform that powers feature flag management, software experimentation, and continuous delivery.
+[Split](https://www.split.io/) is a unified feature flagging and experimentation platform enabling product and engineering teams to reduce cycle times, mitigate release risk, and maximize business impact throughout the [Feature Delivery Lifecycle](https://www.split.io/product/feature-delivery-lifecycle/).
 
 <details>
   <summary>Follow these steps to setup Split for the demo:</summary>
@@ -318,7 +318,7 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
 ### Harness
 
-[Harness Feature Flags](https://harness.io/products/feature-flags) provides automated progressive delivery and feature release pipelines to ship more features with less risk.
+[Harness Feature Flags](https://harness.io/products/feature-flags) is a new approach to feature management that empowers teams to move faster and have more control at the same time. Templatize feature rollouts, automate release workflows, build using GitOps and config as code, and get complete control over what gets released and when, without sacrificing velocity.
 
 <details>
   <summary>Follow these steps to setup Harness for the demo:</summary>
