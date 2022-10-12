@@ -381,7 +381,7 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
 ### Flagsmith
 
-[Flagsmith](https://flagsmith.com/) is an open-source feature flag and remote config service. Flagsmith offers many deployment options including: SaaS, private cloud, and on-premise.
+[Flagsmith](https://flagsmith.com/) is an open source, fully featured, Feature Flag and Remote Config service. They support a low latency hosted Edge API, deployment to your own private cloud, or running on-premise. Flagsmith makes it easy to create and manage features across web, mobile, and server side applications.
 
 <details>
   <summary>Follow these steps to setup Flagsmith for the demo:</summary>
