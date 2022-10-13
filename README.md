@@ -351,7 +351,7 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
 ### LaunchDarkly
 
-[LaunchDarkly](https://launchdarkly.com/) is a SaaS platform for developers to manage feature flags. By decoupling feature rollout and code deployment, LaunchDarkly enables developers to test their code live in production, gradually release features to groups of users, and manage flags throughout their entire lifecycle. This allows developers to release better software, with less risk.
+[LaunchDarkly](https://launchdarkly.com/) unleashes developer productivity for the software-powered world by fundamentally changing how you deliver software to your customers. With LaunchDarkly's feature management platform, empowered developers can empower the business to release new features faster and more efficiently than ever.
 
 <details>
   <summary>Follow these steps to setup LaunchDarkly for the demo:</summary>
