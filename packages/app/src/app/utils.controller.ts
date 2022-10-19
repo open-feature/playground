@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Get, InternalServerErrorException, Put } from '@nestjs/common';
 import { join } from 'path';
-import { readFile, writeFile } from 'fs/promises';
+import { readFile, writeFile, access } from 'fs/promises';
 
 const JSON_FILE = join('config', 'flagd', 'flags.json');
 const JSON_SCHEMA_FILE = join('schemas', 'flag.schema.json');
@@ -34,6 +34,13 @@ export class UtilsController {
         throw err;
       })
     ).toString();
+  }
+
+  @Get('show-editor')
+  async shouldShowEditor() {
+    return access(JSON_FILE)
+      .then(() => true)
+      .catch(() => false);
   }
 
   /**

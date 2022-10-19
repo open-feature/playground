@@ -155,6 +155,7 @@ render(
       onClickMask={() => undefined}
       padding={10}
       disableFocusLock={true}
+      defaultOpen={false}
     >
       <Page />
     </TourProvider>
