@@ -1,4 +1,4 @@
-import { Injectable, CanActivate, ExecutionContext, Logger } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, Logger, UnauthorizedException } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { Request } from 'express';
 
@@ -20,15 +20,15 @@ export class AuthGuard implements CanActivate {
 
     if (!authHeader) {
       // Throw 401 response code
-      return false;
+      throw new UnauthorizedException();
     }
     const auth = Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
     const [user, password] = auth;
 
-    if (this.FIB_SERVICE_USER === user && this.FIB_SERVICE_PASS === password) {
-      return true;
+    if (this.FIB_SERVICE_USER !== user || this.FIB_SERVICE_PASS !== password) {
+      throw new UnauthorizedException();
     }
 
-    return false;
+    return true;
   }
 }
