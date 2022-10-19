@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.2.0](https://github.com/open-feature/playground/compare/v0.1.1...v0.2.0) (2022-10-19)
+
+
+### Features
+
+* hide editor when flags config is not editable ([#101](https://github.com/open-feature/playground/issues/101)) ([d1cefeb](https://github.com/open-feature/playground/commit/d1cefeb048b8bffc8f206ebcac24adc28114d27c))
+
+
+### Bug Fixes
+
+* auth guard returns proper error code ([#102](https://github.com/open-feature/playground/issues/102)) ([7dd5c9c](https://github.com/open-feature/playground/commit/7dd5c9c4c586e0eb329c75ff7f4ba4a7e86c8167))
+
 ## [0.1.1](https://github.com/open-feature/playground/compare/v0.1.0...v0.1.1) (2022-10-11)
 
 
