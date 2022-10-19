@@ -29,6 +29,7 @@ class App extends Component<
     showLoginModal: boolean;
     email: string | null | undefined;
     editorOn: boolean;
+    editorAccess: boolean;
     result?: number;
     availableProviders: string[];
     currentProvider?: string;
@@ -46,7 +47,8 @@ class App extends Component<
       json: {},
       showLoginModal: false,
       email: localStorage.getItem('email'),
-      editorOn: true,
+      editorOn: false,
+      editorAccess: false,
       availableProviders: [],
       currentProvider: '',
     };
@@ -142,7 +144,7 @@ class App extends Component<
           </div>
 
           <Footer
-            tourAvailable={this.state.currentProvider === FLAGD_PROVIDER}
+            tourAvailable={this.shouldShowEditor(this.state.currentProvider)}
             availableProviders={this.state.availableProviders}
             currentProvider={this.state.currentProvider}
             onOpenTour={() => this.props.setIsOpen(true)}
@@ -162,31 +164,29 @@ class App extends Component<
     }
   }
 
-  override componentDidMount() {
-    this.refreshPage();
+  override async componentDidMount() {
+    const [editorAccess, availableProviders, schema] = await Promise.all([
+      this.getData<boolean>('/utils/show-editor'),
+      this.getData<string[]>('/providers'),
+      this.getData<AnySchema>('/utils/schema'),
+    ]);
+
+    this.setState({
+      editorAccess,
+      availableProviders,
+    });
+
+    if (!this.validate) {
+      this.validate = this.ajv.compile(schema);
+    }
+
+    await this.refreshPage();
+
     setInterval(() => {
       this.refreshPage();
     }, REFRESH_INTERVAL);
 
-    this.props.setIsOpen(true);
-
-    this.getData<string[]>('/providers')
-      .then((res) => {
-        this.setState({ availableProviders: res });
-      })
-      .catch((err) => {
-        console.error(`Error getting available providers, ${err.message}`);
-      });
-
-    this.getData<AnySchema>('/utils/schema')
-      .then((res) => {
-        if (!this.validate) {
-          this.validate = this.ajv.compile(res);
-        }
-      })
-      .catch((err) => {
-        console.error(`Error getting flag schema, ${err.message}`);
-      });
+    this.props.setIsOpen(this.shouldShowEditor(this.state.currentProvider));
   }
 
   private generate(cssColor: string): Theme {
@@ -250,7 +250,7 @@ class App extends Component<
   }
 
   private async onJsonUpdate(jsonOutput: JsonOutput) {
-    if (this.validate) {
+    if (this.state.editorAccess && this.validate) {
       const valid = this.validate(jsonOutput.jsObject);
       if (valid) {
         await this.syncData(jsonOutput.json);
@@ -316,32 +316,34 @@ class App extends Component<
       const promises: [
         Promise<{ message: string }>,
         Promise<{ color: string }>,
-        Promise<unknown>,
-        Promise<{ provider: string }>
+        Promise<{ provider: string }>,
+        Promise<unknown>
       ] = [
         this.getData<{ message: string }>('/message'),
         this.getData<{ color: string }>('/hex-color'),
-        this.getData<unknown>('/utils/json'),
         this.getData<{ provider: string }>('/providers/current'),
+        this.getData<unknown>('/utils/json'),
       ];
-      const [message, hexColor, json, provider]: [
-        { message: string },
-        { color: string },
-        unknown,
-        { provider: string }
-      ] = await Promise.all(promises);
+
+      const [message, hexColor, provider, json] = await Promise.all(promises);
+
       this.setState({
         message: message.message,
         hexColor: hexColor.color,
         currentProvider: provider.provider,
         json,
         // hide the editor unless we are using the flagd provider.
-        editorOn: provider.provider === FLAGD_PROVIDER,
+        editorOn: this.shouldShowEditor(provider.provider),
       });
-      this.props.setIsOpen(this.props.isOpen && provider.provider === FLAGD_PROVIDER);
+      this.props.setIsOpen(this.props.isOpen && this.shouldShowEditor(provider.provider));
     } catch (err) {
       throw new Error('Unable to load page data... Did you forget to run the server?');
     }
+  }
+
+  // Show the editor when the configuration can be modified
+  private shouldShowEditor(provider?: string) {
+    return this.state.editorAccess && provider === FLAGD_PROVIDER;
   }
 
   // thin wrapper around fetch for PUTing JSON.
@@ -357,7 +359,7 @@ class App extends Component<
 
   // thin wrapper around fetch that also passes email in auth header.
   private async getData<T>(path: string): Promise<T> {
-    return await (
+    return (
       await fetch(path, {
         headers: {
           ...(this.state.email && { Authorization: this.state.email }),
