@@ -21,8 +21,7 @@ spec:
           "variants": {
             "red": "c05543",
             "green": "2f5230",
-            "blue": "0d507b",
-            "yellow": "yellow"
+            "blue": "0d507b"
           },
           "defaultVariant": "blue",
           "state": "ENABLED"
