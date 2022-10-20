@@ -44,6 +44,14 @@ spec:
               }, "binet", null
             ]
           }
+        },
+        "use-remote-fib-service": {
+          "state": "ENABLED",
+          "variants": {
+            "on": true,
+            "off": false
+          },
+          "defaultVariant": "off"
         }
       }
     }
