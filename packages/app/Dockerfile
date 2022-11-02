@@ -6,7 +6,7 @@ RUN npm install
 COPY packages/ ./packages/
 RUN npm run build:app
 
-FROM node:16-bullseye as app
+FROM node:16-alpine as app
 
 WORKDIR /opt/playground/
 COPY package*.json ./
