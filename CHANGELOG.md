@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/open-feature/playground/compare/v0.2.0...v0.3.0) (2022-11-02)
+
+
+### Features
+
+* Slim down playground container images ([#110](https://github.com/open-feature/playground/issues/110)) ([d006ee7](https://github.com/open-feature/playground/commit/d006ee799a4a4a9f1a9cc28f067b0cf8bfb7f815))
+
 ## [0.2.0](https://github.com/open-feature/playground/compare/v0.1.1...v0.2.0) (2022-10-19)
 
 
