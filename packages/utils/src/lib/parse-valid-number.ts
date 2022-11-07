@@ -1,4 +1,4 @@
-import { ParseError, TypeMismatchError } from '../errors';
+import { ParseError, TypeMismatchError } from '@openfeature/js-sdk';
 
 export const parseValidNumber = (stringValue: string | undefined) => {
   if (stringValue === undefined) {

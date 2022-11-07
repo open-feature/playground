@@ -40,3 +40,7 @@ Thumbs.db
 
 # Environment vars
 .env
+
+# yalc stuff
+.yalc
+yalc.lock

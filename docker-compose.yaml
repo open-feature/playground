@@ -2,8 +2,8 @@ version: '3.8'
 services:
   demo:
     image: ghcr.io/open-feature/playground-app:v0.6.3 # x-release-please-version
-    # build:
-    #  dockerfile: ./packages/app/Dockerfile
+    build:
+      dockerfile: ./packages/app/Dockerfile
     ports:
       - '30000:30000'
     command:
@@ -16,54 +16,61 @@ services:
     volumes:
       - ./config/flagd/flags.json:/opt/playground/config/flagd/flags.json
     environment:
-     - FLAGD_HOST=flagd
-     - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
-     - OTEL_EXPORTER_JAEGER_AGENT_PORT=6832
-     - GO_FEATURE_FLAG_URL=http://go-feature-flag:1031
-     - FIB_SERVICE_URL=http://fib-service:30001
-     - FIB_SERVICE_USER
-     - FIB_SERVICE_PASS
+      - FLAGD_HOST=flagd
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6832
+      - GO_FEATURE_FLAG_URL=http://go-feature-flag:1031
+      - FIB_SERVICE_URL=http://fib-service:30001
+      - FIB_SERVICE_USER
+      - FIB_SERVICE_PASS
       # Provider values come from the .env
-     - NEW_WELCOME_MESSAGE
-     - FIB_ALGO
-     - HEX_COLOR
-     # Feature Flag Vendor Keys come from the .env
-     - HARNESS_KEY
-     - SPLIT_KEY
-     - LD_KEY
-     - FLAGSMITH_ENV_KEY
-     - CLOUDBEES_APP_KEY
+      - NEW_WELCOME_MESSAGE
+      - FIB_ALGO
+      - HEX_COLOR
+      # Feature Flag Vendor Keys come from the .env
+      ## Server
+      - HARNESS_KEY
+      - SPLIT_KEY
+      - LD_KEY
+      - FLAGSMITH_ENV_KEY
+      - CLOUDBEES_APP_KEY
+      ## Web
+      - HARNESS_KEY_WEB
+      - SPLIT_KEY_WEB
+      - LD_KEY_WEB
+      - FLAGSMITH_ENV_KEY_WEB
+      - CLOUDBEES_APP_KEY_WEB
 
   fib-service:
     image: ghcr.io/open-feature/playground-fib-service:v0.6.3 # x-release-please-version
     # build:
     #  dockerfile: ./packages/fibonacci-service/Dockerfile
     expose:
-      - "30001"
+      - '30001'
     environment:
-     - FLAGD_HOST=flagd
-     - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
-     - OTEL_EXPORTER_JAEGER_AGENT_PORT=6832
-     - OTEL_SERVICE_NAME=fibonacci-service
-     - FIB_SERVICE_USER
-     - FIB_SERVICE_PASS
-    # Provider values come from the .env
-     - NEW_WELCOME_MESSAGE
-     - FIB_ALGO
-     - HEX_COLOR
-     # Feature Flag Vendor Keys come from the .env
-     - HARNESS_KEY
-     - SPLIT_KEY
-     - LD_KEY
-     - FLAGSMITH_ENV_KEY
-     - CLOUDBEES_APP_KEY
+      - FLAGD_HOST=flagd
+      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
+      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6832
+      - OTEL_SERVICE_NAME=fibonacci-service
+      - FIB_SERVICE_USER
+      - FIB_SERVICE_PASS
+      # Provider values come from the .env
+      - NEW_WELCOME_MESSAGE
+      - FIB_ALGO
+      - HEX_COLOR
+      # Feature Flag Vendor Keys come from the .env
+      - HARNESS_KEY
+      - SPLIT_KEY
+      - LD_KEY
+      - FLAGSMITH_ENV_KEY
+      - CLOUDBEES_APP_KEY
 
   jaeger:
     image: jaegertracing/all-in-one:1.42
     expose:
-     - "6832/udp"
+      - '6832/udp'
     ports:
-     - "16686:16686"
+      - '16686:16686'
 
   flagd:
     image: ghcr.io/open-feature/flagd:v0.4.4
@@ -73,15 +80,15 @@ services:
       - file://etc/flagd/flags.json
     volumes:
       - ./config/flagd/flags.json:/etc/flagd/flags.json
-    expose:
-      - "8013"
+    ports:
+      - '8013:8013'
 
   go-feature-flag:
     image: thomaspoignant/go-feature-flag-relay-proxy:v1.4.0
     volumes:
       - ./config/go-feature-flag:/goff/
     expose:
-     - 1031
+      - 1031
 
 volumes:
   flagd-flags:

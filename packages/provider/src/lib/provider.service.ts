@@ -9,10 +9,10 @@ import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
 import { SplitFactory } from '@splitsoftware/splitio';
 import { CloudbeesProvider } from 'cloudbees-openfeature-provider-node';
 import Flagsmith from 'flagsmith-nodejs';
-import { ProviderId } from './constants';
 import { Client } from '@harnessio/ff-nodejs-server-sdk';
 import { OpenFeatureHarnessProvider } from '@openfeature/js-harness-provider';
 import { OpenFeatureLogger } from '@openfeature/extra';
+import { AvailableProvider, CB_PROVIDER_ID, ENV_PROVIDER_ID, FLAGD_PROVIDER_ID, FLAGSMITH_PROVIDER_ID, GO_PROVIDER_ID, HARNESS_PROVIDER_ID, ProviderId, SPLIT_PROVIDER_ID } from '@openfeature/utils';
 
 type ProviderMap = Record<
   ProviderId,
@@ -20,6 +20,7 @@ type ProviderMap = Record<
     provider?: Provider;
     available?: () => boolean;
     factory: () => Promise<Provider> | Provider;
+    webCredential?: string;
   }
 >;
 
@@ -28,8 +29,8 @@ export class ProviderService {
   private readonly logger = new Logger(ProviderService.name);
   private _currentProvider: ProviderId;
   private providerMap: ProviderMap = {
-    env: { factory: () => new OpenFeatureEnvProvider() },
-    flagd: { factory: () => new FlagdProvider() },
+    [ENV_PROVIDER_ID]: { factory: () => new OpenFeatureEnvProvider() },
+    [FLAGD_PROVIDER_ID]: { factory: () => new FlagdProvider() },
     launchdarkly: {
       factory: () => {
         const sdkKey = process.env.LD_KEY;
@@ -42,21 +43,22 @@ export class ProviderService {
           });
         }
       },
-      available: () => !!process.env.LD_KEY,
+      available: () => !!process.env.LD_KEY && !!process.env.LD_KEY_WEB,
+      webCredential: process.env.LD_KEY_WEB,
     },
-    cloudbees: {
+    [CB_PROVIDER_ID]: {
       factory: async () => {
         const appKey = process.env.CLOUDBEES_APP_KEY;
         if (!appKey) {
           throw new Error('"CLOUDBEES_APP_KEY" must be defined.');
         } else {
-          // TODO: this 'any' assertion is necessary until the CB provider is updated.
           return CloudbeesProvider.build(appKey) as any;
         }
       },
-      available: () => !!process.env.CLOUDBEES_APP_KEY,
+      available: () => !!process.env.CLOUDBEES_APP_KEY && !!process.env.CLOUDBEES_APP_KEY_WEB,
+      webCredential: process.env.CLOUDBEES_APP_KEY_WEB,
     },
-    split: {
+    [SPLIT_PROVIDER_ID]: {
       factory: () => {
         const authorizationKey = process.env.SPLIT_KEY;
         if (!authorizationKey) {
@@ -73,16 +75,17 @@ export class ProviderService {
           });
         }
       },
-      available: () => !!process.env.SPLIT_KEY,
+      available: () => !!process.env.SPLIT_KEY && !!process.env.SPLIT_KEY_WEB,
+      webCredential: process.env.SPLIT_KEY_WEB,
     },
-    ['go-feature-flag']: {
+    [GO_PROVIDER_ID]: {
       factory: () =>
         new GoFeatureFlagProvider({
           endpoint: process.env.GO_FEATURE_FLAG_URL as string,
         }),
-      available: () => !!process.env.GO_FEATURE_FLAG_URL,
+        available: () => !!process.env.GO_FEATURE_FLAG_URL,
     },
-    flagsmith: {
+    [FLAGSMITH_PROVIDER_ID]: {
       factory: () => {
         if (!process.env.FLAGSMITH_ENV_KEY) {
           throw new Error('"FLAGSMITH_ENV_KEY" must be defined.');
@@ -106,9 +109,10 @@ export class ProviderService {
           });
         }
       },
-      available: () => !!process.env.FLAGSMITH_ENV_KEY,
+      available: () => !!process.env.FLAGSMITH_ENV_KEY && !!process.env.FLAGSMITH_ENV_KEY_WEB,
+      webCredential: process.env.FLAGSMITH_ENV_KEY_WEB,
     },
-    harness: {
+    [HARNESS_PROVIDER_ID]: {
       factory: () => {
         if (!process.env.HARNESS_KEY) {
           throw new Error('"HARNESS_KEY" must be defined.');
@@ -117,7 +121,8 @@ export class ProviderService {
           return new OpenFeatureHarnessProvider(client);
         }
       },
-      available: () => !!process.env.HARNESS_KEY,
+      available: () => !!process.env.HARNESS_KEY && !!process.env.HARNESS_KEY_WEB,
+      webCredential: process.env.HARNESS_KEY_WEB,
     },
   };
 
@@ -151,11 +156,16 @@ export class ProviderService {
     }
   }
 
-  getAvailableProviders() {
+  getAvailableProviders(): AvailableProvider[] {
     return Object.entries(this.providerMap)
       .filter((p) => {
         return p[1].available === undefined || p[1].available();
       })
-      .map((p) => p[0]);
+      .map((p) => {
+        return {
+          id: p[0] as ProviderId,
+          webCredential: p[1].webCredential
+        }
+      });
   }
 }

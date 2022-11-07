@@ -6,16 +6,33 @@
         "on": true,
         "off": false
       },
-      "defaultVariant": "off"
+      "defaultVariant": "on"
     },
     "hex-color": {
       "state": "ENABLED",
       "variants": {
         "red": "c05543",
         "green": "2f5230",
-        "blue": "0d507b"
+        "blue": "0d507b",
+        "yellow": "d4ac0d"
       },
-      "defaultVariant": "blue"
+      "defaultVariant": "red",
+      "targeting": {
+        "if": [
+          {
+            "in": [
+              "@faas.com",
+              {
+                "var": [
+                  "email"
+                ]
+              }
+            ]
+          },
+          "yellow",
+          null
+        ]
+      }
     },
     "use-remote-fib-service": {
       "state": "ENABLED",

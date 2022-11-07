@@ -16,3 +16,8 @@ export type ProviderId =
   | typeof CB_PROVIDER_ID
   | typeof FLAGSMITH_PROVIDER_ID
   | typeof HARNESS_PROVIDER_ID;
+
+export interface AvailableProvider {
+    id: ProviderId,
+    webCredential?: string,
+}

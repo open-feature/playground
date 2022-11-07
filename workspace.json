@@ -12,7 +12,13 @@
     "openfeature-extra": "packages/openfeature-extra",
     "openfeature-propagator": "packages/openfeature-propagator",
     "provider": "packages/provider",
-    "ui": "packages/ui"
+    "ui": "packages/ui",
+    "utils": "packages/utils",
+    "web-cloudbees-provider": "packages/web-cloudbees-provider",
+    "web-flagsmith-provider": "packages/web-flagsmith-provider",
+    "web-harness-provider": "packages/web-harness-provider",
+    "web-launchdarkly-provider": "packages/web-launchdarkly-provider",
+    "web-split-provider": "packages/web-split-provider"
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

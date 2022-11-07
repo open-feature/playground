@@ -1,24 +1,22 @@
+import { HttpModule } from '@nestjs/axios';
 import { MiddlewareConsumer, Module, NestModule, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger } from '@openfeature/extra';
-import { OpenTelemetryHook } from '@openfeature/open-telemetry-hook';
 import { OpenFeature } from '@openfeature/js-sdk';
+import { OpenTelemetryHook } from '@openfeature/open-telemetry-hook';
+import { ProviderService } from '@openfeature/provider';
 import { Request } from 'express';
-import { TransactionContextMiddleware } from './transaction-context.middleware';
+import { Agent } from 'http';
+import { LoggerModule } from 'nestjs-pino';
+import { join } from 'path';
 import { OPENFEATURE_CLIENT, REQUEST_DATA } from './constants';
 import { FibonacciAsAServiceController } from './fibonacci-as-a-service.controller';
-import { HexColorService } from './hex-color/hex-color.service';
-import { MessageService } from './message/message.service';
+import { FibonacciService } from './fibonacci/fibonacci.service';
+import { ProvidersController } from './providers.controller';
+import { TransactionContextMiddleware } from './transaction-context.middleware';
 import { RequestData } from './types';
 import { UtilsController } from './utils.controller';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
-import { ProvidersController } from './providers.controller';
-import { ProviderService } from '@openfeature/provider';
-import { HttpModule } from '@nestjs/axios';
-import { FibonacciService } from './fibonacci/fibonacci.service';
-import { LoggerModule } from 'nestjs-pino';
-import { Agent } from 'http';
 
 /**
  * Set a global logger for OpenFeature. This is logger will available in hooks.
@@ -69,8 +67,6 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
   ],
   controllers: [FibonacciAsAServiceController, UtilsController, ProvidersController],
   providers: [
-    MessageService,
-    HexColorService,
     FibonacciService,
     ProviderService,
     {
