@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/open-feature/playground/compare/v0.3.0...v0.4.0) (2022-11-08)
+
+
+### Features
+
+* add pino logger support ([#112](https://github.com/open-feature/playground/issues/112)) ([2f5b22a](https://github.com/open-feature/playground/commit/2f5b22a3cbde8d8a266bc132a0bf8369bce11043))
+
 ## [0.3.0](https://github.com/open-feature/playground/compare/v0.2.0...v0.3.0) (2022-11-02)
 
 
