@@ -12,6 +12,7 @@ import Flagsmith from 'flagsmith-nodejs';
 import { ProviderId } from './constants';
 import { Client } from '@harnessio/ff-nodejs-server-sdk';
 import { OpenFeatureHarnessProvider } from '@openfeature/js-harness-provider';
+import { OpenFeatureLogger } from './open-feature.logger';
 
 type ProviderMap = Record<
   ProviderId,
@@ -37,6 +38,7 @@ export class ProviderService {
         } else {
           return new OpenFeatureLaunchDarklyProvider({
             sdkKey,
+            logger: new OpenFeatureLogger(`LaunchDarkly Provider`),
           });
         }
       },
@@ -67,6 +69,7 @@ export class ProviderService {
           }).client();
           return new OpenFeatureSplitProvider({
             splitClient,
+            logger: new OpenFeatureLogger(`Split Provider`),
           });
         }
       },
@@ -99,6 +102,7 @@ export class ProviderService {
           });
           return new FlagsmithProvider({
             client,
+            logger: new OpenFeatureLogger(`Flagsmith Provider`),
           });
         }
       },

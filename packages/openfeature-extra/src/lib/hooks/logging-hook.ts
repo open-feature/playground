@@ -1,13 +1,26 @@
-import { Hook, HookContext } from '@openfeature/js-sdk';
+import { EvaluationDetails, FlagValue, Hook, HookContext, HookHints } from '@openfeature/js-sdk';
 
 /**
  * A hook that simply logs at every life-cycle stage.
  */
 export class LoggingHook implements Hook {
-  name = 'logging';
+  after<T extends FlagValue>(
+    hookContext: Readonly<HookContext<T>>,
+    evaluationDetails: EvaluationDetails<T>,
+    hookHints?: HookHints
+  ) {
+    const { logger, ...context } = hookContext;
+    logger.warn({
+      msg: `Flag '${hookContext.flagKey}' evaluated to '${evaluationDetails.value}'`,
+      feature_flag: {
+        ...context,
+        ...evaluationDetails,
+        hookHints: hookHints,
+      },
+    });
+  }
 
   error(hookContext: HookContext, err: Error) {
-    console.log(`Running 'error' logger hook for flag: ${hookContext.flagKey}`);
-    console.error(err);
+    hookContext.logger.error(err);
   }
 }

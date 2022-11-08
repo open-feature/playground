@@ -40,6 +40,9 @@
     "express-validator": "^6.14.2",
     "flagsmith-nodejs": "^2.3.0",
     "launchdarkly-node-server-sdk": "^6.4.3",
+    "nestjs-pino": "^3.1.1",
+    "pino-http": "^8.2.1",
+    "pino-pretty": "^9.1.1",
     "reflect-metadata": "^0.1.13",
     "rox-node": "^5.4.2",
     "rxjs": "^7.5.7"

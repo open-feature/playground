@@ -17,6 +17,13 @@ import { ProvidersController } from './providers.controller';
 import { ProviderService } from './provider.service';
 import { HttpModule } from '@nestjs/axios';
 import { FibonacciService } from './fibonacci/fibonacci.service';
+import { LoggerModule } from 'nestjs-pino';
+import { OpenFeatureLogger } from './open-feature.logger';
+
+/**
+ * Set a global logger for OpenFeature. This is logger will available in hooks.
+ */
+OpenFeature.setLogger(new OpenFeatureLogger('OpenFeature'));
 
 /**
  * Adding hooks to at the global level will ensure they always run
@@ -33,6 +40,26 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
 
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        /**
+         * Pretty print logs when in a non-prod context.
+         *
+         * Note: NX uses webpack behind the scenes which replaces NODE_ENV at
+         * build time. The environment defaults to development unless the `--prod`
+         * flag is used provided in the build command.
+         */
+        transport:
+          process.env['NODE' + '_ENV'] !== 'production'
+            ? {
+                target: 'pino-pretty',
+                options: {
+                  hideObject: true,
+                },
+              }
+            : undefined,
+      },
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'ui'),
     }),

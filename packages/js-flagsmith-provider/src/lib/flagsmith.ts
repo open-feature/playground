@@ -2,6 +2,7 @@ import { ParseError, parseValidJsonObject, TypeMismatchError } from '@openfeatur
 import { EvaluationContextValue, JsonValue, FlagNotFoundError } from '@openfeature/js-sdk';
 import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/js-sdk';
 import Flagsmith from 'flagsmith-nodejs';
+import { Logger } from '@openfeature/js-sdk';
 
 type Identity = {
   identifier?: string;
@@ -10,6 +11,7 @@ type Identity = {
 
 export interface FlagsmithProviderOptions {
   client: Flagsmith;
+  logger: Logger;
 }
 
 /*
@@ -34,7 +36,7 @@ export class FlagsmithProvider implements Provider {
 
   constructor(options: FlagsmithProviderOptions) {
     this.client = options.client;
-    console.log(`${this.metadata.name} provider initialized`);
+    options.logger.info(`${this.metadata.name} provider initialized`);
   }
 
   async resolveBooleanEvaluation(
