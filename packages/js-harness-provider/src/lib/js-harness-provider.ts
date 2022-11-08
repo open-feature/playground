@@ -92,7 +92,6 @@ export class OpenFeatureHarnessProvider implements Provider {
    * Attempts to transform evaluation context into the format Harness expects.
    */
   private transformContext(context: EvaluationContext): Target {
-    console.log(context);
     const { targetingKey: identifier, ...attributes } = context;
 
     if (!identifier) {

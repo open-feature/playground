@@ -1,10 +1,11 @@
 import { ParseError, TypeMismatchError } from '@openfeature/extra';
 import { FlagValue, JsonValue } from '@openfeature/js-sdk';
-import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/js-sdk';
+import { EvaluationContext, Provider, ResolutionDetails, Logger } from '@openfeature/js-sdk';
 import { init, LDClient, LDUser } from 'launchdarkly-node-server-sdk';
 
 export interface LaunchDarklyProviderOptions {
   sdkKey: string;
+  logger: Logger;
 }
 
 /**
@@ -27,7 +28,7 @@ export class OpenFeatureLaunchDarklyProvider implements Provider {
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
       this.client.once('ready', () => {
-        console.log(`${this.metadata.name} provider initialized`);
+        options.logger.info(`${this.metadata.name} provider initialized`);
         resolve();
       });
     });

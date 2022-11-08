@@ -1,6 +1,6 @@
 import { parseValidJsonObject, parseValidNumber, TypeMismatchError } from '@openfeature/extra';
 import { JsonValue } from '@openfeature/js-sdk';
-import { EvaluationContext, Provider, ResolutionDetails } from '@openfeature/js-sdk';
+import { EvaluationContext, Provider, ResolutionDetails, Logger } from '@openfeature/js-sdk';
 import type { Attributes, IClient } from '@splitsoftware/splitio/types/splitio';
 
 /**
@@ -11,6 +11,7 @@ import type { Attributes, IClient } from '@splitsoftware/splitio/types/splitio';
  */
 export interface SplitProviderOptions {
   splitClient: IClient;
+  logger: Logger;
 }
 
 type Consumer = {
@@ -36,7 +37,7 @@ export class OpenFeatureSplitProvider implements Provider {
     // promise to await into before we evaluate any flags.
     this.initialized = new Promise((resolve) => {
       this.client.on(this.client.Event.SDK_READY, () => {
-        console.log(`${this.metadata.name} provider initialized`);
+        options.logger.info(`${this.metadata.name} provider initialized`);
         resolve();
       });
     });

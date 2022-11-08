@@ -7,32 +7,23 @@ export async function fibonacci(num: number): Promise<number> {
 
   switch (value) {
     case 'recursive':
-      console.log('Running the recursive fibonacci function');
       return getNthFibRecursive(num);
     case 'memo':
-      console.log('Running the memo fibonacci function');
       return getNthFibRecursiveMemo(num);
     case 'loop':
-      console.log('Running the looping fibonacci function');
       return getNthFibLoop(num);
     case 'binet':
-      console.log('Running the binet fibonacci function');
       return getNthFibBinet(num);
     default:
-      console.log('Running the default recursive fibonacci function');
       return getNthFibRecursive(num);
   }
 }
 
 export async function getNthFibRecursive(num: number): Promise<number> {
-  
   // on very fast systems, recursive is faster than we want for the demo... so we add an artificial linear delay, based on n.
-  const minTimePromise = new Promise(resolve => setTimeout(resolve, Math.floor((num / 10) * 1000)));
-  
-  const [ result ] = await Promise.all([
-    getNthFibRecursiveSync(num),
-    minTimePromise,
-  ]);
+  const minTimePromise = new Promise((resolve) => setTimeout(resolve, Math.floor((num / 10) * 1000)));
+
+  const [result] = await Promise.all([getNthFibRecursiveSync(num), minTimePromise]);
   return result;
 }
 
@@ -48,7 +39,7 @@ function getNthFibRecursiveSync(num: number): number {
 
 type Cache = { [num: number]: number };
 
-export  function getNthFibRecursiveMemo(num: number, memo: Cache = { 1: 0, 2: 1 }): number {
+export function getNthFibRecursiveMemo(num: number, memo: Cache = { 1: 0, 2: 1 }): number {
   return getNthFibRecursiveMemoSync(num, memo);
 }
 
