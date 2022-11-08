@@ -10,7 +10,7 @@ export class LoggingHook implements Hook {
     hookHints?: HookHints
   ) {
     const { logger, ...context } = hookContext;
-    logger.warn({
+    logger.info({
       msg: `Flag '${hookContext.flagKey}' evaluated to '${evaluationDetails.value}'`,
       feature_flag: {
         ...context,
