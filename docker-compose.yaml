@@ -14,7 +14,7 @@ services:
       - jaeger
       - fib-service
     volumes:
-      - ${PWD}/config/flagd/flags.json:/opt/playground/config/flagd/flags.json
+      - ./config/flagd/flags.json:/opt/playground/config/flagd/flags.json
     environment:
      - FLAGD_HOST=flagd
      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
@@ -61,14 +61,14 @@ services:
       - --uri
       - /etc/flagd/flags.json
     volumes:
-      - ${PWD}/config/flagd/flags.json:/etc/flagd/flags.json
+      - ./config/flagd/flags.json:/etc/flagd/flags.json
     expose:
       - "8013"
 
   go-feature-flag:
     image: thomaspoignant/go-feature-flag-relay-proxy:v0.3.0
     volumes:
-      - ${PWD}/config/go-feature-flag:/goff/
+      - ./config/go-feature-flag:/goff/
     expose:
      - 1031
 
