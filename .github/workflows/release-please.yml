@@ -2,7 +2,6 @@ on:
   push:
     branches:
       - main
-      - feat/multi-arch
 
 env:
   REGISTRY: ghcr.io
@@ -27,7 +26,7 @@ jobs:
   container-release:
     needs: release-please
     runs-on: ubuntu-latest
-    # if: ${{ needs.release-please.outputs.release_created }}
+    if: ${{ needs.release-please.outputs.release_created }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -67,10 +66,10 @@ jobs:
           context: .
           file: ./packages/app/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: false
+          push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:test
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:${{ needs.release-please.outputs.release_tag_name }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VERSION=${{ steps.meta.outputs.tags }}
@@ -84,10 +83,10 @@ jobs:
           context: .
           file: ./packages/fibonacci-service/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: false
+          push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:test
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:${{ needs.release-please.outputs.release_tag_name }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VERSION=${{ steps.meta.outputs.tags }}
