@@ -70,7 +70,7 @@ jobs:
           push: false
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:${{ needs.release-please.outputs.release_tag_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:test
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VERSION=${{ steps.meta.outputs.tags }}
@@ -87,7 +87,7 @@ jobs:
           push: false
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:${{ needs.release-please.outputs.release_tag_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:test
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VERSION=${{ steps.meta.outputs.tags }}
