@@ -65,7 +65,7 @@ jobs:
           # builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./packages/app/Dockerfile
-          # platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:latest
@@ -82,7 +82,7 @@ jobs:
           # builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./packages/fibonacci-service/Dockerfile
-          # platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:latest
