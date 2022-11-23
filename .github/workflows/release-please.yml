@@ -27,7 +27,7 @@ jobs:
   container-release:
     needs: release-please
     runs-on:
-      labels: ubuntu-latest-16cores
+      labels: ubuntu-latest-16-cores
     steps:
       - name: Checkout
         uses: actions/checkout@v3
