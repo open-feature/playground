@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+      - feat/multi-arch
 
 env:
   REGISTRY: ghcr.io
@@ -66,7 +67,7 @@ jobs:
           context: .
           file: ./packages/app/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: false
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:${{ needs.release-please.outputs.release_tag_name }}
@@ -83,7 +84,7 @@ jobs:
           context: .
           file: ./packages/fibonacci-service/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: true
+          push: false
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:${{ needs.release-please.outputs.release_tag_name }}
