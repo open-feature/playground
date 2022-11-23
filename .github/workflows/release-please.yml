@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - main
+      - feat/multi-arch
 
 env:
   REGISTRY: ghcr.io
@@ -25,8 +26,8 @@ jobs:
 
   container-release:
     needs: release-please
-    runs-on: ubuntu-latest
-    if: ${{ needs.release-please.outputs.release_created }}
+    runs-on:
+      labels: ubuntu-latest-16cores
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -69,7 +70,7 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:latest
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:${{ needs.release-please.outputs.release_tag_name }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:test
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             VERSION=${{ steps.meta.outputs.tags }}
