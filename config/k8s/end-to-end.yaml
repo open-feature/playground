@@ -1,60 +1,48 @@
 # A basic flag custom resource
-apiVersion: core.openfeature.dev/v1alpha1
+apiVersion: core.openfeature.dev/v1alpha2
 kind: FeatureFlagConfiguration
 metadata:
   name: end-to-end
   labels:
     app: open-feature-demo
 spec:
-  featureFlagSpec: |
-    {
-      "flags": {
-        "new-welcome-message": {
-          "state": "ENABLED",
-          "variants": {
-            "on": true,
-            "off": false
-          },
-          "defaultVariant": "on"
-        },
-        "hex-color": {
-          "variants": {
-            "red": "c05543",
-            "green": "2f5230",
-            "blue": "0d507b"
-          },
-          "defaultVariant": "blue",
-          "state": "ENABLED"
-        },
-        "fib-algo": {
-          "variants": {
-            "recursive": "recursive",
-            "memo": "memo",
-            "loop": "loop",
-            "binet": "binet"
-          },
-          "defaultVariant": "recursive",
-          "state": "ENABLED",
-          "targeting": {
-            "if": [
-              {
-                "in": ["@faas.com", {
-                  "var": ["email"]
-                }]
-              }, "binet", null
-            ]
-          }
-        },
-        "use-remote-fib-service": {
-          "state": "ENABLED",
-          "variants": {
-            "on": true,
-            "off": false
-          },
-          "defaultVariant": "off"
-        }
-      }
-    }
+  featureFlagSpec:
+    flags:
+      new-welcome-message:
+        state: ENABLED
+        variants:
+          'on': true
+          'off': false
+        defaultVariant: 'off'
+      hex-color:
+        variants:
+          red: c05543
+          green: 2f5230
+          blue: 0d507b
+        defaultVariant: blue
+        state: ENABLED
+      fib-algo:
+        variants:
+          recursive: recursive
+          memo: memo
+          loop: loop
+          binet: binet
+        defaultVariant: recursive
+        state: ENABLED
+        targeting:
+          if:
+            - in:
+              - "@faas.com"
+              - var:
+                - email
+            - binet
+            - null
+      use-remote-fib-service:
+        state: ENABLED
+        variants:
+          'on': true
+          'off': false
+        defaultVariant: 'off'
 ---
 # Deployment of a demo-app using our custom resource
 apiVersion: apps/v1
