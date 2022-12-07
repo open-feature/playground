@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.0](https://github.com/open-feature/playground/compare/v0.4.0...v0.5.0) (2022-12-07)
+
+
+### Features
+
+* show error icon on calc error ([#124](https://github.com/open-feature/playground/issues/124)) ([7f9accc](https://github.com/open-feature/playground/commit/7f9acccdcb23824e7530c16f34104a8a54ecfa2c))
+
+
+### Bug Fixes
+
+* mounted volumes use relative paths ([#118](https://github.com/open-feature/playground/issues/118)) ([bb5957e](https://github.com/open-feature/playground/commit/bb5957e2c79564416db54877b64e74a79cad44ef))
+* openfeature hook log level ([#115](https://github.com/open-feature/playground/issues/115)) ([e77364d](https://github.com/open-feature/playground/commit/e77364d4d2e2ad47f6d9bb5d7a0c097c90c9f6fa))
+
 ## [0.4.0](https://github.com/open-feature/playground/compare/v0.3.0...v0.4.0) (2022-11-08)
 
 
