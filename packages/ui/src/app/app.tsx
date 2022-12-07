@@ -30,10 +30,11 @@ class App extends Component<
     email: string | null | undefined;
     editorOn: boolean;
     editorAccess: boolean;
-    result?: number;
+    result?: number | string;
     availableProviders: string[];
     currentProvider?: string;
-    errors?: ErrorObject<string, Record<string, unknown>, unknown>[] | null | undefined;
+    calculateError?: boolean;
+    jsonErrors?: ErrorObject<string, Record<string, unknown>, unknown>[] | null | undefined;
   }
 > {
   private validate: ValidateFunction | undefined;
@@ -128,6 +129,7 @@ class App extends Component<
               result={this.state.result}
               onClick={this.onCalculate.bind(this)}
               hexColor={this.state.hexColor}
+              error={this.state.calculateError}
             />
           </div>
 
@@ -135,7 +137,7 @@ class App extends Component<
           <div className="json-editor">
             <JsonEditor
               errorMessage={
-                this.state.errors ? `${this.state.errors?.[0].schemaPath} ${this.state.errors?.[0].message}` : undefined
+                this.state.jsonErrors ? `${this.state.jsonErrors?.[0].schemaPath} ${this.state.jsonErrors?.[0].message}` : undefined
               }
               hidden={!this.state.editorOn}
               callBack={this.onJsonUpdate.bind(this)}
@@ -237,16 +239,21 @@ class App extends Component<
   }
 
   private onCalculate(n: number, finished: () => void) {
-    this.setState({ result: undefined });
-    this.getData<{ result: number }>(`/calculate?num=${n}`).then((response: { result: number }) => {
-      this.setState({ result: response.result });
-      finished();
-      if (this.props.isOpen && this.props.currentStep === STEP_UH_OH - 1) {
-        this.props.setCurrentStep(STEP_UH_OH);
-      } else if (this.props.isOpen && this.props.currentStep === STEP_DONE - 1) {
-        this.props.setCurrentStep(STEP_DONE);
-      }
-    });
+    this.setState({ result: undefined, calculateError: false });
+    this.getData<{ result: number }>(`/calculate?num=${n}`)
+      .then((response: { result: number }) => {
+        this.setState({ result: response.result });
+        finished();
+        if (this.props.isOpen && this.props.currentStep === STEP_UH_OH - 1) {
+          this.props.setCurrentStep(STEP_UH_OH);
+        } else if (this.props.isOpen && this.props.currentStep === STEP_DONE - 1) {
+          this.props.setCurrentStep(STEP_DONE);
+        }
+      })
+      .catch(() => {
+        this.setState({ calculateError: true, result: 'error' });
+        finished();
+      });
   }
 
   private async onJsonUpdate(jsonOutput: JsonOutput) {
@@ -254,7 +261,7 @@ class App extends Component<
       const valid = this.validate(jsonOutput.jsObject);
       if (valid) {
         await this.syncData(jsonOutput.json);
-        this.setState({ errors: undefined });
+        this.setState({ jsonErrors: undefined });
         if (this.props.isOpen) {
           if (
             // advance to next step after boolean flag change.
@@ -271,7 +278,7 @@ class App extends Component<
           }
         }
       } else {
-        this.setState({ errors: this.validate.errors });
+        this.setState({ jsonErrors: this.validate.errors });
       }
     }
   }
@@ -359,13 +366,15 @@ class App extends Component<
 
   // thin wrapper around fetch that also passes email in auth header.
   private async getData<T>(path: string): Promise<T> {
-    return (
-      await fetch(path, {
-        headers: {
-          ...(this.state.email && { Authorization: this.state.email }),
-        },
-      })
-    ).json();
+    const response = await fetch(path, {
+      headers: {
+        ...(this.state.email && { Authorization: this.state.email }),
+      },
+    });
+    if (response.ok) {
+      return response.json();
+    }
+    throw Error(`HTTP status error: ${response.statusText}`);
   }
 }
 
