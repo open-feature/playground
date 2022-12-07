@@ -5,7 +5,8 @@ export class Calculator extends React.Component<
   {
     hexColor: string;
     onClick: (n: number, finished: () => void) => void;
-    result: number | undefined;
+    result: number | string | undefined;
+    error?: boolean;
   },
   { millis: string | number; running: boolean; n: number }
 > {
@@ -62,26 +63,34 @@ export class Calculator extends React.Component<
               justifyContent: 'end',
             }}
           >
-            <span
-              style={{
-                display: 'inline-block',
-                verticalAlign: 'middle',
-                lineHeight: 'normal',
-                height: '60px',
-              }}
-            >
-              {this.state.millis}
-            </span>
-            <span
-              style={{
-                fontSize: '18px',
-                height: '60px',
-                alignSelf: 'end',
-                lineHeight: '18px',
-              }}
-            >
-              ms
-            </span>
+            {this.props.error ? (
+              <div style={{ height: 95, width: 140 }}>
+                <div>&#9888;</div>
+              </div>
+            ) : (
+              <>
+                <span
+                  style={{
+                    display: 'inline-block',
+                    verticalAlign: 'middle',
+                    lineHeight: 'normal',
+                    height: '60px',
+                  }}
+                >
+                  {this.state.millis}
+                </span>
+                <span
+                  style={{
+                    fontSize: '18px',
+                    height: '60px',
+                    alignSelf: 'end',
+                    lineHeight: '18px',
+                  }}
+                >
+                  ms
+                </span>
+              </>
+            )}
           </div>
         </div>
         <div
