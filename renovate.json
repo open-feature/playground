@@ -5,7 +5,7 @@
     "config:base",
     "prConcurrentLimit10"
   ],
-  "semanticCommits": "enabled"
+  "semanticCommits": "enabled",
   "automergeType": "branch",
   "configMigration": true,
   "dependencyDashboard": true,
