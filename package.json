@@ -17,9 +17,9 @@
   "dependencies": {
     "@harnessio/ff-nodejs-server-sdk": "^1.2.8",
     "@nestjs/axios": "^0.1.0",
-    "@nestjs/common": "9.1.2",
-    "@nestjs/core": "9.1.2",
-    "@nestjs/platform-express": "9.1.2",
+    "@nestjs/common": "9.2.1",
+    "@nestjs/core": "9.2.1",
+    "@nestjs/platform-express": "9.2.1",
     "@nestjs/serve-static": "^3.0.0",
     "@openfeature/flagd-provider": "^0.6.0",
     "@openfeature/go-feature-flag-provider": "^0.4.0",
