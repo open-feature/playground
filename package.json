@@ -38,7 +38,7 @@
     "clsx": "^1.2.1",
     "express": "4.18.1",
     "express-validator": "^6.14.2",
-    "flagsmith-nodejs": "^2.3.0",
+    "flagsmith-nodejs": "^2.4.1",
     "launchdarkly-node-server-sdk": "^6.4.3",
     "nestjs-pino": "^3.1.1",
     "pino-http": "^8.2.1",
