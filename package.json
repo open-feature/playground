@@ -22,7 +22,7 @@
     "@nestjs/platform-express": "9.1.2",
     "@nestjs/serve-static": "^3.0.0",
     "@openfeature/flagd-provider": "^0.6.0",
-    "@openfeature/go-feature-flag-provider": "^0.4.0",
+    "@openfeature/go-feature-flag-provider": "^0.5.2",
     "@openfeature/js-sdk": "^0.5.0",
     "@openfeature/open-telemetry-hook": "^4.0.0",
     "@opentelemetry/api": "~1.2.0",
