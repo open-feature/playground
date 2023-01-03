@@ -1,7 +1,67 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Default preset for use with OpenFeature's repos",
   "extends": [
-    "config:base"
+    "config:base",
+    "prConcurrentLimit10"
   ],
   "semanticCommits": "enabled"
+  "automergeType": "branch",
+  "configMigration": true,
+  "dependencyDashboard": true,
+  "prCreation": "not-pending",
+  "rebaseWhen": "behind-base-branch",
+  "npm": {
+    "packageRules": [
+      {
+        "matchPackagePatterns": [
+          "@docusaurus/"
+        ],
+        "groupName": "Docusaurus"
+      },
+      {
+        "matchPackagePatterns": [
+          "@typescript-eslint",
+          "eslint"
+        ],
+        "groupName": "ESLint"
+      },
+      {
+        "matchPackagePatterns": [
+          "@fortawesome/"
+        ],
+        "groupName": "Font Awesome"
+      },
+      {
+        "matchPackagePatterns": [
+          "@types/"
+        ],
+        "groupName": "Types"
+      },
+      {
+        "description": "disable package.json > engines update",
+        "matchDepTypes": [
+          "engines"
+        ],
+        "enabled": false
+      }
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "Automerge non-major updates",
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    },
+    {
+      "matchManagers": [
+        "github-actions"
+      ],
+      "automerge": true
+    }
+  ],
 }
