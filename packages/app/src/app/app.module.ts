@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
-import { AsyncLocalStorageTransactionContext, LoggingHook } from '@openfeature/extra';
+import { AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger } from '@openfeature/extra';
 import { OpenTelemetryHook } from '@openfeature/open-telemetry-hook';
 import { OpenFeature } from '@openfeature/js-sdk';
 import { Request } from 'express';
@@ -18,7 +18,7 @@ import { ProviderService } from './provider.service';
 import { HttpModule } from '@nestjs/axios';
 import { FibonacciService } from './fibonacci/fibonacci.service';
 import { LoggerModule } from 'nestjs-pino';
-import { OpenFeatureLogger } from './open-feature.logger';
+import { Agent } from 'http';
 
 /**
  * Set a global logger for OpenFeature. This is logger will available in hooks.
@@ -52,10 +52,7 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
         transport:
           process.env['NODE' + '_ENV'] !== 'production'
             ? {
-                target: 'pino-pretty',
-                options: {
-                  hideObject: true,
-                },
+                target: 'pino-http-print',
               }
             : undefined,
       },
@@ -63,7 +60,9 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'ui'),
     }),
-    HttpModule,
+    HttpModule.register({
+      httpAgent: new Agent({ keepAlive: true }),
+    }),
   ],
   controllers: [FibonacciAsAServiceController, UtilsController, ProvidersController],
   providers: [

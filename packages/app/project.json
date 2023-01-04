@@ -30,7 +30,13 @@
             }
           ]
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "projects": "dependencies",
+          "target": "build"
+        }
+      ]
     },
     "serve": {
       "executor": "@nrwl/node:node",
@@ -40,7 +46,13 @@
           "-r",
           "./scripts/tracing.js"
         ]
-      }
+      },
+      "dependsOn": [
+        {
+          "projects": "dependencies",
+          "target": "build"
+        }
+      ]
     },
     "test": {
       "executor": "@nrwl/jest:jest",
@@ -53,5 +65,8 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": [
+    "openfeature-propagator"
+  ]
 }

@@ -1,5 +1,5 @@
 import { Controller, DefaultValuePipe, Get, ParseIntPipe, Query, UseGuards } from '@nestjs/common';
-import { getNthFibBinet } from '@openfeature/fibonacci';
+import { fibonacci } from '@openfeature/fibonacci';
 import { AuthGuard } from './auth.guard';
 
 @Controller()
@@ -8,7 +8,7 @@ export class AppController {
   @Get('calculate')
   async getFibonacci(@Query('num', new DefaultValuePipe(40), ParseIntPipe) num: number) {
     return {
-      result: getNthFibBinet(num),
+      result: await fibonacci(num),
     };
   }
 }

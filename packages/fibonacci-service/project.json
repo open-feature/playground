@@ -28,18 +28,34 @@
             }
           ]
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "projects": "dependencies",
+          "target": "build"
+        }
+      ]
     },
     "serve": {
       "executor": "@nrwl/js:node",
       "options": {
-        "buildTarget": "fibonacci-service:build"
+        "buildTarget": "fibonacci-service:build",
+        "runtimeArgs": [
+          "-r",
+          "./scripts/tracing.js"
+        ]
       },
       "configurations": {
         "production": {
           "buildTarget": "fibonacci-service:build:production"
         }
-      }
+      },
+      "dependsOn": [
+        {
+          "projects": "dependencies",
+          "target": "build"
+        }
+      ]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -63,5 +79,8 @@
       }
     }
   },
-  "tags": []
+  "tags": [],
+  "implicitDependencies": [
+    "openfeature-propagator"
+  ]
 }
