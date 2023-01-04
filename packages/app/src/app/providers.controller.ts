@@ -1,15 +1,20 @@
+import { HttpService } from '@nestjs/axios';
 import { Controller, Get, Param, Put } from '@nestjs/common';
-import { ProviderId } from './constants';
-import { ProviderService } from './provider.service';
+import { ProviderService, ProviderId } from '@openfeature/provider';
+import { PinoLogger } from 'nestjs-pino';
+import { lastValueFrom } from 'rxjs';
 
 /**
  * Controller for reading/writing providers and related settings.
  */
 @Controller('providers')
 export class ProvidersController {
+  private readonly FIB_SERVICE_URL = process.env.FIB_SERVICE_URL || 'http://localhost:30001';
 
   constructor(
-    private providerService: ProviderService,
+    private readonly providerService: ProviderService,
+    private readonly httpService: HttpService,
+    private readonly logger: PinoLogger
   ) {}
 
   /**
@@ -19,7 +24,7 @@ export class ProvidersController {
   @Get('current')
   async getProvider() {
     return {
-      provider:this.providerService.currentProvider
+      provider: this.providerService.currentProvider,
     };
   }
 
@@ -38,6 +43,14 @@ export class ProvidersController {
    */
   @Put('current/:providerId')
   async setProvider(@Param('providerId') providerId: ProviderId) {
-    await this.providerService.switchProvider(providerId);
+    await Promise.all([
+      this.providerService.switchProvider(providerId),
+      // Best effort to switch remote service
+      lastValueFrom(
+        this.httpService.put(`${this.FIB_SERVICE_URL}/providers/current/${providerId}`, { setTimeout: 1000 })
+      ).catch(() => {
+        this.logger.error('Failed to switch the provider on the remote service');
+      }),
+    ]);
   }
 }

@@ -1,5 +1,4 @@
 import { Controller, DefaultValuePipe, Get, ParseIntPipe, Query } from '@nestjs/common';
-import { fibonacci } from '@openfeature/fibonacci';
 import { FibonacciService } from './fibonacci/fibonacci.service';
 import { HexColorService } from './hex-color/hex-color.service';
 import { MessageService } from './message/message.service';

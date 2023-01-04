@@ -11,6 +11,7 @@
     "js-split-provider": "packages/js-split-provider",
     "openfeature-extra": "packages/openfeature-extra",
     "openfeature-propagator": "packages/openfeature-propagator",
+    "provider": "packages/provider",
     "ui": "packages/ui"
   },
   "$schema": "./node_modules/nx/schemas/workspace-schema.json"

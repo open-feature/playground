@@ -6,15 +6,12 @@ import { OpenFeature } from '@openfeature/js-sdk';
 import { AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger } from '@openfeature/extra';
 import { OpenTelemetryHook } from '@openfeature/open-telemetry-hook';
 import { TransactionContextMiddleware } from './transaction-context.middleware';
-import { FlagdProvider } from '@openfeature/flagd-provider';
-
-// TODO pull from shared config
-OpenFeature.setProvider(new FlagdProvider());
+import { ProviderService } from '@openfeature/provider';
+import { ProvidersController } from './providers.controller';
 
 /**
  * Set a global logger for OpenFeature. This is logger will available in hooks.
  */
-
 OpenFeature.setLogger(new OpenFeatureLogger('OpenFeature'));
 
 /**
@@ -50,8 +47,8 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
       },
     }),
   ],
-  controllers: [AppController],
-  providers: [],
+  controllers: [AppController, ProvidersController],
+  providers: [ProviderService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

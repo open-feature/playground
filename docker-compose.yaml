@@ -41,11 +41,22 @@ services:
     expose:
       - "30001"
     environment:
+     - FLAGD_HOST=flagd
      - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
      - OTEL_EXPORTER_JAEGER_AGENT_PORT=6832
      - OTEL_SERVICE_NAME=fibonacci-service
      - FIB_SERVICE_USER
      - FIB_SERVICE_PASS
+    # Provider values come from the .env
+     - NEW_WELCOME_MESSAGE
+     - FIB_ALGO
+     - HEX_COLOR
+     # Feature Flag Vendor Keys come from the .env
+     - HARNESS_KEY
+     - SPLIT_KEY
+     - LD_KEY
+     - FLAGSMITH_ENV_KEY
+     - CLOUDBEES_APP_KEY
 
   jaeger:
     image: jaegertracing/all-in-one:1.38

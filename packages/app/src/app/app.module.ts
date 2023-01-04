@@ -14,7 +14,7 @@ import { UtilsController } from './utils.controller';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ProvidersController } from './providers.controller';
-import { ProviderService } from './provider.service';
+import { ProviderService } from '@openfeature/provider';
 import { HttpModule } from '@nestjs/axios';
 import { FibonacciService } from './fibonacci/fibonacci.service';
 import { LoggerModule } from 'nestjs-pino';

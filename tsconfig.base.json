@@ -29,7 +29,8 @@
       "@openfeature/js-json-provider": ["packages/js-json-provider/src/index.ts"],
       "@openfeature/js-launchdarkly-provider": ["packages/js-launchdarkly-provider/src/index.ts"],
       "@openfeature/js-split-provider": ["packages/js-split-provider/src/index.ts"],
-      "@openfeature/openfeature-propagator": ["packages/openfeature-propagator/src/index.ts"]
+      "@openfeature/openfeature-propagator": ["packages/openfeature-propagator/src/index.ts"],
+      "@openfeature/provider": ["packages/provider/src/index.ts"]
     },
     "types": ["node"]
   },
