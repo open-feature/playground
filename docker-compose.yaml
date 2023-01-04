@@ -55,7 +55,7 @@ services:
      - "16686:16686"
 
   flagd:
-    image: ghcr.io/open-feature/flagd:v0.2.4
+    image: ghcr.io/open-feature/flagd:v0.2.7
     command:
       - start
       - --uri
