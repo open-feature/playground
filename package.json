@@ -11,7 +11,8 @@
     "build:fib-service": "nx build fibonacci-service",
     "lint": "nx run-many --all --target=lint",
     "test": "nx run-many --all --target=test",
-    "markdown-toc": "markdown-toc --bullets='-' --no-first-h1 --no-stripHeadingTags --maxdepth 4 -i README.md"
+    "markdown-toc": "markdown-toc --bullets='-' --no-first-h1 --no-stripHeadingTags --maxdepth 4 -i README.md",
+    "flagd": "docker run -p 8013:8013 -v $(pwd)/config/flagd:/etc/flagd/ -it --pull=always ghcr.io/open-feature/flagd:latest start --uri file:./etc/flagd/flags.json"
   },
   "private": true,
   "dependencies": {
@@ -42,7 +43,7 @@
     "launchdarkly-node-server-sdk": "^6.4.3",
     "nestjs-pino": "^3.1.1",
     "pino-http": "^8.2.1",
-    "pino-pretty": "^9.1.1",
+    "pino-http-print": "^3.1.0",
     "reflect-metadata": "^0.1.13",
     "rox-node": "^5.4.2",
     "rxjs": "^7.5.7"

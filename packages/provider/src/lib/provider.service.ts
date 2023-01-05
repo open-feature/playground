@@ -12,7 +12,7 @@ import Flagsmith from 'flagsmith-nodejs';
 import { ProviderId } from './constants';
 import { Client } from '@harnessio/ff-nodejs-server-sdk';
 import { OpenFeatureHarnessProvider } from '@openfeature/js-harness-provider';
-import { OpenFeatureLogger } from './open-feature.logger';
+import { OpenFeatureLogger } from '@openfeature/extra';
 
 type ProviderMap = Record<
   ProviderId,
