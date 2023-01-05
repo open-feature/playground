@@ -41,7 +41,10 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
         transport:
           process.env['NODE' + '_ENV'] !== 'production'
             ? {
-                target: 'pino-http-print',
+                target: 'pino-pretty',
+                options: {
+                  hideObject: true,
+                },
               }
             : undefined,
       },

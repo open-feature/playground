@@ -11,7 +11,6 @@ export class ProvidersController {
    */
   @Put('current/:providerId')
   async setProvider(@Param('providerId') providerId: ProviderId) {
-    console.log('switching providers!!!');
     await this.providerService.switchProvider(providerId);
   }
 }

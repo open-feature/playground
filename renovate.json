@@ -2,7 +2,8 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": "Default preset for use with OpenFeature's repos",
   "extends": [
-    "config:base"
+    "config:base",
+    "github>@ng-easy/renovate-config:nrwlWorkspace"
   ],
   "semanticCommits": "enabled",
   "automergeType": "branch",
@@ -17,6 +18,12 @@
           "@docusaurus/"
         ],
         "groupName": "Docusaurus"
+      },
+      {
+        "matchPackagePatterns": [
+          "@opentelemtry/"
+        ],
+        "groupName": "OpenTelemetry"
       },
       {
         "matchPackagePatterns": [

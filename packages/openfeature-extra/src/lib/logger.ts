@@ -6,6 +6,7 @@ import { Logger } from '@nestjs/common';
  */
 export class OpenFeatureLogger extends Logger implements OFLogger {
   info(...args: unknown[]): void {
-    this.log(args);
+    const [msg, ...context] = args;
+    this.log(msg, context);
   }
 }
