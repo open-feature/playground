@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.6.0](https://github.com/open-feature/playground/compare/v0.5.0...v0.6.0) (2023-01-05)
+
+
+### Features
+
+* Add feature flag support in the fib service ([#142](https://github.com/open-feature/playground/issues/142)) ([81c133b](https://github.com/open-feature/playground/commit/81c133b686ae9e9dc213b3c7daf12f2ec474ed56))
+
+
+### Bug Fixes
+
+* **docker-compose:** update sync provider flagd argument ([#146](https://github.com/open-feature/playground/issues/146)) ([c9fb7e8](https://github.com/open-feature/playground/commit/c9fb7e820bb2a301ef882014d063275f85205301))
+
 ## [0.5.0](https://github.com/open-feature/playground/compare/v0.4.0...v0.5.0) (2022-12-07)
 
 
