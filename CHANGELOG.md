@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/open-feature/playground/compare/v0.6.1...v0.6.2) (2023-01-05)
+
+
+### Bug Fixes
+
+* package lock issue ([2b6e7c5](https://github.com/open-feature/playground/commit/2b6e7c5d4858cdf030891e98935d6392e6dfd4ea))
+
 ## [0.6.1](https://github.com/open-feature/playground/compare/v0.6.0...v0.6.1) (2023-01-05)
 
 
