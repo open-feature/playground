@@ -59,7 +59,7 @@ services:
     command:
       - start
       - --uri
-      - /etc/flagd/flags.json
+      - file://etc/flagd/flags.json
     volumes:
       - ./config/flagd/flags.json:/etc/flagd/flags.json
     expose:
