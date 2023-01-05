@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/open-feature/playground/compare/v0.6.0...v0.6.1) (2023-01-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependencies ([#148](https://github.com/open-feature/playground/issues/148)) ([e0a9c37](https://github.com/open-feature/playground/commit/e0a9c37421f0cbee8df0f3e0b333a5c3f80b3b74))
+
 ## [0.6.0](https://github.com/open-feature/playground/compare/v0.5.0...v0.6.0) (2023-01-05)
 
 
