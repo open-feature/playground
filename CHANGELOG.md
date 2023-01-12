@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/open-feature/playground/compare/v0.6.2...v0.6.3) (2023-01-12)
+
+
+### Bug Fixes
+
+* revert otel hook to the span based version ([#154](https://github.com/open-feature/playground/issues/154)) ([c2ad387](https://github.com/open-feature/playground/commit/c2ad3878bc0bb0db626b5de30dd2563abe34f12d))
+
 ## [0.6.2](https://github.com/open-feature/playground/compare/v0.6.1...v0.6.2) (2023-01-05)
 
 
