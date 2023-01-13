@@ -16,7 +16,7 @@ jobs:
         with:
           # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
-      - uses: nrwl/nx-set-shas@v2
+      - uses: nrwl/nx-set-shas@v3
       - run: npm ci
       - run: npx nx workspace-lint
       - run: if ! npx nx format:check ; then echo "Format check failed. Please run 'npx nx format:write'."; fi
