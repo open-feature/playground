@@ -4,7 +4,6 @@
     "app": "packages/app",
     "fibonacci": "packages/fibonacci",
     "fibonacci-service": "packages/fibonacci-service",
-    "js-env-provider": "packages/js-env-provider",
     "js-flagsmith-provider": "packages/js-flagsmith-provider",
     "js-harness-provider": "packages/js-harness-provider",
     "js-launchdarkly-provider": "packages/js-launchdarkly-provider",

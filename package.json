@@ -22,6 +22,7 @@
     "@nestjs/core": "9.3.9",
     "@nestjs/platform-express": "9.3.9",
     "@nestjs/serve-static": "^3.0.0",
+    "@openfeature/env-var-provider": "^0.1.1",
     "@openfeature/flagd-provider": "^0.7.3",
     "@openfeature/go-feature-flag-provider": "^0.5.3",
     "@openfeature/js-sdk": "^1.0.1",

@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { FlagdProvider } from '@openfeature/flagd-provider';
 import { GoFeatureFlagProvider } from '@openfeature/go-feature-flag-provider';
-import { OpenFeatureEnvProvider } from '@openfeature/js-env-provider';
+import { EnvVarProvider } from '@openfeature/env-var-provider';
 import { FlagsmithProvider } from '@openfeature/js-flagsmith-provider';
 import { OpenFeatureLaunchDarklyProvider } from '@openfeature/js-launchdarkly-provider';
 import { OpenFeature, Provider } from '@openfeature/js-sdk';
@@ -28,7 +28,7 @@ export class ProviderService {
   private readonly logger = new Logger(ProviderService.name);
   private _currentProvider: ProviderId;
   private providerMap: ProviderMap = {
-    env: { factory: () => new OpenFeatureEnvProvider() },
+    env: { factory: () => new EnvVarProvider() },
     flagd: { factory: () => new FlagdProvider() },
     launchdarkly: {
       factory: () => {

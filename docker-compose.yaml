@@ -1,9 +1,9 @@
 version: '3.8'
 services:
   demo:
-    image: ghcr.io/open-feature/playground-app:v0.6.3 # x-release-please-version
-    # build:
-    #  dockerfile: ./packages/app/Dockerfile
+    #image: ghcr.io/open-feature/playground-app:v0.6.3 # x-release-please-version
+    build:
+     dockerfile: ./packages/app/Dockerfile
     ports:
       - '30000:30000'
     command:
@@ -35,9 +35,9 @@ services:
      - CLOUDBEES_APP_KEY
 
   fib-service:
-    image: ghcr.io/open-feature/playground-fib-service:v0.6.3 # x-release-please-version
-    # build:
-    #  dockerfile: ./packages/fibonacci-service/Dockerfile
+    #image: ghcr.io/open-feature/playground-fib-service:v0.6.3 # x-release-please-version
+    build:
+     dockerfile: ./packages/fibonacci-service/Dockerfile
     expose:
       - "30001"
     environment:
