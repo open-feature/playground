@@ -16,6 +16,11 @@ import { EventEmitter } from 'events';
 
 const ANONYMOUS = 'anonymous';
 
+/**
+ * NOTE: This is an unofficial provider that was created for demonstration
+ * purposes only. The playground environment will be updated to use official
+ * providers once they're available.
+ */
 export class SplitWebProvider implements Provider {
   private factory!: SplitIO.ISDK;
   private client!: SplitIO.IClient;

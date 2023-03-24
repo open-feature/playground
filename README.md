@@ -449,4 +449,3 @@ To add a vendor to the demo, follow the vendor specific section in the documenta
 
 This means that the provider you've select either doesn't support client-side (see [what's in the demo](#whats-in-the-demo) section) or it's not working properly.
 Ensure you've correctly configured the respective client-side provider, including the credentials.
-The `fib-algo` flag is server-side, and supported in all providers.

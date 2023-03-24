@@ -6,7 +6,7 @@
         "on": true,
         "off": false
       },
-      "defaultVariant": "on"
+      "defaultVariant": "off"
     },
     "hex-color": {
       "state": "ENABLED",
