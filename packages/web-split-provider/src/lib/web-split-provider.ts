@@ -40,6 +40,7 @@ export class SplitWebProvider implements Provider {
       },
     });
     this.client = this.factory.client();
+    this.client.setAttributes(JSON.parse(JSON.stringify(context)));
     this.addChangeListener(this.client);
     return new Promise((resolve) => {
       this.client.ready().then(() => {
