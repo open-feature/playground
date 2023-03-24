@@ -21,9 +21,7 @@ export class HarnessWebProvider implements Provider {
   constructor(private apiKey: string, private logger?: Logger) {}
 
   initialize(context: EvaluationContext): Promise<void> {
-    this._client = initialize(this.apiKey, {
-      identifier: 'anon'
-    });
+    this._client = initialize(this.apiKey, { identifier: context.targetingKey || 'anon', attributes: context });
 
     return new Promise((resolve) => {
       this._client.on(HarnessEvent.READY, () => {
