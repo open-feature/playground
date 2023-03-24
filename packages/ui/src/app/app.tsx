@@ -464,7 +464,11 @@ class App extends Component<
   }
 
   private getProviderCredential(prividerId: ProviderId): string {
-    return this.state.availableProviders.find(p => p.id === prividerId)?.webCredential!;
+    const credential = this.state.availableProviders.find(p => p.id === prividerId)?.webCredential;
+    if (credential) {
+      return credential;
+    }
+    throw new Error(`Credential not available for ${prividerId}`);
   }
 }
 
