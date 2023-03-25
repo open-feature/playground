@@ -33,10 +33,11 @@ export class SplitWebProvider implements Provider {
     this.factory = SplitFactory({
       core: {
         authorizationKey: this.authorizationKey,
-        // key represents your internal user id, or the account id that
-        // the user belongs to.
-        // This could also be a cookie you generate for anonymous users
-        key: context.targetingKey || ANONYMOUS,
+        // In this demo, we are treating the `email` as the user-id.
+        // In a production provider, this would be the targetingKey.
+        // When it's changed, we need to create a new client, because the
+        // split client is what holds our long-lived context.
+        key: context['email'] as string || ANONYMOUS,
       },
     });
     this.client = this.factory.client();
@@ -55,10 +56,6 @@ export class SplitWebProvider implements Provider {
 
   hooks?: Hook<FlagValue>[] | undefined;
 
-  // In this demo, we are treating the `email` as the user-id.
-  // In a production provider, this would be the targetingKey.
-  // When it's changed, we need to create a new client, because the
-  // split client is what holds our long-lived context.
   async onContextChange?(oldContext: EvaluationContext, newContext: EvaluationContext): Promise<void> {
     if (oldContext['email'] !== newContext['email']) {
       await this.resetClient(newContext);
