@@ -49,7 +49,7 @@ export class FlagsmithProvider implements Provider {
   }
 
   async onContextChange(oldContext: EvaluationContext, newContext: EvaluationContext): Promise<void> {
-    if (!newContext['email']) {
+    if (!newContext.targetingKey) {
       await flagsmith.logout();
     } else {
       await flagsmith.identify(newContext.targetingKey || 'anon', newContext as any);

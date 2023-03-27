@@ -33,11 +33,7 @@ export class SplitWebProvider implements Provider {
     this.factory = SplitFactory({
       core: {
         authorizationKey: this.authorizationKey,
-        // In this demo, we are treating the `email` as the user-id.
-        // In a production provider, this would be the targetingKey.
-        // When it's changed, we need to create a new client, because the
-        // split client is what holds our long-lived context.
-        key: context['email'] as string || ANONYMOUS,
+        key: context.targetingKey || ANONYMOUS,
       },
     });
     this.client = this.factory.client();
@@ -57,7 +53,7 @@ export class SplitWebProvider implements Provider {
   hooks?: Hook<FlagValue>[] | undefined;
 
   async onContextChange?(oldContext: EvaluationContext, newContext: EvaluationContext): Promise<void> {
-    if (oldContext['email'] !== newContext['email']) {
+    if (oldContext.targetingKey !== newContext.targetingKey) {
       await this.resetClient(newContext);
     }
     this.client.setAttributes(JSON.parse(JSON.stringify(newContext)));
@@ -132,7 +128,7 @@ export class SplitWebProvider implements Provider {
 
   // update the client
   private async resetClient(newContext: EvaluationContext) {
-    const newClient = this.factory.client((newContext['email'] as string) || ANONYMOUS);
+    const newClient = this.factory.client((newContext.targetingKey) || ANONYMOUS);
     await newClient.ready();
     this.addChangeListener(newClient);
     this.client = newClient;

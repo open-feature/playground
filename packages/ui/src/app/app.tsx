@@ -217,12 +217,12 @@ class App extends Component<
   override async componentDidUpdate(): Promise<void> {
     if (this.state.email) {
       localStorage.setItem('email', this.state.email);
-      if (!OpenFeature.getContext()?.['email']) {
-        await OpenFeature.setContext({ email: this.state.email });
+      if (!OpenFeature.getContext()?.targetingKey) {
+        await OpenFeature.setContext({ targetingKey: this.state.email, email: this.state.email });
       }
     } else {
       localStorage.clear();
-      if (OpenFeature.getContext()?.['email']) {
+      if (OpenFeature.getContext()?.targetingKey) {
         await OpenFeature.setContext({});
       }
     }
@@ -362,7 +362,7 @@ class App extends Component<
   }
 
   private async onLogoutClick() {
-    await OpenFeature.setContext({ email: null });
+    await OpenFeature.setContext({});
     this.setState({ email: undefined });
     this.evaluateUiFlags().catch((err) => console.warn(`Error ${err}`));
   }
@@ -394,7 +394,7 @@ class App extends Component<
   private async onLogin(email: string | undefined) {
     if (email) {
       this.setState({ email, showLoginModal: false });
-      await OpenFeature.setContext({ email });
+      await OpenFeature.setContext({ email, targetingKey: email });
       if (this.props.isOpen && this.props.currentStep === STEP_FAST_FIB - 1) {
         this.props.setCurrentStep(STEP_FAST_FIB);
       }
