@@ -1,6 +1,6 @@
 {
   "name": "openfeature",
-  "version": "0.6.3",
+  "version": "0.7.0",
   "license": "MIT",
   "scripts": {
     "ui": "nx run ui:serve",
