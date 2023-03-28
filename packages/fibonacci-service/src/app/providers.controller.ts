@@ -1,5 +1,6 @@
 import { Controller, Param, Put } from '@nestjs/common';
-import { ProviderService, ProviderId } from '@openfeature/provider';
+import { ProviderService } from '@openfeature/provider';
+import { ProviderId } from '@openfeature/utils';
 
 @Controller('providers')
 export class ProvidersController {
