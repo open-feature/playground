@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/open-feature/playground/compare/v0.7.0...v0.7.1) (2023-03-28)
+
+
+### 🐛 Bug Fixes
+
+* import in fib service ([cb45bca](https://github.com/open-feature/playground/commit/cb45bca5e2c2be33713fccdbf9aeb389deff4220))
+
 ## [0.7.0](https://github.com/open-feature/playground/compare/v0.6.3...v0.7.0) (2023-03-28)
 
 
