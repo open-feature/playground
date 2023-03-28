@@ -40,6 +40,7 @@ services:
       - LD_KEY_WEB
       - FLAGSMITH_ENV_KEY_WEB
       - CLOUDBEES_APP_KEY_WEB
+      - FLAGD_HOST_WEB
 
   fib-service:
     image: ghcr.io/open-feature/playground-fib-service:v0.6.3 # x-release-please-version

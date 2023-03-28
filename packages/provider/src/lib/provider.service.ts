@@ -12,7 +12,17 @@ import Flagsmith from 'flagsmith-nodejs';
 import { Client } from '@harnessio/ff-nodejs-server-sdk';
 import { OpenFeatureHarnessProvider } from '@openfeature/js-harness-provider';
 import { OpenFeatureLogger } from '@openfeature/extra';
-import { AvailableProvider, CB_PROVIDER_ID, ENV_PROVIDER_ID, FLAGD_PROVIDER_ID, FLAGSMITH_PROVIDER_ID, GO_PROVIDER_ID, HARNESS_PROVIDER_ID, ProviderId, SPLIT_PROVIDER_ID } from '@openfeature/utils';
+import {
+  AvailableProvider,
+  CB_PROVIDER_ID,
+  ENV_PROVIDER_ID,
+  FLAGD_PROVIDER_ID,
+  FLAGSMITH_PROVIDER_ID,
+  GO_PROVIDER_ID,
+  HARNESS_PROVIDER_ID,
+  ProviderId,
+  SPLIT_PROVIDER_ID,
+} from '@openfeature/utils';
 
 type ProviderMap = Record<
   ProviderId,
@@ -21,6 +31,7 @@ type ProviderMap = Record<
     available?: () => boolean;
     factory: () => Promise<Provider> | Provider;
     webCredential?: string;
+    host?: string;
   }
 >;
 
@@ -30,7 +41,10 @@ export class ProviderService {
   private _currentProvider: ProviderId;
   private providerMap: ProviderMap = {
     [ENV_PROVIDER_ID]: { factory: () => new OpenFeatureEnvProvider() },
-    [FLAGD_PROVIDER_ID]: { factory: () => new FlagdProvider() },
+    [FLAGD_PROVIDER_ID]: {
+      factory: () => new FlagdProvider(),
+      host: process.env.FLAGD_HOST_WEB ?? 'localhost',
+    },
     launchdarkly: {
       factory: () => {
         const sdkKey = process.env.LD_KEY;
@@ -83,7 +97,7 @@ export class ProviderService {
         new GoFeatureFlagProvider({
           endpoint: process.env.GO_FEATURE_FLAG_URL as string,
         }),
-        available: () => !!process.env.GO_FEATURE_FLAG_URL,
+      available: () => !!process.env.GO_FEATURE_FLAG_URL,
     },
     [FLAGSMITH_PROVIDER_ID]: {
       factory: () => {
@@ -164,8 +178,9 @@ export class ProviderService {
       .map((p) => {
         return {
           id: p[0] as ProviderId,
-          webCredential: p[1].webCredential
-        }
+          webCredential: p[1].webCredential,
+          host: p[1].host,
+        };
       });
   }
 }
