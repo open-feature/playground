@@ -2,8 +2,8 @@ version: '3.8'
 services:
   demo:
     image: ghcr.io/open-feature/playground-app:v0.7.1 # x-release-please-version
-    build:
-      dockerfile: ./packages/app/Dockerfile
+    # build:
+    #  dockerfile: ./packages/app/Dockerfile
     ports:
       - '30000:30000'
     command:
