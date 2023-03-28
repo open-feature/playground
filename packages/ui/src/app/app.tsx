@@ -1,7 +1,16 @@
 import { Box, Modal, SelectChangeEvent } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { FlagdWebProvider } from '@openfeature/flagd-web-provider';
-import { AvailableProvider, CB_PROVIDER_ID, FLAGD_PROVIDER_ID, FLAGSMITH_PROVIDER_ID, HARNESS_PROVIDER_ID, LD_PROVIDER_ID, ProviderId, SPLIT_PROVIDER_ID } from '@openfeature/utils';
+import {
+  AvailableProvider,
+  CB_PROVIDER_ID,
+  FLAGD_PROVIDER_ID,
+  FLAGSMITH_PROVIDER_ID,
+  HARNESS_PROVIDER_ID,
+  LD_PROVIDER_ID,
+  ProviderId,
+  SPLIT_PROVIDER_ID,
+} from '@openfeature/utils';
 import { CloudbeesWebProvider } from '@openfeature/web-cloudbees-provider';
 import { FlagsmithProvider } from '@openfeature/web-flagsmith-provider';
 import { HarnessWebProvider } from '@openfeature/web-harness-provider';
@@ -60,35 +69,45 @@ class App extends Component<
   private providerMap: ProviderMap = {
     [FLAGD_PROVIDER_ID]: {
       factory: () => {
-        return new FlagdWebProvider({ host: 'localhost', port: 8013, tls: false }, console);
-      }
+        return new FlagdWebProvider(
+          {
+            host: this.state.availableProviders.find((p) => p.id === FLAGD_PROVIDER_ID)?.host ?? 'localhost',
+            port: 8013,
+            tls: false,
+          },
+          console
+        );
+      },
     },
     [HARNESS_PROVIDER_ID]: {
       factory: () => {
         return new HarnessWebProvider(this.getProviderCredential(HARNESS_PROVIDER_ID), console);
-      }
+      },
     },
     [CB_PROVIDER_ID]: {
       factory: () => {
         console.log(this.getProviderCredential(CB_PROVIDER_ID));
         return new CloudbeesWebProvider({ key: this.getProviderCredential(CB_PROVIDER_ID), logger: console });
-      }
+      },
     },
     [FLAGSMITH_PROVIDER_ID]: {
       factory: () => {
-        return new FlagsmithProvider({ logger: console, environmentID: this.getProviderCredential(FLAGSMITH_PROVIDER_ID) });
-      }
+        return new FlagsmithProvider({
+          logger: console,
+          environmentID: this.getProviderCredential(FLAGSMITH_PROVIDER_ID),
+        });
+      },
     },
     [LD_PROVIDER_ID]: {
       factory: () => {
         return new LaunchDarklyProvider({ logger: console, clientSideId: this.getProviderCredential(LD_PROVIDER_ID) });
-      }
+      },
     },
     [SPLIT_PROVIDER_ID]: {
       factory: () => {
         return new SplitWebProvider(this.getProviderCredential(SPLIT_PROVIDER_ID));
-      }
-    }
+      },
+    },
   };
 
   constructor(props: TourProps) {
@@ -193,7 +212,9 @@ class App extends Component<
           <div className="json-editor">
             <JsonEditor
               errorMessage={
-                this.state.jsonErrors ? `${this.state.jsonErrors?.[0].schemaPath} ${this.state.jsonErrors?.[0].message}` : undefined
+                this.state.jsonErrors
+                  ? `${this.state.jsonErrors?.[0].schemaPath} ${this.state.jsonErrors?.[0].message}`
+                  : undefined
               }
               hidden={!this.state.editorOn}
               callBack={this.onJsonUpdate.bind(this)}
@@ -258,10 +279,10 @@ class App extends Component<
   }
 
   private async evaluateUiFlags() {
-    const [ newMessage, hex ] = [
+    const [newMessage, hex] = [
       // evaluate the "new-welcome-message" flag
       this.client.getBooleanValue('new-welcome-message', false),
-      
+
       // evaluate the "hex-color" flag
       this.client.getStringValue('hex-color', DEFAULT_HEX, {
         hooks: [
@@ -281,7 +302,7 @@ class App extends Component<
               }
             },
           },
-        ]
+        ],
       }),
     ];
     this.setState({ welcomeMessage: newMessage, hexColor: `#${hex}` });
@@ -410,10 +431,7 @@ class App extends Component<
 
   private async getConfig() {
     try {
-      const promises: [
-        Promise<{ provider: string }>,
-        Promise<unknown>
-      ] = [
+      const promises: [Promise<{ provider: string }>, Promise<unknown>] = [
         this.getData<{ provider: string }>('/providers/current'),
         this.getData<unknown>('/utils/json'),
       ];
@@ -463,12 +481,12 @@ class App extends Component<
     throw Error(`HTTP status error: ${response.statusText}`);
   }
 
-  private getProviderCredential(prividerId: ProviderId): string {
-    const credential = this.state.availableProviders.find(p => p.id === prividerId)?.webCredential;
+  private getProviderCredential(providerId: ProviderId): string {
+    const credential = this.state.availableProviders.find((p) => p.id === providerId)?.webCredential;
     if (credential) {
       return credential;
     }
-    throw new Error(`Credential not available for ${prividerId}`);
+    throw new Error(`Credential not available for ${providerId}`);
   }
 }
 

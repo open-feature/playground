@@ -20,4 +20,5 @@ export type ProviderId =
 export interface AvailableProvider {
     id: ProviderId,
     webCredential?: string,
+    host?: string,
 }
