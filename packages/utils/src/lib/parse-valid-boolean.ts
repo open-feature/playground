@@ -1,4 +1,4 @@
-import { TypeMismatchError } from '../errors';
+import { TypeMismatchError } from '@openfeature/js-sdk';
 
 export const parseValidBoolean = (stringValue: string | undefined) => {
   const asUnknown = stringValue as unknown;

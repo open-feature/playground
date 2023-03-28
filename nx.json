@@ -1,5 +1,9 @@
 {
   "extends": "nx/presets/core.json",
+  "workspaceLayout": {
+    "libsDir": "packages",
+    "appsDir": "packages"
+  },
   "npmScope": "openfeature",
   "affected": {
     "defaultBase": "main"

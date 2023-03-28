@@ -1,8 +1,7 @@
-import { FlagNotFoundError, parseValidBoolean, parseValidJsonObject, parseValidNumber } from '@openfeature/extra';
-import { JsonValue } from '@openfeature/js-sdk';
+import { FlagNotFoundError, JsonValue } from '@openfeature/js-sdk';
 import { Provider, ResolutionDetails } from '@openfeature/js-sdk';
 import { constantCase } from 'change-case';
-
+import { parseValidBoolean, parseValidJsonObject, parseValidNumber } from '@openfeature/utils'
 /**
  * NOTE: This is an unofficial provider that was created for demonstration
  * purposes only. The playground environment will be updated to use official

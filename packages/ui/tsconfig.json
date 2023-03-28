@@ -11,9 +11,6 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "paths": {
-      "*": ["node_modules/@types/*", "*"]
-    }
   },
   "files": [],
   "include": [],

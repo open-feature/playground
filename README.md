@@ -21,7 +21,7 @@ If you're brand new to feature flagging, consider reviewing the [What are featur
   - [Test in production](#test-in-production)
 - [Available providers](#available-providers)
   - [Environment Variable](#environment-variable)
-  - [FlagD](#flagd)
+  - [flagd](#flagd)
   - [Go Feature Flag](#go-feature-flag)
   - [CloudBees Feature Management](#cloudbees-feature-management)
   - [Split](#split)
@@ -33,6 +33,7 @@ If you're brand new to feature flagging, consider reviewing the [What are featur
 - [Troubleshooting](#troubleshooting)
   - [Ports are not available](#ports-are-not-available)
   - [Vendor isn't listed in the dropdown](#vendor-isnt-listed-in-the-dropdown)
+  - [The UI is always grey](#the-ui-is-always-grey)
 
 <!-- tocstop -->
 
@@ -75,19 +76,19 @@ In order to run the demo, you'll need the following tools available on your syst
 
 ## What's in the demo?
 
-The demo consists of three different scenarios where feature flags are used. They help the fictional company Fib3r safely test and release new features.
+The demo consists of three different scenarios where feature flags are used. They help the fictional company Fib3r safely test and release new features. Two of the flags are `client-side` flags, which are evaluated in the web browser. One is a `server-side` flag, which is evaluated on the web server. 
 
 ### Rebranding
 
 As we all know, naming is hard! In this scenario, the team at Fib3r is in the process of rebranding from `FaaS` to `Fib3r`. This may seem like a situation where a feature flag is unnecessary. However, may times a rebranding needs to correspond with a press release or blog post. Of course, you could time a deployment moments before the announcement but that's potentially risky and may require coordination across multiple teams. Using a feature flag would allow you to deploy when it's convent, tests in production by enabled the feature for a subset of users, and then enable the feature instantly for everyone.
 
-For the rebranding effort, we're only interested in being able to toggle the new welcome message on and off. A boolean value is exactly what we need! That can be accomplished in OpenFeature like [this](https://github.com/open-feature/playground/blob/main/packages/app/src/app/message/message.service.ts).
+For the rebranding effort, we're only interested in being able to toggle the new welcome message on and off. A boolean value is exactly what we need! That can be accomplished in OpenFeature like [this](https://github.com/open-feature/playground/blob/main/packages/ui/src/app/app.tsx#:~:text=evaluateUiFlags).
 
 ### Experimenting with color
 
 The team at Fib3r has a hypothesis. They feel that the reason Fib3r hasn't achieved unicorn status is because the current color of the landing page is responsible for high bounce rates. This is a great opportunity to use feature flags for experimentation. With feature flags, it's possible to measure the impact a change has on the metrics that are important to your business.
 
-[Diving into the code](https://github.com/open-feature/playground/blob/main/packages/app/src/app/hex-color/hex-color.service.ts), you may notice that an `after` hook has been defined. [Hooks](https://docs.openfeature.dev/docs/reference/concepts/hooks) are a powerful feature that can be used to extend OpenFeature capabilities. In this case, the code is expecting a valid css hex color value. However, _the person configuring the feature flag in a remote feature flag management tool may not be aware of this requirement_. That's where a validation hook could be used to ensure only valid CSS values are returned. In this hook, the evaluated value is tested against a regular expression. If it doesn't match, a warning messaged is logged and the hook throws an error. OpenFeature will catch the error and return the default value.
+[Diving into the code](https://github.com/open-feature/playground/blob/main/packages/ui/src/app/app.tsx#:~:text=evaluateUiFlags), you may notice that an `after` hook has been defined. [Hooks](https://docs.openfeature.dev/docs/reference/concepts/hooks) are a powerful feature that can be used to extend OpenFeature capabilities. In this case, the code is expecting a valid css hex color value. However, _the person configuring the feature flag in a remote feature flag management tool may not be aware of this requirement_. That's where a validation hook could be used to ensure only valid CSS values are returned. In this hook, the evaluated value is tested against a regular expression. If it doesn't match, a warning messaged is logged and the hook throws an error. OpenFeature will catch the error and return the default value.
 
 ### Test in production
 
@@ -109,9 +110,9 @@ To get started, follow the instructions in the [How to run the demo](#how-to-run
 
 Using environment variables like this can be a good way to get started with feature flagging. However, the approach only support basic use cases and is quite cumbersome.
 
-### FlagD
+### flagd
 
-[FlagD](https://github.com/open-feature/flagd) is a OpenFeature compliant flag evaluation daemon.
+[flagd](https://github.com/open-feature/flagd) is a OpenFeature compliant flag evaluation daemon.
 Following the unix philosophy, it provides one component of a full feature flagging solution: a service for storing and evaluating flags.
 It supports the ability to define flag configurations in various locations include a local file, a HTTP service, or in the case you're using Kubernetes, directly from the Kubernetes API.
 
@@ -282,7 +283,7 @@ In this demo, Go Feature Flag starts automatically as part of the Docker Compose
 1. Copy the production environment key found under `App settings` > `Environments`
 1. Open the `.env` file and make the value of `CLOUDBEES_APP_KEY` the key copied above
 
-Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `cloudbees` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via CloudBees!
+Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `cloudbees` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via CloudBees! Note that for "UI" flags (`hex-color`, `new-welcome-message`) you have to select `Platform: Browser` in the platform dropdown when modifying flag values.
 </details>
 
 ### Split
@@ -309,8 +310,8 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
     <img src="./images/split/fib-algo-targeting.png" width="50%">
 
-1. Create a new [server-side API key](https://help.split.io/hc/en-us/articles/360019916211-API-keys). This can be done by navigating to `Admin settings` > `API keys` > `Create API key`
-1. Open the `.env` file and make the value of `SPLIT_KEY` the key copied above
+1. Create a new [server-side](https://help.split.io/hc/en-us/articles/360019916211-API-keys) and client side API keys. This can be done by navigating to `Admin settings` > `API keys` > `Create API key`.
+1. Open the `.env` file and set the values of `SPLIT_KEY` and `SPLIT_KEY_WEB` to the keys copied above.
 
 Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `split` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via Split!
 
@@ -343,8 +344,8 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
     <img src="./images/harness/target-rules.png" width="50%">
 
-1. Create a new server-side SDK key. This can be done by navigating to `Environments` > `Development` > `New SDK Key`
-1. Open the `.env` file and make the value of `HARNESS_KEY` the key copied above
+1. Create new server and client SDK keys. This can be done by navigating to `Environments` > `Development` > `New SDK Key`.
+1. Open the `.env` file and set the values of `HARNESS_KEY` and `HARNESS_KEY_WEB` to the keys copied above.
 
 Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `harness` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via Harness!
 </details>
@@ -358,10 +359,12 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
 1. Sign-in to your LaunchDarkly account. If you don't already have an account, you can sign up for a [free trial](https://launchdarkly.com/pricing/).
 1. Create a new feature flag with the key `new-welcome-message` using the default boolean flag variation.
+1. Go to the "Settings" for this flag and ensure that `"SDKs using Client-side ID"` is checked under `"Client-side SDK availability"`.
 
     <img src="./images/launchdarkly/new-welcome-message.png" width="50%">
 
 1. Create a new feature flag with the key `hex-color`. Set the flag variations to `string` and add three variations with the following variation and name: `c05543` - red, `2f5230` - green, and `0d507b` - blue.
+1. Go to the "Settings" for this flag and ensure that `"SDKs using Client-side ID"` is checked under `"Client-side SDK availability"`.
 
     <img src="./images/launchdarkly/hex-color.png" width="50%">
 
@@ -373,8 +376,8 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
     <img src="./images/launchdarkly/target-rules.png" width="50%">
 
-1. Navigate to `Account settings` > `Environments` and copy the SDK Key associated with the environment you would like to use.
-1. Open the `.env` file and make the value of `LD_KEY` the key copied above.
+1. Navigate to `Account settings` > `Environments` and copy the `SDK Key` and `Client-side ID` associated with the environment you would like to use.
+1. Open the `.env` file and set the values of `LD_KEY` and `LD_KEY_WEB` to the `SDK Key` and `Client-side ID` the key copied above.
 
 Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `launchdarkly` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via LaunchDarkly!
 </details>
@@ -412,7 +415,7 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
     <img src="./images/flagsmith/server-side-key.png" width="50%">
 
-1. Open the `.env` file and make the value of `FLAGSMITH_ENV_KEY` the key copied above.
+1. Open the `.env` file and set the values of `FLAGSMITH_ENV_KEY` the key copied above, and `FLAGSMITH_ENV_KEY_WEB` to the value of the `"Client-side Environment Key"` shown in the Flagsmith UI.
 
 Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `flagsmith` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via Flagsmith!
 </details>
@@ -436,8 +439,13 @@ The follow evaluation context is available during flag evaluation. That means an
 
 ### Ports are not available
 
-Confirm that the follow ports are available `30000` and `16686`.
+Confirm that the follow ports are available `30000`, `8013` and `16686`.
 
 ### Vendor isn't listed in the dropdown
 
 To add a vendor to the demo, follow the vendor specific section in the documentation. An SDK key **must** be added to the appropriate property in the `.env` file and the demo needs to be restarted.
+
+### The UI is always grey
+
+This means that the provider you've select either doesn't support client-side (see [what's in the demo](#whats-in-the-demo) section) or it's not working properly.
+Ensure you've correctly configured the respective client-side provider, including the credentials.

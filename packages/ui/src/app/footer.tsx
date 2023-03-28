@@ -9,13 +9,14 @@ import {
   Toolbar,
   Tooltip,
 } from '@mui/material';
+import { AvailableProvider } from '@openfeature/utils';
 import React from 'react';
 
 export class Footer extends React.Component<{
-  availableProviders: string[];
+  availableProviders: AvailableProvider[];
   currentProvider: string | undefined;
   tourAvailable: boolean;
-  onSelectProvider: (event: SelectChangeEvent<unknown>) => void;
+  onSelectProvider: (event: SelectChangeEvent<string>) => void;
   onOpenTour: () => void;
 }> {
   override render() {
@@ -43,7 +44,7 @@ export class Footer extends React.Component<{
               onChange={this.props.onSelectProvider}
             >
               {this.props.availableProviders.map((p) => {
-                return <MenuItem key={p} value={p}>{p}</MenuItem>;
+                return <MenuItem key={p.id} value={p.id}>{p.id}</MenuItem>;
               })}
             </Select>
           </FormControl>

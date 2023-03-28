@@ -64,12 +64,12 @@ const steps: StepType[] = [
   {
     // step 8
     selector: '.json-editor',
-    content: `Use the editor to change the "defaultVariant" of the "hex-color" flag to match any of the defined colors.`,
+    content: `Use the editor to change the "defaultVariant" of the "hex-color" flag to match any of the defined colors (for example, change it to "green").`,
   },
   {
     // step 9
     ...htmlAndFooterSelectors,
-    content: `Snazzy choice! Maybe you are a designer yourself? Feature flags provide a great means of allowing team-members who aren't engineers to control selected aspects of application characteristics.`,
+    content: `Snazzy choice! Maybe you are a designer yourself? Feature flags provide a great means of allowing team members who aren't engineers to control selected aspects of application characteristics.`,
   },
   {
     // step 10
@@ -109,7 +109,9 @@ const steps: StepType[] = [
   {
     // step 17
     selector: '.step-switch-provider',
-    content: `You can use this selector to change the active provider in real-time! Configure the demo flags in the SaaS Vendor of your choice, or you can create a custom provider of your own! Check out this project's README for more info.`,
+    content: (
+      <p>You can use this selector to change the active provider in real-time! Configure the demo flags in the SaaS Vendor of your choice, or you can create a custom provider of your own! Check out this project's <a href='https://github.com/open-feature/playground' target='_blank'>README</a> for more info.</p>
+    )
   },
   {
     // step 18
