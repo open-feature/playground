@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.9.0](https://github.com/open-feature/playground/compare/v0.8.0...v0.9.0) (2023-03-29)
+
+
+### 🧹 Chore
+
+* **deps:** update dependency @mui/material to v5.11.15 ([198682b](https://github.com/open-feature/playground/commit/198682b2998525ef9b4b9762f690b5f861f4ddc4))
+* **deps:** update dependency json-schema-to-typescript to v11.0.5 ([fff467d](https://github.com/open-feature/playground/commit/fff467d0b4c973efeb3a1f042c8ec6fdeb9f437f))
+
+
+### 🐛 Bug Fixes
+
+* use more secure images ([#192](https://github.com/open-feature/playground/issues/192)) ([ddd3d35](https://github.com/open-feature/playground/commit/ddd3d354ad7f2da077246d4da420807f1dac3c26))
+
+
+### ✨ New Features
+
+* enable all cors origins in flagd ([#193](https://github.com/open-feature/playground/issues/193)) ([d633233](https://github.com/open-feature/playground/commit/d633233038601a2bf87dbea097bc530becb139c5))
+
 ## [0.8.0](https://github.com/open-feature/playground/compare/v0.7.1...v0.8.0) (2023-03-29)
 
 
