@@ -18,7 +18,9 @@ export type ProviderId =
   | typeof HARNESS_PROVIDER_ID;
 
 export interface AvailableProvider {
-    id: ProviderId,
-    webCredential?: string,
-    host?: string,
+  id: ProviderId;
+  webCredential?: string;
+  host?: string;
+  tls?: boolean;
+  port?: number;
 }

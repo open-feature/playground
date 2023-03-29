@@ -41,6 +41,8 @@ services:
       - FLAGSMITH_ENV_KEY_WEB
       - CLOUDBEES_APP_KEY_WEB
       - FLAGD_HOST_WEB
+      - FLAGD_PORT_WEB
+      - FLAGD_TLS_WEB
 
   fib-service:
     image: ghcr.io/open-feature/playground-fib-service:v0.7.1 # x-release-please-version

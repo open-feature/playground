@@ -69,11 +69,12 @@ class App extends Component<
   private providerMap: ProviderMap = {
     [FLAGD_PROVIDER_ID]: {
       factory: () => {
+        const flagdConfig = this.state.availableProviders.find((p) => p.id === FLAGD_PROVIDER_ID);
         return new FlagdWebProvider(
           {
-            host: this.state.availableProviders.find((p) => p.id === FLAGD_PROVIDER_ID)?.host ?? 'localhost',
-            port: 8013,
-            tls: false,
+            host: flagdConfig?.host ?? 'localhost',
+            port: flagdConfig?.port ?? 8013,
+            tls: flagdConfig?.tls ?? false,
           },
           console
         );

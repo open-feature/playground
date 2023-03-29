@@ -30,9 +30,7 @@ type ProviderMap = Record<
     provider?: Provider;
     available?: () => boolean;
     factory: () => Promise<Provider> | Provider;
-    webCredential?: string;
-    host?: string;
-  }
+  } & Omit<AvailableProvider, 'id'>
 >;
 
 @Injectable()
@@ -44,6 +42,9 @@ export class ProviderService {
     [FLAGD_PROVIDER_ID]: {
       factory: () => new FlagdProvider(),
       host: process.env.FLAGD_HOST_WEB ?? 'localhost',
+      // double NOT bitwise operator used to convert env to number or default
+      port: ~~(process.env.FLAGD_PORT_WEB ?? 8013),
+      tls: process.env.FLAGD_TLS_WEB === 'true',
     },
     launchdarkly: {
       factory: () => {
@@ -180,6 +181,8 @@ export class ProviderService {
           id: p[0] as ProviderId,
           webCredential: p[1].webCredential,
           host: p[1].host,
+          port: p[1].port,
+          tls: p[1].tls,
         };
       });
   }
