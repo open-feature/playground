@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.0](https://github.com/open-feature/playground/compare/v0.7.1...v0.8.0) (2023-03-29)
+
+
+### 🧹 Chore
+
+* removed tbuild from docker compose ([7b634d1](https://github.com/open-feature/playground/commit/7b634d121669f69b1a810ab048c06f37cadb0499))
+
+
+### ✨ New Features
+
+* add additional flagd web config options ([#190](https://github.com/open-feature/playground/issues/190)) ([e826815](https://github.com/open-feature/playground/commit/e82681591243f3af9d8db4e74020df58474c6c14))
+
 ## [0.7.1](https://github.com/open-feature/playground/compare/v0.7.0...v0.7.1) (2023-03-28)
 
 
