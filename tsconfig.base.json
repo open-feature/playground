@@ -29,7 +29,13 @@
       "@openfeature/js-launchdarkly-provider": ["packages/js-launchdarkly-provider/src/index.ts"],
       "@openfeature/js-split-provider": ["packages/js-split-provider/src/index.ts"],
       "@openfeature/openfeature-propagator": ["packages/openfeature-propagator/src/index.ts"],
-      "@openfeature/provider": ["packages/provider/src/index.ts"]
+      "@openfeature/provider": ["packages/provider/src/index.ts"],
+      "@openfeature/utils": ["packages/utils/src/index.ts"],
+      "@openfeature/web-cloudbees-provider": ["packages/web-cloudbees-provider/src/index.ts"],
+      "@openfeature/web-flagsmith-provider": ["packages/web-flagsmith-provider/src/index.ts"],
+      "@openfeature/web-harness-provider": ["packages/web-harness-provider/src/index.ts"],
+      "@openfeature/web-launchdarkly-provider": ["packages/web-launchdarkly-provider/src/index.ts"],
+      "@openfeature/web-split-provider": ["packages/web-split-provider/src/index.ts"]
     },
     "types": ["node"]
   },

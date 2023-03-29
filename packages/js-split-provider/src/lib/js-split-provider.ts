@@ -1,9 +1,13 @@
-import { parseValidJsonObject, parseValidNumber, TypeMismatchError } from '@openfeature/extra';
-import { JsonValue } from '@openfeature/js-sdk';
+import { JsonValue, TypeMismatchError } from '@openfeature/js-sdk';
 import { EvaluationContext, Provider, ResolutionDetails, Logger } from '@openfeature/js-sdk';
 import type { Attributes, IClient } from '@splitsoftware/splitio/types/splitio';
+import { parseValidNumber, parseValidJsonObject } from '@openfeature/utils';
 
 /**
+ * 
+ * NOTE: This is an unofficial provider that was created for demonstration
+ * purposes only. The playground environment will be updated to use official
+ * providers once they're available.
  * This simple provider implementation relies on storing all data as strings in the treatment value.
  *
  * It may be more idiomatic to only rely on that for the "isEnabled" calls,

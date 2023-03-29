@@ -19,8 +19,17 @@ spec:
           red: c05543
           green: 2f5230
           blue: 0d507b
+          yellow: d4ac0d
         defaultVariant: blue
         state: ENABLED
+        targeting:
+          if:
+            - in:
+              - "@faas.com"
+              - var:
+                - email
+            - yellow
+            - null
       fib-algo:
         variants:
           recursive: recursive

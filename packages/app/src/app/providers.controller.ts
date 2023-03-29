@@ -1,6 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Controller, Get, Param, Put } from '@nestjs/common';
-import { ProviderService, ProviderId } from '@openfeature/provider';
+import { ProviderService } from '@openfeature/provider';
+import { ProviderId } from '@openfeature/utils';
 import { PinoLogger } from 'nestjs-pino';
 import { lastValueFrom } from 'rxjs';
 
