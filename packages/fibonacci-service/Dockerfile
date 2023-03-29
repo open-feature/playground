@@ -1,4 +1,4 @@
-FROM node:16-bullseye AS builder
+FROM node:16.17-bullseye-slim AS builder
 WORKDIR /tmp/playground/
 COPY package*.json workspace.json tsconfig*.json nx.json babel.config.json ./
 RUN npm install
