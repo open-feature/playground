@@ -1,7 +1,7 @@
 {
   "name": "openfeature",
   "version": "0.9.0",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "ui": "nx run ui:serve",
     "app": "nx run app:serve",
