@@ -1,4 +1,4 @@
-FROM node:16.17-bullseye-slim AS builder
+FROM node:19.9-bullseye-slim AS builder
 WORKDIR /tmp/playground/
 COPY package*.json workspace.json tsconfig*.json nx.json babel.config.json ./
 COPY schemas/ ./schemas/
@@ -6,7 +6,7 @@ RUN npm install
 COPY packages/ ./packages/
 RUN npm run build:app
 
-FROM node:16-alpine as app
+FROM node:19-alpine as app
 
 WORKDIR /opt/playground/
 COPY package*.json ./
