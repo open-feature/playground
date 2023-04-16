@@ -7,7 +7,7 @@ const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumenta
 
 /**
  * Load directly from the dist folder because `tracing.js` is used outside normal NX
- * operations. That means the `openfeature-propagator` is not automatically bunded
+ * operations. That means the `openfeature-propagator` is not automatically bundled
  * during the build process.
  */
 const { OpenFeaturePropagator } = require('../dist/packages/openfeature-propagator/src/index');
@@ -19,8 +19,9 @@ registerInstrumentations({
 const { Resource } = require('@opentelemetry/resources');
 const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
 const { NodeTracerProvider } = require('@opentelemetry/sdk-trace-node');
-const { JaegerExporter } = require('@opentelemetry/exporter-jaeger');
-const { SimpleSpanProcessor } = require('@opentelemetry/sdk-trace-base');
+// const { JaegerExporter } = require('@opentelemetry/exporter-jaeger');
+const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc');
+const { BatchSpanProcessor } = require('@opentelemetry/sdk-trace-base');
 
 propagation.setGlobalPropagator(
   new CompositePropagator({
@@ -36,6 +37,13 @@ const provider = new NodeTracerProvider({
   }),
 });
 
-provider.addSpanProcessor(new SimpleSpanProcessor(new JaegerExporter()));
+console.log('starting new span processor');
+provider.addSpanProcessor(
+  new BatchSpanProcessor(
+    new OTLPTraceExporter({
+      url: 'http://otel-collector:4317',
+    })
+  )
+);
 
 provider.register();

@@ -75,6 +75,31 @@ services:
     ports:
       - '16686:16686'
 
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    restart: always
+    command: [ "--config=/etc/otel-collector-config.yaml" ]
+    volumes:
+      - ./config/otel/collector.yaml:/etc/otel-collector-config.yaml
+    expose:
+      - "1888"   # pprof extension
+      - "8888"   # Prometheus metrics exposed by the collector
+      - "8889"   # Prometheus exporter metrics
+      - "13133" # health_check extension
+      - "4317"   # OTLP gRPC receiver
+      - "55679" # zpages extension
+    depends_on:
+      - jaeger
+      - prometheus
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    restart: always
+    volumes:
+      - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
   flagd:
     image: ghcr.io/open-feature/flagd:v0.5.4
     command:
@@ -83,6 +108,10 @@ services:
       - '*'
       - --uri
       - file://etc/flagd/flags.json
+      - --metrics-exporter
+      - otel
+      - --otel-collector-uri
+      - otel-collector:4317
     volumes:
       - ./config/flagd/flags.json:/etc/flagd/flags.json
     ports:

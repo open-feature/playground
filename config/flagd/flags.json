@@ -23,9 +23,7 @@
             "in": [
               "@faas.com",
               {
-                "var": [
-                  "email"
-                ]
+                "var": ["email"]
               }
             ]
           },
@@ -57,9 +55,7 @@
             "in": [
               "@faas.com",
               {
-                "var": [
-                  "email"
-                ]
+                "var": ["email"]
               }
             ]
           },
