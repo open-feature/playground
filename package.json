@@ -51,7 +51,7 @@
     "launchdarkly-node-server-sdk": "^7.0.0",
     "nestjs-pino": "^3.1.2",
     "pino-http": "^8.3.1",
-    "pino-pretty": "^9.1.1",
+    "pino-pretty": "^10.0.0",
     "reflect-metadata": "^0.1.13",
     "rox-browser": "^5.4.2",
     "rox-node": "^5.4.2",
