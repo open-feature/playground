@@ -1,6 +1,7 @@
 import { parseValidJsonObject, parseValidNumber } from '@openfeature/utils';
 import {
   EvaluationContext,
+  OpenFeatureEventEmitter,
   FlagValue,
   Hook,
   JsonValue,
@@ -12,7 +13,6 @@ import {
   TypeMismatchError,
 } from '@openfeature/web-sdk';
 import { SplitFactory } from '@splitsoftware/splitio-browserjs';
-import { EventEmitter } from 'events';
 
 const ANONYMOUS = 'anonymous';
 
@@ -25,7 +25,7 @@ export class SplitWebProvider implements Provider {
   private factory!: SplitIO.ISDK;
   private client!: SplitIO.IClient;
 
-  events = new EventEmitter();
+  events = new OpenFeatureEventEmitter();
 
   constructor(private readonly authorizationKey: string) {}
 

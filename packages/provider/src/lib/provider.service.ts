@@ -42,8 +42,7 @@ export class ProviderService {
     [FLAGD_PROVIDER_ID]: {
       factory: () => new FlagdProvider(),
       host: process.env.FLAGD_HOST_WEB ?? 'localhost',
-      // double NOT bitwise operator used to convert env to number or default
-      port: ~~(process.env.FLAGD_PORT_WEB ?? 8013),
+      port: Number.parseInt(process.env.FLAGD_PORT_WEB || '8013') || 8013,
       tls: process.env.FLAGD_TLS_WEB === 'true',
     },
     launchdarkly: {
