@@ -1,5 +1,48 @@
 # Changelog
 
+## [0.10.0](https://github.com/open-feature/playground/compare/v0.9.0...v0.10.0) (2023-05-10)
+
+
+### 📚 Documentation
+
+* update license in package json ([#197](https://github.com/open-feature/playground/issues/197)) ([fc218fc](https://github.com/open-feature/playground/commit/fc218fccf4e2bab44fb4c880358b68e3a6d0b240))
+
+
+### 🧹 Chore
+
+* **deps:** update dependency jest-environment-jsdom to v29.5.0 ([2398577](https://github.com/open-feature/playground/commit/2398577f80e3dea8ceb7720ce7baa606fecc07b0))
+* **deps:** update dependency prettier to v2.8.7 ([aeebbdc](https://github.com/open-feature/playground/commit/aeebbdc2ffbd63b37b32a7eb9d15acd2b02e3b4d))
+* **deps:** update dependency prettier to v2.8.8 ([083b00f](https://github.com/open-feature/playground/commit/083b00fea8c750fc97be5354c4fed243331d32d2))
+* **deps:** update dependency react-json-editor-ajrm to v2.5.14 ([a812076](https://github.com/open-feature/playground/commit/a81207633027eaba99bc54d5c4a093a399af7c1f))
+* **deps:** update dependency style-loader to v3.3.2 ([f9a3197](https://github.com/open-feature/playground/commit/f9a31970b21408415daf67fdef1f86cc905bb3b7))
+* **deps:** update dependency styled-components to v5.3.10 ([5ebe580](https://github.com/open-feature/playground/commit/5ebe580904e2b4f9c6ecf31cc3ecd6ff241a889a))
+* **deps:** update dependency webpack to v5.77.0 ([2b6c1c6](https://github.com/open-feature/playground/commit/2b6c1c68c10ef5cdd618f2753a4d1aa08ff5467c))
+* **deps:** update emotion monorepo to v11.10.8 ([4694d93](https://github.com/open-feature/playground/commit/4694d938dd0fe03d1bb5d864487cf7514fca7159))
+* **deps:** update types ([de2276b](https://github.com/open-feature/playground/commit/de2276b4d84491ca42cc31f3cf6ccb893caba0c9))
+* **deps:** update types ([f47b140](https://github.com/open-feature/playground/commit/f47b140d5f0b66f56f40d2eef31774e86320cf58))
+
+
+### ✨ New Features
+
+* migrate to official env var provider ([#180](https://github.com/open-feature/playground/issues/180)) ([bab6383](https://github.com/open-feature/playground/commit/bab6383013937660d88443904757b2d41bcb9d46))
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update dependency @harnessio/ff-nodejs-server-sdk to v1.2.14 ([efebf1c](https://github.com/open-feature/playground/commit/efebf1c0fd300053fc6ff228ffa93a42f03ab8e7))
+* **deps:** update dependency @harnessio/ff-nodejs-server-sdk to v1.2.15 ([6f5ac7e](https://github.com/open-feature/playground/commit/6f5ac7eeb39c39cdf6d9604880bdcd478dac4b4c))
+* **deps:** update dependency @harnessio/ff-nodejs-server-sdk to v1.2.16 ([636ae5a](https://github.com/open-feature/playground/commit/636ae5a2f6a7c021e997d39390a87db5c3f796e5))
+* **deps:** update dependency @nestjs/axios to v2 ([#174](https://github.com/open-feature/playground/issues/174)) ([a550a95](https://github.com/open-feature/playground/commit/a550a9565f7a384588689f83558c7c2c35148251))
+* **deps:** update dependency @nestjs/serve-static to v3.0.1 ([e4914ff](https://github.com/open-feature/playground/commit/e4914ff86b240a8ebc0c929cea0159b91bc78060))
+* **deps:** update dependency @openfeature/go-feature-flag-provider to v0.5.8 ([#200](https://github.com/open-feature/playground/issues/200)) ([3a714ae](https://github.com/open-feature/playground/commit/3a714aedab957936be25a25b65cb517c7418404b))
+* **deps:** update dependency @openfeature/open-telemetry-hook to v6 ([#164](https://github.com/open-feature/playground/issues/164)) ([dd7f5de](https://github.com/open-feature/playground/commit/dd7f5de4b519e30cb35c784d82acb5d7108d91bb))
+* **deps:** update dependency @opentelemetry/auto-instrumentations-node to ^0.36.0 ([#156](https://github.com/open-feature/playground/issues/156)) ([a832f63](https://github.com/open-feature/playground/commit/a832f63569f7bcab438058d1070f32b3d3b40942))
+* **deps:** update dependency @splitsoftware/openfeature-js-split-provider to v1.0.7 ([ead5e80](https://github.com/open-feature/playground/commit/ead5e80fd1011d55b399b064eb12d3f2a40ff4d1))
+* **deps:** update dependency pino-pretty to v10 ([#181](https://github.com/open-feature/playground/issues/181)) ([3dc2e24](https://github.com/open-feature/playground/commit/3dc2e24b359c36d8ca5a5f37525e48482786e4c8))
+* **deps:** update nest monorepo ([25170f4](https://github.com/open-feature/playground/commit/25170f487bd01ab49bc57eedbf8ba4e3418501ad))
+* **deps:** update opentelemetry-js monorepo ([#150](https://github.com/open-feature/playground/issues/150)) ([ea0b929](https://github.com/open-feature/playground/commit/ea0b929f08d23797c012aad3f6daa1114e36adf6))
+* error with missing port, dep updates ([#202](https://github.com/open-feature/playground/issues/202)) ([8712cee](https://github.com/open-feature/playground/commit/8712ceea204ee55fb17d896d4ccb888ffa3cc494))
+
 ## [0.9.0](https://github.com/open-feature/playground/compare/v0.8.0...v0.9.0) (2023-03-29)
 
 
