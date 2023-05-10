@@ -1,5 +1,6 @@
 import {
   EvaluationContext,
+  OpenFeatureEventEmitter,
   FlagValue,
   JsonValue,
   Logger,
@@ -9,7 +10,6 @@ import {
   ResolutionDetails,
   TypeMismatchError,
 } from '@openfeature/web-sdk';
-import { EventEmitter } from 'events';
 import { initialize, LDClient, LDContext } from 'launchdarkly-js-client-sdk';
 
 export interface LaunchDarklyProviderOptions {
@@ -27,7 +27,7 @@ export class LaunchDarklyProvider implements Provider {
     name: 'LaunchDarkly',
   };
 
-  events = new EventEmitter();
+  events = new OpenFeatureEventEmitter();
 
   private client!: LDClient;
 

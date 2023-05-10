@@ -1,6 +1,5 @@
 import { Event as HarnessEvent, initialize } from '@harnessio/ff-javascript-client-sdk';
-import { EvaluationContext, JsonValue, Logger, Provider, ProviderEvents, ProviderMetadata, ResolutionDetails, TypeMismatchError } from '@openfeature/web-sdk';
-import { EventEmitter } from 'events';
+import { EvaluationContext, OpenFeatureEventEmitter, JsonValue, Logger, Provider, ProviderEvents, ProviderMetadata, ResolutionDetails, TypeMismatchError } from '@openfeature/web-sdk';
 
 type ValueTypes = 'boolean' | 'string' | 'number' | 'object'; 
 
@@ -16,7 +15,7 @@ export class HarnessWebProvider implements Provider {
     name: 'Harness web provider'
   }
 
-  events = new EventEmitter();
+  events = new OpenFeatureEventEmitter();
 
   constructor(private apiKey: string, private logger?: Logger) {}
 

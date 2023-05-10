@@ -1,5 +1,4 @@
-import { EvaluationContext, JsonValue, Logger, Provider, ProviderEvents, ProviderMetadata, ResolutionDetails } from '@openfeature/web-sdk';
-import { EventEmitter } from 'events';
+import { EvaluationContext, JsonValue, Logger, Provider, ProviderEvents, ProviderMetadata, ResolutionDetails, OpenFeatureEventEmitter } from '@openfeature/web-sdk';
 import { dynamicApi, RoxFetcherResult, setup } from 'rox-browser';
 
 export interface CloudbeesProviderOptions {
@@ -16,7 +15,7 @@ export class CloudbeesWebProvider implements Provider {
 
   constructor(private options: CloudbeesProviderOptions) {}
 
-  events = new EventEmitter();
+  events = new OpenFeatureEventEmitter();
 
   metadata: ProviderMetadata = {
     name: 'CloudBees web provider'
