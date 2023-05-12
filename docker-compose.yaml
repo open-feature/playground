@@ -76,7 +76,7 @@ services:
       - '16686:16686'
 
   flagd:
-    image: ghcr.io/open-feature/flagd:v0.4.5
+    image: ghcr.io/open-feature/flagd:v0.5.3
     command:
       - start
       - --cors-origin
