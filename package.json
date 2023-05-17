@@ -67,7 +67,7 @@
     "@nestjs/testing": "9.4.0",
     "@nrwl/cli": "15.9.3",
     "@nrwl/devkit": "15.9.4",
-    "@nrwl/eslint-plugin-nx": "15.8.6",
+    "@nrwl/eslint-plugin-nx": "16.2.1",
     "@nrwl/express": "15.9.4",
     "@nrwl/jest": "15.9.4",
     "@nrwl/js": "15.9.4",
