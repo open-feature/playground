@@ -1,9 +1,10 @@
 {
+  "name": "js-launchdarkly-provider",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/js-launchdarkly-provider/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/js-launchdarkly-provider",
@@ -21,14 +22,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/js-launchdarkly-provider/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["coverage/packages/js-launchdarkly-provider"],
       "options": {
         "jestConfig": "packages/js-launchdarkly-provider/jest.config.ts",

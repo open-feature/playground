@@ -38,7 +38,7 @@ type ProviderMap = Record<
 >;
 
 export class Demos extends Component<
-  Readonly<{}>,
+  Readonly<Record<string, never>>,
   {
     json: any;
     editorOn: boolean;
@@ -103,14 +103,7 @@ export class Demos extends Component<
   };
 
   constructor(
-    props: Readonly<{
-      json: any;
-      editorOn: boolean;
-      editorAccess: boolean;
-      availableProviders: AvailableProvider[];
-      currentProvider: string;
-      test: string;
-    }>
+    props: Record<string, never>
   ) {
     super(props);
     this.state = {
