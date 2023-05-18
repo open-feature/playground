@@ -5,10 +5,8 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
       "options": {
         "target": "node",
         "compiler": "tsc",
@@ -31,19 +29,16 @@
       },
       "dependsOn": [
         {
-          "projects": "dependencies",
-          "target": "build"
+          "target": "build",
+          "dependencies": true
         }
       ]
     },
     "serve": {
-      "executor": "@nrwl/js:node",
+      "executor": "@nx/js:node",
       "options": {
         "buildTarget": "fibonacci-service:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ]
+        "runtimeArgs": ["-r", "./scripts/tracing.js"]
       },
       "configurations": {
         "production": {
@@ -52,27 +47,21 @@
       },
       "dependsOn": [
         {
-          "projects": "dependencies",
-          "target": "build"
+          "target": "build",
+          "dependencies": true
         }
       ]
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "packages/fibonacci-service/**/*.ts"
-        ]
+        "lintFilePatterns": ["packages/fibonacci-service/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/packages/fibonacci-service"
-      ],
+      "executor": "@nx/jest:jest",
+      "outputs": ["coverage/packages/fibonacci-service"],
       "options": {
         "jestConfig": "packages/fibonacci-service/jest.config.ts",
         "passWithNoTests": true
@@ -80,7 +69,5 @@
     }
   },
   "tags": [],
-  "implicitDependencies": [
-    "openfeature-propagator"
-  ]
+  "implicitDependencies": ["openfeature-propagator"]
 }

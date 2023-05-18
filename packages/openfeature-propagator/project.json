@@ -5,35 +5,25 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/openfeature-propagator",
         "main": "packages/openfeature-propagator/src/index.ts",
         "tsConfig": "packages/openfeature-propagator/tsconfig.lib.json",
-        "assets": [
-          "packages/openfeature-propagator/*.md"
-        ]
+        "assets": ["packages/openfeature-propagator/*.md"]
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "packages/openfeature-propagator/**/*.ts"
-        ]
+        "lintFilePatterns": ["packages/openfeature-propagator/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "packages/openfeature-propagator/jest.config.ts",
         "passWithNoTests": true

@@ -1,9 +1,10 @@
 {
+  "name": "openfeature-extra",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/openfeature-extra/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/openfeature-extra",
@@ -21,14 +22,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/openfeature-extra/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["coverage/packages/openfeature-extra"],
       "options": {
         "jestConfig": "packages/openfeature-extra/jest.config.ts",

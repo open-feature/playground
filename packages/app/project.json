@@ -1,20 +1,17 @@
 {
+  "name": "app",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/app/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/app",
         "main": "packages/app/src/main.ts",
         "tsConfig": "packages/app/tsconfig.app.json",
-        "assets": [
-          "packages/app/src/assets"
-        ],
+        "assets": ["packages/app/src/assets"],
         "target": "node",
         "compiler": "tsc"
       },
@@ -33,32 +30,27 @@
       },
       "dependsOn": [
         {
-          "projects": "dependencies",
-          "target": "build"
+          "target": "build",
+          "dependencies": true
         }
       ]
     },
     "serve": {
-      "executor": "@nrwl/node:node",
+      "executor": "@nx/node:node",
       "options": {
         "buildTarget": "app:build",
-        "runtimeArgs": [
-          "-r",
-          "./scripts/tracing.js"
-        ]
+        "runtimeArgs": ["-r", "./scripts/tracing.js"]
       },
       "dependsOn": [
         {
-          "projects": "dependencies",
-          "target": "build"
+          "target": "build",
+          "dependencies": true
         }
       ]
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/packages/app"
-      ],
+      "executor": "@nx/jest:jest",
+      "outputs": ["coverage/packages/app"],
       "options": {
         "jestConfig": "packages/app/jest.config.ts",
         "passWithNoTests": true
@@ -66,7 +58,5 @@
     }
   },
   "tags": [],
-  "implicitDependencies": [
-    "openfeature-propagator"
-  ]
+  "implicitDependencies": ["openfeature-propagator"]
 }

@@ -1,9 +1,10 @@
 {
+  "name": "js-split-provider",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/js-split-provider/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/js-split-provider",
@@ -21,14 +22,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/js-split-provider/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["coverage/packages/js-split-provider"],
       "options": {
         "jestConfig": "packages/js-split-provider/jest.config.ts",

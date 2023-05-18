@@ -6,9 +6,11 @@ const locale = require('react-json-editor-ajrm/locale/en');
 
 export type JsonOutput = {
   jsObject: {
-    [key: string]: {
-      state: 'enabled' | 'disabled';
-      defaultVariant: string;
+    flags: {
+      [key: string]: {
+        state: 'enabled' | 'disabled';
+        defaultVariant: string;
+      };
     };
   };
   json: string;
@@ -23,10 +25,13 @@ export class JsonEditor extends React.Component<{
   override render() {
     return (
       <div
+        className="json-editor"
         style={{
           width: this.props.hidden ? '0' : '33vw',
           overflow: 'hidden',
           height: HEIGHT_MINUS_HEADER,
+          position: 'absolute',
+          right: 0,
         }}
       >
         <JSONInput

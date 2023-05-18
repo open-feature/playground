@@ -1,4 +1,3 @@
-import { OpenFeature } from '@openfeature/js-sdk';
 import { parseValidJsonObject } from '@openfeature/utils';
 import { EvaluationContext, OpenFeatureEventEmitter, JsonValue, Logger, ParseError, Provider, ProviderEvents, ResolutionDetails, TypeMismatchError } from '@openfeature/web-sdk';
 import flagsmith from 'flagsmith';

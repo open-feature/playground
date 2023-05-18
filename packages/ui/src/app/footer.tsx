@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { AvailableProvider } from '@openfeature/utils';
 import React from 'react';
+import { DASHBOARD_GREY } from './types';
 
 export class Footer extends React.Component<{
   availableProviders: AvailableProvider[];
@@ -21,7 +22,12 @@ export class Footer extends React.Component<{
 }> {
   override render() {
     return (
-      <AppBar className='footer' position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+      <AppBar
+        className="footer"
+        position="fixed"
+        color="primary"
+        sx={{ top: 'auto', bottom: 0, backgroundColor: `#${DASHBOARD_GREY}` }}
+      >
         <Toolbar style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <FormControl
             className="step-switch-provider"
@@ -44,7 +50,11 @@ export class Footer extends React.Component<{
               onChange={this.props.onSelectProvider}
             >
               {this.props.availableProviders.map((p) => {
-                return <MenuItem key={p.id} value={p.id}>{p.id}</MenuItem>;
+                return (
+                  <MenuItem key={p.id} value={p.id}>
+                    {p.id}
+                  </MenuItem>
+                );
               })}
             </Select>
           </FormControl>

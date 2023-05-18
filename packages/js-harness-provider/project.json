@@ -1,9 +1,10 @@
 {
+  "name": "js-harness-provider",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/js-harness-provider/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/js-harness-provider",
@@ -14,14 +15,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/js-harness-provider/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["coverage/packages/js-harness-provider"],
       "options": {
         "jestConfig": "packages/js-harness-provider/jest.config.ts",

@@ -1,9 +1,10 @@
 {
+  "name": "fibonacci",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/fibonacci/src",
   "targets": {
     "build": {
-      "executor": "@nrwl/webpack:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/fibonacci",
@@ -21,14 +22,14 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/fibonacci/**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["coverage/packages/fibonacci"],
       "options": {
         "jestConfig": "packages/fibonacci/jest.config.ts",
