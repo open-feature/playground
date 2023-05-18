@@ -29,3 +29,13 @@ const shift = (hex: string): Theme => {
     dark,
   };
 };
+
+export const getData = async <T>(path: string, headers: HeadersInit = {}): Promise<T> => {
+  const response = await fetch(path, {
+    headers,
+  });
+  if (response.ok) {
+    return response.json();
+  }
+  throw Error(`HTTP status error: ${response.statusText}`);
+};
