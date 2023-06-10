@@ -1,11 +1,11 @@
-FROM node:16.20-bullseye-slim AS builder
+FROM node:20.3-bullseye-slim AS builder
 WORKDIR /tmp/playground/
 COPY package*.json workspace.json tsconfig*.json nx.json babel.config.json ./
 RUN npm install
 COPY packages/ ./packages/
 RUN npm run build:fib-service
 
-FROM node:16-alpine as app
+FROM node:20-alpine as app
 
 WORKDIR /opt/playground/
 COPY package*.json ./
