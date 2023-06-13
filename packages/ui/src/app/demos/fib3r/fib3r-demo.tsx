@@ -92,7 +92,7 @@ class Fib3rDemo extends Component<
                   : 'Welcome to FaaS: Fibonacci as a Service!'
               }
               hexColor={this.state.hexColor}
-              loggedIn={!!this.state.email}
+              loggedInUser={this.state.email}
               onLogoutClick={this.onLogoutClick.bind(this)}
               onLoginClick={this.onLoginClick.bind(this)}
             ></Header>
