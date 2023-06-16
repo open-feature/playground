@@ -4,7 +4,7 @@ import React from 'react';
 export class Header extends React.Component<{
   title: string;
   hexColor: string;
-  loggedIn: boolean;
+  loggedInUser?: string | null;
   titleClassName: string;
   loginClassName: string;
   onLoginClick: () => void;
@@ -19,8 +19,12 @@ export class Header extends React.Component<{
             <Typography className={this.props.titleClassName} variant="h6" component="div" style={{ flexGrow: 1 }}>
               {this.props.title}
             </Typography>
-            <Button className='step-click-login' onClick={this.props.loggedIn ? this.props.onLogoutClick : this.props.onLoginClick} color="inherit">
-              {this.props.loggedIn ? 'Logout' : 'Login'}
+            <Button
+              className="step-click-login"
+              onClick={this.props.loggedInUser ? this.props.onLogoutClick : this.props.onLoginClick}
+              color="inherit"
+            >
+              {this.props.loggedInUser ? this.props.loggedInUser : 'Login'}
             </Button>
           </Toolbar>
         </AppBar>
