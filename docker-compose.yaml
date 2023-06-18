@@ -69,7 +69,7 @@ services:
       - CLOUDBEES_APP_KEY
 
   jaeger:
-    image: jaegertracing/all-in-one:1.45
+    image: jaegertracing/all-in-one:1.46
     expose:
       - '6832/udp'
     ports:
