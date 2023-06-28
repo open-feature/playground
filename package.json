@@ -125,7 +125,7 @@
     "ts-jest": "29.1.0",
     "ts-node": "10.9.1",
     "tslib": "^2.4.1",
-    "typescript": "5.1.5",
+    "typescript": "5.1.6",
     "url-loader": "^4.1.1",
     "webpack": "^5.75.0",
     "webpack-merge": "^5.8.0"
