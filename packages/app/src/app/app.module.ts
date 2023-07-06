@@ -17,6 +17,7 @@ import { ProvidersController } from './providers.controller';
 import { TransactionContextMiddleware } from './transaction-context.middleware';
 import { RequestData } from './types';
 import { UtilsController } from './utils.controller';
+import { OpenTelemetryMetricHook } from '@openfeature/extra'
 
 /**
  * Set a global logger for OpenFeature. This is logger will available in hooks.
@@ -27,7 +28,11 @@ OpenFeature.setLogger(new OpenFeatureLogger('OpenFeature'));
  * Adding hooks to at the global level will ensure they always run
  * as part of a flag evaluation lifecycle.
  */
-OpenFeature.addHooks(new LoggingHook(), new OpenTelemetryHook());
+OpenFeature.addHooks(
+  new LoggingHook(),
+  new OpenTelemetryHook(),
+  new OpenTelemetryMetricHook(),
+);
 
 /**
  * The transaction context propagator is an experimental feature
