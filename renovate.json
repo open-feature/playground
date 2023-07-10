@@ -1,9 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": "Default preset for use with OpenFeature's repos",
-  "extends": [
-    "config:base"
-  ],
+  "extends": ["config:recommended"],
   "semanticCommits": "enabled",
   "automergeType": "branch",
   "configMigration": true,
@@ -15,41 +13,28 @@
   "npm": {
     "packageRules": [
       {
-        "matchPackagePatterns": [
-          "@docusaurus/"
-        ],
+        "matchPackagePatterns": ["@docusaurus/"],
         "groupName": "Docusaurus"
       },
       {
-        "matchPackagePatterns": [
-          "@opentelemtry/"
-        ],
+        "matchPackagePatterns": ["@opentelemtry/"],
         "groupName": "OpenTelemetry"
       },
       {
-        "matchPackagePatterns": [
-          "@typescript-eslint",
-          "eslint"
-        ],
+        "matchPackagePatterns": ["@typescript-eslint", "eslint"],
         "groupName": "ESLint"
       },
       {
-        "matchPackagePatterns": [
-          "@fortawesome/"
-        ],
+        "matchPackagePatterns": ["@fortawesome/"],
         "groupName": "Font Awesome"
       },
       {
-        "matchPackagePatterns": [
-          "@types/"
-        ],
+        "matchPackagePatterns": ["@types/"],
         "groupName": "Types"
       },
       {
         "description": "disable package.json > engines update",
-        "matchDepTypes": [
-          "engines"
-        ],
+        "matchDepTypes": ["engines"],
         "enabled": false
       }
     ]
@@ -57,17 +42,12 @@
   "packageRules": [
     {
       "description": "Automerge non-major updates",
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
+      "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
       "automerge": true
     },
     {
-      "matchManagers": [
-        "github-actions"
-      ],
+      "matchManagers": ["github-actions"],
       "automerge": true
     }
   ]
