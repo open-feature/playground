@@ -137,7 +137,7 @@ Example:
 
 ##### Variants
 
-`variants` is a **required** property. It is an object containing the possible variations supported by the flag. All the object's values **must** but the same type (e.g. boolean, numbers, string, JSON). The type used as the variant value will directly affect how the flag is accessed in OpenFeature. For example, to use a flag configured with boolean values, the `getBooleanValue` or `getBooleanDetails` methods should be used. If another method, such as `getStringValue` is called, a type mismatch occurs and the default value is returned.
+`variants` is a **required** property. It is an object containing the possible variations supported by the flag. All the object's values **must** be the same type (e.g. boolean, numbers, string, JSON). The type used as the variant value will directly affect how the flag is accessed in OpenFeature. For example, to use a flag configured with boolean values, the `getBooleanValue` or `getBooleanDetails` methods should be used. If another method, such as `getStringValue` is called, a type mismatch occurs and the default value is returned.
 
 Example:
 
