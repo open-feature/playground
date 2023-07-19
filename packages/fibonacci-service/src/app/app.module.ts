@@ -4,7 +4,7 @@ import { AppController } from './app.controller';
 import { LoggerModule } from 'nestjs-pino';
 import { OpenFeature } from '@openfeature/js-sdk';
 import { AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger } from '@openfeature/extra';
-import { OpenTelemetryHook } from '@openfeature/open-telemetry-hook';
+import { TracingHook, MetricsHook } from '@openfeature/open-telemetry-hooks';
 import { TransactionContextMiddleware } from './transaction-context.middleware';
 import { ProviderService } from '@openfeature/provider';
 import { ProvidersController } from './providers.controller';
@@ -18,7 +18,7 @@ OpenFeature.setLogger(new OpenFeatureLogger('OpenFeature'));
  * Adding hooks to at the global level will ensure they always run
  * as part of a flag evaluation lifecycle.
  */
-OpenFeature.addHooks(new LoggingHook(), new OpenTelemetryHook());
+OpenFeature.addHooks(new LoggingHook(), new TracingHook(), new MetricsHook());
 
 /**
  * The transaction context propagator is an experimental feature
