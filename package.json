@@ -31,7 +31,7 @@
     "@openfeature/open-telemetry-hooks": "^0.2.1",
     "@openfeature/web-sdk": "^0.3.4-experimental",
     "@opentelemetry/api": "~1.4.0",
-    "@opentelemetry/auto-instrumentations-node": "^0.36.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.39.0",
     "@opentelemetry/exporter-jaeger": "^1.7.0",
     "@opentelemetry/sdk-node": "^0.38.0",
     "@opentelemetry/sdk-trace-node": "~1.12.0",
