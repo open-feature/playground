@@ -16,14 +16,16 @@
         "blue": "0d507b",
         "yellow": "d4ac0d"
       },
-      "defaultVariant": "red",
+      "defaultVariant": "blue",
       "targeting": {
         "if": [
           {
             "in": [
               "@faas.com",
               {
-                "var": ["email"]
+                "var": [
+                  "email"
+                ]
               }
             ]
           },
@@ -55,7 +57,9 @@
             "in": [
               "@faas.com",
               {
-                "var": ["email"]
+                "var": [
+                  "email"
+                ]
               }
             ]
           },
