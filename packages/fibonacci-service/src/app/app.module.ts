@@ -18,7 +18,17 @@ OpenFeature.setLogger(new OpenFeatureLogger('OpenFeature'));
  * Adding hooks to at the global level will ensure they always run
  * as part of a flag evaluation lifecycle.
  */
-OpenFeature.addHooks(new LoggingHook(), new TracingHook(), new MetricsHook());
+OpenFeature.addHooks(
+  new LoggingHook(),
+  new TracingHook(),
+  new MetricsHook({
+    attributeMapper: (flagMetadata) => {
+      return {
+        ...('scope' in flagMetadata && { scope: flagMetadata.scope }),
+      };
+    },
+  })
+);
 
 /**
  * The transaction context propagator is an experimental feature

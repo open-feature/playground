@@ -11,6 +11,7 @@ import {
   ProviderMetadata,
   ResolutionDetails,
   TypeMismatchError,
+  ProviderStatus,
 } from '@openfeature/web-sdk';
 import { SplitFactory } from '@splitsoftware/splitio-browserjs';
 
@@ -24,6 +25,12 @@ const ANONYMOUS = 'anonymous';
 export class SplitWebProvider implements Provider {
   private factory!: SplitIO.ISDK;
   private client!: SplitIO.IClient;
+
+  private _status = ProviderStatus.NOT_READY;
+
+  get status() {
+    return this._status;
+  }
 
   events = new OpenFeatureEventEmitter();
 
@@ -41,6 +48,7 @@ export class SplitWebProvider implements Provider {
     this.addChangeListener(this.client);
     return new Promise((resolve) => {
       this.client.ready().then(() => {
+        this._status = ProviderStatus.READY;
         resolve();
       });
     });
@@ -128,7 +136,7 @@ export class SplitWebProvider implements Provider {
 
   // update the client
   private async resetClient(newContext: EvaluationContext) {
-    const newClient = this.factory.client((newContext.targetingKey) || ANONYMOUS);
+    const newClient = this.factory.client(newContext.targetingKey || ANONYMOUS);
     await newClient.ready();
     this.addChangeListener(newClient);
     this.client = newClient;

@@ -1,5 +1,16 @@
 import { Event as HarnessEvent, initialize } from '@harnessio/ff-javascript-client-sdk';
-import { EvaluationContext, OpenFeatureEventEmitter, JsonValue, Logger, Provider, ProviderEvents, ProviderMetadata, ResolutionDetails, TypeMismatchError } from '@openfeature/web-sdk';
+import {
+  EvaluationContext,
+  OpenFeatureEventEmitter,
+  JsonValue,
+  Logger,
+  Provider,
+  ProviderEvents,
+  ProviderMetadata,
+  ResolutionDetails,
+  TypeMismatchError,
+  ProviderStatus,
+} from '@openfeature/web-sdk';
 
 type ValueTypes = 'boolean' | 'string' | 'number' | 'object'; 
 
@@ -12,7 +23,13 @@ export class HarnessWebProvider implements Provider {
   private _client!: ReturnType<typeof initialize>;
 
   metadata: ProviderMetadata = {
-    name: 'Harness web provider'
+    name: 'Harness web provider',
+  };
+
+  private _status = ProviderStatus.NOT_READY;
+
+  get status() {
+    return this._status;
   }
 
   events = new OpenFeatureEventEmitter();
@@ -26,6 +43,7 @@ export class HarnessWebProvider implements Provider {
       this._client.on(HarnessEvent.READY, () => {
         // mark as ready as soon as the SDK setup completes
         this.addChangeHandler(this._client);
+        this._status = ProviderStatus.READY;
         resolve();
       });
     });
@@ -49,19 +67,39 @@ export class HarnessWebProvider implements Provider {
     return Promise.resolve(this._client.close());
   }
 
-  resolveBooleanEvaluation(flagKey: string, defaultValue: boolean, context: EvaluationContext, logger: Logger): ResolutionDetails<boolean> {
+  resolveBooleanEvaluation(
+    flagKey: string,
+    defaultValue: boolean,
+    context: EvaluationContext,
+    logger: Logger
+  ): ResolutionDetails<boolean> {
     return this.resolve(flagKey, defaultValue, 'boolean');
   }
 
-  resolveStringEvaluation(flagKey: string, defaultValue: string, context: EvaluationContext, logger: Logger): ResolutionDetails<string> {
+  resolveStringEvaluation(
+    flagKey: string,
+    defaultValue: string,
+    context: EvaluationContext,
+    logger: Logger
+  ): ResolutionDetails<string> {
     return this.resolve(flagKey, defaultValue, 'string');
   }
 
-  resolveNumberEvaluation(flagKey: string, defaultValue: number, context: EvaluationContext, logger: Logger): ResolutionDetails<number> {
+  resolveNumberEvaluation(
+    flagKey: string,
+    defaultValue: number,
+    context: EvaluationContext,
+    logger: Logger
+  ): ResolutionDetails<number> {
     return this.resolve(flagKey, defaultValue, 'number');
   }
 
-  resolveObjectEvaluation<T extends JsonValue>(flagKey: string, defaultValue: T, context: EvaluationContext, logger: Logger): ResolutionDetails<T> {
+  resolveObjectEvaluation<T extends JsonValue>(
+    flagKey: string,
+    defaultValue: T,
+    context: EvaluationContext,
+    logger: Logger
+  ): ResolutionDetails<T> {
     return this.resolve(flagKey, defaultValue, 'object');
   }
 
@@ -71,8 +109,8 @@ export class HarnessWebProvider implements Provider {
     const value = this._client.variation(transformedKey, defaultValue);
     if (typeof value === type) {
       return {
-        value
-      } as ResolutionDetails<T>
+        value,
+      } as ResolutionDetails<T>;
     } else {
       throw new TypeMismatchError();
     }

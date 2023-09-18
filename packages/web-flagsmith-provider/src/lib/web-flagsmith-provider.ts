@@ -1,5 +1,16 @@
 import { parseValidJsonObject } from '@openfeature/utils';
-import { EvaluationContext, OpenFeatureEventEmitter, JsonValue, Logger, ParseError, Provider, ProviderEvents, ResolutionDetails, TypeMismatchError } from '@openfeature/web-sdk';
+import {
+  EvaluationContext,
+  OpenFeatureEventEmitter,
+  JsonValue,
+  Logger,
+  ParseError,
+  Provider,
+  ProviderEvents,
+  ResolutionDetails,
+  TypeMismatchError,
+  ProviderStatus,
+} from '@openfeature/web-sdk';
 import flagsmith from 'flagsmith';
 
 export interface FlagsmithProviderOptions {
@@ -21,26 +32,35 @@ export interface FlagsmithProviderOptions {
  * a `FlagTypeError` for undefined flags, which in turn will result in the default passed to OpenFeature being used.
  */
 export class FlagsmithProvider implements Provider {
-
   metadata = {
     name: 'flagsmith',
   };
 
+  private _status = ProviderStatus.NOT_READY;
+
+  get status() {
+    return this._status;
+  }
+
   events = new OpenFeatureEventEmitter();
 
-  constructor(private readonly options: FlagsmithProviderOptions) {} 
+  constructor(private readonly options: FlagsmithProviderOptions) {}
 
   initialize(context: EvaluationContext): Promise<void> {
-    const initPromise = flagsmith.init({
-      environmentID: this.options.environmentID,
-      realtime: true,
-      traits: context as any,
-      identity: context.targetingKey || 'anon',
-      onChange: (oldFlags, params) => {
-        this.options.logger?.info(`Got change event: ${params}`);
-        this.events.emit(ProviderEvents.ConfigurationChanged);
-      },
-    });
+    const initPromise = flagsmith
+      .init({
+        environmentID: this.options.environmentID,
+        realtime: true,
+        traits: context as any,
+        identity: context.targetingKey || 'anon',
+        onChange: (oldFlags, params) => {
+          this.options.logger?.info(`Got change event: ${params}`);
+          this.events.emit(ProviderEvents.ConfigurationChanged);
+        },
+      })
+      .then(() => {
+        this._status = ProviderStatus.READY;
+      });
     // start polling API
     flagsmith.startListening();
     return initPromise;
@@ -58,11 +78,7 @@ export class FlagsmithProvider implements Provider {
     flagsmith.stopListening();
   }
 
-  resolveBooleanEvaluation(
-    flagKey: string,
-    _: boolean,
-    context: EvaluationContext
-  ): ResolutionDetails<boolean> {
+  resolveBooleanEvaluation(flagKey: string, _: boolean, context: EvaluationContext): ResolutionDetails<boolean> {
     const details = this.evaluate(flagKey);
     if (typeof details.value === 'boolean') {
       const value = details.value;
@@ -72,11 +88,7 @@ export class FlagsmithProvider implements Provider {
     }
   }
 
-  resolveStringEvaluation(
-    flagKey: string,
-    _: string,
-    context: EvaluationContext
-  ): ResolutionDetails<string> {
+  resolveStringEvaluation(flagKey: string, _: string, context: EvaluationContext): ResolutionDetails<string> {
     const details = this.evaluate(flagKey);
     if (typeof details.value === 'string') {
       const value = details.value;
@@ -86,11 +98,7 @@ export class FlagsmithProvider implements Provider {
     }
   }
 
-  resolveNumberEvaluation(
-    flagKey: string,
-    _: number,
-    context: EvaluationContext
-  ): ResolutionDetails<number> {
+  resolveNumberEvaluation(flagKey: string, _: number, context: EvaluationContext): ResolutionDetails<number> {
     const details = this.evaluate(flagKey);
     if (typeof details.value === 'number') {
       const value = details.value;
