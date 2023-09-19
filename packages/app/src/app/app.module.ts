@@ -3,8 +3,9 @@ import { MiddlewareConsumer, Module, NestModule, Scope } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger } from '@openfeature/extra';
-import { OpenFeature } from '@openfeature/js-sdk';
-import { TracingHook } from '@openfeature/open-telemetry-hooks';
+import { FlagMetadata, OpenFeature } from '@openfeature/js-sdk';
+import { TracingHook as SpanEventBasedTracingHook, MetricsHook } from '@openfeature/open-telemetry-hooks';
+import { OpenTelemetryHook as SpanBasedTracingHook } from '@openfeature/open-telemetry-hook';
 import { ProviderService } from '@openfeature/provider';
 import { Request } from 'express';
 import { Agent } from 'http';
@@ -23,11 +24,22 @@ import { UtilsController } from './utils.controller';
  */
 OpenFeature.setLogger(new OpenFeatureLogger('OpenFeature'));
 
+function attributeMapper(flagMetadata: FlagMetadata) {
+  return {
+    ...('scope' in flagMetadata && { scope: flagMetadata.scope }),
+  };
+}
+
+const traceHook =
+  process.env.ENABLED_SPAN_BASED_TRACES === 'true'
+    ? new SpanBasedTracingHook()
+    : new SpanEventBasedTracingHook({ attributeMapper });
+
 /**
  * Adding hooks to at the global level will ensure they always run
  * as part of a flag evaluation lifecycle.
  */
-OpenFeature.addHooks(new LoggingHook(), new TracingHook());
+OpenFeature.addHooks(new LoggingHook(), traceHook, new MetricsHook({ attributeMapper }));
 
 /**
  * The transaction context propagator is an experimental feature

@@ -9,6 +9,7 @@ import {
   ProviderEvents,
   ResolutionDetails,
   TypeMismatchError,
+  ProviderStatus,
 } from '@openfeature/web-sdk';
 import { initialize, LDClient, LDContext } from 'launchdarkly-js-client-sdk';
 
@@ -27,6 +28,12 @@ export class LaunchDarklyProvider implements Provider {
     name: 'LaunchDarkly',
   };
 
+  private _status = ProviderStatus.NOT_READY;
+
+  get status() {
+    return this._status;
+  }
+
   events = new OpenFeatureEventEmitter();
 
   private client!: LDClient;
@@ -42,6 +49,7 @@ export class LaunchDarklyProvider implements Provider {
       // promise to await into before we evaluate any flags.
       this.client.on('ready', () => {
         this.options.logger.info(`${this.metadata.name} provider initialized`);
+        this._status = ProviderStatus.READY;
         resolve();
       });
       this.client.on('change', () => {
