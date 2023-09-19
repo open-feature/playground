@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   demo:
-    image: ghcr.io/open-feature/playground-app:v0.11.0 # x-release-please-version
+    image: ghcr.io/open-feature/playground-app:v0.12.0 # x-release-please-version
     # build:
     #  dockerfile: ./packages/app/Dockerfile
     #  context: .
@@ -47,7 +47,7 @@ services:
       - FLAGD_TLS_WEB
 
   fib-service:
-    image: ghcr.io/open-feature/playground-fib-service:v0.11.0 # x-release-please-version
+    image: ghcr.io/open-feature/playground-fib-service:v0.12.0 # x-release-please-version
     # build:
     #   dockerfile: ./packages/fibonacci-service/Dockerfile
     #   context: .
