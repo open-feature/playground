@@ -1,5 +1,81 @@
 # Changelog
 
+## [0.12.0](https://github.com/open-feature/playground/compare/v0.11.0...v0.12.0) (2023-09-19)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update dependency @harnessio/ff-javascript-client-sdk to v1.13.0 ([940fc04](https://github.com/open-feature/playground/commit/940fc044da21ce7e44bd683b8af06d9363c82b4f))
+* **deps:** update dependency @harnessio/ff-javascript-client-sdk to v1.14.0 ([6affd52](https://github.com/open-feature/playground/commit/6affd525b1d2da25f093a23583c320901258632d))
+* **deps:** update dependency @harnessio/ff-nodejs-server-sdk to v1.2.17 ([b06ead0](https://github.com/open-feature/playground/commit/b06ead0697c42ebdea9e47be7f8649eeed046eca))
+* **deps:** update dependency @harnessio/ff-nodejs-server-sdk to v1.3.0 ([7fd3f7b](https://github.com/open-feature/playground/commit/7fd3f7b7c7837a519fef844c728f05700091e45a))
+* **deps:** update dependency @harnessio/ff-nodejs-server-sdk to v1.3.1 ([89dd904](https://github.com/open-feature/playground/commit/89dd904b262bc15dfbc66bc9bfe4c2e824e4becb))
+* **deps:** update dependency @openfeature/open-telemetry-hooks to v0.2.4 ([#239](https://github.com/open-feature/playground/issues/239)) ([90bd03d](https://github.com/open-feature/playground/commit/90bd03d11fb7239bdb9527dab636e87b9de01b5c))
+* **deps:** update dependency flagsmith to v3.19.0 ([5a98304](https://github.com/open-feature/playground/commit/5a98304d46c166a09bb9130a5fea549211b3bbcd))
+* **deps:** update dependency launchdarkly-node-server-sdk to v7.0.2 ([4b562e5](https://github.com/open-feature/playground/commit/4b562e51a6331f864afebb4ecb5f68b7130b4033))
+* **deps:** update dependency nestjs-pino to v3.3.0 ([2a297df](https://github.com/open-feature/playground/commit/2a297dffc71dc8deb3b69f515167f8b0adc674f5))
+* **deps:** update dependency react-router-dom to v6.13.0 ([2a91bbf](https://github.com/open-feature/playground/commit/2a91bbfbdd8c6b2558ca03cfe3b87629796fc8c2))
+* **deps:** update dependency react-router-dom to v6.14.0 ([0bf616c](https://github.com/open-feature/playground/commit/0bf616cef12f97e25ee1fbddac46fa50cef596b2))
+* **deps:** update dependency rox-browser to v5.4.5 ([a54358f](https://github.com/open-feature/playground/commit/a54358f595726f8f62842a83f4ba31c08f13d26f))
+* **deps:** update dependency rox-browser to v5.4.6 ([39b1e13](https://github.com/open-feature/playground/commit/39b1e13ee378e97ce4ad8c170adddae665b58342))
+* **deps:** update dependency rox-node to v5.4.5 ([49fd47f](https://github.com/open-feature/playground/commit/49fd47f0a8ad2069a36a3275c36bdca5665d9d37))
+* **deps:** update dependency rox-node to v5.4.6 ([e9db3b3](https://github.com/open-feature/playground/commit/e9db3b3a2810babf33ce499a140876c8d88856cd))
+* **deps:** update nest monorepo to v9.4.3 ([6a2ab0f](https://github.com/open-feature/playground/commit/6a2ab0fdaa73ec6f01638860eefada3f725ef461))
+
+
+### ✨ New Features
+
+* add otel collector and otlp support ([#238](https://github.com/open-feature/playground/issues/238)) ([427ebd6](https://github.com/open-feature/playground/commit/427ebd6abc99648e267f0a465b6917662ef94cfd))
+
+
+### 🧹 Chore
+
+* **config:** migrate renovate config ([#232](https://github.com/open-feature/playground/issues/232)) ([d6cd502](https://github.com/open-feature/playground/commit/d6cd5025fb4b46603619d20de89b3dacc497f4d3))
+* **deps-dev:** bump word-wrap from 1.2.3 to 1.2.4 ([#236](https://github.com/open-feature/playground/issues/236)) ([50d8688](https://github.com/open-feature/playground/commit/50d8688775cff59249954d4638a4fa3483648376))
+* **deps:** Bump protobufjs from 7.2.3 to 7.2.5 ([#240](https://github.com/open-feature/playground/issues/240)) ([bc55f0f](https://github.com/open-feature/playground/commit/bc55f0face7edeed12da250d0116513255d8297f))
+* **deps:** bump tough-cookie from 4.1.2 to 4.1.3 ([#231](https://github.com/open-feature/playground/issues/231)) ([ca308da](https://github.com/open-feature/playground/commit/ca308da9cd5c487c697de774b743f3b23a657ddd))
+* **deps:** update dependency @babel/preset-react to v7.22.5 ([ab18c92](https://github.com/open-feature/playground/commit/ab18c9220085607068640b74e41f7292e0d5ece5))
+* **deps:** update dependency @mui/material to v5.13.5 ([6c48ee3](https://github.com/open-feature/playground/commit/6c48ee334e551d459f0c68f4208d34678f88a3d2))
+* **deps:** update dependency @mui/material to v5.13.6 ([aed7db5](https://github.com/open-feature/playground/commit/aed7db504b80bc148289777d123b393031d2d232))
+* **deps:** update dependency @nx/eslint-plugin to v16.4.0 ([fc8c84c](https://github.com/open-feature/playground/commit/fc8c84c0a088e0c53a68e9e104967ce0864b573f))
+* **deps:** update dependency @types/react to v18.2.14 ([2b0493b](https://github.com/open-feature/playground/commit/2b0493bb90b72886bc0aeb09c03c6d6abcc649b8))
+* **deps:** update dependency core-js to v3.31.0 ([ba1ae5d](https://github.com/open-feature/playground/commit/ba1ae5dddbda5c1459e0c5da7c2738b42bd4ac43))
+* **deps:** update dependency core-js to v3.31.1 ([6c7fc9b](https://github.com/open-feature/playground/commit/6c7fc9ba1dd6f51ee3c72e1c2f929d1a8cb7cdb4))
+* **deps:** update dependency css-loader to v6.8.1 ([16ca721](https://github.com/open-feature/playground/commit/16ca7217d42d951bbc0ebc88e92486eb97e61bce))
+* **deps:** update dependency styled-components to v5.3.11 ([70c3ca4](https://github.com/open-feature/playground/commit/70c3ca456bd207387e972e30d721d02888f22a47))
+* **deps:** update dependency stylus-loader to v7.1.3 ([d9bf78a](https://github.com/open-feature/playground/commit/d9bf78af8852f73a7e4a428680508fc86a5e45ad))
+* **deps:** update dependency ts-jest to v29.1.1 ([c992c44](https://github.com/open-feature/playground/commit/c992c44f04ccfa5feedd5a13c049c9ee03c26c60))
+* **deps:** update dependency tslib to v2.5.3 ([0ed7b0c](https://github.com/open-feature/playground/commit/0ed7b0cafd6f45201fd173f45b5d25ebd60c1b95))
+* **deps:** update dependency tslib to v2.6.0 ([b059777](https://github.com/open-feature/playground/commit/b05977792d39f7f6af140b33d21ac418e2423c72))
+* **deps:** update dependency tslib to v2.6.1 ([259feb0](https://github.com/open-feature/playground/commit/259feb0347f8f13123dad1d07f5677a1de8e2012))
+* **deps:** update dependency typescript to v5.1.3 ([2a74140](https://github.com/open-feature/playground/commit/2a74140cdcacfef9a856282a8a9b9b4736600bd7))
+* **deps:** update dependency typescript to v5.1.5 ([31e35ce](https://github.com/open-feature/playground/commit/31e35ce3170035c5e99265d5faddc8246dabde0f))
+* **deps:** update dependency typescript to v5.1.6 ([396be3c](https://github.com/open-feature/playground/commit/396be3cd81b7f2e1a6d0f18d771b87a47a1a831e))
+* **deps:** update dependency webpack to v5.87.0 ([5d1aff2](https://github.com/open-feature/playground/commit/5d1aff2cc499c0a5adc34e30981976764b9aabf7))
+* **deps:** update dependency webpack to v5.88.0 ([5e3ca93](https://github.com/open-feature/playground/commit/5e3ca936998edcd0db79ec44a730a61059786370))
+* **deps:** update dependency webpack to v5.88.1 ([e436274](https://github.com/open-feature/playground/commit/e436274dbb11905c4000219061c66592b814b42c))
+* **deps:** update dependency webpack to v5.88.2 ([80031a6](https://github.com/open-feature/playground/commit/80031a6d38e481cefd304d89db15907e77dca247))
+* **deps:** update dependency webpack-merge to v5.9.0 ([41ec554](https://github.com/open-feature/playground/commit/41ec554e3f838e0bc26a50111e6b53591ffc6340))
+* **deps:** update eslint ([50108f0](https://github.com/open-feature/playground/commit/50108f0d4ef2fc36ce2c19fd721cf28c7c385c54))
+* **deps:** update eslint to v5.60.0 ([bc76e9b](https://github.com/open-feature/playground/commit/bc76e9b86c69eb2409d25c84b1d8f9536f22e9df))
+* **deps:** update eslint to v5.60.1 ([113f276](https://github.com/open-feature/playground/commit/113f276de6a50e07d2b7b607573a9f571d4a8dae))
+* **deps:** update ghcr.io/open-feature/flagd docker tag to v0.5.4 ([ca0fc6e](https://github.com/open-feature/playground/commit/ca0fc6e8a5b6dffd6a5eb7be5ebde553ed6e76bf))
+* **deps:** update jaegertracing/all-in-one docker tag to v1.46 ([87e147e](https://github.com/open-feature/playground/commit/87e147e46d26ba8c19b8b00a3766a1df279500cf))
+* **deps:** update nrwl monorepo to v16.3.2 ([f47ee77](https://github.com/open-feature/playground/commit/f47ee77c69ae1bbb5fa7d559f619bceb54610636))
+* **deps:** update nrwl monorepo to v16.4.0 ([9bd8445](https://github.com/open-feature/playground/commit/9bd844572cf8e970b41f40ed2caa9ad9461a41ca))
+* **deps:** update thomaspoignant/go-feature-flag-relay-proxy docker tag to v1.11.0 ([a4ffd03](https://github.com/open-feature/playground/commit/a4ffd034f056e319a79b9c2f1020c9c8a395c78a))
+* **deps:** update thomaspoignant/go-feature-flag-relay-proxy docker tag to v1.12.0 ([ccdd8dc](https://github.com/open-feature/playground/commit/ccdd8dc68c6e8752f2add92582ac030423ccd0b5))
+* **deps:** update thomaspoignant/go-feature-flag-relay-proxy docker tag to v1.12.1 ([0dc8641](https://github.com/open-feature/playground/commit/0dc8641c3d560aa8f249b16b4279f143eea0ec34))
+* **deps:** update types ([2f37825](https://github.com/open-feature/playground/commit/2f378259f3c41816bc028aacc830e8ec7a63dbbe))
+* **deps:** update types ([50fd4d1](https://github.com/open-feature/playground/commit/50fd4d159b7cfde6ebe1f79d234331ad7d6ec050))
+* **deps:** update types ([#222](https://github.com/open-feature/playground/issues/222)) ([d0b2d45](https://github.com/open-feature/playground/commit/d0b2d45405db40818fe809e6e416ce530fe8f028))
+* update to tracing hook, fix nx:serve ([#235](https://github.com/open-feature/playground/issues/235)) ([868214f](https://github.com/open-feature/playground/commit/868214f4d261b3fd383ded2813e4d1490fb00bfd))
+
+
+### 📚 Documentation
+
+* update links and fix typos ([#234](https://github.com/open-feature/playground/issues/234)) ([566e96d](https://github.com/open-feature/playground/commit/566e96d8ca46d445ffb1279a2523a3840ac27ec0))
+
 ## [0.11.0](https://github.com/open-feature/playground/compare/v0.10.0...v0.11.0) (2023-06-16)
 
 
