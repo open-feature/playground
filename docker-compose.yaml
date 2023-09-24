@@ -73,14 +73,15 @@ services:
       - CLOUDBEES_APP_KEY
 
   jaeger:
-    image: jaegertracing/all-in-one:latest
+    image: jaegertracing/all-in-one:1.49.0
     expose:
       - '6832/udp'
+      - '4317'
     ports:
       - '16686:16686'
 
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:latest
+    image: otel/opentelemetry-collector-contrib:0.85.0
     restart: always
     command: [ "--config=/etc/otel-collector-config.yaml" ]
     volumes:
@@ -96,7 +97,7 @@ services:
 
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:latest
+    image: prom/prometheus:v2.47.0
     restart: always
     volumes:
       - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
