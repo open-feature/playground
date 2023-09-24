@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.12.1](https://github.com/open-feature/playground/compare/v0.12.0...v0.12.1) (2023-09-24)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update dependency @harnessio/ff-nodejs-server-sdk to v1.3.2 ([731a00c](https://github.com/open-feature/playground/commit/731a00caa886b0ee655536267738146e66f1c98a))
+* **deps:** update dependency @openfeature/js-sdk to v1.4.2 ([60a4faf](https://github.com/open-feature/playground/commit/60a4faf4488793c2dbda50cd63b78528d65bef59))
+* **deps:** update dependency flagsmith to v3.19.1 ([79f0f8c](https://github.com/open-feature/playground/commit/79f0f8c193aae2831b317c76303c1b63f468f1f6))
+* **deps:** update dependency launchdarkly-js-client-sdk to v3.1.4 ([90a6b4e](https://github.com/open-feature/playground/commit/90a6b4e415b5e56f2d50cb23fd25bea8829e80db))
+* **deps:** update dependency launchdarkly-node-server-sdk to v7.0.3 ([6101ea9](https://github.com/open-feature/playground/commit/6101ea95e061ee08c8403dc826a97448cc76bc06))
+* **deps:** update dependency rox-browser to v5.4.8 ([2807aca](https://github.com/open-feature/playground/commit/2807acaf4acb893da41ed76780cbbd206861915b))
+* **deps:** update dependency rox-node to v5.4.8 ([cbf2510](https://github.com/open-feature/playground/commit/cbf2510f00ba4373f5abe9da2673f512d1a5b897))
+* update jaeger config to use otlp ([#246](https://github.com/open-feature/playground/issues/246)) ([da8bd9e](https://github.com/open-feature/playground/commit/da8bd9e449ed958b09ac412ef8eab7859ab6e0fd))
+
+
+### 🧹 Chore
+
+* **deps:** update dependency @babel/preset-react to v7.22.15 ([a28ac6f](https://github.com/open-feature/playground/commit/a28ac6fc0975275c7aaa64db9cc50639df29da7b))
+* **deps:** update dependency @mui/material to v5.14.10 ([c46499d](https://github.com/open-feature/playground/commit/c46499d7d73aea849c45d0adcfe132c21c266432))
+* **deps:** update dependency @reactour/tour to v3.6.1 ([d0ffff6](https://github.com/open-feature/playground/commit/d0ffff6580670a51b0a23504b85963cd6e5437f7))
+* **deps:** update dependency @svgr/webpack to v8.1.0 ([5328906](https://github.com/open-feature/playground/commit/5328906a229321afeb612bf8b4b36bd0910f58c6))
+* **deps:** update dependency @types/node to v18.17.18 ([5f68f18](https://github.com/open-feature/playground/commit/5f68f18fd41a24ae09483cdb8e79d21b11241d4c))
+* **deps:** update dependency core-js to v3.32.2 ([cd05029](https://github.com/open-feature/playground/commit/cd050291d5f28e38978a163d0132654747320606))
+* **deps:** update dependency tslib to v2.6.2 ([10046ba](https://github.com/open-feature/playground/commit/10046ba1e8ee2af465f46a9784be52cd69ceb05c))
+* **deps:** update types ([7ee3fcc](https://github.com/open-feature/playground/commit/7ee3fcc4ee50914045bfa1e9ce29e59b259b5133))
+
 ## [0.12.0](https://github.com/open-feature/playground/compare/v0.11.0...v0.12.0) (2023-09-19)
 
 
