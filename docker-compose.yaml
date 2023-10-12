@@ -97,7 +97,7 @@ services:
 
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:v2.47.0
+    image: prom/prometheus:v2.47.1
     restart: always
     volumes:
       - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
