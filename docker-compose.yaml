@@ -105,7 +105,7 @@ services:
       - "9090:9090"
 
   flagd:
-    image: ghcr.io/open-feature/flagd:v0.6.6
+    image: ghcr.io/open-feature/flagd:v0.6.7
     command:
       - start
       - --cors-origin
