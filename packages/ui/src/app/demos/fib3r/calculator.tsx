@@ -10,7 +10,7 @@ export class Calculator extends React.Component<
   },
   { millis: string | number; running: boolean; n: number }
 > {
-  private interval?: NodeJS.Timer = undefined;
+  private interval?: number = undefined;
   private start = 0;
 
   constructor(props: {
@@ -159,7 +159,7 @@ export class Calculator extends React.Component<
 
   private stopTimer() {
     if (this.interval) {
-      clearInterval(this.interval);
+      window.clearInterval(this.interval);
     }
     this.setState({
       running: false,
@@ -173,7 +173,7 @@ export class Calculator extends React.Component<
     this.setState({
       millis: 0,
     });
-    this.interval = setInterval(() => {
+    this.interval = window.setInterval(() => {
       this.setState({
         millis: new Date().getTime() - this.start,
         running: true,
