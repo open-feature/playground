@@ -1,19 +1,18 @@
-import { parseValidJsonObject, parseValidNumber } from '@openfeature/utils';
+import {parseValidJsonObject, parseValidNumber} from '@openfeature/utils';
 import {
   EvaluationContext,
-  OpenFeatureEventEmitter,
-  FlagValue,
   Hook,
   JsonValue,
   Logger,
+  OpenFeatureEventEmitter,
   Provider,
   ProviderEvents,
   ProviderMetadata,
+  ProviderStatus,
   ResolutionDetails,
   TypeMismatchError,
-  ProviderStatus,
 } from '@openfeature/web-sdk';
-import { SplitFactory } from '@splitsoftware/splitio-browserjs';
+import {SplitFactory} from '@splitsoftware/splitio-browserjs';
 
 const ANONYMOUS = 'anonymous';
 
@@ -58,7 +57,7 @@ export class SplitWebProvider implements Provider {
     name: 'Split web provider',
   };
 
-  hooks?: Hook<FlagValue>[] | undefined;
+  hooks?: Hook[] | undefined;
 
   async onContextChange?(oldContext: EvaluationContext, newContext: EvaluationContext): Promise<void> {
     if (oldContext.targetingKey !== newContext.targetingKey) {
