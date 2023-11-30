@@ -1,4 +1,4 @@
-import { EvaluationDetails, FlagValue, Hook, HookContext, HookHints } from '@openfeature/js-sdk';
+import { EvaluationDetails, FlagValue, Hook, HookContext, HookHints } from '@openfeature/server-sdk';
 
 /**
  * A hook that simply logs at every life-cycle stage.

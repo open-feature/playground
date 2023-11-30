@@ -1,4 +1,4 @@
-import { Logger as OFLogger } from '@openfeature/js-sdk';
+import { Logger as OFLogger } from '@openfeature/server-sdk';
 import { Logger } from '@nestjs/common';
 
 /**
