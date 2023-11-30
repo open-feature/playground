@@ -30,7 +30,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/openfeature-extra"],
+      "outputs": ["{workspaceRoot}/coverage/packages/openfeature-extra"],
       "options": {
         "jestConfig": "packages/openfeature-extra/jest.config.ts",
         "passWithNoTests": true

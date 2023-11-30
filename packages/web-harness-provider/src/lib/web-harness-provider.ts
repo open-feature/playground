@@ -12,7 +12,7 @@ import {
   ProviderStatus,
 } from '@openfeature/web-sdk';
 
-type ValueTypes = 'boolean' | 'string' | 'number' | 'object'; 
+type ValueTypes = 'boolean' | 'string' | 'number' | 'object';
 
 /**
  * NOTE: This is an unofficial provider that was created for demonstration
@@ -53,6 +53,7 @@ export class HarnessWebProvider implements Provider {
     const oldClient = this._client;
     const client = initialize(this.apiKey, { identifier: newContext.targetingKey || 'anon', attributes: newContext });
     // needed?
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     return new Promise((resolve, reject) => {
       client.on(HarnessEvent.READY, () => {
         oldClient.close();
@@ -67,39 +68,23 @@ export class HarnessWebProvider implements Provider {
     return Promise.resolve(this._client.close());
   }
 
-  resolveBooleanEvaluation(
-    flagKey: string,
-    defaultValue: boolean,
-    context: EvaluationContext,
-    logger: Logger
-  ): ResolutionDetails<boolean> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveBooleanEvaluation(flagKey: string, defaultValue: boolean, context: EvaluationContext, logger: Logger): ResolutionDetails<boolean> {
     return this.resolve(flagKey, defaultValue, 'boolean');
   }
 
-  resolveStringEvaluation(
-    flagKey: string,
-    defaultValue: string,
-    context: EvaluationContext,
-    logger: Logger
-  ): ResolutionDetails<string> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveStringEvaluation(flagKey: string, defaultValue: string, context: EvaluationContext, logger: Logger): ResolutionDetails<string> {
     return this.resolve(flagKey, defaultValue, 'string');
   }
 
-  resolveNumberEvaluation(
-    flagKey: string,
-    defaultValue: number,
-    context: EvaluationContext,
-    logger: Logger
-  ): ResolutionDetails<number> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveNumberEvaluation(flagKey: string, defaultValue: number, context: EvaluationContext, logger: Logger): ResolutionDetails<number> {
     return this.resolve(flagKey, defaultValue, 'number');
   }
 
-  resolveObjectEvaluation<T extends JsonValue>(
-    flagKey: string,
-    defaultValue: T,
-    context: EvaluationContext,
-    logger: Logger
-  ): ResolutionDetails<T> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveObjectEvaluation<T extends JsonValue>(flagKey: string, defaultValue: T, context: EvaluationContext, logger: Logger): ResolutionDetails<T> {
     return this.resolve(flagKey, defaultValue, 'object');
   }
 

@@ -30,7 +30,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/js-split-provider"],
+      "outputs": ["{workspaceRoot}/coverage/packages/js-split-provider"],
       "options": {
         "jestConfig": "packages/js-split-provider/jest.config.ts",
         "passWithNoTests": true

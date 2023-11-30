@@ -36,6 +36,7 @@ export class CloudbeesWebProvider implements Provider {
     name: 'CloudBees web provider',
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async initialize(context: EvaluationContext): Promise<void> {
     await setup(this.options.key, {
       configurationFetchedHandler: this.changedHandler,
@@ -47,6 +48,7 @@ export class CloudbeesWebProvider implements Provider {
     flagKey: string,
     defaultValue: boolean,
     context: EvaluationContext,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     logger: Logger
   ): ResolutionDetails<boolean> {
     return {
@@ -58,6 +60,7 @@ export class CloudbeesWebProvider implements Provider {
     flagKey: string,
     defaultValue: string,
     context: EvaluationContext,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     logger: Logger
   ): ResolutionDetails<string> {
     return {
@@ -69,6 +72,7 @@ export class CloudbeesWebProvider implements Provider {
     flagKey: string,
     defaultValue: number,
     context: EvaluationContext,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     logger: Logger
   ): ResolutionDetails<number> {
     return {
@@ -76,12 +80,8 @@ export class CloudbeesWebProvider implements Provider {
     };
   }
 
-  resolveObjectEvaluation<T extends JsonValue>(
-    flagKey: string,
-    defaultValue: T,
-    context: EvaluationContext,
-    logger: Logger
-  ): ResolutionDetails<T> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveObjectEvaluation<T extends JsonValue>(flagKey: string, defaultValue: T, context: EvaluationContext, logger: Logger): ResolutionDetails<T> {
     throw new Error('not implemented');
   }
 

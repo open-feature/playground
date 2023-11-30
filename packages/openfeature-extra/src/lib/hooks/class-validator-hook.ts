@@ -1,6 +1,7 @@
 import { EvaluationDetails, Hook, HookContext, JsonObject } from '@openfeature/js-sdk';
 import { validateSync } from 'class-validator';
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 type Class = { new (data: any): any };
 
 /**

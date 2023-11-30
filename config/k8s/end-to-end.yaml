@@ -1,12 +1,12 @@
 # A basic flag custom resource
-apiVersion: core.openfeature.dev/v1alpha2
-kind: FeatureFlagConfiguration
+apiVersion: core.openfeature.dev/v1beta1
+kind: FeatureFlag
 metadata:
   name: end-to-end
   labels:
     app: open-feature-demo
 spec:
-  featureFlagSpec:
+  flagSpec:
     flags:
       new-welcome-message:
         state: ENABLED
@@ -53,6 +53,19 @@ spec:
           'off': false
         defaultVariant: 'off'
 ---
+# Feature flag source custom resource, configuring flagd to source flags from FeatureFlag crd
+apiVersion: core.openfeature.dev/v1beta1
+kind: FeatureFlagSource
+metadata:
+  name: end-to-end
+  labels:
+    app: open-feature-demo
+spec:
+  sources:
+    - source: end-to-end
+      provider: kubernetes
+
+---
 # Deployment of a demo-app using our custom resource
 apiVersion: apps/v1
 kind: Deployment
@@ -71,7 +84,7 @@ spec:
         app: open-feature-demo
       annotations:
         openfeature.dev/enabled: "true"
-        openfeature.dev/featureflagconfiguration: "end-to-end"
+        openfeature.dev/featureflagsource: "end-to-end"
     spec:
       containers:
         - name: open-feature-demo

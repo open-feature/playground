@@ -1,23 +1,22 @@
-import { HttpModule } from '@nestjs/axios';
-import { MiddlewareConsumer, Module, NestModule, Scope } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger } from '@openfeature/extra';
-import { FlagMetadata, OpenFeature } from '@openfeature/js-sdk';
-import { TracingHook as SpanEventBasedTracingHook, MetricsHook } from '@openfeature/open-telemetry-hooks';
-import { OpenTelemetryHook as SpanBasedTracingHook } from '@openfeature/open-telemetry-hook';
-import { ProviderService } from '@openfeature/provider';
-import { Request } from 'express';
-import { Agent } from 'http';
-import { LoggerModule } from 'nestjs-pino';
-import { join } from 'path';
-import { OPENFEATURE_CLIENT, REQUEST_DATA } from './constants';
-import { FibonacciAsAServiceController } from './fibonacci-as-a-service.controller';
-import { FibonacciService } from './fibonacci/fibonacci.service';
-import { ProvidersController } from './providers.controller';
-import { TransactionContextMiddleware } from './transaction-context.middleware';
-import { RequestData } from './types';
-import { UtilsController } from './utils.controller';
+import {HttpModule} from '@nestjs/axios';
+import {MiddlewareConsumer, Module, NestModule, Scope} from '@nestjs/common';
+import {REQUEST} from '@nestjs/core';
+import {ServeStaticModule} from '@nestjs/serve-static';
+import {AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger} from '@openfeature/extra';
+import {FlagMetadata, OpenFeature} from '@openfeature/js-sdk';
+import {MetricsHook, TracingHook as SpanEventBasedTracingHook} from '@openfeature/open-telemetry-hooks';
+import {ProviderService} from '@openfeature/provider';
+import {Request} from 'express';
+import {Agent} from 'http';
+import {LoggerModule} from 'nestjs-pino';
+import {join} from 'path';
+import {OPENFEATURE_CLIENT, REQUEST_DATA} from './constants';
+import {FibonacciAsAServiceController} from './fibonacci-as-a-service.controller';
+import {FibonacciService} from './fibonacci/fibonacci.service';
+import {ProvidersController} from './providers.controller';
+import {TransactionContextMiddleware} from './transaction-context.middleware';
+import {RequestData} from './types';
+import {UtilsController} from './utils.controller';
 
 /**
  * Set a global logger for OpenFeature. This is logger will available in hooks.
@@ -30,16 +29,14 @@ function attributeMapper(flagMetadata: FlagMetadata) {
   };
 }
 
-const traceHook =
-  process.env.ENABLED_SPAN_BASED_TRACES === 'true'
-    ? new SpanBasedTracingHook()
-    : new SpanEventBasedTracingHook({ attributeMapper });
-
 /**
  * Adding hooks to at the global level will ensure they always run
  * as part of a flag evaluation lifecycle.
  */
-OpenFeature.addHooks(new LoggingHook(), traceHook, new MetricsHook({ attributeMapper }));
+OpenFeature.addHooks(
+  new LoggingHook(),
+  new SpanEventBasedTracingHook({attributeMapper}),
+  new MetricsHook({attributeMapper}));
 
 /**
  * The transaction context propagator is an experimental feature

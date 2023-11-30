@@ -51,6 +51,7 @@ export class FlagsmithProvider implements Provider {
       .init({
         environmentID: this.options.environmentID,
         realtime: true,
+        /* eslint-disable  @typescript-eslint/no-explicit-any */
         traits: context as any,
         identity: context.targetingKey || 'anon',
         onChange: (oldFlags, params) => {
@@ -78,6 +79,7 @@ export class FlagsmithProvider implements Provider {
     flagsmith.stopListening();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   resolveBooleanEvaluation(flagKey: string, _: boolean, context: EvaluationContext): ResolutionDetails<boolean> {
     const details = this.evaluate(flagKey);
     if (typeof details.value === 'boolean') {
@@ -88,6 +90,7 @@ export class FlagsmithProvider implements Provider {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   resolveStringEvaluation(flagKey: string, _: string, context: EvaluationContext): ResolutionDetails<string> {
     const details = this.evaluate(flagKey);
     if (typeof details.value === 'string') {
@@ -98,6 +101,7 @@ export class FlagsmithProvider implements Provider {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   resolveNumberEvaluation(flagKey: string, _: number, context: EvaluationContext): ResolutionDetails<number> {
     const details = this.evaluate(flagKey);
     if (typeof details.value === 'number') {
@@ -108,11 +112,8 @@ export class FlagsmithProvider implements Provider {
     }
   }
 
-  resolveObjectEvaluation<U extends JsonValue>(
-    flagKey: string,
-    _: U,
-    context: EvaluationContext
-  ): ResolutionDetails<U> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveObjectEvaluation<U extends JsonValue>(flagKey: string, _: U, context: EvaluationContext): ResolutionDetails<U> {
     const details = this.evaluate(flagKey);
     if (typeof details.value === 'string') {
       // we may want to allow the parsing to be customized.

@@ -30,7 +30,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/js-launchdarkly-provider"],
+      "outputs": ["{workspaceRoot}/coverage/packages/js-launchdarkly-provider"],
       "options": {
         "jestConfig": "packages/js-launchdarkly-provider/jest.config.ts",
         "passWithNoTests": true

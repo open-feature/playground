@@ -50,7 +50,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/app"],
+      "outputs": ["{workspaceRoot}/coverage/packages/app"],
       "options": {
         "jestConfig": "packages/app/jest.config.ts",
         "passWithNoTests": true
