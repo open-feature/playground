@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.13.0](https://github.com/open-feature/playground/compare/v0.12.1...v0.13.0) (2023-11-30)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update dependency @harnessio/ff-nodejs-server-sdk to v1.3.4 ([e8c6ff5](https://github.com/open-feature/playground/commit/e8c6ff5b92b3cd68342d95f17f471ccd9b678d71))
+* **deps:** update dependency @harnessio/ff-nodejs-server-sdk to v1.3.7 ([8bf8d55](https://github.com/open-feature/playground/commit/8bf8d55d0fb26000b2333e986a3d814f284382f5))
+* ts error regarding NodeJS.Timer in frontend ([#254](https://github.com/open-feature/playground/issues/254)) ([d4d0a38](https://github.com/open-feature/playground/commit/d4d0a38ccbe8778e27a80d31db7e94a4f9df4c68))
+
+
+### ✨ New Features
+
+* update demo app and documentation ([#255](https://github.com/open-feature/playground/issues/255)) ([eaa770d](https://github.com/open-feature/playground/commit/eaa770db6f947ff5837c888e66cd75832f9d019b))
+
+
+### 🧹 Chore
+
+* **deps:** update dependency @babel/preset-react to v7.23.3 ([7ee6e8a](https://github.com/open-feature/playground/commit/7ee6e8a278f29fa34eb0896ae71eb5579ca73957))
+* **deps:** update dependency @mui/material to v5.14.13 ([fe2a386](https://github.com/open-feature/playground/commit/fe2a3864594aeab8ca8805398ee108e4060b6c41))
+* **deps:** update dependency @mui/material to v5.14.17 ([c535a07](https://github.com/open-feature/playground/commit/c535a07686a4d7d88f61a8ad3727220193dd66a8))
+* **deps:** update dependency core-js to v3.33.2 ([658e2dc](https://github.com/open-feature/playground/commit/658e2dcb2f5fc16ebc2beace4dd41de9365b06b5))
+* **deps:** update ghcr.io/open-feature/flagd docker tag to v0.6.7 ([a61a286](https://github.com/open-feature/playground/commit/a61a286010caf6da49f82288c306ef4330e603f0))
+* **deps:** update ghcr.io/open-feature/flagd docker tag to v0.6.8 ([5d1f9d0](https://github.com/open-feature/playground/commit/5d1f9d0ad4339246d8342063a944c8146709819b))
+* **deps:** update prom/prometheus docker tag to v2.47.1 ([93ea09d](https://github.com/open-feature/playground/commit/93ea09ded66315976378d68fa0955e180cdaa668))
+* **deps:** update prom/prometheus docker tag to v2.47.2 ([795ebfd](https://github.com/open-feature/playground/commit/795ebfd6871968ec3eaebbee93f285c111fff5ac))
+* **deps:** update types ([18bf413](https://github.com/open-feature/playground/commit/18bf413877cf53663d7aaac32a4ee1257245eb44))
+* **deps:** update types ([84d7f6c](https://github.com/open-feature/playground/commit/84d7f6c15cb95cc937346e86cec205d1f01bd48e))
+* fix package-log.json ([f6a02d1](https://github.com/open-feature/playground/commit/f6a02d1f80e1767ac81556148e1611581afd6ce1))
+
 ## [0.12.1](https://github.com/open-feature/playground/compare/v0.12.0...v0.12.1) (2023-09-24)
 
 
