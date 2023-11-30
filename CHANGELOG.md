@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.13.1](https://github.com/open-feature/playground/compare/v0.13.0...v0.13.1) (2023-11-30)
+
+
+### 🐛 Bug Fixes
+
+* remove workspace yaml in docker container ([#256](https://github.com/open-feature/playground/issues/256)) ([76610a6](https://github.com/open-feature/playground/commit/76610a60a2c563b5dc5aa4607544a13bac0578ea))
+
+
+### 🧹 Chore
+
+* **deps:** update dependency typescript to v5.3.2 ([55a7625](https://github.com/open-feature/playground/commit/55a762506a1b07d5f048f6cc102bd9ee9b03e925))
+* **deps:** update eslint ([266ea33](https://github.com/open-feature/playground/commit/266ea3316eba47c9aeedb4811b11898dcbbf985f))
+
 ## [0.13.0](https://github.com/open-feature/playground/compare/v0.12.1...v0.13.0) (2023-11-30)
 
 
