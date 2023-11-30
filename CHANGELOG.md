@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.13.2](https://github.com/open-feature/playground/compare/v0.13.1...v0.13.2) (2023-11-30)
+
+
+### 🐛 Bug Fixes
+
+* fix dependencies ([#260](https://github.com/open-feature/playground/issues/260)) ([6606d14](https://github.com/open-feature/playground/commit/6606d1434e2dcce50036820674c8018dd9c43758))
+
+
+### 🧹 Chore
+
+* **deps:** update ghcr.io/open-feature/flagd docker tag to v0.7.1 ([ce9ea0e](https://github.com/open-feature/playground/commit/ce9ea0e8203d9e08fe25383aae88975d21c22193))
+* **deps:** update jaegertracing/all-in-one docker tag to v1.51.0 ([60134dc](https://github.com/open-feature/playground/commit/60134dc9bbb635e119bdfe1ed9a9072d911d8238))
+* migrate from js-sdk to server-sdk ([#258](https://github.com/open-feature/playground/issues/258)) ([b537c90](https://github.com/open-feature/playground/commit/b537c902aca495302672967b637db0181c08b3e4))
+
 ## [0.13.1](https://github.com/open-feature/playground/compare/v0.13.0...v0.13.1) (2023-11-30)
 
 
