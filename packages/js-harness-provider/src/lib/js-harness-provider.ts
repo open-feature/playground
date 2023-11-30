@@ -1,5 +1,5 @@
 import { Client, Target } from '@harnessio/ff-nodejs-server-sdk';
-import { EvaluationContext, Provider, ResolutionDetails, JsonValue } from '@openfeature/js-sdk';
+import { EvaluationContext, Provider, ResolutionDetails, JsonValue } from '@openfeature/server-sdk';
 
 /**
  * NOTE: This is an unofficial provider that was created for demonstration

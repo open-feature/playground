@@ -1,4 +1,4 @@
-import { EvaluationContext, TransactionContextPropagator } from '@openfeature/js-sdk';
+import { EvaluationContext, TransactionContextPropagator } from '@openfeature/server-sdk';
 import { AsyncLocalStorage } from 'async_hooks';
 
 export class AsyncLocalStorageTransactionContext implements TransactionContextPropagator {

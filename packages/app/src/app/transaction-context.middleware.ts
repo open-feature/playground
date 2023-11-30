@@ -1,5 +1,5 @@
 import { Injectable, NestMiddleware, Inject } from '@nestjs/common';
-import { OpenFeature } from '@openfeature/js-sdk';
+import { OpenFeature } from '@openfeature/server-sdk';
 import { NextFunction, Request, Response } from 'express';
 import { REQUEST_DATA } from './constants';
 import { RequestData } from './types';

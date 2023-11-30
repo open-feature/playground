@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Inject, Injectable } from '@nestjs/common';
 import { fibonacci } from '@openfeature/fibonacci';
-import { Client } from '@openfeature/js-sdk';
+import { Client } from '@openfeature/server-sdk';
 import { OPENFEATURE_CLIENT } from '../constants';
 import { lastValueFrom, map } from 'rxjs';
 

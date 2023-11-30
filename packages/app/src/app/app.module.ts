@@ -3,7 +3,7 @@ import {MiddlewareConsumer, Module, NestModule, Scope} from '@nestjs/common';
 import {REQUEST} from '@nestjs/core';
 import {ServeStaticModule} from '@nestjs/serve-static';
 import {AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger} from '@openfeature/extra';
-import {FlagMetadata, OpenFeature} from '@openfeature/js-sdk';
+import { FlagMetadata, OpenFeature } from '@openfeature/server-sdk';
 import {MetricsHook, TracingHook as SpanEventBasedTracingHook} from '@openfeature/open-telemetry-hooks';
 import {ProviderService} from '@openfeature/provider';
 import {Request} from 'express';

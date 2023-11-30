@@ -1,4 +1,14 @@
-import { EvaluationContext, EvaluationContextValue, FlagNotFoundError, JsonValue, Logger, ParseError, Provider, ResolutionDetails, TypeMismatchError } from '@openfeature/js-sdk';
+import {
+  EvaluationContext,
+  EvaluationContextValue,
+  FlagNotFoundError,
+  JsonValue,
+  Logger,
+  ParseError,
+  Provider,
+  ResolutionDetails,
+  TypeMismatchError,
+} from '@openfeature/server-sdk';
 import { parseValidJsonObject } from '@openfeature/utils';
 import Flagsmith from 'flagsmith-nodejs';
 

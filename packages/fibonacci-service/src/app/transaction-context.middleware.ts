@@ -1,5 +1,5 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { EvaluationContext, OpenFeature } from '@openfeature/js-sdk';
+import { EvaluationContext, OpenFeature } from '@openfeature/server-sdk';
 import { NextFunction, Request, Response } from 'express';
 import { propagation, context } from '@opentelemetry/api';
 

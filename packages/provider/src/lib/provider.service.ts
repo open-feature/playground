@@ -4,7 +4,7 @@ import { GoFeatureFlagProvider } from '@openfeature/go-feature-flag-provider';
 import { EnvVarProvider } from '@openfeature/env-var-provider';
 import { FlagsmithProvider } from '@openfeature/js-flagsmith-provider';
 import { OpenFeatureLaunchDarklyProvider } from '@openfeature/js-launchdarkly-provider';
-import { OpenFeature, Provider } from '@openfeature/js-sdk';
+import { OpenFeature, Provider } from '@openfeature/server-sdk';
 import { OpenFeatureSplitProvider } from '@openfeature/js-split-provider';
 import { SplitFactory } from '@splitsoftware/splitio';
 import { CloudbeesProvider } from 'cloudbees-openfeature-provider-node';

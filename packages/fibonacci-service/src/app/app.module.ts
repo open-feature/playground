@@ -1,7 +1,7 @@
 import {MiddlewareConsumer, Module, NestModule} from '@nestjs/common';
 import {AppController} from './app.controller';
 import {LoggerModule} from 'nestjs-pino';
-import {FlagMetadata, OpenFeature} from '@openfeature/js-sdk';
+import { FlagMetadata, OpenFeature } from '@openfeature/server-sdk';
 import {AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger} from '@openfeature/extra';
 import {MetricsHook, TracingHook as SpanEventBasedTracingHook} from '@openfeature/open-telemetry-hooks';
 import {TransactionContextMiddleware} from './transaction-context.middleware';

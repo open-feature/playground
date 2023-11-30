@@ -1,5 +1,5 @@
-import { FlagValue, JsonValue, ParseError, TypeMismatchError } from '@openfeature/js-sdk';
-import { EvaluationContext, Provider, ResolutionDetails, Logger } from '@openfeature/js-sdk';
+import { FlagValue, JsonValue, ParseError, TypeMismatchError } from '@openfeature/server-sdk';
+import { EvaluationContext, Provider, ResolutionDetails, Logger } from '@openfeature/server-sdk';
 import { init, LDClient, LDUser } from 'launchdarkly-node-server-sdk';
 
 export interface LaunchDarklyProviderOptions {
