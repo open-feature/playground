@@ -68,11 +68,8 @@ export class LaunchDarklyProvider implements Provider {
     this.client.close();
   }
 
-  resolveBooleanEvaluation(
-    flagKey: string,
-    defaultValue: boolean,
-    context: EvaluationContext
-  ): ResolutionDetails<boolean> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveBooleanEvaluation(flagKey: string, defaultValue: boolean, context: EvaluationContext): ResolutionDetails<boolean> {
     const details = this.evaluateFlag<boolean>(flagKey, defaultValue);
     if (typeof details.value === 'boolean') {
       return details;
@@ -81,11 +78,8 @@ export class LaunchDarklyProvider implements Provider {
     }
   }
 
-  resolveStringEvaluation(
-    flagKey: string,
-    defaultValue: string,
-    context: EvaluationContext
-  ): ResolutionDetails<string> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveStringEvaluation(flagKey: string, defaultValue: string, context: EvaluationContext): ResolutionDetails<string> {
     const details = this.evaluateFlag<string>(flagKey, defaultValue);
     if (typeof details.value === 'string') {
       return details;
@@ -94,11 +88,8 @@ export class LaunchDarklyProvider implements Provider {
     }
   }
 
-  resolveNumberEvaluation(
-    flagKey: string,
-    defaultValue: number,
-    context: EvaluationContext
-  ): ResolutionDetails<number> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveNumberEvaluation(flagKey: string, defaultValue: number, context: EvaluationContext): ResolutionDetails<number> {
     const details = this.evaluateFlag<number>(flagKey, defaultValue);
     if (typeof details.value === 'number') {
       return details;
@@ -107,11 +98,8 @@ export class LaunchDarklyProvider implements Provider {
     }
   }
 
-  resolveObjectEvaluation<U extends JsonValue>(
-    flagKey: string,
-    defaultValue: U,
-    context: EvaluationContext
-  ): ResolutionDetails<U> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveObjectEvaluation<U extends JsonValue>(flagKey: string, defaultValue: U, context: EvaluationContext): ResolutionDetails<U> {
     const details = this.evaluateFlag<unknown>(flagKey, JSON.stringify(defaultValue));
     if (typeof details.value === 'string') {
       // we may want to allow the parsing to be customized.

@@ -67,12 +67,8 @@ export class SplitWebProvider implements Provider {
     this.client.setAttributes(JSON.parse(JSON.stringify(newContext)));
   }
 
-  resolveBooleanEvaluation(
-    flagKey: string,
-    defaultValue: boolean,
-    context: EvaluationContext,
-    logger: Logger
-  ): ResolutionDetails<boolean> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveBooleanEvaluation(flagKey: string, defaultValue: boolean, context: EvaluationContext, logger: Logger): ResolutionDetails<boolean> {
     const treatment = this.resolve(flagKey);
     let value: boolean;
     switch (treatment as unknown) {
@@ -99,32 +95,20 @@ export class SplitWebProvider implements Provider {
     }
     return { value };
   }
-  resolveStringEvaluation(
-    flagKey: string,
-    defaultValue: string,
-    context: EvaluationContext,
-    logger: Logger
-  ): ResolutionDetails<string> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveStringEvaluation(flagKey: string, defaultValue: string, context: EvaluationContext, logger: Logger): ResolutionDetails<string> {
     return {
       value: this.resolve(flagKey),
     };
   }
-  resolveNumberEvaluation(
-    flagKey: string,
-    defaultValue: number,
-    context: EvaluationContext,
-    logger: Logger
-  ): ResolutionDetails<number> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveNumberEvaluation(flagKey: string, defaultValue: number, context: EvaluationContext, logger: Logger): ResolutionDetails<number> {
     return {
       value: parseValidNumber(this.resolve(flagKey)),
     };
   }
-  resolveObjectEvaluation<T extends JsonValue>(
-    flagKey: string,
-    defaultValue: T,
-    context: EvaluationContext,
-    logger: Logger
-  ): ResolutionDetails<T> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  resolveObjectEvaluation<T extends JsonValue>(flagKey: string, defaultValue: T, context: EvaluationContext, logger: Logger): ResolutionDetails<T> {
     return {
       value: parseValidJsonObject(this.resolve(flagKey)),
     };

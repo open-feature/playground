@@ -66,6 +66,7 @@ export class ProviderService {
         if (!appKey) {
           throw new Error('"CLOUDBEES_APP_KEY" must be defined.');
         } else {
+          /* eslint-disable  @typescript-eslint/no-explicit-any */
           return CloudbeesProvider.build(appKey) as any;
         }
       },

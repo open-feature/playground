@@ -40,6 +40,7 @@ type ProviderMap = Record<
 export class Demos extends Component<
   Readonly<Record<string, never>>,
   {
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     json: any;
     editorOn: boolean;
     editorAccess: boolean;
