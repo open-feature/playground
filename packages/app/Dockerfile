@@ -1,8 +1,8 @@
 FROM node:20.3-bullseye AS builder
 WORKDIR /tmp/playground/
-COPY package*.json workspace.json tsconfig*.json nx.json babel.config.json ./
+COPY package*.json tsconfig*.json nx.json babel.config.json ./
 COPY schemas/ ./schemas/
-RUN npm install
+RUN npm ci
 COPY packages/ ./packages/
 RUN npm run build:app
 

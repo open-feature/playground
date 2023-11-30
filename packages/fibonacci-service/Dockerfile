@@ -1,7 +1,7 @@
 FROM node:20.3-bullseye-slim AS builder
 WORKDIR /tmp/playground/
-COPY package*.json workspace.json tsconfig*.json nx.json babel.config.json ./
-RUN npm install
+COPY package*.json tsconfig*.json nx.json babel.config.json ./
+RUN npm ci
 COPY packages/ ./packages/
 RUN npm run build:fib-service
 
