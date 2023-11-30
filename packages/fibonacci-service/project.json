@@ -61,7 +61,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/fibonacci-service"],
+      "outputs": ["{workspaceRoot}/coverage/packages/fibonacci-service"],
       "options": {
         "jestConfig": "packages/fibonacci-service/jest.config.ts",
         "passWithNoTests": true

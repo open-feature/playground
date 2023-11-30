@@ -23,7 +23,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/js-harness-provider"],
+      "outputs": ["{workspaceRoot}/coverage/packages/js-harness-provider"],
       "options": {
         "jestConfig": "packages/js-harness-provider/jest.config.ts",
         "passWithNoTests": true

@@ -30,7 +30,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/fibonacci"],
+      "outputs": ["{workspaceRoot}/coverage/packages/fibonacci"],
       "options": {
         "jestConfig": "packages/fibonacci/jest.config.ts",
         "passWithNoTests": true

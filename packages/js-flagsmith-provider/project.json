@@ -31,7 +31,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/js-flagsmith-provider"],
+      "outputs": ["{workspaceRoot}/coverage/packages/js-flagsmith-provider"],
       "options": {
         "jestConfig": "packages/js-flagsmith-provider/jest.config.ts",
         "passWithNoTests": true
