@@ -1,4 +1,4 @@
-FROM node:20.3-bullseye-slim AS builder
+FROM node:20.3-bullseye AS builder
 WORKDIR /tmp/playground/
 COPY package*.json workspace.json tsconfig*.json nx.json babel.config.json ./
 COPY schemas/ ./schemas/

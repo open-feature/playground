@@ -24,7 +24,6 @@ services:
       - FIB_SERVICE_URL=http://fib-service:30001
       - FIB_SERVICE_USER
       - FIB_SERVICE_PASS
-      - ENABLED_SPAN_BASED_TRACES
       # Provider values come from the .env
       - NEW_WELCOME_MESSAGE
       - FIB_ALGO
@@ -60,7 +59,6 @@ services:
       - OTEL_SERVICE_NAME=fibonacci-service
       - FIB_SERVICE_USER
       - FIB_SERVICE_PASS
-      - ENABLED_SPAN_BASED_TRACES
       # Provider values come from the .env
       - NEW_WELCOME_MESSAGE
       - FIB_ALGO

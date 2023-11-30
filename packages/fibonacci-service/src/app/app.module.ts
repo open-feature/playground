@@ -1,14 +1,12 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-
-import { AppController } from './app.controller';
-import { LoggerModule } from 'nestjs-pino';
-import { FlagMetadata, OpenFeature } from '@openfeature/js-sdk';
-import { AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger } from '@openfeature/extra';
-import { TracingHook as SpanEventBasedTracingHook, MetricsHook } from '@openfeature/open-telemetry-hooks';
-import { OpenTelemetryHook as SpanBasedTracingHook } from '@openfeature/open-telemetry-hook';
-import { TransactionContextMiddleware } from './transaction-context.middleware';
-import { ProviderService } from '@openfeature/provider';
-import { ProvidersController } from './providers.controller';
+import {MiddlewareConsumer, Module, NestModule} from '@nestjs/common';
+import {AppController} from './app.controller';
+import {LoggerModule} from 'nestjs-pino';
+import {FlagMetadata, OpenFeature} from '@openfeature/js-sdk';
+import {AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger} from '@openfeature/extra';
+import {MetricsHook, TracingHook as SpanEventBasedTracingHook} from '@openfeature/open-telemetry-hooks';
+import {TransactionContextMiddleware} from './transaction-context.middleware';
+import {ProviderService} from '@openfeature/provider';
+import {ProvidersController} from './providers.controller';
 
 /**
  * Set a global logger for OpenFeature. This is logger will available in hooks.
@@ -21,16 +19,14 @@ function attributeMapper(flagMetadata: FlagMetadata) {
   };
 }
 
-const traceHook =
-  process.env.ENABLED_SPAN_BASED_TRACES === 'true'
-    ? new SpanBasedTracingHook()
-    : new SpanEventBasedTracingHook({ attributeMapper });
-
 /**
  * Adding hooks to at the global level will ensure they always run
  * as part of a flag evaluation lifecycle.
  */
-OpenFeature.addHooks(new LoggingHook(), traceHook, new MetricsHook({ attributeMapper }));
+OpenFeature.addHooks(
+  new LoggingHook(),
+  new SpanEventBasedTracingHook({attributeMapper}),
+  new MetricsHook({ attributeMapper }));
 
 /**
  * The transaction context propagator is an experimental feature
