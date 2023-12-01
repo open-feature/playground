@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.4](https://github.com/open-feature/playground/compare/v0.13.3...v0.13.4) (2023-12-01)
+
+
+### 🐛 Bug Fixes
+
+* fix docker metadat for arm image ([#265](https://github.com/open-feature/playground/issues/265)) ([1c40f4e](https://github.com/open-feature/playground/commit/1c40f4e8ca966a9914f98bc290e23c98de36726d))
+
 ## [0.13.3](https://github.com/open-feature/playground/compare/v0.13.2...v0.13.3) (2023-12-01)
 
 
