@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.13.3](https://github.com/open-feature/playground/compare/v0.13.2...v0.13.3) (2023-12-01)
+
+
+### 🧹 Chore
+
+* **deps:** update node.js to v20.10 ([bc94bcc](https://github.com/open-feature/playground/commit/bc94bcc037198a7bac5883971c47cc5b0636da2b))
+* **deps:** update prom/prometheus docker tag to v2.48.0 ([e27584c](https://github.com/open-feature/playground/commit/e27584c09da9605df9e9c9ef5d1e28b920b48b6d))
+* **deps:** update thomaspoignant/go-feature-flag-relay-proxy docker tag to v1.19.0 ([0358b4f](https://github.com/open-feature/playground/commit/0358b4ff1f7a9544d5e02283c2c7a68313fdac41))
+* **deps:** update types ([22bb451](https://github.com/open-feature/playground/commit/22bb45182cec97e1a5add3556d4cb7a04c157723))
+* support arm image ([#261](https://github.com/open-feature/playground/issues/261)) ([b895a4c](https://github.com/open-feature/playground/commit/b895a4cc1e7fb0ef675f9fabc137cca28af7cfec))
+
 ## [0.13.2](https://github.com/open-feature/playground/compare/v0.13.1...v0.13.2) (2023-11-30)
 
 

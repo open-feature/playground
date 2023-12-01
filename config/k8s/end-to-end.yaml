@@ -88,7 +88,7 @@ spec:
     spec:
       containers:
         - name: open-feature-demo
-          image: ghcr.io/open-feature/playground-app:v0.13.2 # x-release-please-version
+          image: ghcr.io/open-feature/playground-app:v0.13.3 # x-release-please-version
           args:
             - flagd
           ports:
