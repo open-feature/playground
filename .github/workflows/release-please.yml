@@ -46,26 +46,23 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      #- name: Set up QEMU
-      #  uses: docker/setup-qemu-action@master
-      #  with:
-      #    platforms: all
-
-      # - name: Set up Docker Buildx
-      #   id: buildx
-      #   uses: docker/setup-buildx-action@master
-
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
+
       - name: Build App Container
         uses: docker/build-push-action@v4
         with:
-          # builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./packages/app/Dockerfile
-          # platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:latest
@@ -79,10 +76,8 @@ jobs:
       - name: Build Fibonacci Service Container
         uses: docker/build-push-action@v4
         with:
-          # builder: ${{ steps.buildx.outputs.name }}
           context: .
           file: ./packages/fibonacci-service/Dockerfile
-          # platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:latest
