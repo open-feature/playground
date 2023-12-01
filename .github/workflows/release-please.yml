@@ -64,6 +64,8 @@ jobs:
           context: .
           file: ./packages/app/Dockerfile
           push: true
+          provenance: false
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-app:${{ needs.release-please.outputs.release_tag_name }}
@@ -79,6 +81,8 @@ jobs:
           context: .
           file: ./packages/fibonacci-service/Dockerfile
           push: true
+          provenance: false
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:latest
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}-fib-service:${{ needs.release-please.outputs.release_tag_name }}
