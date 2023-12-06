@@ -27,7 +27,7 @@
     "@openfeature/flagd-provider": "^0.9.0",
     "@openfeature/flagd-web-provider": "^0.4.0",
     "@openfeature/go-feature-flag-provider": "^0.6.0",
-    "@openfeature/open-telemetry-hooks": "^0.2.4",
+    "@openfeature/open-telemetry-hooks": "^0.3.0",
     "@openfeature/server-sdk": "^1.7.4",
     "@openfeature/web-sdk": "0.4.7",
     "@opentelemetry/api": "^1.7.0",
