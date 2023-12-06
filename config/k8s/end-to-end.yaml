@@ -1,4 +1,4 @@
-# A basic flag custom resource
+# Flags for our UI
 apiVersion: core.openfeature.dev/v1beta1
 kind: FeatureFlag
 metadata:
@@ -31,7 +31,7 @@ spec:
             - yellow
             - null
 ---
-# A basic flag custom resource
+# Flags for our backend application
 apiVersion: core.openfeature.dev/v1beta1
 kind: FeatureFlag
 metadata:
