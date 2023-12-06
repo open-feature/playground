@@ -127,6 +127,7 @@ spec:
       nodePort: 30000
 ---
 # Service to expose flagd for client-side evaluations
+# Note that in production, it's recommended to run a dedicated flagd deployment to serve client-side evaluations.
 apiVersion: v1
 kind: Service
 metadata:
