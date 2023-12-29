@@ -11,7 +11,8 @@
         "main": "packages/js-launchdarkly-provider/src/index.ts",
         "tsConfig": "packages/js-launchdarkly-provider/tsconfig.lib.json",
         "target": "node",
-        "compiler": "tsc"
+        "compiler": "tsc",
+        "webpackConfig": "packages/js-launchdarkly-provider/webpack.config.js"
       },
       "configurations": {
         "production": {

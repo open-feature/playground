@@ -13,7 +13,8 @@
         "tsConfig": "packages/app/tsconfig.app.json",
         "assets": ["packages/app/src/assets"],
         "target": "node",
-        "compiler": "tsc"
+        "compiler": "tsc",
+        "webpackConfig": "packages/app/webpack.config.js"
       },
       "configurations": {
         "production": {
