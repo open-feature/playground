@@ -24,7 +24,7 @@
     "@nestjs/platform-express": "9.4.3",
     "@nestjs/serve-static": "^3.0.1",
     "@openfeature/env-var-provider": "^0.2.0",
-    "@openfeature/flagd-provider": "^0.9.0",
+    "@openfeature/flagd-provider": "^0.10.0",
     "@openfeature/flagd-web-provider": "^0.4.1",
     "@openfeature/go-feature-flag-provider": "^0.6.1",
     "@openfeature/open-telemetry-hooks": "^0.3.0",
