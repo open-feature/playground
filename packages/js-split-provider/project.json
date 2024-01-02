@@ -11,7 +11,8 @@
         "main": "packages/js-split-provider/src/index.ts",
         "tsConfig": "packages/js-split-provider/tsconfig.lib.json",
         "target": "node",
-        "compiler": "tsc"
+        "compiler": "tsc",
+        "webpackConfig": "packages/js-split-provider/webpack.config.js"
       },
       "configurations": {
         "production": {

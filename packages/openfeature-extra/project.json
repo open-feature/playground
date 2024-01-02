@@ -11,7 +11,8 @@
         "main": "packages/openfeature-extra/src/index.ts",
         "tsConfig": "packages/openfeature-extra/tsconfig.lib.json",
         "target": "node",
-        "compiler": "tsc"
+        "compiler": "tsc",
+        "webpackConfig": "packages/openfeature-extra/webpack.config.js"
       },
       "configurations": {
         "production": {

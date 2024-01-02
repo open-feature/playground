@@ -11,7 +11,8 @@
         "main": "packages/fibonacci/src/index.ts",
         "tsConfig": "packages/fibonacci/tsconfig.lib.json",
         "target": "node",
-        "compiler": "tsc"
+        "compiler": "tsc",
+        "webpackConfig": "packages/fibonacci/webpack.config.js"
       },
       "configurations": {
         "production": {

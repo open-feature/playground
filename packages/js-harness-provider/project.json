@@ -11,7 +11,8 @@
         "main": "packages/js-harness-provider/src/index.ts",
         "tsConfig": "packages/js-harness-provider/tsconfig.lib.json",
         "target": "node",
-        "compiler": "tsc"
+        "compiler": "tsc",
+        "webpackConfig": "packages/js-harness-provider/webpack.config.js"
       }
     },
     "lint": {

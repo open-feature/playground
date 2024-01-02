@@ -12,7 +12,8 @@
         "main": "packages/js-flagsmith-provider/src/index.ts",
         "tsConfig": "packages/js-flagsmith-provider/tsconfig.lib.json",
         "target": "node",
-        "compiler": "tsc"
+        "compiler": "tsc",
+        "webpackConfig": "packages/js-flagsmith-provider/webpack.config.js"
       },
       "configurations": {
         "production": {
