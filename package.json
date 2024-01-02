@@ -66,7 +66,7 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
-    "@emotion/react": "11.11.1",
+    "@emotion/react": "11.11.3",
     "@emotion/styled": "11.11.0",
     "@mui/material": "^5.15.2",
     "@nestjs/schematics": "9.2.0",
