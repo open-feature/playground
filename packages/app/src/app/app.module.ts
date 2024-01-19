@@ -1,49 +1,25 @@
 import {HttpModule} from '@nestjs/axios';
-import {MiddlewareConsumer, Module, NestModule, Scope} from '@nestjs/common';
-import {REQUEST} from '@nestjs/core';
+import {ExecutionContext, Module} from '@nestjs/common';
 import {ServeStaticModule} from '@nestjs/serve-static';
-import {AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger} from '@openfeature/extra';
-import { FlagMetadata, OpenFeature } from '@openfeature/server-sdk';
-import {MetricsHook, TracingHook as SpanEventBasedTracingHook} from '@openfeature/open-telemetry-hooks';
+import {LoggingHook, OpenFeatureLogger} from '@openfeature/extra';
+import {FlagMetadata} from '@openfeature/js-sdk';
+import {TracingHook as SpanEventBasedTracingHook, MetricsHook} from '@openfeature/open-telemetry-hooks';
 import {ProviderService} from '@openfeature/provider';
 import {Request} from 'express';
 import {Agent} from 'http';
 import {LoggerModule} from 'nestjs-pino';
 import {join} from 'path';
-import {OPENFEATURE_CLIENT, REQUEST_DATA} from './constants';
 import {FibonacciAsAServiceController} from './fibonacci-as-a-service.controller';
 import {FibonacciService} from './fibonacci/fibonacci.service';
 import {ProvidersController} from './providers.controller';
-import {TransactionContextMiddleware} from './transaction-context.middleware';
-import {RequestData} from './types';
 import {UtilsController} from './utils.controller';
-
-/**
- * Set a global logger for OpenFeature. This is logger will available in hooks.
- */
-OpenFeature.setLogger(new OpenFeatureLogger('OpenFeature'));
+import {EvaluationContext, OpenFeatureModule} from "@openfeature/nestjs-sdk";
 
 function attributeMapper(flagMetadata: FlagMetadata) {
   return {
-    ...('scope' in flagMetadata && { scope: flagMetadata.scope }),
+    ...('scope' in flagMetadata && {scope: flagMetadata.scope}),
   };
 }
-
-/**
- * Adding hooks to at the global level will ensure they always run
- * as part of a flag evaluation lifecycle.
- */
-OpenFeature.addHooks(
-  new LoggingHook(),
-  new SpanEventBasedTracingHook({attributeMapper}),
-  new MetricsHook({attributeMapper}));
-
-/**
- * The transaction context propagator is an experimental feature
- * that allows evaluation context to be set anywhere in a request
- * and have it automatically available during a flag evaluation.
- */
-OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionContext());
 
 @Module({
   imports: [
@@ -59,11 +35,11 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
         transport:
           process.env['NODE' + '_ENV'] !== 'production'
             ? {
-                target: 'pino-pretty',
-                options: {
-                  hideObject: true,
-                },
-              }
+              target: 'pino-pretty',
+              options: {
+                hideObject: true,
+              },
+            }
             : undefined,
       },
     }),
@@ -71,41 +47,35 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
       rootPath: join(__dirname, '..', 'ui'),
     }),
     HttpModule.register({
-      httpAgent: new Agent({ keepAlive: true }),
+      httpAgent: new Agent({keepAlive: true}),
     }),
+    OpenFeatureModule.forRoot({
+      // Set a global logger for OpenFeature. This is logger will available in hooks.
+      logger: new OpenFeatureLogger('OpenFeature'),
+      //Adding hooks to at the global level will ensure they always run as part of a flag evaluation lifecycle.
+      hooks: [new LoggingHook(), new SpanEventBasedTracingHook({attributeMapper}), new MetricsHook({attributeMapper})],
+      // This context will be used for all flag evaluations in the callstack
+      contextFactory: async (context: ExecutionContext): Promise<EvaluationContext> => {
+        const req = await context.switchToHttp().getRequest<Request>()
+        const authHeaderValue = req.header('Authorization') || 'anonymous';
+        const userAgent = req.header('user-agent');
+        return {
+          ts: new Date().getTime(),
+          ip: (req.headers['x-forwarded-for'] as string) || (req.socket.remoteAddress as string),
+          email: authHeaderValue,
+          method: req.method,
+          path: req.path,
+          ...(userAgent && {userAgent}),
+          targetingKey: authHeaderValue,
+        };
+      },
+    })
   ],
   controllers: [FibonacciAsAServiceController, UtilsController, ProvidersController],
   providers: [
     FibonacciService,
     ProviderService,
-    {
-      provide: OPENFEATURE_CLIENT,
-      useFactory: () => {
-        const client = OpenFeature.getClient('app');
-        return client;
-      },
-    },
-    {
-      provide: REQUEST_DATA,
-      useFactory: (req: Request): RequestData => {
-        const authHeaderValue = req.header('Authorization') || 'anonymous';
-        const userAgent = req.header('user-agent');
-        return {
-          ip: (req.headers['x-forwarded-for'] as string) || (req.socket.remoteAddress as string),
-          email: authHeaderValue,
-          method: req.method,
-          path: req.path,
-          ...(userAgent && { userAgent }),
-          targetingKey: authHeaderValue,
-        };
-      },
-      scope: Scope.REQUEST,
-      inject: [REQUEST],
-    },
   ],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(TransactionContextMiddleware).forRoutes(FibonacciAsAServiceController);
-  }
+export class AppModule {
 }

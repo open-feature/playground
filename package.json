@@ -27,6 +27,7 @@
     "@openfeature/flagd-provider": "^0.9.0",
     "@openfeature/flagd-web-provider": "^0.4.1",
     "@openfeature/go-feature-flag-provider": "^0.6.1",
+    "@openfeature/nestjs-sdk": "^0.0.4-experimental",
     "@openfeature/open-telemetry-hooks": "^0.3.0",
     "@openfeature/server-sdk": "^1.7.5",
     "@openfeature/web-sdk": "0.4.7",
