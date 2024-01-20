@@ -1,4 +1,4 @@
-import { EvaluationDetails, FlagValue, Hook, HookContext, HookHints } from '@openfeature/server-sdk';
+import { EvaluationDetails, FlagValue, Hook, HookContext, HookHints } from '@openfeature/nestjs-sdk';
 
 /**
  * A hook that simply logs at every life-cycle stage.

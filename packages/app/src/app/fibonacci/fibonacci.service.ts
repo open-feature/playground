@@ -1,9 +1,8 @@
 import {HttpService} from '@nestjs/axios';
 import {Injectable} from '@nestjs/common';
 import {fibonacci} from '@openfeature/fibonacci';
-import {Client} from '@openfeature/js-sdk';
 import {lastValueFrom, map} from 'rxjs';
-import {FeatureClient} from "@openfeature/nestjs-sdk";
+import {Client, FeatureClient} from "@openfeature/nestjs-sdk";
 
 @Injectable()
 export class FibonacciService {

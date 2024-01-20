@@ -2,7 +2,6 @@ import {HttpModule} from '@nestjs/axios';
 import {ExecutionContext, Module} from '@nestjs/common';
 import {ServeStaticModule} from '@nestjs/serve-static';
 import {LoggingHook, OpenFeatureLogger} from '@openfeature/extra';
-import {FlagMetadata} from '@openfeature/js-sdk';
 import {TracingHook as SpanEventBasedTracingHook, MetricsHook} from '@openfeature/open-telemetry-hooks';
 import {ProviderService} from '@openfeature/provider';
 import {Request} from 'express';
@@ -13,7 +12,7 @@ import {FibonacciAsAServiceController} from './fibonacci-as-a-service.controller
 import {FibonacciService} from './fibonacci/fibonacci.service';
 import {ProvidersController} from './providers.controller';
 import {UtilsController} from './utils.controller';
-import {EvaluationContext, OpenFeatureModule} from "@openfeature/nestjs-sdk";
+import {EvaluationContext, FlagMetadata, OpenFeatureModule} from "@openfeature/nestjs-sdk";
 
 function attributeMapper(flagMetadata: FlagMetadata) {
   return {

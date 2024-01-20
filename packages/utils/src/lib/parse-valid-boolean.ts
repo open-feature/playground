@@ -1,4 +1,4 @@
-import { TypeMismatchError } from '@openfeature/server-sdk';
+import { TypeMismatchError } from '@openfeature/nestjs-sdk';
 
 export const parseValidBoolean = (stringValue: string | undefined) => {
   const asUnknown = stringValue as unknown;

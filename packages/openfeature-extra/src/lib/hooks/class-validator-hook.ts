@@ -1,4 +1,4 @@
-import { EvaluationDetails, Hook, HookContext, JsonObject } from '@openfeature/server-sdk';
+import { EvaluationDetails, Hook, HookContext, JsonObject } from '@openfeature/nestjs-sdk';
 import { validateSync } from 'class-validator';
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
