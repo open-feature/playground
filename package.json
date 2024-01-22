@@ -6,7 +6,7 @@
     "ui": "nx run ui:serve",
     "app": "nx run app:serve",
     "fib-service": "nx run fibonacci-service:serve",
-    "temp": "nx build",
+    "build": "nx run-many --all --target=build",
     "build:app": "nx build app && nx build ui",
     "build:fib-service": "nx build fibonacci-service",
     "lint": "nx run-many --all --target=lint",
