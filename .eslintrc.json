@@ -14,7 +14,15 @@
             "depConstraints": [
               {
                 "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "onlyDependOnLibsWithTags": [
+                  "*"
+                ]
+              },
+              {
+                "sourceTag": "shared",
+                "allowedExternalImports": [
+                  "@openfeature/core"
+                ]
               }
             ]
           }

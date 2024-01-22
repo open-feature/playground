@@ -1,4 +1,4 @@
-import { OpenFeature } from '@openfeature/server-sdk';
+import { OpenFeature } from '@openfeature/nestjs-sdk';
 
 const oFeatClient = OpenFeature.getClient('fibonacci');
 

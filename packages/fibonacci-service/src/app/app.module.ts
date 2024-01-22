@@ -1,39 +1,17 @@
-import {MiddlewareConsumer, Module, NestModule} from '@nestjs/common';
-import {AppController} from './app.controller';
-import {LoggerModule} from 'nestjs-pino';
-import { FlagMetadata, OpenFeature } from '@openfeature/server-sdk';
-import {AsyncLocalStorageTransactionContext, LoggingHook, OpenFeatureLogger} from '@openfeature/extra';
-import {MetricsHook, TracingHook as SpanEventBasedTracingHook} from '@openfeature/open-telemetry-hooks';
-import {TransactionContextMiddleware} from './transaction-context.middleware';
-import {ProviderService} from '@openfeature/provider';
-import {ProvidersController} from './providers.controller';
-
-/**
- * Set a global logger for OpenFeature. This is logger will available in hooks.
- */
-OpenFeature.setLogger(new OpenFeatureLogger('OpenFeature'));
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { LoggerModule } from 'nestjs-pino';
+import { LoggingHook, OpenFeatureLogger } from '@openfeature/extra';
+import { MetricsHook, TracingHook as SpanEventBasedTracingHook } from '@openfeature/open-telemetry-hooks';
+import { ProviderService } from '@openfeature/provider';
+import { ProvidersController } from './providers.controller';
+import { OpenFeatureModule, FlagMetadata } from '@openfeature/nestjs-sdk';
 
 function attributeMapper(flagMetadata: FlagMetadata) {
   return {
     ...('scope' in flagMetadata && { scope: flagMetadata.scope }),
   };
 }
-
-/**
- * Adding hooks to at the global level will ensure they always run
- * as part of a flag evaluation lifecycle.
- */
-OpenFeature.addHooks(
-  new LoggingHook(),
-  new SpanEventBasedTracingHook({attributeMapper}),
-  new MetricsHook({ attributeMapper }));
-
-/**
- * The transaction context propagator is an experimental feature
- * that allows evaluation context to be set anywhere in a request
- * and have it automatically available during a flag evaluation.
- */
-OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionContext());
 
 @Module({
   imports: [
@@ -57,12 +35,18 @@ OpenFeature.setTransactionContextPropagator(new AsyncLocalStorageTransactionCont
             : undefined,
       },
     }),
+    OpenFeatureModule.forRoot({
+      // Set a global logger for OpenFeature. This is logger will available in hooks.
+      logger: new OpenFeatureLogger('OpenFeature'),
+      //Adding hooks to at the global level will ensure they always run as part of a flag evaluation lifecycle.
+      hooks: [
+        new LoggingHook(),
+        new SpanEventBasedTracingHook({ attributeMapper }),
+        new MetricsHook({ attributeMapper }),
+      ],
+    }),
   ],
   controllers: [AppController, ProvidersController],
   providers: [ProviderService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(TransactionContextMiddleware).forRoutes(AppController);
-  }
-}
+export class AppModule {}

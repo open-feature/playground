@@ -7,7 +7,7 @@ import {
   BaggageEntry,
 } from '@opentelemetry/api';
 import { isTracingSuppressed } from '@opentelemetry/core';
-import { OpenFeature, EvaluationContext } from '@openfeature/server-sdk';
+import { OpenFeature, EvaluationContext } from '@openfeature/nestjs-sdk';
 
 const KEY_PAIR_SEPARATOR = '=';
 const PROPERTIES_SEPARATOR = ';';
