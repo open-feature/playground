@@ -13,8 +13,10 @@
             "allow": [],
             "depConstraints": [
               {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "sourceTag": "shared",
+                "allowedExternalImports": [
+                  "@openfeature/core"
+                ]
               }
             ]
           }
