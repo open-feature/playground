@@ -1,10 +1,10 @@
 version: '3.8'
 services:
   demo:
-    # image: ghcr.io/open-feature/playground-app:v0.13.4 # x-release-please-version
-    build:
-     dockerfile: ./packages/app/Dockerfile
-     context: .
+    image: ghcr.io/open-feature/playground-app:v0.13.4 # x-release-please-version
+    # build:
+    #  dockerfile: ./packages/app/Dockerfile
+    #  context: .
     ports:
       - '30000:30000'
     command:
@@ -46,10 +46,10 @@ services:
       - FLAGD_TLS_WEB
 
   fib-service:
-    # image: ghcr.io/open-feature/playground-fib-service:v0.13.4 # x-release-please-version
-    build:
-      dockerfile: ./packages/fibonacci-service/Dockerfile
-      context: .
+    image: ghcr.io/open-feature/playground-fib-service:v0.13.4 # x-release-please-version
+    # build:
+    #   dockerfile: ./packages/fibonacci-service/Dockerfile
+    #   context: .
     expose:
       - '30001'
     environment:
