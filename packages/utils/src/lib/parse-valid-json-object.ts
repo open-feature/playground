@@ -1,4 +1,4 @@
-import { JsonValue, ParseError, TypeMismatchError } from '@openfeature/nestjs-sdk';
+import { JsonValue, ParseError, TypeMismatchError } from '@openfeature/core';
 
 export const parseValidJsonObject = <T extends JsonValue>(stringValue: string): T => {
   if (stringValue === undefined) {

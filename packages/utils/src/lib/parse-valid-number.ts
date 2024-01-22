@@ -1,4 +1,4 @@
-import { ParseError, TypeMismatchError } from '@openfeature/nestjs-sdk';
+import { ParseError, TypeMismatchError } from '@openfeature/core';
 
 export const parseValidNumber = (stringValue: string | undefined) => {
   if (stringValue === undefined) {
