@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.14.0](https://github.com/open-feature/playground/compare/v0.13.4...v0.14.0) (2024-01-22)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update dependency @harnessio/ff-javascript-client-sdk to v1.21.0 ([1ae889f](https://github.com/open-feature/playground/commit/1ae889fd124850177a7f578b753687961ddc911c))
+* **deps:** update dependency @openfeature/open-telemetry-hooks to ^0.3.0 ([#264](https://github.com/open-feature/playground/issues/264)) ([10ec74b](https://github.com/open-feature/playground/commit/10ec74b98d9501061dec7857a2dd415387822101))
+* **deps:** update dependency flagsmith-nodejs to v3 ([#226](https://github.com/open-feature/playground/issues/226)) ([ddaba6d](https://github.com/open-feature/playground/commit/ddaba6d5c6249a995314238889c95ac0e71cb4e3))
+* **deps:** update dependency react-router-dom to v6.20.1 ([e233ccb](https://github.com/open-feature/playground/commit/e233ccb5943cf002ecba98a90f59c606f11f34a7))
+* docker-compose.yaml image instead of build ([#274](https://github.com/open-feature/playground/issues/274)) ([2fc3ccb](https://github.com/open-feature/playground/commit/2fc3ccbe998d18c62fbf49ecac4529362233cffa))
+
+
+### ✨ New Features
+
+* client-side flags in e2e k8s demo ([#267](https://github.com/open-feature/playground/issues/267)) ([c782315](https://github.com/open-feature/playground/commit/c782315c6cc4a99554a6bf76413fde05e430681f))
+* use Nest.js SDK in backend ([#273](https://github.com/open-feature/playground/issues/273)) ([d4b18d8](https://github.com/open-feature/playground/commit/d4b18d88afc38accc201329c2a5eb72e63b6f78c))
+
+
+### 🧹 Chore
+
+* **deps:** update dependency @emotion/react to v11.11.3 ([f44f35c](https://github.com/open-feature/playground/commit/f44f35c3f891c9c88f7108d22a26cdbc1acb58d7))
+* **deps:** update dependency @mui/material to v5.14.20 ([8a0a90b](https://github.com/open-feature/playground/commit/8a0a90bbcb27e93d80a3d70d419f1634fa728800))
+* **deps:** update dependency @mui/material to v5.15.6 ([919102d](https://github.com/open-feature/playground/commit/919102d1dd6da5b61a3fcf5360d0bcb2cd093650))
+* **deps:** update dependency @types/node to v18.19.3 ([75da9ab](https://github.com/open-feature/playground/commit/75da9abd9c9168a2f2ed710add6c7304f5cb20d3))
+* **deps:** update dependency core-js to v3.34.0 ([d6133d4](https://github.com/open-feature/playground/commit/d6133d440e603db039cbb63c8809137196951c3c))
+* **deps:** update dependency ts-node to v10.9.2 ([fba8985](https://github.com/open-feature/playground/commit/fba89858dd4ae16d2ed6f6e8ada469706f857ebf))
+* **deps:** update dependency typescript to v5.3.3 ([58e00be](https://github.com/open-feature/playground/commit/58e00bea46cbe74c458c6d80dc1f754be00fde92))
+* **deps:** update eslint ([a32d0fd](https://github.com/open-feature/playground/commit/a32d0fd9deaaa5b880e12d7d652205c43827783a))
+* **deps:** update ghcr.io/open-feature/flagd docker tag to v0.7.2 ([424fe2f](https://github.com/open-feature/playground/commit/424fe2f36fa831c0aec2fc8971fcc78181518151))
+* **deps:** update jaegertracing/all-in-one docker tag to v1.52.0 ([aa2afbe](https://github.com/open-feature/playground/commit/aa2afbe0a3424ed7be6bf108db34dec421156469))
+* **deps:** update prom/prometheus docker tag to v2.48.1 ([1827862](https://github.com/open-feature/playground/commit/1827862ea61f0f07ce968f1fd13ee9efe7f17698))
+* **deps:** update types ([721b4e8](https://github.com/open-feature/playground/commit/721b4e8fcc2a601e43fb9ba32894330366cbdada))
+* various dep updates ([#271](https://github.com/open-feature/playground/issues/271)) ([9764184](https://github.com/open-feature/playground/commit/9764184ef0afd62e9ee2235b73c941b585a69ad5))
+
 ## [0.13.4](https://github.com/open-feature/playground/compare/v0.13.3...v0.13.4) (2023-12-01)
 
 
