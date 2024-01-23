@@ -120,7 +120,7 @@ services:
       - '8013:8013'
 
   go-feature-flag:
-    image: thomaspoignant/go-feature-flag-relay-proxy:v1.19.0
+    image: thomaspoignant/go-feature-flag-relay-proxy:v1.21.0
     volumes:
       - ./config/go-feature-flag:/goff/
     expose:
