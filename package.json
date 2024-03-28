@@ -18,7 +18,7 @@
   "dependencies": {
     "@harnessio/ff-javascript-client-sdk": "^1.21.0",
     "@harnessio/ff-nodejs-server-sdk": "^1.4.0",
-    "@nestjs/axios": "^2.0.0",
+    "@nestjs/axios": "^3.0.0",
     "@nestjs/common": "9.4.3",
     "@nestjs/core": "9.4.3",
     "@nestjs/platform-express": "9.4.3",
