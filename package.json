@@ -22,7 +22,7 @@
     "@nestjs/common": "9.4.3",
     "@nestjs/core": "9.4.3",
     "@nestjs/platform-express": "9.4.3",
-    "@nestjs/serve-static": "^3.0.1",
+    "@nestjs/serve-static": "^4.0.0",
     "@openfeature/env-var-provider": "^0.2.0",
     "@openfeature/flagd-provider": "^0.10.4",
     "@openfeature/flagd-web-provider": "^0.4.1",
