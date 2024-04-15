@@ -85,7 +85,7 @@ export class Demos extends Component<
         const host = ofrepConfig?.host ?? 'localhost';
         const port = ofrepConfig?.port ?? 8016;
         const baseUrl = `${tls ? 'https' : 'http'}://${host}:${port}`;
-        return new OFREPWebProvider({ baseUrl }, console);
+        return new OFREPWebProvider({ baseUrl, pollInterval: 1000 }, console);
       },
     },
     [GO_PROVIDER_ID]: {
