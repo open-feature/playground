@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.15.0](https://github.com/open-feature/playground/compare/v0.14.0...v0.15.0) (2024-04-16)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update dependency express to v4.19.2 [security] ([4c41fb9](https://github.com/open-feature/playground/commit/4c41fb9614886e1f34f74265a2eca1e340c7ea01))
+
+
+### ✨ New Features
+
+* add OFREP and update dependencies ([#280](https://github.com/open-feature/playground/issues/280)) ([e25a169](https://github.com/open-feature/playground/commit/e25a169c3c87138d8e1def37cbf0f3ef88fa0f71))
+
+
+### 🧹 Chore
+
+* **deps:** update dependency @mui/material to v5.15.10 ([129402c](https://github.com/open-feature/playground/commit/129402c94fa6dad8f9e9939540feac0f8ca656df))
+* **deps:** update dependency core-js to v3.35.1 ([0170cfd](https://github.com/open-feature/playground/commit/0170cfdc0579ed40dabf0de444a2eb9370e4aa50))
+* **deps:** update dependency ts-jest to v29.1.2 ([7aa6dc6](https://github.com/open-feature/playground/commit/7aa6dc6de26c360971f0b3d6b68859fa5df780d5))
+* **deps:** update eslint ([8a15364](https://github.com/open-feature/playground/commit/8a15364bd7107d347579e3b3014fd2ed906b9ea6))
+* **deps:** update ghcr.io/open-feature/flagd docker tag to v0.8.1 ([be8778e](https://github.com/open-feature/playground/commit/be8778e929ef0198e1f93ed5ecd4f18fdc269a1d))
+* **deps:** update ghcr.io/open-feature/flagd docker tag to v0.8.2 ([5c1c758](https://github.com/open-feature/playground/commit/5c1c758cdaa560ddd66e89f7d81db813fa003bb0))
+* **deps:** update jaegertracing/all-in-one docker tag to v1.53.0 ([489edaa](https://github.com/open-feature/playground/commit/489edaabd6007b1dd0a3b05a19eefa2191e2fa2b))
+* **deps:** update node.js to v20.11.0 ([1655635](https://github.com/open-feature/playground/commit/1655635fb5f023f832a8a3d1bfb8796927924df0))
+* **deps:** update prom/prometheus docker tag to v2.49.1 ([5da9932](https://github.com/open-feature/playground/commit/5da9932b49d2c28183006897766952eec2a53589))
+* **deps:** update thomaspoignant/go-feature-flag-relay-proxy docker tag to v1.21.0 ([cd44fb8](https://github.com/open-feature/playground/commit/cd44fb81a36f2ba40d6df52452481a46e4506b49))
+* **deps:** update types ([86b797e](https://github.com/open-feature/playground/commit/86b797e1d85a5cc40b356003e9635c5e9e522f4a))
+* **deps:** update types ([085de92](https://github.com/open-feature/playground/commit/085de92f125e3dd7049ee419194a9b05bbebd71d))
+
 ## [0.14.0](https://github.com/open-feature/playground/compare/v0.13.4...v0.14.0) (2024-01-22)
 
 
