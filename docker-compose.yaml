@@ -57,6 +57,7 @@ services:
       - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
       - OTEL_EXPORTER_JAEGER_AGENT_PORT=6832
       - OTEL_SERVICE_NAME=fibonacci-service
+      - GO_FEATURE_FLAG_URL=http://go-feature-flag:1031
       - FIB_SERVICE_USER
       - FIB_SERVICE_PASS
       # Provider values come from the .env
@@ -71,7 +72,7 @@ services:
       - CLOUDBEES_APP_KEY
 
   jaeger:
-    image: jaegertracing/all-in-one:1.53.0
+    image: jaegertracing/all-in-one:1.56
     expose:
       - '6832/udp'
       - '4317'
@@ -79,7 +80,7 @@ services:
       - '16686:16686'
 
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.85.0
+    image: otel/opentelemetry-collector-contrib:0.98.0
     restart: always
     command: [ "--config=/etc/otel-collector-config.yaml" ]
     volumes:
@@ -95,7 +96,7 @@ services:
 
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:v2.49.1
+    image: prom/prometheus:v2.51.1
     restart: always
     volumes:
       - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
@@ -103,7 +104,7 @@ services:
       - "9090:9090"
 
   flagd:
-    image: ghcr.io/open-feature/flagd:v0.8.2
+    image: ghcr.io/open-feature/flagd:v0.10.0
     command:
       - start
       - --cors-origin
@@ -118,13 +119,14 @@ services:
       - ./config/flagd/flags.json:/etc/flagd/flags.json
     ports:
       - '8013:8013'
+      - '8016:8016'
 
   go-feature-flag:
-    image: thomaspoignant/go-feature-flag-relay-proxy:v1.21.0
+    image: thomaspoignant/go-feature-flag:v1.25.1
     volumes:
       - ./config/go-feature-flag:/goff/
-    expose:
-      - 1031
+    ports:
+      - "1031:1031"
 
 volumes:
   flagd-flags:

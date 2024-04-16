@@ -22,6 +22,15 @@ hex-color:
   default: 2f5230
   percentage: 100
 
+# Controls whether the remote fib service is used
+#  - true
+#  - false
+use-remote-fib-service:
+  true: true
+  false: false
+  default: true
+  percentage: 100
+
 # Must be a valid algorithm name
 #  - recurive
 #  - memo

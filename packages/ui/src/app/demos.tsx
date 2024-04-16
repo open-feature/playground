@@ -3,8 +3,11 @@ import { FlagdWebProvider } from '@openfeature/flagd-web-provider';
 import {
   AvailableProvider,
   CB_PROVIDER_ID,
+  FLAGD_OFREP_PROVIDER_ID,
   FLAGD_PROVIDER_ID,
   FLAGSMITH_PROVIDER_ID,
+  GO_OFREP_PROVIDER_ID,
+  GO_PROVIDER_ID,
   HARNESS_PROVIDER_ID,
   LD_PROVIDER_ID,
   ProviderId,
@@ -16,6 +19,7 @@ import { HarnessWebProvider } from '@openfeature/web-harness-provider';
 import { LaunchDarklyProvider } from '@openfeature/web-launchdarkly-provider';
 import { NOOP_PROVIDER, OpenFeature, Provider } from '@openfeature/web-sdk';
 import { SplitWebProvider } from '@openfeature/web-split-provider';
+import { OFREPWebProvider } from '@openfeature/ofrep-web-provider';
 import { TourProvider } from '@reactour/tour';
 import Ajv, { AnySchema, ErrorObject, ValidateFunction } from 'ajv';
 import EventEmitter from 'eventemitter3';
@@ -28,6 +32,7 @@ import { JsonEditor, JsonOutput } from './json-editor';
 import { styledFib3rSteps } from './demos/fib3r/tour';
 import { JSON_UPDATED } from './types';
 import { getData } from './utils';
+import { GoFeatureFlagWebProvider } from '@openfeature/go-feature-flag-web-provider';
 
 type ProviderMap = Record<
   string,
@@ -73,6 +78,30 @@ export class Demos extends Component<
         );
       },
     },
+    [FLAGD_OFREP_PROVIDER_ID]: {
+      factory: () => {
+        const ofrepConfig = this.state.availableProviders.find((p) => p.id === FLAGD_OFREP_PROVIDER_ID);
+        const tls = ofrepConfig?.tls ?? false;
+        const host = ofrepConfig?.host ?? 'localhost';
+        const port = ofrepConfig?.port ?? 8016;
+        const baseUrl = `${tls ? 'https' : 'http'}://${host}:${port}`;
+        return new OFREPWebProvider({ baseUrl, pollInterval: 1000 }, console);
+      },
+    },
+    [GO_PROVIDER_ID]: {
+      factory: () => {
+        const ofrepConfig = this.state.availableProviders.find((p) => p.id === GO_PROVIDER_ID);
+        const endpoint = ofrepConfig?.url ?? 'http://localhost:1031';
+        return new GoFeatureFlagWebProvider({ endpoint }, console);
+      },
+    },
+    [GO_OFREP_PROVIDER_ID]: {
+      factory: () => {
+        const ofrepConfig = this.state.availableProviders.find((p) => p.id === GO_OFREP_PROVIDER_ID);
+        const endpoint = ofrepConfig?.url ?? 'http://localhost:1031';
+        return new GoFeatureFlagWebProvider({ endpoint }, console);
+      },
+    },
     [HARNESS_PROVIDER_ID]: {
       factory: () => {
         return new HarnessWebProvider(this.getProviderCredential(HARNESS_PROVIDER_ID), console);
@@ -103,9 +132,7 @@ export class Demos extends Component<
     },
   };
 
-  constructor(
-    props: Record<string, never>
-  ) {
+  constructor(props: Record<string, never>) {
     super(props);
     this.state = {
       json: {},

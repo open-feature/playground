@@ -16,13 +16,16 @@ import {
   AvailableProvider,
   CB_PROVIDER_ID,
   ENV_PROVIDER_ID,
+  FLAGD_OFREP_PROVIDER_ID,
   FLAGD_PROVIDER_ID,
   FLAGSMITH_PROVIDER_ID,
+  GO_OFREP_PROVIDER_ID,
   GO_PROVIDER_ID,
   HARNESS_PROVIDER_ID,
   ProviderId,
   SPLIT_PROVIDER_ID,
 } from '@openfeature/utils';
+import { OFREPProvider } from '@openfeature/ofrep-provider';
 
 type ProviderMap = Record<
   ProviderId,
@@ -43,6 +46,18 @@ export class ProviderService {
       factory: () => new FlagdProvider(),
       host: process.env.FLAGD_HOST_WEB ?? 'localhost',
       port: Number.parseInt(process.env.FLAGD_PORT_WEB || '8013') || 8013,
+      tls: process.env.FLAGD_TLS_WEB === 'true',
+    },
+    [FLAGD_OFREP_PROVIDER_ID]: {
+      factory: () => {
+        const host = process.env.FLAGD_HOST ?? 'localhost';
+        const port = Number.parseInt(process.env.FLAGD_OFREP_PORT || '8016') || 8016;
+        const tls = process.env.FLAGD_OFREP_TLS === 'true';
+        const baseUrl = `${tls ? 'https' : 'http'}://${host}:${port}`;
+        return new OFREPProvider({ baseUrl });
+      },
+      host: process.env.FLAGD_HOST_WEB ?? 'localhost',
+      port: Number.parseInt(process.env.FLAGD_OFREP_PORT_WEB || '8016') || 8016,
       tls: process.env.FLAGD_TLS_WEB === 'true',
     },
     launchdarkly: {
@@ -99,6 +114,13 @@ export class ProviderService {
           endpoint: process.env.GO_FEATURE_FLAG_URL as string,
         }),
       available: () => !!process.env.GO_FEATURE_FLAG_URL,
+    },
+    [GO_OFREP_PROVIDER_ID]: {
+      factory: () => {
+        return new OFREPProvider({ baseUrl: process.env.GO_FEATURE_FLAG_URL as string });
+      },
+      available: () => !!process.env.GO_FEATURE_FLAG_URL,
+      url: process.env.GO_FEATURE_FLAG_URL as string
     },
     [FLAGSMITH_PROVIDER_ID]: {
       factory: () => {
