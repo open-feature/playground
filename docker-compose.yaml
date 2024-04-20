@@ -122,7 +122,7 @@ services:
       - '8016:8016'
 
   go-feature-flag:
-    image: thomaspoignant/go-feature-flag:v1.25.1
+    image: thomaspoignant/go-feature-flag:v1.26.0
     volumes:
       - ./config/go-feature-flag:/goff/
     ports:
