@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.15.2](https://github.com/open-feature/playground/compare/v0.15.1...v0.15.2) (2024-04-21)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update dependency @openfeature/flagd-web-provider to ^0.7.0 ([#288](https://github.com/open-feature/playground/issues/288)) ([b26b52d](https://github.com/open-feature/playground/commit/b26b52dbbb38eaa1d1ff2090d49da70cd4e1d93b))
+* goff ofrep provider in UI ([#289](https://github.com/open-feature/playground/issues/289)) ([3ed5edd](https://github.com/open-feature/playground/commit/3ed5edd5bfd5cc164d5316463e4c6910120520e3))
+
 ## [0.15.1](https://github.com/open-feature/playground/compare/v0.15.0...v0.15.1) (2024-04-21)
 
 
