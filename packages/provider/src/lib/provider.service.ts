@@ -113,7 +113,8 @@ export class ProviderService {
         new GoFeatureFlagProvider({
           endpoint: process.env.GO_FEATURE_FLAG_URL as string,
         }),
-      available: () => !!process.env.GO_FEATURE_FLAG_WEB_URL,
+      available: () => !!process.env.GO_FEATURE_FLAG_URL,
+      url: process.env.GO_FEATURE_FLAG_WEB_URL as string
     },
     [GO_OFREP_PROVIDER_ID]: {
       factory: () => {

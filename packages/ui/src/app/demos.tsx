@@ -98,8 +98,8 @@ export class Demos extends Component<
     [GO_OFREP_PROVIDER_ID]: {
       factory: () => {
         const ofrepConfig = this.state.availableProviders.find((p) => p.id === GO_OFREP_PROVIDER_ID);
-        const endpoint = ofrepConfig?.url ?? 'http://localhost:1031';
-        return new GoFeatureFlagWebProvider({ endpoint }, console);
+        const baseUrl = ofrepConfig?.url ?? 'http://localhost:1031';
+        return new OFREPWebProvider({ baseUrl, pollInterval: 1000 }, console);
       },
     },
     [HARNESS_PROVIDER_ID]: {
