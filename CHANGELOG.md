@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.15.1](https://github.com/open-feature/playground/compare/v0.15.0...v0.15.1) (2024-04-21)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update dependency @openfeature/flagd-provider to ^0.13.0 ([#286](https://github.com/open-feature/playground/issues/286)) ([7426774](https://github.com/open-feature/playground/commit/7426774c5f6ede5c96b1d0234a21e3819ece3ed6))
+* **deps:** update dependency @openfeature/web-sdk to v1.0.3 ([73937f2](https://github.com/open-feature/playground/commit/73937f240044185487c948843c482c404cd0b55d))
+* **deps:** update nest monorepo to v10.3.8 ([8c3869c](https://github.com/open-feature/playground/commit/8c3869c588624877150ccbb56aeb79fdf851a0ba))
+* make goff url for web configurable ([#287](https://github.com/open-feature/playground/issues/287)) ([3ccc862](https://github.com/open-feature/playground/commit/3ccc8620996d747c95388338f03990eb906d2191))
+
+
+### 🧹 Chore
+
+* **deps:** update actions/checkout action to v4 ([86b10b4](https://github.com/open-feature/playground/commit/86b10b443d9944e1fef19f2da31f6962688b4eeb))
+* **deps:** update dependency core-js to v3.37.0 ([13d8c58](https://github.com/open-feature/playground/commit/13d8c583ce4175cb0faa7144ac92f18447228784))
+* **deps:** update dependency typescript to v5.4.5 ([017a037](https://github.com/open-feature/playground/commit/017a037c6a70224375ed03801412ba0ea175c53b))
+* **deps:** update dependency webpack to v5.91.0 ([4f08be3](https://github.com/open-feature/playground/commit/4f08be3e8be365614dcd8f6407d4e68ac0c6d072))
+* **deps:** update eslint ([12855bb](https://github.com/open-feature/playground/commit/12855bb495fc7d627fb78f7b6607c0918ac16e0f))
+* **deps:** update ghcr.io/open-feature/flagd docker tag to v0.10.1 ([42b13ef](https://github.com/open-feature/playground/commit/42b13efcc60186bebdcd3a243cff6e57c1938e86))
+* **deps:** update node.js to v20.12.2 ([492700d](https://github.com/open-feature/playground/commit/492700ddeebd46b3004bbc8e1b697adbed4323ca))
+* **deps:** update nrwl monorepo to v17.3.2 ([5203862](https://github.com/open-feature/playground/commit/52038627f812ebcfed754f021b8eb5e565a8abf6))
+* **deps:** update prom/prometheus docker tag to v2.51.2 ([a1d37dc](https://github.com/open-feature/playground/commit/a1d37dca618ee0630c2655eebd1e56637d13ae33))
+* **deps:** update thomaspoignant/go-feature-flag docker tag to v1.26.0 ([854cf8a](https://github.com/open-feature/playground/commit/854cf8a7d882545014228b8617fe6dd80e44237d))
+* **deps:** update types ([4e702be](https://github.com/open-feature/playground/commit/4e702be79513bf17505bb2f2b136510273c614c1))
+
 ## [0.15.0](https://github.com/open-feature/playground/compare/v0.14.0...v0.15.0) (2024-04-16)
 
 
