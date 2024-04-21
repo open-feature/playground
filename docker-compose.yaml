@@ -21,6 +21,7 @@ services:
       - OTEL_EXPORTER_JAEGER_AGENT_HOST=jaeger
       - OTEL_EXPORTER_JAEGER_AGENT_PORT=6832
       - GO_FEATURE_FLAG_URL=http://go-feature-flag:1031
+      - GO_FEATURE_FLAG_WEB_URL=http://localhost:1031
       - FIB_SERVICE_URL=http://fib-service:30001
       - FIB_SERVICE_USER
       - FIB_SERVICE_PASS
