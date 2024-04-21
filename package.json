@@ -1,6 +1,6 @@
 {
   "name": "openfeature",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "license": "Apache-2.0",
   "scripts": {
     "ui": "nx run ui:serve",
@@ -24,7 +24,7 @@
     "@nestjs/platform-express": "10.3.8",
     "@nestjs/serve-static": "^4.0.2",
     "@openfeature/env-var-provider": "^0.3.0",
-    "@openfeature/flagd-provider": "^0.12.0",
+    "@openfeature/flagd-provider": "^0.13.0",
     "@openfeature/flagd-web-provider": "^0.6.0",
     "@openfeature/go-feature-flag-provider": "^0.7.0",
     "@openfeature/go-feature-flag-web-provider": "^0.2.0",

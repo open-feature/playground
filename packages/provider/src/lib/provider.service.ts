@@ -120,7 +120,7 @@ export class ProviderService {
       factory: () => {
         return new OFREPProvider({ baseUrl: process.env.GO_FEATURE_FLAG_URL as string });
       },
-      available: () => !!process.env.GO_FEATURE_FLAG_WEB_URL,
+      available: () => !!process.env.GO_FEATURE_FLAG_URL,
       url: process.env.GO_FEATURE_FLAG_WEB_URL as string
     },
     [FLAGSMITH_PROVIDER_ID]: {
