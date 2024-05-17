@@ -28,6 +28,7 @@ If you're brand new to feature flagging, consider reviewing the [What are featur
   - [Harness](#harness)
   - [LaunchDarkly](#launchdarkly)
   - [Flagsmith](#flagsmith)
+  - [Flipt](#flipt)
 - [Experimenting beyond the demo](#experimenting-beyond-the-demo)
   - [Evaluation context](#evaluation-context)
 - [Troubleshooting](#troubleshooting)
@@ -419,6 +420,16 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 
 Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `flagsmith` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via Flagsmith!
 </details>
+
+### Flipt
+
+[Flipt](https://www.flipt.io/) is an open-source feature management platform that's fully self-hosted.
+
+To use preconfigured flags, copy the SQLite database backup in [`./config/flipt/flipt.example.db`](config/flipt/flipt.example.db) to [`./config/flipt/flipt.db`](config/flipt/flipt.db) before running `docker compose up`.
+
+```shell
+cp ./config/flipt/flipt.example.db ./config/flipt/flipt.db
+```
 
 ## Experimenting beyond the demo
 

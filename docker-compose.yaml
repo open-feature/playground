@@ -23,6 +23,8 @@ services:
       - GO_FEATURE_FLAG_URL=http://go-feature-flag:1031
       - GO_FEATURE_FLAG_WEB_URL=http://localhost:1031
       - FIB_SERVICE_URL=http://fib-service:30001
+      - FLIPT_URL=http://flipt:8080
+      - FLIPT_WEB_URL=http://localhost:8080
       - FIB_SERVICE_USER
       - FIB_SERVICE_PASS
       # Provider values come from the .env
@@ -59,6 +61,7 @@ services:
       - OTEL_EXPORTER_JAEGER_AGENT_PORT=6832
       - OTEL_SERVICE_NAME=fibonacci-service
       - GO_FEATURE_FLAG_URL=http://go-feature-flag:1031
+      - FLIPT_URL=http://flipt:8080
       - FIB_SERVICE_USER
       - FIB_SERVICE_PASS
       # Provider values come from the .env
@@ -128,6 +131,19 @@ services:
       - ./config/go-feature-flag:/goff/
     ports:
       - "1031:1031"
+
+  flipt:
+    image: docker.flipt.io/flipt/flipt:v1.42.0
+    environment:
+      FLIPT_CORS_ENABLED: true
+      FLIPT_TRACING_ENABLED: true
+      FLIPT_TRACING_EXPORTER: otlp
+      FLIPT_TRACING_OTLP_ENDPOINT: "otel-collector:4317"
+      FLIPT_DB_URL: "/data/flipt.db"
+    volumes:
+      - ./config/flipt:/data
+    ports:
+      - '8080:8080'
 
 volumes:
   flagd-flags:

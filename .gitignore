@@ -45,3 +45,5 @@ Thumbs.db
 # yalc stuff
 .yalc
 yalc.lock
+
+config/flipt/flipt.db

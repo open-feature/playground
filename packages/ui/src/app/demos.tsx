@@ -6,6 +6,7 @@ import {
   FLAGD_OFREP_PROVIDER_ID,
   FLAGD_PROVIDER_ID,
   FLAGSMITH_PROVIDER_ID,
+  FLIPT_PROVIDER_ID,
   GO_OFREP_PROVIDER_ID,
   GO_PROVIDER_ID,
   HARNESS_PROVIDER_ID,
@@ -33,6 +34,7 @@ import { styledFib3rSteps } from './demos/fib3r/tour';
 import { JSON_UPDATED } from './types';
 import { getData } from './utils';
 import { GoFeatureFlagWebProvider } from '@openfeature/go-feature-flag-web-provider';
+import { FliptWebProvider } from '@openfeature/flipt-web-provider';
 
 type ProviderMap = Record<
   string,
@@ -128,6 +130,12 @@ export class Demos extends Component<
     [SPLIT_PROVIDER_ID]: {
       factory: () => {
         return new SplitWebProvider(this.getProviderCredential(SPLIT_PROVIDER_ID));
+      },
+    },
+    [FLIPT_PROVIDER_ID]: {
+      factory: () => {
+        const fliptConfig = this.state.availableProviders.find((p) => p.id === FLIPT_PROVIDER_ID);
+        return new FliptWebProvider('default', { url: fliptConfig?.url });
       },
     },
   };
