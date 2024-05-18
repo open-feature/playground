@@ -424,12 +424,9 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 ### Flipt
 
 [Flipt](https://www.flipt.io/) is an open-source feature management platform that's fully self-hosted.
+It's easy to set up, has no seat limits, and is built for developers from scale-ups to enterprises.
 
-To use preconfigured flags, copy the SQLite database backup in [`./config/flipt/flipt.example.db`](config/flipt/flipt.example.db) to [`./config/flipt/flipt.db`](config/flipt/flipt.db) before running `docker compose up`.
-
-```shell
-cp ./config/flipt/flipt.example.db ./config/flipt/flipt.db
-```
+After [starting the demo](#how-to-run-the-demo), the Flipt UI is available at [http://localhost:8080](http://localhost:8080).
 
 ## Experimenting beyond the demo
 
