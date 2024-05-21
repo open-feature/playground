@@ -138,6 +138,7 @@ services:
     environment:
       FLIPT_LOG_LEVEL: debug
       FLIPT_META_TELEMETRY_ENABLED: false
+      FLIPT_DB_URL: "/var/opt/flipt/flipt.db"
     volumes:
       - "./config/flipt:/var/opt/flipt"
 
@@ -149,6 +150,9 @@ services:
       FLIPT_TRACING_ENABLED: true
       FLIPT_TRACING_EXPORTER: otlp
       FLIPT_TRACING_OTLP_ENDPOINT: "otel-collector:4317"
+      FLIPT_DB_URL: "/var/opt/flipt/flipt.db"
+    volumes:
+      - "./config/flipt:/var/opt/flipt"
     depends_on:
       - init_flipt
     ports:
