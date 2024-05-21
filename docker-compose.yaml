@@ -140,7 +140,8 @@ services:
       FLIPT_META_TELEMETRY_ENABLED: false
       FLIPT_DB_URL: "/var/opt/flipt/flipt.db"
     volumes:
-      - "./config/flipt:/var/opt/flipt"
+      - "./config/flipt/flipt.yml:/var/opt/flipt/flipt.yml"
+      - "flipt:/var/opt/flipt"
 
   flipt:
     image: docker.flipt.io/flipt/flipt:v1.42.0
@@ -152,7 +153,8 @@ services:
       FLIPT_TRACING_OTLP_ENDPOINT: "otel-collector:4317"
       FLIPT_DB_URL: "/var/opt/flipt/flipt.db"
     volumes:
-      - "./config/flipt:/var/opt/flipt"
+      - "./config/flipt/flipt.yml:/var/opt/flipt/flipt.yml"
+      - "flipt:/var/opt/flipt"
     depends_on:
       - init_flipt
     ports:
@@ -160,3 +162,4 @@ services:
 
 volumes:
   flagd-flags:
+  flipt:
