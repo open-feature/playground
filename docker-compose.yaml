@@ -139,7 +139,6 @@ services:
       FLIPT_LOG_LEVEL: debug
       FLIPT_META_TELEMETRY_ENABLED: false
     volumes:
-      - "./flipt.yml:/flipt.yml"
       - "./config/flipt:/var/opt/flipt"
 
   flipt:
@@ -152,8 +151,6 @@ services:
       FLIPT_TRACING_OTLP_ENDPOINT: "otel-collector:4317"
     depends_on:
       - init_flipt
-    volumes:
-      - "./config/flipt:/var/opt/flipt"
     ports:
       - '8080:8080'
 
