@@ -19,6 +19,7 @@ import {
   FLAGD_OFREP_PROVIDER_ID,
   FLAGD_PROVIDER_ID,
   FLAGSMITH_PROVIDER_ID,
+  FLIPT_PROVIDER_ID,
   GO_OFREP_PROVIDER_ID,
   GO_PROVIDER_ID,
   HARNESS_PROVIDER_ID,
@@ -26,6 +27,7 @@ import {
   SPLIT_PROVIDER_ID,
 } from '@openfeature/utils';
 import { OFREPProvider } from '@openfeature/ofrep-provider';
+import { FliptProvider } from '@openfeature/flipt-provider';
 
 type ProviderMap = Record<
   ProviderId,
@@ -114,14 +116,14 @@ export class ProviderService {
           endpoint: process.env.GO_FEATURE_FLAG_URL as string,
         }),
       available: () => !!process.env.GO_FEATURE_FLAG_URL,
-      url: process.env.GO_FEATURE_FLAG_WEB_URL as string
+      url: process.env.GO_FEATURE_FLAG_WEB_URL as string,
     },
     [GO_OFREP_PROVIDER_ID]: {
       factory: () => {
         return new OFREPProvider({ baseUrl: process.env.GO_FEATURE_FLAG_URL as string });
       },
       available: () => !!process.env.GO_FEATURE_FLAG_URL,
-      url: process.env.GO_FEATURE_FLAG_WEB_URL as string
+      url: process.env.GO_FEATURE_FLAG_WEB_URL as string,
     },
     [FLAGSMITH_PROVIDER_ID]: {
       factory: () => {
@@ -161,6 +163,13 @@ export class ProviderService {
       },
       available: () => !!process.env.HARNESS_KEY && !!process.env.HARNESS_KEY_WEB,
       webCredential: process.env.HARNESS_KEY_WEB,
+    },
+    [FLIPT_PROVIDER_ID]: {
+      factory: () => {
+        return new FliptProvider('default', { url: process.env.FLIPT_URL as string });
+      },
+      available: () => !!process.env.FLIPT_URL,
+      url: process.env.FLIPT_WEB_URL,
     },
   };
 
@@ -206,7 +215,7 @@ export class ProviderService {
           host: p[1].host,
           port: p[1].port,
           tls: p[1].tls,
-          url: p[1].url
+          url: p[1].url,
         };
       });
   }

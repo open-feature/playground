@@ -8,6 +8,7 @@ export const SPLIT_PROVIDER_ID = 'split';
 export const CB_PROVIDER_ID = 'cloudbees';
 export const FLAGSMITH_PROVIDER_ID = 'flagsmith';
 export const HARNESS_PROVIDER_ID = 'harness';
+export const FLIPT_PROVIDER_ID = 'flipt';
 
 export type ProviderId =
   | typeof ENV_PROVIDER_ID
@@ -19,7 +20,8 @@ export type ProviderId =
   | typeof SPLIT_PROVIDER_ID
   | typeof CB_PROVIDER_ID
   | typeof FLAGSMITH_PROVIDER_ID
-  | typeof HARNESS_PROVIDER_ID;
+  | typeof HARNESS_PROVIDER_ID
+  | typeof FLIPT_PROVIDER_ID;
 
 export interface AvailableProvider {
   id: ProviderId;

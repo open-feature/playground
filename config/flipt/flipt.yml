@@ -1,0 +1,79 @@
+version: "1.2"
+namespace: default
+flags:
+  - key: new-welcome-message
+    name: new-welcome-message
+    type: BOOLEAN_FLAG_TYPE
+    description: Controls the welcome banner message
+    enabled: true
+    rollouts:
+      - threshold:
+          percentage: 100
+          value: true
+  - key: hex-color
+    name: hex-color
+    type: VARIANT_FLAG_TYPE
+    description: Controls the UI color
+    enabled: true
+    variants:
+      - key: c05543
+        name: red
+      - key: 2f5230
+        name: green
+      - key: 0d507b
+        name: blue
+      - key: d4ac0d
+        name: yellow
+    rules:
+      - segment: Signed-In-Users
+        distributions:
+          - variant: d4ac0d
+            rollout: 100
+      - segment: All-Users
+        distributions:
+          - variant: 2f5230
+            rollout: 100
+  - key: use-remote-fib-service
+    name: use-remote-fib-service
+    type: BOOLEAN_FLAG_TYPE
+    description: Controls whether the remote fib service is used
+    enabled: true
+    rollouts:
+      - segment:
+          key: Signed-In-Users
+          value: true
+      - segment:
+          key: All-Users
+  - key: fib-algo
+    name: fib-algo
+    type: VARIANT_FLAG_TYPE
+    description: The algorithm to calculate the fibbonaci sequence
+    enabled: true
+    variants:
+      - key: binet
+        name: binet
+      - key: memo
+        name: memo
+      - key: loop
+        name: loop
+      - key: recursive
+        name: recursive
+    rules:
+      - segment: All-Users
+        distributions:
+          - variant: memo
+            rollout: 100
+segments:
+  - key: All-Users
+    name: All Users
+    description: All users are matched
+    match_type: ALL_MATCH_TYPE
+  - key: Signed-In-Users
+    name: Signed In Users
+    description: Users that are signed in
+    constraints:
+      - type: STRING_COMPARISON_TYPE
+        property: email
+        operator: suffix
+        value: '@faas.com'
+    match_type: ALL_MATCH_TYPE
