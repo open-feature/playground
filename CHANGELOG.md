@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.16.0](https://github.com/open-feature/playground/compare/v0.15.2...v0.16.0) (2024-05-22)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update dependency flagsmith-nodejs to v3.3.0 ([d4a4468](https://github.com/open-feature/playground/commit/d4a446886a908451afd3c2d415e2c45a0895b95c))
+
+
+### ✨ New Features
+
+* add Flipt to playground ([#293](https://github.com/open-feature/playground/issues/293)) ([ab99a8e](https://github.com/open-feature/playground/commit/ab99a8e5bc8e788c053bc675b8ff442696031d76))
+
 ## [0.15.2](https://github.com/open-feature/playground/compare/v0.15.1...v0.15.2) (2024-04-21)
 
 
