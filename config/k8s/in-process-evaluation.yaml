@@ -41,7 +41,7 @@ kind: Flagd
 metadata:
   name: flagd-in-process
 spec:
-  replicas: 2
+  replicas: 1
   serviceType: ClusterIP
   serviceAccountName: default
   featureFlagSource: app-flag-source
@@ -109,7 +109,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: example-ingress
+  name: open-feature-demo-ingress
 spec:
   ingressClassName: nginx
   rules:
