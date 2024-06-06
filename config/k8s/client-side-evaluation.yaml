@@ -58,6 +58,7 @@ spec:
       nginx.ingress.kubernetes.io/force-ssl-redirect: 'false'
     hosts:
       - localhost
+      - ''
     ingressClassName: nginx
     pathType: Prefix
 ---
@@ -118,7 +119,8 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-      http:
+    - host: localhost
+      http:  
         paths:
           - pathType: Prefix
             path: /
