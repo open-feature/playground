@@ -56,13 +56,10 @@ spec:
     enabled: true
     annotations:
       nginx.ingress.kubernetes.io/force-ssl-redirect: 'false'
-      nginx.ingress.kubernetes.io/rewrite-target: /$1
     hosts:
       - localhost
     ingressClassName: nginx
     pathType: Prefix
-    flagdPath: /(flagd\.evaluation.*)
-    ofrepPath: /(ofrep/.*)
 ---
 # Deployment of a demo-app using our custom resources
 apiVersion: apps/v1
@@ -94,8 +91,6 @@ spec:
           env:
             - name: FLAGD_PORT_WEB
               value: '80'
-            - name: FLAGD_PATH_PREFIX
-              value: 'flagd'
             - name: FLAGD_OFREP_PORT_WEB
               value: '80'
 ---
@@ -123,7 +118,6 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: localhost
       http:
         paths:
           - pathType: Prefix
