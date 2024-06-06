@@ -58,8 +58,9 @@ spec:
       nginx.ingress.kubernetes.io/force-ssl-redirect: 'false'
     hosts:
       - localhost
+      - ''
     ingressClassName: nginx
-    pathType: Prefix
+    pathType: ImplementationSpecific
 ---
 # Deployment of a demo-app using our custom resources
 apiVersion: apps/v1
@@ -118,9 +119,10 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-      http:
+    - host: localhost
+      http:  
         paths:
-          - pathType: Prefix
+          - pathType: Prefix    
             path: /
             backend:
               service:
