@@ -60,7 +60,7 @@ spec:
       - localhost
       - ''
     ingressClassName: nginx
-    pathType: ImplementationSpecific
+    pathType: Prefix
 ---
 # Deployment of a demo-app using our custom resources
 apiVersion: apps/v1
