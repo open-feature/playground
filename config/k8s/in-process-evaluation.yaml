@@ -1,36 +1,3 @@
-# Flags for our UI
-apiVersion: core.openfeature.dev/v1beta1
-kind: FeatureFlag
-metadata:
-  name: ui-flags
-  labels:
-    app: open-feature-demo
-spec:
-  flagSpec:
-    flags:
-      new-welcome-message:
-        state: ENABLED
-        variants:
-          'on': true
-          'off': false
-        defaultVariant: 'off'
-      hex-color:
-        variants:
-          red: c05543
-          green: 2f5230
-          blue: 0d507b
-          yellow: d4ac0d
-        defaultVariant: blue
-        state: ENABLED
-        targeting:
-          if:
-            - in:
-                - '@faas.com'
-                - var:
-                    - email
-            - yellow
-            - null
----
 # Flags for our backend application
 apiVersion: core.openfeature.dev/v1beta1
 kind: FeatureFlag
@@ -49,14 +16,6 @@ spec:
           binet: binet
         defaultVariant: recursive
         state: ENABLED
-        targeting:
-          if:
-            - in:
-                - '@faas.com'
-                - var:
-                    - email
-            - binet
-            - null
       use-remote-fib-service:
         state: ENABLED
         variants:
@@ -68,16 +27,32 @@ spec:
 apiVersion: core.openfeature.dev/v1beta1
 kind: FeatureFlagSource
 metadata:
-  name: flag-sources
+  name: app-flag-source
   labels:
     app: open-feature-demo
 spec:
   sources:
     - source: app-flags
       provider: kubernetes
-    - source: ui-flags
-      provider: kubernetes
-
+---
+# Standalone flagd for serving in-process provider
+apiVersion: core.openfeature.dev/v1beta1
+kind: Flagd
+metadata:
+  name: flagd-in-process
+spec:
+  replicas: 1
+  serviceType: ClusterIP
+  serviceAccountName: default
+  featureFlagSource: app-flag-source
+---
+# In-process provider configuration
+apiVersion: core.openfeature.dev/v1beta1
+kind: InProcessConfiguration
+metadata:
+  name: in-process-config
+spec:
+  host: flagd-in-process
 ---
 # Deployment of a demo-app using our custom resources
 apiVersion: apps/v1
@@ -97,18 +72,22 @@ spec:
         app: open-feature-demo
       annotations:
         openfeature.dev/enabled: 'true'
-        openfeature.dev/featureflagsource: 'flag-sources'
+        openfeature.dev/inprocessconfiguration: 'in-process-config'
     spec:
       containers:
         - name: open-feature-demo
           image: ghcr.io/open-feature/playground-app:v0.16.0 # x-release-please-version
-          args:
-            - flagd
           ports:
             - containerPort: 30000
+          args:
+            - flagd
           env:
             - name: FLAGD_PORT_WEB
-              value: '30002'
+              value: '80'
+            - name: FLAGD_PATH_PREFIX
+              value: 'flagd'
+            - name: FLAGD_OFREP_PORT_WEB
+              value: '80'
 ---
 # Service to expose our application
 apiVersion: v1
@@ -126,19 +105,21 @@ spec:
       targetPort: 30000
       nodePort: 30000
 ---
-# Service to expose flagd for client-side evaluations
-# Note that in production, it's recommended to run a dedicated flagd deployment to serve client-side evaluations.
-apiVersion: v1
-kind: Service
+# Ingress for our application
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: open-feature-demo-ui-service
-  labels:
-    app: open-feature-demo
+  name: open-feature-demo-ingress
 spec:
-  type: NodePort
-  selector:
-    app: open-feature-demo
-  ports:
-    - port: 30002
-      targetPort: 8013
-      nodePort: 30002
+  ingressClassName: nginx
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: open-feature-demo-app-service
+                port:
+                  number: 30000
