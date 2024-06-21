@@ -138,5 +138,10 @@
     "url-loader": "^4.1.1",
     "webpack": "5.91.0",
     "webpack-merge": "^5.10.0"
+  },
+  "overrides": {
+    "braces": ">=3.0.3",
+    "ws": ">=8.17.1",
+    "@grpc/grpc-js": ">=1.10.9"
   }
 }
