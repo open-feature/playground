@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.17.0](https://github.com/open-feature/playground/compare/v0.16.0...v0.17.0) (2024-06-27)
+
+
+### 🐛 Bug Fixes
+
+* overrides to fix vulnerabilities ([#297](https://github.com/open-feature/playground/issues/297)) ([7a5df65](https://github.com/open-feature/playground/commit/7a5df6522f94167f1d87f3518f7e1785f64f6f78))
+
+
+### ✨ New Features
+
+* additional ofo tutorial resources ([#294](https://github.com/open-feature/playground/issues/294)) ([f84b95d](https://github.com/open-feature/playground/commit/f84b95d39131268df8ecacd77b739832c533fad9))
+
+
+### 🧹 Chore
+
+* client-side-evaluation.yaml fix ([#296](https://github.com/open-feature/playground/issues/296)) ([7d7d133](https://github.com/open-feature/playground/commit/7d7d133a263e2ea1ab9794c9af94d9eab6c493e8))
+
 ## [0.16.0](https://github.com/open-feature/playground/compare/v0.15.2...v0.16.0) (2024-05-22)
 
 
