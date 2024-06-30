@@ -46,7 +46,7 @@
     "@opentelemetry/semantic-conventions": "^1.23.0",
     "@splitsoftware/openfeature-js-split-provider": "^1.0.7",
     "@splitsoftware/splitio": "^10.24.1",
-    "@splitsoftware/splitio-browserjs": "^0.10.1",
+    "@splitsoftware/splitio-browserjs": "^0.14.0",
     "@types/rox-browser": "^5.0.7",
     "change-case": "^4.1.2",
     "class-validator": "^0.14.1",
