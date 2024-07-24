@@ -1,15 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": "Default preset for use with OpenFeature's repos",
-  "extends": ["config:recommended"],
-  "semanticCommits": "enabled",
-  "automergeType": "branch",
-  "configMigration": true,
+  "extends": [ "github>open-feature/community-tooling" ],
   "dependencyDashboard": true,
-  "prCreation": "not-pending",
-  "rebaseWhen": "behind-base-branch",
-  "platformAutomerge": true,
-  "platformCommit": true,
   "npm": {
     "packageRules": [
       {
@@ -39,16 +32,4 @@
       }
     ]
   },
-  "packageRules": [
-    {
-      "description": "Automerge non-major updates",
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchCurrentVersion": "!/^0/",
-      "automerge": true
-    },
-    {
-      "matchManagers": ["github-actions"],
-      "automerge": true
-    }
-  ]
 }
