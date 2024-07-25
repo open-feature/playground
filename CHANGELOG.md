@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.17.0](https://github.com/open-feature/playground/compare/v0.16.0...v0.17.0) (2024-07-25)
+
+
+### 🐛 Bug Fixes
+
+* overrides to fix vulnerabilities ([#297](https://github.com/open-feature/playground/issues/297)) ([7a5df65](https://github.com/open-feature/playground/commit/7a5df6522f94167f1d87f3518f7e1785f64f6f78))
+
+
+### ✨ New Features
+
+* additional ofo tutorial resources ([#294](https://github.com/open-feature/playground/issues/294)) ([f84b95d](https://github.com/open-feature/playground/commit/f84b95d39131268df8ecacd77b739832c533fad9))
+
+
+### 🧹 Chore
+
+* add renovate dependency to our tooling default ([#299](https://github.com/open-feature/playground/issues/299)) ([0fa51f8](https://github.com/open-feature/playground/commit/0fa51f8e7e1160cc0e5dc6c7fca264d01998879a))
+* client-side-evaluation.yaml fix ([#296](https://github.com/open-feature/playground/issues/296)) ([7d7d133](https://github.com/open-feature/playground/commit/7d7d133a263e2ea1ab9794c9af94d9eab6c493e8))
+* **deps:** pin dependencies ([#300](https://github.com/open-feature/playground/issues/300)) ([5d98ea2](https://github.com/open-feature/playground/commit/5d98ea232ea9cbe1e81dc9cdef5c830ba4a36718))
+* **deps:** update dependency @babel/preset-react to v7.24.7 ([#301](https://github.com/open-feature/playground/issues/301)) ([a747426](https://github.com/open-feature/playground/commit/a7474269bdcba37404a7757ead3c47a05a50f0a5))
+* **deps:** update dependency @pmmmwh/react-refresh-webpack-plugin to v0.5.15 ([#302](https://github.com/open-feature/playground/issues/302)) ([0f6907f](https://github.com/open-feature/playground/commit/0f6907fa5567f0cc77ca8040ecb5d801b5f27d3d))
+* **deps:** update dependency core-js to v3.37.1 ([#303](https://github.com/open-feature/playground/issues/303)) ([ad1ef26](https://github.com/open-feature/playground/commit/ad1ef269ffcf8cdf79f8baa77632fae19ee27a94))
+* **deps:** update dependency react-refresh to v0.14.2 ([#304](https://github.com/open-feature/playground/issues/304)) ([d809aaa](https://github.com/open-feature/playground/commit/d809aaa62582c06888e9ebba225051796e7e7de4))
+* **deps:** update dependency regenerator-runtime to ^0.14.0 ([#244](https://github.com/open-feature/playground/issues/244)) ([a0c993d](https://github.com/open-feature/playground/commit/a0c993d92316e209604ad687286c32e486edab0a))
+* **deps:** update dependency stylus to ^0.63.0 ([#252](https://github.com/open-feature/playground/issues/252)) ([a80ab66](https://github.com/open-feature/playground/commit/a80ab6638899bdcfe2a99079c0f8e425bda6d0c5))
+* **deps:** update dependency tslib to v2.6.3 ([#305](https://github.com/open-feature/playground/issues/305)) ([b173145](https://github.com/open-feature/playground/commit/b173145e8f87ed400d50d636315ff0bc1c4e80cf))
+* **deps:** update types ([#306](https://github.com/open-feature/playground/issues/306)) ([ce5c3d7](https://github.com/open-feature/playground/commit/ce5c3d7f9c431e29df029c7d7da994c257c30b04))
+
 ## [0.16.0](https://github.com/open-feature/playground/compare/v0.15.2...v0.16.0) (2024-05-22)
 
 
