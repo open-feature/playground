@@ -76,7 +76,7 @@ services:
       - CLOUDBEES_APP_KEY
 
   jaeger:
-    image: jaegertracing/all-in-one:1.56
+    image: jaegertracing/all-in-one:1.59
     expose:
       - '6832/udp'
       - '4317'
