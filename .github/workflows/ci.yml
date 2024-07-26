@@ -11,17 +11,23 @@ on:
 
 jobs:
   main:
-    runs-on: ubuntu-latest
+    runs-on: equinix-4cpu-16gb
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
         with:
           # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
-      - uses: nrwl/nx-set-shas@40f1175ceec169e68c9857c27aa7c5063692aa9a # v4
       - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4
         with:
           node-version: 18
           cache: 'npm'
+      # Mark your git directory as safe for self-hosted runners
+      # https://github.com/nrwl/nx-set-shas?tab=readme-ov-file#self-hosted-runners
+      - name: Set Directory as Safe
+        run: |
+          git config --add safe.directory "$GITHUB_WORKSPACE"
+        shell: bash
+      - uses: nrwl/nx-set-shas@40f1175ceec169e68c9857c27aa7c5063692aa9a # v4
       - run: npm ci
       - run: npx nx affected --target=lint --parallel=3
       - run: npx nx affected --target=build --parallel=3 --ci
