@@ -1,5 +1,62 @@
 # Changelog
 
+## [0.17.0](https://github.com/open-feature/playground/compare/v0.16.0...v0.17.0) (2024-07-28)
+
+
+### 🐛 Bug Fixes
+
+* **deps:** update dependency @harnessio/ff-nodejs-server-sdk to v1.8.2 ([#331](https://github.com/open-feature/playground/issues/331)) ([863d852](https://github.com/open-feature/playground/commit/863d852efc86b83b01ef165762f43a1b6fb68e45))
+* **deps:** update dependency @openfeature/env-var-provider to v0.3.1 ([#307](https://github.com/open-feature/playground/issues/307)) ([13999db](https://github.com/open-feature/playground/commit/13999db5f1ec5b8430482dc8a5e0367a3f888b19))
+* **deps:** update dependency @openfeature/flagd-provider to v0.13.1 ([#308](https://github.com/open-feature/playground/issues/308)) ([addbaa9](https://github.com/open-feature/playground/commit/addbaa9ef65f2506134f504406850e9ee8bbe2a9))
+* **deps:** update dependency @openfeature/flagd-web-provider to v0.7.2 ([#311](https://github.com/open-feature/playground/issues/311)) ([43f3399](https://github.com/open-feature/playground/commit/43f33990f286a4f9714bbd7ba39adcec4967508a))
+* **deps:** update dependency @splitsoftware/splitio to v10.27.0 ([#336](https://github.com/open-feature/playground/issues/336)) ([8c95a36](https://github.com/open-feature/playground/commit/8c95a36b89eb31649f731915e1b8f20da7152226))
+* **deps:** update dependency @splitsoftware/splitio-browserjs to ^0.14.0 ([#277](https://github.com/open-feature/playground/issues/277)) ([5744560](https://github.com/open-feature/playground/commit/57445609f7a2ac4e2879c4cc43325ce5ae69ade7))
+* **deps:** update dependency express-validator to v7.1.0 ([#337](https://github.com/open-feature/playground/issues/337)) ([f2f381b](https://github.com/open-feature/playground/commit/f2f381b6b7b72ff6933c76db395d532bcadc93fa))
+* **deps:** update dependency flagsmith-nodejs to v3.3.3 ([#312](https://github.com/open-feature/playground/issues/312)) ([7972256](https://github.com/open-feature/playground/commit/797225632ecb6dee0ec8a7de6e5eebe964af9bf3))
+* **deps:** update dependency launchdarkly-js-client-sdk to v3.4.0 ([#338](https://github.com/open-feature/playground/issues/338)) ([2119652](https://github.com/open-feature/playground/commit/2119652a3d99508b5e432fc49095450b936577a3))
+* **deps:** update dependency nestjs-pino to v4.1.0 ([#339](https://github.com/open-feature/playground/issues/339)) ([813ab8b](https://github.com/open-feature/playground/commit/813ab8b770af8bccb98b8865946930e1aa179c55))
+* **deps:** update dependency pino-pretty to v11.2.2 ([#340](https://github.com/open-feature/playground/issues/340)) ([c1054e9](https://github.com/open-feature/playground/commit/c1054e9bf013372fe29b3ec9b6f329c99d180a47))
+* **deps:** update dependency react-router-dom to v6.25.1 ([#341](https://github.com/open-feature/playground/issues/341)) ([e3a21e2](https://github.com/open-feature/playground/commit/e3a21e293a2605d81bc4b780f023e17d7fbddae5))
+* **deps:** update dependency reflect-metadata to ^0.2.0 ([#276](https://github.com/open-feature/playground/issues/276)) ([b0df0d7](https://github.com/open-feature/playground/commit/b0df0d7906ac17b444754aa5d020096229610595))
+* **deps:** update dependency rox-browser to v5.4.13 ([#313](https://github.com/open-feature/playground/issues/313)) ([bead03c](https://github.com/open-feature/playground/commit/bead03cf10b59756c5bdc20410b6ad3e938382a0))
+* **deps:** update dependency rox-node to v5.4.13 ([#314](https://github.com/open-feature/playground/issues/314)) ([5fada4f](https://github.com/open-feature/playground/commit/5fada4f8ee5de01765942b06f85e3ea6f7152a93))
+* **deps:** update nest monorepo ([#315](https://github.com/open-feature/playground/issues/315)) ([e4ab130](https://github.com/open-feature/playground/commit/e4ab13031e3f7761cbb68fc5ed44ccaeaf9d11a2))
+* overrides to fix vulnerabilities ([#297](https://github.com/open-feature/playground/issues/297)) ([7a5df65](https://github.com/open-feature/playground/commit/7a5df6522f94167f1d87f3518f7e1785f64f6f78))
+
+
+### ✨ New Features
+
+* additional ofo tutorial resources ([#294](https://github.com/open-feature/playground/issues/294)) ([f84b95d](https://github.com/open-feature/playground/commit/f84b95d39131268df8ecacd77b739832c533fad9))
+
+
+### 🧹 Chore
+
+* add renovate dependency to our tooling default ([#299](https://github.com/open-feature/playground/issues/299)) ([0fa51f8](https://github.com/open-feature/playground/commit/0fa51f8e7e1160cc0e5dc6c7fca264d01998879a))
+* client-side-evaluation.yaml fix ([#296](https://github.com/open-feature/playground/issues/296)) ([7d7d133](https://github.com/open-feature/playground/commit/7d7d133a263e2ea1ab9794c9af94d9eab6c493e8))
+* **deps:** pin dependencies ([#300](https://github.com/open-feature/playground/issues/300)) ([5d98ea2](https://github.com/open-feature/playground/commit/5d98ea232ea9cbe1e81dc9cdef5c830ba4a36718))
+* **deps:** update dependency @babel/preset-react to v7.24.7 ([#301](https://github.com/open-feature/playground/issues/301)) ([a747426](https://github.com/open-feature/playground/commit/a7474269bdcba37404a7757ead3c47a05a50f0a5))
+* **deps:** update dependency @mui/material to v5.16.5 ([#316](https://github.com/open-feature/playground/issues/316)) ([2b65d96](https://github.com/open-feature/playground/commit/2b65d96c29307f62a257be1959610b265c569c2f))
+* **deps:** update dependency @pmmmwh/react-refresh-webpack-plugin to v0.5.15 ([#302](https://github.com/open-feature/playground/issues/302)) ([0f6907f](https://github.com/open-feature/playground/commit/0f6907fa5567f0cc77ca8040ecb5d801b5f27d3d))
+* **deps:** update dependency @reactour/tour to v3.7.0 ([#317](https://github.com/open-feature/playground/issues/317)) ([38c2b86](https://github.com/open-feature/playground/commit/38c2b869f5fac6a58e17347df0436fc462c30dc1))
+* **deps:** update dependency ajv to v8.17.1 ([#318](https://github.com/open-feature/playground/issues/318)) ([1a2e3a0](https://github.com/open-feature/playground/commit/1a2e3a0444fd76450e2f021042a53ce5940fa9e6))
+* **deps:** update dependency core-js to v3.37.1 ([#303](https://github.com/open-feature/playground/issues/303)) ([ad1ef26](https://github.com/open-feature/playground/commit/ad1ef269ffcf8cdf79f8baa77632fae19ee27a94))
+* **deps:** update dependency react-refresh to v0.14.2 ([#304](https://github.com/open-feature/playground/issues/304)) ([d809aaa](https://github.com/open-feature/playground/commit/d809aaa62582c06888e9ebba225051796e7e7de4))
+* **deps:** update dependency regenerator-runtime to ^0.14.0 ([#244](https://github.com/open-feature/playground/issues/244)) ([a0c993d](https://github.com/open-feature/playground/commit/a0c993d92316e209604ad687286c32e486edab0a))
+* **deps:** update dependency stylus to ^0.63.0 ([#252](https://github.com/open-feature/playground/issues/252)) ([a80ab66](https://github.com/open-feature/playground/commit/a80ab6638899bdcfe2a99079c0f8e425bda6d0c5))
+* **deps:** update dependency ts-jest to v29.2.3 ([#319](https://github.com/open-feature/playground/issues/319)) ([e380954](https://github.com/open-feature/playground/commit/e380954388bbdac8c501b78ece4a4d8d2178cf21))
+* **deps:** update dependency tslib to v2.6.3 ([#305](https://github.com/open-feature/playground/issues/305)) ([b173145](https://github.com/open-feature/playground/commit/b173145e8f87ed400d50d636315ff0bc1c4e80cf))
+* **deps:** update dependency typescript to v5.5.4 ([#320](https://github.com/open-feature/playground/issues/320)) ([5250245](https://github.com/open-feature/playground/commit/5250245f28df6bb6559f4873ba190cabfeceef55))
+* **deps:** update dependency webpack to v5.93.0 ([#321](https://github.com/open-feature/playground/issues/321)) ([e4edfc1](https://github.com/open-feature/playground/commit/e4edfc12ded80b5ff28e82ffaaea3e50bcb0a22c))
+* **deps:** update docker.flipt.io/flipt/flipt docker tag to v1.46.2 ([#322](https://github.com/open-feature/playground/issues/322)) ([38b431b](https://github.com/open-feature/playground/commit/38b431ba575fe8c1880a02ecfef39b42968c83dc))
+* **deps:** update emotion monorepo to v11.13.0 ([#323](https://github.com/open-feature/playground/issues/323)) ([0cf3fee](https://github.com/open-feature/playground/commit/0cf3fee88f8650c834e74507eb94dfa614266d57))
+* **deps:** update eslint ([#324](https://github.com/open-feature/playground/issues/324)) ([d467811](https://github.com/open-feature/playground/commit/d4678112e6e465589872bcea3fd63a7b0ad0bd6e))
+* **deps:** update ghcr.io/open-feature/flagd docker tag to v0.11.1 ([#326](https://github.com/open-feature/playground/issues/326)) ([6aee03d](https://github.com/open-feature/playground/commit/6aee03d9dcf90752a6d42cec8237c53d5aa779f5))
+* **deps:** update jaegertracing/all-in-one docker tag to v1.59 ([#327](https://github.com/open-feature/playground/issues/327)) ([eb7f299](https://github.com/open-feature/playground/commit/eb7f299774b438b1645061c3d5e62f3e862ac29d))
+* **deps:** update otel/opentelemetry-collector-contrib docker tag to v0.105.0 ([#263](https://github.com/open-feature/playground/issues/263)) ([51a00f0](https://github.com/open-feature/playground/commit/51a00f0b72d2977d8d7c5d4df6f748d631edaa7a))
+* **deps:** update prom/prometheus docker tag to v2.53.1 ([#329](https://github.com/open-feature/playground/issues/329)) ([262154f](https://github.com/open-feature/playground/commit/262154ff2ba2938c4615eda18340ab7702d23412))
+* **deps:** update thomaspoignant/go-feature-flag docker tag to v1.31.2 ([#330](https://github.com/open-feature/playground/issues/330)) ([02591e4](https://github.com/open-feature/playground/commit/02591e4dce25bdd4e6feebfb5887f87477ced0af))
+* **deps:** update types ([#306](https://github.com/open-feature/playground/issues/306)) ([ce5c3d7](https://github.com/open-feature/playground/commit/ce5c3d7f9c431e29df029c7d7da994c257c30b04))
+
 ## [0.16.0](https://github.com/open-feature/playground/compare/v0.15.2...v0.16.0) (2024-05-22)
 
 
