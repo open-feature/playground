@@ -14,6 +14,10 @@
         "groupName": "OpenTelemetry"
       },
       {
+        "matchPackagePatterns": ["@openfeature/"],
+        "groupName": "OpenFeature"
+      },
+      {
         "matchPackagePatterns": ["@typescript-eslint", "eslint"],
         "groupName": "ESLint"
       },
