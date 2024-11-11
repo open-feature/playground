@@ -29,6 +29,7 @@ If you're brand new to feature flagging, consider reviewing the [What are featur
   - [LaunchDarkly](#launchdarkly)
   - [Flagsmith](#flagsmith)
   - [Flipt](#flipt)
+  - [ConfigCat](#configcat)
 - [Experimenting beyond the demo](#experimenting-beyond-the-demo)
   - [Evaluation context](#evaluation-context)
 - [Troubleshooting](#troubleshooting)
@@ -427,6 +428,38 @@ Now that everything is configured, you should be able to [start the demo](#how-t
 It's easy to set up, has no seat limits, and is built for developers from scale-ups to enterprises.
 
 After [starting the demo](#how-to-run-the-demo), the Flipt UI is available at [http://localhost:8080](http://localhost:8080).
+
+### ConfigCat
+
+[ConfigCat](https://configcat.com/) is a feature flag and configuration management service that lets you separate releases from deployments. You can turn your features ON/OFF using [ConfigCat Dashboard](https://app.configcat.com/) even after they are deployed. ConfigCat lets you target specific groups of users based on region, email or any other custom user attribute.
+
+<details>
+  <summary>Follow these steps to set up ConfigCat for the demo:</summary>
+
+1. Sign in to your ConfigCat account. If you don't already have an account, you can sign up for [free](https://configcat.com/#pricing).
+1. Create a new feature flag with the key `new-welcome-message`.
+
+    <img src="./images/configcat/new-welcome-message.png">
+
+1. Create a new text setting with the key `hex-color`. Add three percentage options (`+ %` button) with the following values: `c05543`, `2f5230`, and `0d507b`. Set `c05543` to 100%. Set the `To unindentified` value to `c05543`.
+
+    <img src="./images/configcat/hex-color.png">
+
+1. Create a new text setting with the key `fib-algo`. 
+   - Add a targeting rule (`+ IF` button) that looks for the `Email` user attribute to end with `@faas.com` and serves `binet`.
+   - Add five percentage options (`+ %` button) with the following values: `recursive`, `memo`, `loop`, `binet`, and `default`. Set `recursive` to 100%. 
+   - Set the `To unindentified` value to `default`.
+
+    <img src="./images/configcat/fib-algo.png">
+
+1. Click on `VIEW SDK KEY` and copy the `SDK Key`.
+
+    <img src="./images/configcat/sdk-key.png">
+
+1. Open the `.env` file and set the values of `CONFIGCAT_SDK_KEY` and `CONFIGCAT_SDK_KEY_WEB` to the key copied above.
+
+Now that everything is configured, you should be able to [start the demo](#how-to-run-the-demo). Once it's started, select `configcat` from the provider list located at the bottom right of your screen. You should now be able to control the demo app via ConfigCat!
+</details>
 
 ## Experimenting beyond the demo
 

@@ -15,6 +15,7 @@ import { OpenFeatureLogger } from '@openfeature/extra';
 import {
   AvailableProvider,
   CB_PROVIDER_ID,
+  CONFIGCAT_PROVIDER_ID,
   ENV_PROVIDER_ID,
   FLAGD_OFREP_PROVIDER_ID,
   FLAGD_PROVIDER_ID,
@@ -28,6 +29,8 @@ import {
 } from '@openfeature/utils';
 import { OFREPProvider } from '@openfeature/ofrep-provider';
 import { FliptProvider } from '@openfeature/flipt-provider';
+import { ConfigCatProvider } from '@openfeature/config-cat-provider';
+import { PollingMode } from 'configcat-node';
 
 type ProviderMap = Record<
   ProviderId,
@@ -170,6 +173,18 @@ export class ProviderService {
       },
       available: () => !!process.env.FLIPT_URL,
       url: process.env.FLIPT_WEB_URL,
+    },
+    [CONFIGCAT_PROVIDER_ID]: {
+      factory: () => {
+        const sdkKey = process.env.CONFIGCAT_SDK_KEY;
+        if (!sdkKey) {
+          throw new Error('"CONFIGCAT_SDK_KEY" must be defined.');
+        } else {
+          return ConfigCatProvider.create(sdkKey, PollingMode.AutoPoll, { pollIntervalSeconds: 5 });
+        }
+      },
+      available: () => !!process.env.CONFIGCAT_SDK_KEY && !!process.env.CONFIGCAT_SDK_KEY_WEB,
+      webCredential: process.env.CONFIGCAT_SDK_KEY_WEB,
     },
   };
 
