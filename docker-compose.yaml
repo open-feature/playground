@@ -38,6 +38,7 @@ services:
       - LD_KEY
       - FLAGSMITH_ENV_KEY
       - CLOUDBEES_APP_KEY
+      - CONFIGCAT_SDK_KEY
       ## Web
       - HARNESS_KEY_WEB
       - SPLIT_KEY_WEB
@@ -46,7 +47,8 @@ services:
       - CLOUDBEES_APP_KEY_WEB
       - FLAGD_HOST_WEB
       - FLAGD_PORT_WEB
-      - FLAGD_TLS_WEB
+      - FLAGD_TLS_WEB      
+      - CONFIGCAT_SDK_KEY_WEB
 
   fib-service:
     image: ghcr.io/open-feature/playground-fib-service:v0.16.0 # x-release-please-version
@@ -74,6 +76,7 @@ services:
       - LD_KEY
       - FLAGSMITH_ENV_KEY
       - CLOUDBEES_APP_KEY
+      - CONFIGCAT_SDK_KEY
 
   jaeger:
     image: jaegertracing/all-in-one:1.60

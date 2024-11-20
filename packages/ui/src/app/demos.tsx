@@ -3,6 +3,7 @@ import { FlagdWebProvider } from '@openfeature/flagd-web-provider';
 import {
   AvailableProvider,
   CB_PROVIDER_ID,
+  CONFIGCAT_PROVIDER_ID,
   FLAGD_OFREP_PROVIDER_ID,
   FLAGD_PROVIDER_ID,
   FLAGSMITH_PROVIDER_ID,
@@ -35,6 +36,7 @@ import { JSON_UPDATED } from './types';
 import { getData } from './utils';
 import { GoFeatureFlagWebProvider } from '@openfeature/go-feature-flag-web-provider';
 import { FliptWebProvider } from '@openfeature/flipt-web-provider';
+import { ConfigCatWebProvider } from '@openfeature/config-cat-web-provider';
 
 type ProviderMap = Record<
   string,
@@ -136,6 +138,11 @@ export class Demos extends Component<
       factory: () => {
         const fliptConfig = this.state.availableProviders.find((p) => p.id === FLIPT_PROVIDER_ID);
         return new FliptWebProvider('default', { url: fliptConfig?.url });
+      },
+    },
+    [CONFIGCAT_PROVIDER_ID]: {
+      factory: () => {
+        return ConfigCatWebProvider.create(this.getProviderCredential(CONFIGCAT_PROVIDER_ID), { pollIntervalSeconds: 5 });
       },
     },
   };
