@@ -431,12 +431,12 @@ After [starting the demo](#how-to-run-the-demo), the Flipt UI is available at [h
 
 ### ConfigCat
 
-[ConfigCat](https://configcat.com/) is a feature flag and configuration management service that lets you separate releases from deployments. You can turn your features ON/OFF using [ConfigCat Dashboard](https://app.configcat.com/) even after they are deployed. ConfigCat lets you target specific groups of users based on region, email or any other custom user attribute.
+[ConfigCat](https://configcat.com/) is a user-friendly, scalable and secure feature flagging solution with clear [pricing](https://configcat.com/#pricing). ConfigCat allows for unlimited team members and MAUs across all plans, including the free tier. All ConfigCat plans come with all security measures, including audit logs, two-factor authentication, SSO, SAML and SCIM for secure feature management. ConfigCat offers users the choice to keep data within the EU to comply with GDPR more easily. ConfigCat provides SDKs for all major programming languages and platforms.
 
 <details>
   <summary>Follow these steps to set up ConfigCat for the demo:</summary>
 
-1. Sign in to your ConfigCat account. If you don't already have an account, you can sign up for [free](https://configcat.com/#pricing).
+1. Sign in to your ConfigCat account. If you don't already have an account, you can [sign up](https://app.configcat.com/auth/signup) for free.
 1. Create a new feature flag with the key `new-welcome-message`.
 
     <img src="./images/configcat/new-welcome-message.png">
