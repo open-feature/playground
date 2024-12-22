@@ -27,7 +27,7 @@ jobs:
         run: |
           git config --add safe.directory "$GITHUB_WORKSPACE"
         shell: bash
-      - uses: nrwl/nx-set-shas@16efd743af6fc1421daaaa33b61cec4a907b38ed # v4
+      - uses: nrwl/nx-set-shas@e2e6dc8bce4b0387a05eb687735c39c41580b792 # v4
       - run: npm ci
       - run: npx nx affected --target=lint --parallel=3
       - run: npx nx affected --target=build --parallel=3 --ci
