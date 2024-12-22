@@ -13,7 +13,7 @@ jobs:
   main:
     runs-on: equinix-4cpu-16gb
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
         with:
           # We need to fetch all branches and commits so that Nx affected has a base to compare against.
           fetch-depth: 0
