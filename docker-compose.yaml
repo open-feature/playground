@@ -136,7 +136,7 @@ services:
       - "1031:1031"
 
   init_flipt:
-    image: docker.flipt.io/flipt/flipt:v1.49.2
+    image: docker.flipt.io/flipt/flipt:v1.53.2
     command: ["./flipt", "import", "/var/opt/flipt/flipt.yml"]
     environment:
       FLIPT_LOG_LEVEL: debug
@@ -147,7 +147,7 @@ services:
       - "flipt:/var/opt/flipt"
 
   flipt:
-    image: docker.flipt.io/flipt/flipt:v1.49.2
+    image: docker.flipt.io/flipt/flipt:v1.53.2
     command: ["./flipt", "--force-migrate"]
     environment:
       FLIPT_CORS_ENABLED: true
