@@ -127,7 +127,7 @@
     "react-json-editor-ajrm": "^2.5.14",
     "react-json-view": "^1.21.3",
     "react-modal": "^3.16.1",
-    "react-refresh": "^0.14.0",
+    "react-refresh": "^0.16.0",
     "regenerator-runtime": "^0.14.0",
     "style-loader": "^3.3.3",
     "styled-components": "5.3.11",
