@@ -1,4 +1,4 @@
-FROM node:20.18-bullseye-slim AS builder
+FROM node:20.19-bullseye-slim AS builder
 WORKDIR /tmp/playground/
 COPY package*.json tsconfig*.json nx.json babel.config.json ./
 RUN npm ci

@@ -87,7 +87,7 @@ services:
       - '16686:16686'
 
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.105.0
+    image: otel/opentelemetry-collector-contrib:0.129.1
     restart: always
     command: [ "--config=/etc/otel-collector-config.yaml" ]
     volumes:
@@ -111,7 +111,7 @@ services:
       - "9090:9090"
 
   flagd:
-    image: ghcr.io/open-feature/flagd:v0.11.5
+    image: ghcr.io/open-feature/flagd:v0.12.5
     command:
       - start
       - --cors-origin
@@ -129,14 +129,14 @@ services:
       - '8016:8016'
 
   go-feature-flag:
-    image: thomaspoignant/go-feature-flag:v1.40.0
+    image: thomaspoignant/go-feature-flag:v1.45.1
     volumes:
       - ./config/go-feature-flag:/goff/
     ports:
       - "1031:1031"
 
   init_flipt:
-    image: docker.flipt.io/flipt/flipt:v1.53.2
+    image: docker.flipt.io/flipt/flipt:v1.59.1
     command: ["./flipt", "import", "/var/opt/flipt/flipt.yml"]
     environment:
       FLIPT_LOG_LEVEL: debug
@@ -147,7 +147,7 @@ services:
       - "flipt:/var/opt/flipt"
 
   flipt:
-    image: docker.flipt.io/flipt/flipt:v1.53.2
+    image: docker.flipt.io/flipt/flipt:v1.59.1
     command: ["./flipt", "--force-migrate"]
     environment:
       FLIPT_CORS_ENABLED: true
