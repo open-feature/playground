@@ -1,6 +1,6 @@
 {
   "name": "openfeature",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "license": "Apache-2.0",
   "scripts": {
     "ui": "nx run ui:serve",
@@ -96,11 +96,11 @@
     "@svgr/webpack": "^8.1.0",
     "@testing-library/react": "^12.1.5",
     "@types/events": "^3.0.3",
-    "@types/express": "4.17.25",
+    "@types/express": "4.17.21",
     "@types/jest": "^29.5.11",
-    "@types/node": "18.19.130",
-    "@types/react": "18.3.27",
-    "@types/react-dom": "18.3.7",
+    "@types/node": "18.19.68",
+    "@types/react": "18.3.18",
+    "@types/react-dom": "18.3.5",
     "@types/react-json-editor-ajrm": "^2.5.6",
     "@types/react-modal": "^3.16.3",
     "@types/rox-node": "^5.0.5",
