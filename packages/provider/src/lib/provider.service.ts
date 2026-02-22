@@ -30,7 +30,7 @@ import {
 import { OFREPProvider } from '@openfeature/ofrep-provider';
 import { FliptProvider } from '@openfeature/flipt-provider';
 import { ConfigCatProvider } from '@openfeature/config-cat-provider';
-import { PollingMode } from 'configcat-node';
+import { PollingMode } from '@configcat/sdk';
 
 type ProviderMap = Record<
   ProviderId,
