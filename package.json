@@ -26,6 +26,7 @@
     "@openfeature/core": "^1.10.0",
     "@openfeature/server-sdk": "^1.21.0",
     "@configcat/sdk": "^1.0.2",
+    "@flipt-io/flipt": "^1.5.0",
     "@flipt-io/flipt-client-js": "^0.4.2",
     "@openfeature/config-cat-provider": "^0.8.0",
     "@openfeature/config-cat-web-provider": "^0.2.0",
