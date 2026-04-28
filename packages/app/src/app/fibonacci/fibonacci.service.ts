@@ -2,13 +2,13 @@ import {HttpService} from '@nestjs/axios';
 import {Injectable} from '@nestjs/common';
 import {fibonacci} from '@openfeature/fibonacci';
 import {lastValueFrom, map} from 'rxjs';
-import {Client, FeatureClient} from "@openfeature/nestjs-sdk";
+import {Client, OpenFeatureClient} from "@openfeature/nestjs-sdk";
 
 @Injectable()
 export class FibonacciService {
   private readonly FIB_SERVICE_URL = process.env.FIB_SERVICE_URL || 'http://localhost:30001';
 
-  constructor(private readonly httpService: HttpService, @FeatureClient() private client: Client) {
+  constructor(private readonly httpService: HttpService, @OpenFeatureClient() private client: Client) {
   }
 
   async calculateFibonacci(num: number): Promise<{ result: number }> {

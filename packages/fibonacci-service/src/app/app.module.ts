@@ -2,14 +2,16 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { LoggerModule } from 'nestjs-pino';
 import { LoggingHook, OpenFeatureLogger } from '@openfeature/extra';
-import { MetricsHook, TracingHook as SpanEventBasedTracingHook } from '@openfeature/open-telemetry-hooks';
+import { MetricsHook, SpanEventHook as SpanEventBasedTracingHook } from '@openfeature/open-telemetry-hooks';
 import { ProviderService } from '@openfeature/provider';
 import { ProvidersController } from './providers.controller';
-import { OpenFeatureModule, FlagMetadata } from '@openfeature/nestjs-sdk';
+import { OpenFeatureModule } from '@openfeature/nestjs-sdk';
+import type { EvaluationDetails, FlagValue, HookContext } from '@openfeature/server-sdk';
 
-function attributeMapper(flagMetadata: FlagMetadata) {
+function attributeMapper(_hookContext: HookContext, evaluationDetails: EvaluationDetails<FlagValue>) {
+  const flagMetadata = evaluationDetails.flagMetadata ?? {};
   return {
-    ...('scope' in flagMetadata && { scope: flagMetadata.scope }),
+    ...('scope' in flagMetadata && { scope: flagMetadata['scope'] as string | number | boolean }),
   };
 }
 
