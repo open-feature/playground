@@ -2,7 +2,7 @@ import { HttpModule } from '@nestjs/axios';
 import { ExecutionContext, Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { LoggingHook, OpenFeatureLogger } from '@openfeature/extra';
-import { MetricsHook, TracingHook as SpanEventBasedTracingHook } from '@openfeature/open-telemetry-hooks';
+import { MetricsHook, SpanEventHook as SpanEventBasedTracingHook } from '@openfeature/open-telemetry-hooks';
 import { ProviderService } from '@openfeature/provider';
 import { Request } from 'express';
 import { Agent } from 'http';
@@ -12,11 +12,13 @@ import { FibonacciAsAServiceController } from './fibonacci-as-a-service.controll
 import { FibonacciService } from './fibonacci/fibonacci.service';
 import { ProvidersController } from './providers.controller';
 import { UtilsController } from './utils.controller';
-import { EvaluationContext, FlagMetadata, OpenFeatureModule } from '@openfeature/nestjs-sdk';
+import { EvaluationContext, OpenFeatureModule } from '@openfeature/nestjs-sdk';
+import type { EvaluationDetails, FlagValue, HookContext } from '@openfeature/server-sdk';
 
-function attributeMapper(flagMetadata: FlagMetadata) {
+function attributeMapper(_hookContext: HookContext, evaluationDetails: EvaluationDetails<FlagValue>) {
+  const flagMetadata = evaluationDetails.flagMetadata ?? {};
   return {
-    ...('scope' in flagMetadata && { scope: flagMetadata.scope }),
+    ...('scope' in flagMetadata && { scope: flagMetadata['scope'] as string | number | boolean }),
   };
 }
 
