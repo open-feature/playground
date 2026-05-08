@@ -159,6 +159,8 @@
     "test-exclude": {
       ".": "$test-exclude",
       "minimatch": "^9.0.3"
-    }
+    },
+    "serialize-javascript": ">=7.0.5",
+    "@tootallnate/once": ">=3.0.1"
   }
 }
