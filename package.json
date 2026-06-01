@@ -152,7 +152,7 @@
     "@openfeature/config-cat-provider": {
       "@openfeature/server-sdk": "1.13.4"
     },
-    "axios": "^1.15.2",
+    "axios": "^1.16.0",
     "qs": "^6.15.2",
     "js-yaml": "^4.1.1",
     "uuid": "^11.1.1",
@@ -162,6 +162,7 @@
     },
     "serialize-javascript": "^7.0.5",
     "@tootallnate/once": "^2.0.1",
+    "tmp": "^0.2.6",
     "webpack-dev-server": "^5.2.4"
   }
 }
