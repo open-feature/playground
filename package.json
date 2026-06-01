@@ -161,8 +161,6 @@
       "minimatch": "^9.0.3"
     },
     "serialize-javascript": "^7.0.5",
-    "@tootallnate/once": "^2.0.1",
-    "tmp": "^0.2.6",
     "webpack-dev-server": "^5.2.4"
   }
 }
