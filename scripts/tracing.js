@@ -3,8 +3,8 @@
 const { NodeSDK } = require('@opentelemetry/sdk-node');
 const { CompositePropagator, W3CBaggagePropagator, W3CTraceContextPropagator } = require('@opentelemetry/core');
 const { getNodeAutoInstrumentations } = require('@opentelemetry/auto-instrumentations-node');
-const { Resource } = require('@opentelemetry/resources');
-const { SemanticResourceAttributes } = require('@opentelemetry/semantic-conventions');
+const { resourceFromAttributes } = require('@opentelemetry/resources');
+const { ATTR_SERVICE_NAME } = require('@opentelemetry/semantic-conventions');
 const { OTLPTraceExporter } = require('@opentelemetry/exporter-trace-otlp-grpc');
 const { OTLPMetricExporter } = require('@opentelemetry/exporter-metrics-otlp-grpc');
 const { PeriodicExportingMetricReader } = require('@opentelemetry/sdk-metrics');
@@ -20,8 +20,8 @@ const serviceName = process.env['OTEL_SERVICE_NAME'] || 'fib3r';
 const collectorUrl = process.env['OTEL_COLLECTOR_URL'] || 'http://otel-collector:4317';
 
 const sdk = new NodeSDK({
-  resource: new Resource({
-    [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
+  resource: resourceFromAttributes({
+    [ATTR_SERVICE_NAME]: serviceName,
   }),
   instrumentations: [getNodeAutoInstrumentations()],
   textMapPropagator: new CompositePropagator({

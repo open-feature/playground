@@ -42,15 +42,15 @@
     "@openfeature/ofrep-web-provider": "^0.3.6",
     "@openfeature/open-telemetry-hooks": "^1.0.0",
     "@openfeature/web-sdk": "^1.8.0",
-    "@opentelemetry/api": "^1.8.0",
-    "@opentelemetry/auto-instrumentations-node": "^0.44.0",
-    "@opentelemetry/core": "^1.23.0",
-    "@opentelemetry/exporter-metrics-otlp-grpc": "^0.50.0",
-    "@opentelemetry/exporter-trace-otlp-grpc": "^0.50.0",
-    "@opentelemetry/resources": "^1.23.0",
-    "@opentelemetry/sdk-metrics": "^1.23.0",
-    "@opentelemetry/sdk-node": "^0.50.0",
-    "@opentelemetry/semantic-conventions": "^1.23.0",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.76.0",
+    "@opentelemetry/core": "^2.0.0",
+    "@opentelemetry/exporter-metrics-otlp-grpc": "^0.218.0",
+    "@opentelemetry/exporter-trace-otlp-grpc": "^0.218.0",
+    "@opentelemetry/resources": "^2.0.0",
+    "@opentelemetry/sdk-metrics": "^2.0.0",
+    "@opentelemetry/sdk-node": "^0.218.0",
+    "@opentelemetry/semantic-conventions": "^1.30.0",
     "@splitsoftware/openfeature-js-split-provider": "^1.0.7",
     "@splitsoftware/splitio": "^10.24.1",
     "@splitsoftware/splitio-browserjs": "^0.14.0",
@@ -152,13 +152,18 @@
     "@openfeature/config-cat-provider": {
       "@openfeature/server-sdk": "1.13.4"
     },
-    "axios": "^1.15.2",
-    "qs": "^6.14.2",
+    "axios": "^1.16.0",
+    "qs": "^6.15.2",
     "js-yaml": "^4.1.1",
-    "protobufjs": "^7.5.5",
+    "uuid": "^11.1.1",
     "test-exclude": {
       ".": "$test-exclude",
       "minimatch": "^9.0.3"
+    },
+    "serialize-javascript": "^7.0.5",
+    "webpack-dev-server": "^5.2.4",
+    "launch-editor": {
+      "shell-quote": "^1.8.4"
     }
   }
 }
