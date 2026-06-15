@@ -161,6 +161,9 @@
       "minimatch": "^9.0.3"
     },
     "serialize-javascript": "^7.0.5",
-    "webpack-dev-server": "^5.2.4"
+    "webpack-dev-server": "^5.2.4",
+    "launch-editor": {
+      "shell-quote": "^1.8.4"
+    }
   }
 }
