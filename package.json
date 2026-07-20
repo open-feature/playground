@@ -170,6 +170,8 @@
     "http-proxy-middleware": "^3.0.6",
     "launch-editor": "^2.14.1",
     "shell-quote": "^1.8.4",
-    "webpack-dev-server": "^5.2.5"
+    "webpack-dev-server": "^5.2.5",
+    "ws": "^8.21.0",
+    "websocket-driver": "^0.7.5"
   }
 }
