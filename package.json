@@ -44,7 +44,7 @@
     "@openfeature/web-sdk": "^1.8.0",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.76.0",
-    "@opentelemetry/core": "^2.0.0",
+    "@opentelemetry/core": "^2.8.0",
     "@opentelemetry/exporter-metrics-otlp-grpc": "^0.218.0",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.218.0",
     "@opentelemetry/resources": "^2.0.0",
@@ -152,18 +152,14 @@
     "@openfeature/config-cat-provider": {
       "@openfeature/server-sdk": "1.13.4"
     },
-    "axios": "^1.16.0",
     "qs": "^6.15.2",
-    "js-yaml": "^4.1.1",
     "uuid": "^11.1.1",
-    "test-exclude": {
-      ".": "$test-exclude",
-      "minimatch": "^9.0.3"
-    },
     "serialize-javascript": "^7.0.5",
-    "webpack-dev-server": "^5.2.4",
-    "launch-editor": {
-      "shell-quote": "^1.8.4"
-    }
+    "@opentelemetry/core": "$@opentelemetry/core",
+    "@opentelemetry/propagator-jaeger": "^2.9.0",
+    "multer": "^2.2.0",
+    "webpack-dev-server": "^5.2.6",
+    "minimatch@>=9.0.0 <9.0.7": "^9.0.7",
+    "js-yaml@>=4.0.0 <4.3.0": "^4.3.0"
   }
 }
