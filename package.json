@@ -70,7 +70,7 @@
     "nestjs-pino": "^4.0.0",
     "pino-http": "^9.0.0",
     "pino-pretty": "^11.0.0",
-    "react-router-dom": "^6.30.3",
+    "react-router-dom": "^6.30.6",
     "reflect-metadata": "^0.2.0",
     "rox-browser": "^5.4.9",
     "rox-node": "^5.4.9",
