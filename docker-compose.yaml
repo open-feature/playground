@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   demo:
-    image: ghcr.io/open-feature/playground-app:v0.16.0 # x-release-please-version
+    image: ghcr.io/open-feature/playground-app:v0.16.0@sha256:08d2c59795cb72b5c625653d2dfe731b5a1d86eeecf27459ebd72a8fd1d6a0b8 # x-release-please-version
     # build:
     #  dockerfile: ./packages/app/Dockerfile
     #  context: .
@@ -51,7 +51,7 @@ services:
       - CONFIGCAT_SDK_KEY_WEB
 
   fib-service:
-    image: ghcr.io/open-feature/playground-fib-service:v0.16.0 # x-release-please-version
+    image: ghcr.io/open-feature/playground-fib-service:v0.16.0@sha256:3bff30ed4bbf32b0cdbe02d3985302f2d97d0bd3b096b528f58eeeb8f22cc3bf # x-release-please-version
     # build:
     #   dockerfile: ./packages/fibonacci-service/Dockerfile
     #   context: .
@@ -79,7 +79,7 @@ services:
       - CONFIGCAT_SDK_KEY
 
   jaeger:
-    image: jaegertracing/all-in-one:1.60
+    image: jaegertracing/all-in-one:1.60@sha256:4fd2d70fa347d6a47e79fcb06b1c177e6079f92cba88b083153d56263082135e
     expose:
       - '6832/udp'
       - '4317'
@@ -87,7 +87,7 @@ services:
       - '16686:16686'
 
   otel-collector:
-    image: otel/opentelemetry-collector-contrib:0.105.0
+    image: otel/opentelemetry-collector-contrib:0.105.0@sha256:3ff721e65733a9c2d94e81cfb350e76f1cd218964d5608848e2e73293ea88114
     restart: always
     command: [ "--config=/etc/otel-collector-config.yaml" ]
     volumes:
@@ -103,7 +103,7 @@ services:
 
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:v2.55.1
+    image: prom/prometheus:v2.55.1@sha256:2659f4c2ebb718e7695cb9b25ffa7d6be64db013daba13e05c875451cf51b0d3
     restart: always
     volumes:
       - ./config/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
@@ -111,7 +111,7 @@ services:
       - "9090:9090"
 
   flagd:
-    image: ghcr.io/open-feature/flagd:v0.11.5
+    image: ghcr.io/open-feature/flagd:v0.11.5@sha256:17cc8caf847d8f39e9a7209f05e718286ebbe4363a97f4c80bbf5b15be581d1d
     command:
       - start
       - --cors-origin
@@ -129,7 +129,7 @@ services:
       - '8016:8016'
 
   go-feature-flag:
-    image: thomaspoignant/go-feature-flag:v1.40.0
+    image: thomaspoignant/go-feature-flag:v1.40.0@sha256:655eae8236ab12fac411553df78a88875b186250ed97413cb635c319a5e04adc
     volumes:
       - ./config/go-feature-flag:/goff/
     ports:
