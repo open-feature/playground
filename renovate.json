@@ -1,33 +1,33 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": "Default preset for use with OpenFeature's repos",
-  "extends": [ "github>open-feature/community-tooling" ],
+  "extends": ["github>open-feature/community-tooling"],
   "dependencyDashboard": true,
   "npm": {
     "packageRules": [
       {
-        "matchPackagePatterns": ["@docusaurus/"],
-        "groupName": "Docusaurus"
+        "groupName": "Docusaurus",
+        "matchPackageNames": ["/@docusaurus//"]
       },
       {
-        "matchPackagePatterns": ["@opentelemtry/"],
-        "groupName": "OpenTelemetry"
+        "groupName": "OpenTelemetry",
+        "matchPackageNames": ["/@opentelemtry//"]
       },
       {
-        "matchPackagePatterns": ["@openfeature/"],
-        "groupName": "OpenFeature"
+        "groupName": "OpenFeature",
+        "matchPackageNames": ["/@openfeature//"]
       },
       {
-        "matchPackagePatterns": ["@typescript-eslint", "eslint"],
-        "groupName": "ESLint"
+        "groupName": "ESLint",
+        "matchPackageNames": ["/@typescript-eslint/", "/eslint/"]
       },
       {
-        "matchPackagePatterns": ["@fortawesome/"],
-        "groupName": "Font Awesome"
+        "groupName": "Font Awesome",
+        "matchPackageNames": ["/@fortawesome//"]
       },
       {
-        "matchPackagePatterns": ["@types/"],
-        "groupName": "Types"
+        "groupName": "Types",
+        "matchPackageNames": ["/@types//"]
       },
       {
         "description": "disable package.json > engines update",
@@ -35,5 +35,5 @@
         "enabled": false
       }
     ]
-  },
+  }
 }
