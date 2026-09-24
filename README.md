@@ -10,13 +10,13 @@ The OpenFeature playground is a great place to familiarize yourself with the cor
 If you're brand new to feature flagging, consider reviewing the [What are feature flags?](https://openfeature.dev/docs/reference/intro/#what-are-feature-flags) section in our documentation before running the demo.
 
 <!-- Can be updated automatically by running `npm run markdown-toc` >
-
+ 
 <!-- toc -->
 
 - [Pre-requisites](#pre-requisites)
 - [How to run the demo](#how-to-run-the-demo)
 - [What's in the demo?](#whats-in-the-demo)
-  - [Rebranding](#rebranding)
+  - [Rebranding](#rebranding) 
   - [Experimenting with color](#experimenting-with-color)
   - [Test in production](#test-in-production)
 - [Available providers](#available-providers)
