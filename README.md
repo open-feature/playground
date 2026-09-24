@@ -10,7 +10,7 @@ The OpenFeature playground is a great place to familiarize yourself with the cor
 If you're brand new to feature flagging, consider reviewing the [What are feature flags?](https://openfeature.dev/docs/reference/intro/#what-are-feature-flags) section in our documentation before running the demo.
 
 <!-- Can be updated automatically by running `npm run markdown-toc` >
-
+ 
 <!-- toc -->
 
 - [Pre-requisites](#pre-requisites)
