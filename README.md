@@ -16,7 +16,7 @@ If you're brand new to feature flagging, consider reviewing the [What are featur
 - [Pre-requisites](#pre-requisites)
 - [How to run the demo](#how-to-run-the-demo)
 - [What's in the demo?](#whats-in-the-demo)
-  - [Rebranding](#rebranding)
+  - [Rebranding](#rebranding) 
   - [Experimenting with color](#experimenting-with-color)
   - [Test in production](#test-in-production)
 - [Available providers](#available-providers)
