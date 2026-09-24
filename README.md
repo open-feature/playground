@@ -5,7 +5,7 @@
 The purpose of this repository is to demonstrate and experiment with existing and proposed functions of OpenFeature. These experiments were written in TypeScript and focus on NodeJS, but the basic concepts translate to most implementation languages.
 
 ## Introductory Demo
-
+ 
 If you're new to OpenFeature, or feature-flags in general, we recommend you start by running the demo UI, along with the JSON-file provider. A guided tour will walk you through some basic concepts. To run the demo:
 
 1. Run `npm ci`
